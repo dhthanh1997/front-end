@@ -5,6 +5,7 @@ COPY dashboard/package*.json ./
 RUN npm install -g @angular/cli@14.2.10
 RUN npm install
 COPY dashboard/ ./
+RUN ls -la /app/*
 RUN ng build --configuration=production
 
 # START
