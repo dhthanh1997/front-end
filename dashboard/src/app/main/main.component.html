@@ -1,0 +1,768 @@
+<html>
+  <body>
+    <div class="wrapper">
+      <!-- Navbar  -->
+      <nav class="navbar fixed-top navbar-expand-lg navbar-dark p-lg-2 header">
+        <div class="d-flex align-items-center w-100 contain">
+          <a
+            href="#"
+            style="background: transparent"
+            class="d-flex justify-content-center col-5"
+          >
+            <img class="col-12" src="assets/img/logo_and_slogan_2.png" alt="" />
+          </a>
+          <div class="collapse navbar-collapse col-7" id="navbarNav">
+            <!-- <div class="mx-auto"></div> -->
+            <ul class="navbar-nav mr-auto" style="max-height: 100px">
+              <li class="nav-item">
+                <a class="nav-link" (click)="scrollToElement(Service)"
+                  >Sản phẩm</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="scrollToElement(Phase)"
+                  >Giai đoạn</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="scrollToElement(upcomingProject)"
+                  >Dự án sắp tới</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="scrollToElement(Weather)"
+                  >Thời tiết</a
+                >
+              </li>
+            </ul>
+          </div>
+          <button
+            class="navbar-toggler custom-toggler"
+            type="button"
+            (click)="toggleSidebar()"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Mobile Nav -->
+      <div class="mobile-nav d-none">
+        <ul class="nav flex-column justify-content-center fade-bottom">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              (click)="scrollToElement(Service)"
+              (click)="toggleSidebar()"
+              >Sản phẩm</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              (click)="scrollToElement(Phase)"
+              (click)="toggleSidebar()"
+              >Giai đoạn</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              (click)="scrollToElement(upcomingProject)"
+              (click)="toggleSidebar()"
+              >Dự án sắp tới</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              (click)="scrollToElement(Weather)"
+              (click)="toggleSidebar()"
+              >Thời tiết</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Banner section  -->
+      <section class="banner" id="banner" #Banner>
+        <div class="banner-image w-100"></div>
+        <div class="content">
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-lg-7 d-flex align-items-center">
+                <div class="wrap">
+                  <h1 class="text-white my-4">
+                    <span style="font-size: 3.5rem">Phần mềm ưu việt</span>
+                    <br />
+                    <span style="font-size: 2.5rem">cho nhân viên ưu tú</span>
+                  </h1>
+                  <p>
+                    Vận hành doanh nghiệp chỉ cần một nền tảng duy nhất: ứng
+                    dụng được tích hợp, dễ sử dụng và được hàng triệu người dùng
+                    yêu thích.
+                  </p>
+                  <!-- <div class="my-4">
+                    <a href="" class="btn btn-primary btn-lg mr-3 mt-1"
+                      >Bắt đầu ngay. Hoàn toàn miễn phí</a
+                    >
+                    <a href="" class="mt-1 btn btn-primary btn-lg"
+                      >Gặp chuyên gia
+                    </a>
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-12 col-lg-5 image">
+                <img src="assets/img/homepage-desktop.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Service -->
+      <span id="Service" #Service></span>
+      <div class="container section2 pt-5 pb-2 reveal fade-bottom">
+        <div class="row">
+          <div class="service-head col-sm-12">
+            <h4>Sản phẩm</h4>
+            <!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p> -->
+          </div>
+          <div class="col-lg-4 col-sm-6 d-flex flex-column">
+            <a href="https://asset.ansv.vn/" class="fix-flex-height">
+              <div class="item">
+                <span class="icon">
+                  <!-- <i nz-icon nzType="money-collect" nzTheme="outline"></i> -->
+                  <img class="icon-img" src="assets/img/money.png" alt="" />
+                </span>
+                <p style="font-weight: 600; font-size: 1.3rem">ANSV Asset</p>
+                <p style="text-align: left; flex-grow: 1">
+                  - Quản lý tài sản bằng mã QR code.
+                  <br /><br />
+                  - Quản lý kiểm kê.
+                  <br /><br />
+                  - Quản lý người dùng tập trung.
+                </p>
+                <!-- <div class="link-direct d-flex mt-4">
+                  <a
+                    href="https://asset.ansv.vn/"
+                    class="d-flex align-items-center"
+                    >Xem thêm
+                    <i
+                      nz-icon
+                      nzType="arrow-right"
+                      nzTheme="outline"
+                      style="font-size: 10px; margin-left: 3px"
+                    ></i
+                  ></a>
+                </div> -->
+              </div>
+            </a>
+          </div>
+          <div
+            class="col-lg-4 col-sm-6 d-flex flex-column"
+            style="overflow: auto"
+          >
+            <!-- <a href="http://10.2.6.142:9093" class="fix-flex-height"> -->
+            <a href="http://contract.ansv.vn:9093" class="fix-flex-height">
+              <div class="item">
+                <span class="icon">
+                  <!-- <i nz-icon nzType="file" nzTheme="outline"></i> -->
+                  <img class="icon-img" src="assets/img/file.png" alt="" />
+                </span>
+                <p style="font-weight: 600; font-size: 1.3rem">
+                  ANSV Contract Management
+                </p>
+                <p style="text-align: left; flex-grow: 1">
+                  - Quản lý hồ sơ thầu dự án.
+                  <br /><br />
+                  - Quản lý phân quyền User.
+                </p>
+                <!-- <div class="link-direct d-flex mt-4">
+                  <a href="#" class="d-flex align-items-center"
+                    >Xem thêm
+                    <i
+                      nz-icon
+                      nzType="arrow-right"
+                      nzTheme="outline"
+                      style="font-size: 10px; margin-left: 3px"
+                    ></i
+                  ></a>
+                </div> -->
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6 d-flex flex-column">
+            <a href="https://10.1.10.11" class="fix-flex-height">
+              <div class="item">
+                <span class="icon">
+                  <!-- <i nz-icon nzType="solution" nzTheme="outline"></i> -->
+                  <img class="icon-img" src="assets/img/task.png" alt="" />
+                </span>
+                <p style="font-weight: 600; font-size: 1.3rem">ANSV SIP PBX</p>
+                <p style="text-align: left; flex-grow: 1">
+                  - Mở rộng tổng đài SIP.
+                  <br /><br />
+                  - Thay thế hệ thống điện thoại SIP.
+                </p>
+                <!-- <div class="link-direct d-flex mt-4 mt-4">
+                  <a
+                    href="http://localhost:4200/pages/task-management"
+                    class="d-flex align-items-center"
+                    >Xem thêm
+                    <i
+                      nz-icon
+                      nzType="arrow-right"
+                      nzTheme="outline"
+                      style="font-size: 10px; margin-left: 3px"
+                    ></i
+                  ></a>
+                </div> -->
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6 d-flex flex-column">
+            <a href="http://management.ansv.vn/" class="fix-flex-height">
+              <div class="item">
+                <span class="icon">
+                  <!-- <i nz-icon nzType="setting" nzTheme="outline"></i> -->
+                  <img
+                    class="icon-img"
+                    src="assets/img/management.png"
+                    alt=""
+                  />
+                </span>
+                <p style="font-weight: 600; font-size: 1.3rem">
+                  ANSV Management
+                </p>
+                <p style="text-align: left; flex-grow: 1">
+                  - Quản lý báo cáo triển khai.
+                  <br /><br />
+                  - Quản lý báo cáo kinh doanh chuyển đổi số.
+                  <br /><br />
+                  - Quản lý báo cáo kinh doanh viễn thông
+                  <br /><br />
+                  - Quản lý tập trung phân quyền User
+                </p>
+                <!-- <div class="link-direct d-flex mt-4">
+                  <a
+                    href="http://management.ansv.vn/"
+                    class="d-flex align-items-center"
+                    >Xem thêm
+                    <i
+                      nz-icon
+                      nzType="arrow-right"
+                      nzTheme="outline"
+                      style="font-size: 10px; margin-left: 3px"
+                    ></i
+                  ></a>
+                </div> -->
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6 d-flex flex-column">
+            <a href="https://meeting.ansv.vn/" class="fix-flex-height">
+              <div class="item">
+                <span class="icon">
+                  <!-- <i nz-icon nzType="laptop" nzTheme="outline"></i> -->
+                  <img class="icon-img" src="assets/img/meeting.png" alt="" />
+                </span>
+                <p style="font-weight: 600; font-size: 1.3rem">ANSV Meeting</p>
+                <p style="text-align: left; flex-grow: 1">
+                  ANSV Meeting giúp người dùng trò chuyện trực tuyến, chia sẻ
+                  màn hình, ghi lại cuộc họp trực tuyến 1 cách nhanh chóng.
+                </p>
+                <!-- <div class="link-direct d-flex mt-4">
+                  <a
+                    href="https://meeting.ansv.vn/"
+                    class="d-flex align-items-center"
+                    >Xem thêm
+                    <i
+                      nz-icon
+                      nzType="arrow-right"
+                      nzTheme="outline"
+                      style="font-size: 10px; margin-left: 3px"
+                    ></i
+                  ></a>
+                </div> -->
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6 d-flex flex-column">
+            <a href="http://course.ansv.vn/" class="fix-flex-height">
+              <div class="item">
+                <span class="icon">
+                  <!-- <i nz-icon nzType="book" nzTheme="outline"></i> -->
+                  <img class="icon-img" src="assets/img/course.png" alt="" />
+                </span>
+                <p style="font-weight: 600; font-size: 1.3rem">ANSV Course</p>
+                <p style="text-align: left; flex-grow: 1">
+                  - Quản lý đào tạo nội bộ.
+                  <br /><br />
+                  - Đào tạo trực tuyến.
+                </p>
+                <!-- <div class="link-direct d-flex mt-4">
+                  <a
+                    href="http://course.ansv.vn/"
+                    class="d-flex align-items-center"
+                    >Xem thêm
+                    <i
+                      nz-icon
+                      nzType="arrow-right"
+                      nzTheme="outline"
+                      style="font-size: 10px; margin-left: 3px"
+                    ></i
+                  ></a>
+                </div> -->
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase -->
+      <span id="Phase" #Phase></span>
+      <div class="phase py-lg-4 py-md-2 py-2 reveal fade-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="timeline-head col-sm-12">
+              <h4>Giai đoạn</h4>
+              <p>Các giai đoạn của phòng chuyển đổi số.</p>
+            </div>
+            <div class="timeline">
+              <ul>
+                <li>
+                  <div class="timeline-content">
+                    <!-- <h3 class="date">20th may, 2010</h3> -->
+                    <h1>Giai đoạn 1: Chỉnh lý</h1>
+                  </div>
+                </li>
+                <li>
+                  <div class="timeline-content">
+                    <h1>Giai đoạn 2: Số hóa</h1>
+                  </div>
+                </li>
+                <li>
+                  <div class="timeline-content">
+                    <h1>Giai đoạn 3: Lưu trữ trên nền tảng số</h1>
+                  </div>
+                </li>
+                <li>
+                  <div class="timeline-content">
+                    <h1>Giai đoạn 4: Tự động hóa</h1>
+                  </div>
+                </li>
+                <li>
+                  <div class="timeline-content">
+                    <h1>Giai đoạn 5: Khai phá</h1>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Project -->
+      <span id="upcomingProject" #upcomingProject></span>
+      <div class="U-Project py-lg-5 py-md-5 py-5 reveal fade-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="project-head col-sm-12">
+              <h4>Dự án sắp tới</h4>
+            </div>
+            <div class="col-lg-4 col-sm-6 project-content">
+              <div class="fix-flex-height">
+                <div class="item">
+                  <span class="icon d-flex">
+                    <i nz-icon nzType="project" nzTheme="outline"></i>
+                  </span>
+                  <p style="font-weight: 600; font-size: 1.3rem">
+                    ANSV Management version 2
+                    <!-- ANSV-Report Management version 2 -->
+                  </p>
+                  <p class="description">
+                    - Nâng cấp hệ thống quản lý báo cáo doanh nghiệp ANSV
+                    Management.
+                    <br /><br />
+                    - Xây dựng hệ thống phân quyền.
+                  </p>
+                  <div class="link-direct d-flex mt-4">
+                    <a href="#" class="d-flex align-items-center"
+                      >Xem thêm
+                      <i
+                        nz-icon
+                        nzType="arrow-right"
+                        nzTheme="outline"
+                        style="font-size: 10px; margin-left: 3px"
+                      ></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 project-content">
+              <div class="fix-flex-height">
+                <div class="item">
+                  <span class="icon d-flex">
+                    <i nz-icon nzType="project" nzTheme="outline"></i>
+                  </span>
+                  <p style="font-weight: 600; font-size: 1.3rem">
+                    ANSV Course Update Feature
+                  </p>
+                  <p class="description">
+                    - Cải thiện, chỉnh lý lại hệ thống quản lý đào tạo.
+                    <br /><br />
+                    - Phân cấp lại bài giảng.
+                    <br /><br />
+                    - Phân chia bài giảng theo thể loại.
+                  </p>
+                  <div class="link-direct d-flex mt-4">
+                    <a href="#" class="d-flex align-items-center"
+                      >Xem thêm
+                      <i
+                        nz-icon
+                        nzType="arrow-right"
+                        nzTheme="outline"
+                        style="font-size: 10px; margin-left: 3px"
+                      ></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 project-content">
+              <div class="fix-flex-height">
+                <div class="item">
+                  <span class="icon d-flex">
+                    <i nz-icon nzType="project" nzTheme="outline"></i>
+                  </span>
+                  <p style="font-weight: 600; font-size: 1.3rem">
+                    Quản lý chi bộ Đảng
+                  </p>
+                  <p class="description">
+                    Xây dựng hệ thống quản lý chi bộ Đảng.
+                  </p>
+                  <div class="link-direct d-flex mt-4">
+                    <a href="#" class="d-flex align-items-center"
+                      >Xem thêm
+                      <i
+                        nz-icon
+                        nzType="arrow-right"
+                        nzTheme="outline"
+                        style="font-size: 10px; margin-left: 3px"
+                      ></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 project-content">
+              <div class="fix-flex-height">
+                <div class="item">
+                  <span class="icon d-flex">
+                    <i nz-icon nzType="project" nzTheme="outline"></i>
+                  </span>
+                  <p style="font-weight: 600; font-size: 1.3rem">
+                    BCC Contract Management
+                  </p>
+                  <p class="description">
+                    Xây dựng phần mềm hỗ trợ quản lý thầu cho ban BCC.
+                  </p>
+                  <div class="link-direct d-flex mt-4">
+                    <a href="#" class="d-flex align-items-center"
+                      >Xem thêm
+                      <i
+                        nz-icon
+                        nzType="arrow-right"
+                        nzTheme="outline"
+                        style="font-size: 10px; margin-left: 3px"
+                      ></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 project-content">
+              <div class="fix-flex-height">
+                <div class="item">
+                  <span class="icon d-flex">
+                    <i nz-icon nzType="project" nzTheme="outline"></i>
+                  </span>
+                  <p style="font-weight: 600; font-size: 1.3rem">
+                    Quản lý dự án
+                    <!-- ANSV-Project-Managemgent -->
+                  </p>
+                  <p class="description">Xây dựng hệ thống quản lý dự án.</p>
+                  <div class="link-direct d-flex mt-4">
+                    <a href="#" class="d-flex align-items-center"
+                      >Xem thêm
+                      <i
+                        nz-icon
+                        nzType="arrow-right"
+                        nzTheme="outline"
+                        style="font-size: 10px; margin-left: 3px"
+                      ></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 project-content">
+              <div class="fix-flex-height">
+                <div class="item">
+                  <span class="icon d-flex">
+                    <i nz-icon nzType="project" nzTheme="outline"></i>
+                  </span>
+                  <p style="font-weight: 600; font-size: 1.3rem">
+                    Genesys Cloud Platform Integration
+                  </p>
+                  <p class="description">
+                    Nghiên cứu và tích hợp các phần mềm doanh nghiệp với Genesys
+                    Cloud Platform.
+                  </p>
+                  <div class="link-direct d-flex mt-4">
+                    <a href="#" class="d-flex align-items-center"
+                      >Xem thêm
+                      <i
+                        nz-icon
+                        nzType="arrow-right"
+                        nzTheme="outline"
+                        style="font-size: 10px; margin-left: 3px"
+                      ></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weather -->
+      <span id="Weather" #Weather></span>
+      <div
+        class="container pt-lg-2 pb-lg-5 py-md-4 py-4 weather reveal fade-bottom"
+      >
+        <div class="row">
+          <div class="weather-head col-sm-12">
+            <h4>Dự báo thời tiết</h4>
+            <p>Dự báo thời tiết 3 ngày sắp tới.</p>
+          </div>
+          <highcharts-chart
+            *ngIf="chartOptions"
+            [Highcharts]="Highcharts"
+            [options]="chartOptions"
+            style="width: 100%; height: 400px; display: block"
+          ></highcharts-chart>
+        </div>
+      </div>
+
+      <!-- Back to top -->
+      <ng-container *ngIf="!changeIcon">
+        <ng-container *ngIf="offsetFlag">
+          <a
+            (click)="scrollToElement(Banner)"
+            class="back-to-top d-flex justify-content-center align-items-center"
+            id="scrollTop"
+          >
+            <i
+              nz-icon
+              nzType="up"
+              nzTheme="outline"
+              style="font-size: 26px"
+            ></i>
+          </a>
+        </ng-container>
+      </ng-container>
+
+      <!-- Popup Chat -->
+      <button
+        class="open-button d-flex justify-content-center align-items-center"
+        (click)="changeIcon === false ? openForm() : closeForm()"
+      >
+        <ng-container *ngIf="changeIcon">
+          <i
+            nz-icon
+            nzType="close"
+            nzTheme="outline"
+            style="font-size: 26px"
+          ></i>
+        </ng-container>
+        <ng-container *ngIf="!changeIcon">
+          <i
+            nz-icon
+            nzType="message"
+            nzTheme="outline"
+            style="font-size: 26px"
+          ></i>
+        </ng-container>
+      </button>
+
+      <div
+        class="chat-popup"
+        id="myForm"
+        [ngClass]="!changeIcon ? 'shrink' : 'expand'"
+      >
+        <div class="bar-close d-flex">
+          <span class="circle-status"></span>
+          <span>Online chat</span>
+          <i
+            nz-icon
+            nzType="close"
+            nzTheme="outline"
+            style="margin-left: auto; margin-right: 10px; cursor: pointer"
+            (click)="closeForm()"
+          ></i>
+        </div>
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+        <div class="chat-bottom">
+          <input type="text" class="sendText" />
+          <button class="sendBtn" type="button">
+            <i nz-icon nzType="send" nzTheme="outline" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer id="footer">
+        <div class="footer-top">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-7 col-md-12 col-sm-12 footer-contact">
+                <h3>CÔNG TY TNHH THIẾT BỊ VIỄN THÔNG ANSV</h3>
+                <div class="row">
+                  <div class="col-md-6">
+                    <p>
+                      <span class="d-flex align-items-center">
+                        <i
+                          nz-icon
+                          nzTheme="outline"
+                          nzType="environment"
+                          style="margin-right: 3px"
+                        ></i>
+                        &ensp; <span>124 Hoàng Quốc</span>
+                      </span>
+                      Việt, Cầu Giấy, Hà Nội
+                      <br />
+                      <br />
+                      <span class="d-flex align-items-center">
+                        <i
+                          nz-icon
+                          nzType="inbox"
+                          nzTheme="outline"
+                          style="margin-right: 3px"
+                        ></i>
+                        <strong>Fax:</strong>&nbsp;(+84) 24 3836 2915
+                      </span>
+                      <span class="d-flex align-items-center">
+                        <i
+                          nz-icon
+                          nzType="phone"
+                          nzTheme="outline"
+                          style="margin-right: 3px"
+                        ></i>
+                        <strong>Phone:</strong>&nbsp;(+84) 24 3836 2094
+                      </span>
+                    </p>
+                  </div>
+                  <div class="col-md-6">
+                    <p>
+                      <span class="d-flex align-items-center">
+                        <i
+                          nz-icon
+                          nzTheme="outline"
+                          nzType="environment"
+                          style="margin-right: 3px"
+                        ></i>
+                        &ensp; <span>Số 10, Phổ Quang,</span>
+                      </span>
+                      Quận Tân Bình, TP.Hồ Chí Minh
+                      <br />
+                      <br />
+                      <span class="d-flex align-items-center">
+                        <i
+                          nz-icon
+                          nzType="inbox"
+                          nzTheme="outline"
+                          style="margin-right: 3px"
+                        ></i>
+                        <strong>Fax:</strong>&nbsp;(+84) 28 3997 4515
+                      </span>
+                      <span class="d-flex align-items-center">
+                        <i
+                          nz-icon
+                          nzType="phone"
+                          nzTheme="outline"
+                          style="margin-right: 3px"
+                        ></i>
+                        <strong>Phone:</strong>&nbsp;(+84) 28 3842 2888
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2 col-md-6 col-sm-6 footer-links">
+                <h4>Liên kết</h4>
+                <ul>
+                  <li>
+                    <a href="#">Trang chủ</a>
+                  </li>
+                  <li>
+                    <a href="#">Về chúng tôi</a>
+                  </li>
+                  <li>
+                    <a href="#">Dịch vụ</a>
+                  </li>
+                  <li>
+                    <a href="#"> Dự án tiêu biểu</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6 footer-links">
+                <h4>Dịch vụ & giải pháp của chúng tôi</h4>
+                <ul>
+                  <li>
+                    <!-- <i nz-icon nzType="right" nzTheme="outline"></i> -->
+                    <a href="#"> Chuyên ngành viễn thông</a>
+                  </li>
+                  <li>
+                    <a href="#">Công nghệ thông tin</a>
+                  </li>
+                  <li>
+                    <a href="#">Chuyển đổi số</a>
+                  </li>
+                  <li>
+                    <a href="#">Dịch vụ</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom container d-md-flex py-4">
+          <div class="mr-md-auto text-center text-md-left">
+            <div class="copyright">
+              © Copyright
+              <strong><span>ANSV</span></strong>
+              . All Rights Reserved
+            </div>
+            <div class="credit">
+              Designed by
+              <a href="#" style="color: #f27700">ANSV</a>
+            </div>
+          </div>
+          <div class="text-center text-md-right pt-3 pt-md-0">
+            <a href="">Liên hệ</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="">Dịch vụ</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
