@@ -16,4 +16,4 @@ COPY --from=build app/nginx.conf /etc/nginx/conf.d/default.conf
 RUN chmod -R 777 /usr/share/nginx/html
 # ENTRYPOINT sudo nginx -c /etc/nginx/nginx.conf -g 'daemon off;'
 
-EXPOSE 80
+EXPOSE 8094
