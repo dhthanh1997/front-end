@@ -14,4 +14,4 @@ COPY --from=build app/nginx.conf /etc/nginx/conf.d
 RUN chmod -R 777 /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]
 
-EXPOSE 80
+EXPOSE 4200
