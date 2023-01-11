@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/dist/css/bootstrap";
+// ng-zorro
+// @import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.min.css";
+// @import '../../../node_modules/@ant-design/icons-angular/src/inline-svg/'
+// @import '../../../node_modules/ng-zorro-antd/icon/style/index.css';
+// @import '../../../node_modules/bootstrap/scss/';
+.ant-table-content {
+  overflow: auto;
+}
+.ant-empty {
+  display: none;
+}
+
+// highcharts
+@import "../node_modules/highcharts/css/highcharts.scss";
+
+.highcharts-credits {
+  display: none;
+}
