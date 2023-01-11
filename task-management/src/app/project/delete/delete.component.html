@@ -1,0 +1,22 @@
+<div class="modal-content">
+  <form nz-form>
+    <!-- row 1 -->
+    <div class="flex flex-row">
+      <div nz-col class="text-center">
+        <p>{{ data }}</p>
+      </div>
+    </div>
+  </form>
+
+  <div class="modal-footer" *nzModalFooter>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="handleOk()"
+      [nzLoading]="isConfirmLoading"
+    >
+      Xóa
+    </button>
+    <button nz-button nzType="default" (click)="handleCancel()">Hủy</button>
+  </div>
+</div>
