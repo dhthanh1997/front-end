@@ -7,14 +7,14 @@ RUN npm install -g @angular/cli@14.2.10
 RUN npm install
 COPY dashboard/ ./
 RUN ls -la /app/*
-# RUN ng build --configuration=production
-RUN ng serve --port 4250
+RUN ng build --configuration=production
+# RUN ng serve --port 4250
 
-# # START
-# FROM nginx:latest as nginx
-# COPY --from=build app/dist/dashboard /usr/share/nginx/html
-# COPY --from=build app/nginx.conf /etc/nginx/conf.d/default.conf
+# START
+FROM nginx:latest as nginx
+COPY --from=build app/dist/dashboard /usr/share/nginx/html
+COPY --from=build app/nginx.conf /etc/nginx/conf.d/default.conf
 # RUN chmod -R 777 /usr/share/nginx/html
-# # ENTRYPOINT sudo nginx -c /etc/nginx/nginx.conf -g 'daemon off;'
+# ENTRYPOINT sudo nginx -c /etc/nginx/nginx.conf -g 'daemon off;'
 
 # # EXPOSE 8094
