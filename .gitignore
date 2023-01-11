@@ -6,6 +6,8 @@ dashboard/dist
 task-management/dist
 dashboard/node_modules
 task-management/node_modules
+task-management/.angular
+dashboard/.angular
 /tmp
 /out-tsc
 /bazel-out
