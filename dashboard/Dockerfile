@@ -14,7 +14,7 @@ RUN ng build --configuration=production
 FROM nginx:latest as nginx
 COPY --from=build app/dist/dashboard /usr/share/nginx/html
 RUN rm -rf /etc/nginx/conf.d/default.conf
-COPY --from=build app/default.conf /etc/nginx/conf.d
+# COPY --from=build app/default.conf /etc/nginx/conf.d
 COPY --from=build app/nginx.conf /etc/nginx/conf.d
 COPY --from=build app/proxy.conf /etc/nginx/conf.d
 COPY --from=build app/fastcgi.conf /etc/nginx/conf.d
