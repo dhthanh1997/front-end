@@ -2,7 +2,7 @@
 
 # Compiled output
 # /dist
-dashboard/dist
+# dashboard/dist
 task-management/dist
 dashboard/node_modules
 task-management/node_modules
