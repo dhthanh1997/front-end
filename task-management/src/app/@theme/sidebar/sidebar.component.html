@@ -2,12 +2,16 @@
 <div class="sidebar-header"></div>
 <!-- navigation -->
 <div class="sidebar-content">
-  <!-- <ul class="nav flex-column">
+  <a class="projectBtn" role="button" routerLink="#">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+    <span class="ml-2">Create</span>
+  </a>
+  <ul class="nav flex-column" id="navList" (click)="linkActive($event)">
     <li class="nav-item">
-      <a class="nav-link active" href="#">Active link</a>
+      <a class="nav-link active" href="#"> Home </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="welcome">Welcome</a>
+      <a class="nav-link" routerLink="project">All Project</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Link 2</a>
@@ -18,19 +22,9 @@
     <li class="nav-item">
       <a class="nav-link" href="#">Link 4</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Link 5</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Link 6</a>
-    </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link disabled" href="#">Disabled link</a>
-    </li>
-  </ul> -->
-  <a class="projectBtn" role="button" routerLink="project">
-    <i nz-icon nzType="plus" nzTheme="outline"></i>
-    <span>Project</span>
-  </a>
+    </li> -->
+  </ul>
 </div>
 <!-- </div> -->
