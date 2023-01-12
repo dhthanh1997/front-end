@@ -15,10 +15,10 @@ FROM nginx:latest as nginx
 COPY dashboard/dist/dashboard /usr/share/nginx/html
 # RUN rm -rf /etc/nginx/conf.d/default.conf
 # COPY --from=build app/default.conf /etc/nginx/conf.d
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY proxy.conf /etc/nginx/conf.d/default.conf
-COPY fastcgi.conf /etc/nginx/conf.d/default.conf
-COPY mime.types /etc/nginx/conf.d/default.conf
+COPY dashboard/nginx.conf /etc/nginx/conf.d/default.conf
+COPY dashboard/proxy.conf /etc/nginx/conf.d/default.conf
+COPY dashboard/fastcgi.conf /etc/nginx/conf.d/default.conf
+COPY dashboard/mime.types /etc/nginx/conf.d/default.conf
 # RUN chmod -R 777 /usr/share/nginx/html
 # ENTRYPOINT sudo nginx -c /etc/nginx/nginx.conf -g 'daemon off;'
 
