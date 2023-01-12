@@ -12,7 +12,7 @@
 
 # START
 FROM nginx:latest as nginx
-COPY dist/dashboard /usr/share/nginx/html
+COPY ./dist/dashboard /usr/share/nginx/html
 # RUN rm -rf /etc/nginx/conf.d/default.conf
 # COPY --from=build app/default.conf /etc/nginx/conf.d
 COPY nginx.conf /etc/nginx/conf.d/default.conf
