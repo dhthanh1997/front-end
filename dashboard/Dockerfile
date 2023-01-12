@@ -13,10 +13,12 @@ RUN ng build --configuration=production
 # START
 FROM nginx:latest as nginx
 COPY --from=build app/dist/dashboard /usr/share/nginx/html
-COPY --from=build app/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build app/proxy.conf /etc/nginx/conf.d/default.conf
-COPY --from=build app/fastcgi.conf /etc/nginx/conf.d/default.conf
-COPY --from=build app/mime.types /etc/nginx/conf.d/default.conf
+RUN rm -rf /etc/nginx/conf.d/default.conf
+COPY --from=build app/default.conf /etc/nginx/conf.d
+COPY --from=build app/nginx.conf /etc/nginx/conf.d
+COPY --from=build app/proxy.conf /etc/nginx/conf.d
+COPY --from=build app/fastcgi.conf /etc/nginx/conf.d
+COPY --from=build app/mime.types /etc/nginx/conf.d
 # RUN chmod -R 777 /usr/share/nginx/html
 # ENTRYPOINT sudo nginx -c /etc/nginx/nginx.conf -g 'daemon off;'
 
