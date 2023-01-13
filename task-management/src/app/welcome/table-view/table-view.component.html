@@ -1,0 +1,88 @@
+<nz-table
+  #nestedTable
+  #editRowTable
+  nzBordered
+  [nzData]="listOfData"
+  [nzFrontPagination]="false"
+  [nzShowPagination]="false"
+>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Date Created</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+    <ng-template ngFor let-data [ngForOf]="listOfData">
+      <tr cdkDrag>
+        <td [(nzExpand)]="data.expand"></td>
+        <td>
+          <div
+            class="editable-cell"
+            [hidden]="editId === data.id"
+            (click)="startEdit(data.id)"
+          >
+            {{ data.name }}
+          </div>
+          <input
+            [hidden]="editId !== data.id"
+            type="text"
+            nz-input
+            nzAutoFocus
+            [(ngModel)]="data.name"
+            (keyup.enter)="stopEdit()"
+            (blur)="stopEdit()"
+            style="padding-left: 8px"
+          />
+        </td>
+        <td>
+          <div
+            class="editable-cell"
+            [hidden]="editId === data.id"
+            (click)="startEdit(data.id)"
+          >
+            {{ data.date | date: 'dd/MM/yyyy' }}
+          </div>
+          <nz-date-picker
+            [hidden]="editId !== data.id"
+            [(ngModel)]="data.date"
+            (ngModelChange)="onChange($event)"
+            (keyup.enter)="stopEdit()"
+            (blur)="stopEdit()"
+          >
+          </nz-date-picker>
+        </td>
+        <td>{{ data.dateCreated | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ data.status }}</td>
+      </tr>
+      <tr [nzExpand]="data.expand">
+        <nz-table
+          #innerTable
+          [nzData]="listOfChildrenData"
+          nzSize="middle"
+          [nzShowPagination]="false"
+        >
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Age</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listOfChildrenData">
+              <td>{{ data.id }}</td>
+              <td>{{ data.name }}</td>
+              <td>{{ data.age }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </tr>
+    </ng-template>
+  </tbody>
+</nz-table>
+
+<!-- <nz-date-picker></nz-date-picker> -->

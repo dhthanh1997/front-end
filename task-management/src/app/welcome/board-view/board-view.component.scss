@@ -1,0 +1,186 @@
+* {
+  font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.container::before,
+.container::after,
+.row::before,
+.row::after {
+  display: table;
+  content: ' ';
+}
+
+.container {
+  justify-content: flex-start;
+}
+
+.wrapper-board-view {
+  height: 100%;
+  overflow: auto;
+}
+
+.boardBtn {
+  width: 10%;
+  padding: 0;
+
+  .newTaskBtn {
+    height: 100%;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    box-shadow: none;
+    background-color: #ebecf0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .itemBtn {
+    height: 100%;
+    opacity: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px #ccc;
+    // -webkit-box-shadow: rgba(15, 15, 15, 0.1);
+    // box-shadow: rgba(15, 15, 15, 0.1);
+    background-color: white;
+    transition: all 0.3s ease-in-out;
+    padding: 8px 14px;
+
+    i {
+      font-size: 12px;
+    }
+  }
+
+  .itemBtn:first-child {
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+  }
+
+  .itemBtn:last-child {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+
+  .newTaskBtn:hover {
+    background-color: #091e4214;
+    color: black;
+  }
+
+  .itemBtn:hover {
+    background-color: #ebecf0;
+  }
+}
+
+.example-container {
+  width: 290px;
+  height: max-content;
+  // max-width: 35%;
+  margin: 20px 25px 25px 0;
+  display: flex;
+  vertical-align: top;
+  flex-direction: column;
+  background-color: #ebecf0;
+  padding-bottom: 1em;
+  border-radius: 5px;
+
+  .task {
+    justify-content: space-between;
+    margin-bottom: 1em;
+  }
+}
+
+.example-container:hover .newTaskBtn {
+  opacity: 1;
+}
+
+.example-list {
+  // border: solid 1px #ccc;
+  min-height: 60px;
+  background: #ebecf0;
+  // border-radius: 4px;
+  overflow: hidden;
+  display: block;
+  width: 90%;
+  max-width: 90%;
+  align-self: center;
+}
+
+.example-box {
+  max-width: 100%;
+  padding: 10px 10px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: white;
+  font-size: 14px;
+  opacity: 1;
+  position: relative;
+}
+
+.example-box:hover .itemBtn {
+  opacity: 1;
+}
+
+.fixBtn:last-child {
+  position: absolute;
+  right: 45px;
+  top: 20%;
+  z-index: 10;
+}
+
+.cdk-drag-preview {
+  // box-sizing: border-box;
+  // border-radius: 5px;
+  // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  //   0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  transform: rotate(10deg);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// .test {
+//   background: green !important;
+//   border: dotted 3px red;
+//   min-height: 60px;
+//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+// }
+
+.addTaskBtn {
+  background-color: #40a9ff;
+  border: 1px solid black;
+  width: 30%;
+  height: 40px;
+}

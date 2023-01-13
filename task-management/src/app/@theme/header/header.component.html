@@ -1,0 +1,57 @@
+<div class="d-flex flex-row">
+  <div class="col-md-6 align-items-center pl-0 pr-0">
+    <div class="header-icon d-flex align-items-center">
+      <span (click)="toggleSidebar()">
+        <i
+          class="trigger"
+          nz-icon
+          [nzTheme]="'outline'"
+          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        ></i>
+      </span>
+      <div
+        class="logo w-100 h-100 d-flex align-items-end ml-2"
+        style="max-height: 100%; max-width: 100%"
+      >
+        <img
+          src="assets/img/Logo-ANSV.png"
+          alt=""
+          style="width: 100px; height: auto"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 align-items-center pl-0 pr-0">
+    <div class="header-user">
+      <a class="border rounded-circle" nz-dropdown [nzDropdownMenu]="menu">
+        <!-- <div class=""> -->
+        <span nz-icon nzType="user"></span>
+        <!-- </div> -->
+      </a>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu nzSelectable>
+          <li nz-menu-item>1st menu item</li>
+          <li nz-menu-item>2nd menu item</li>
+          <li nz-menu-item>3rd menu item</li>
+          <li nz-menu-item nzDanger>4th danger item</li>
+        </ul>
+      </nz-dropdown-menu>
+      <!-- <ul class="navbar-nav">
+                    <li class="nav-item dropdown border avatar rounded-circle shadow-4">
+                         <img src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" alt="Avatar" />
+                         <ul class="dropdown-menu">
+                              <li>
+                                   <a class="dropdown-item" href="#">My profile</a>
+                              </li>
+                              <li>
+                                   <a class="dropdown-item" href="#">Settings</a>
+                              </li>
+                              <li>
+                                   <a class="dropdown-item" href="#">Logout</a>
+                              </li>
+                         </ul>
+                    </li>
+               </ul> -->
+    </div>
+  </div>
+</div>

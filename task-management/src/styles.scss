@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+// ng-zorro
+// @import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.min.css";
+
+.container::before,
+.container::after,
+.row::before,
+.row::after {
+  display: table;
+  content: " ";
+}
+
+.container::after,
+.row::after {
+  clear: both;
+}

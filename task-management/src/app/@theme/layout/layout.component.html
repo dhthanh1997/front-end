@@ -1,0 +1,26 @@
+<div class="container-fluid">
+  <div class="page-wrapper">
+    <div class="page-main">
+      <div class="d-flex flex-column">
+        <div class="page-header border-bottom p-2">
+          <ng-content select="internal-app-header"></ng-content>
+        </div>
+        <!-- <div class="page-breadcumb p-2">
+          <ng-content select="internal-app-breadcrumb"></ng-content>
+        </div> -->
+        <div class="content-wrapper d-flex flex-row">
+          <div class="sidebar" [ngClass]="isCollapsed ? 'toggle-sidebar' : ''">
+            <ng-content select="internal-app-sidebar"></ng-content>
+          </div>
+          <div class="page-content py-1 px-4">
+            <ng-content select="router-outlet"></ng-content>
+          </div>
+        </div>
+
+        <!-- <div class="page-footer border-top p-2">
+                    <ng-content select="internal-app-footer"></ng-content>
+                </div> -->
+      </div>
+    </div>
+  </div>
+</div>
