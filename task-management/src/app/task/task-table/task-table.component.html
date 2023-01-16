@@ -1,0 +1,32 @@
+<div class="table-responsive" [formGroup]="formValidation">
+    <table class="table">
+        <thead>
+            <th>Name</th>
+            <th>Date</th>
+            <th>DateCreated</th>
+            <th>Status</th>
+        </thead>
+        <tbody cdkDropList (cdkDropListDropped)="onDrop($event)">
+            <tr *ngFor="let item of listOfData" cdkDrag cdkDragLockAxis="y" formArrayName="taskArray">
+                <td>
+                    <ng-container *ngIf="isHover">
+                        <input type="text" nz-input class="task_table_input" formControlName="name">
+                    </ng-container>
+                    <ng-container *ngIf="!isHover">
+                        {{item.name}}
+                    </ng-container>
+                   
+                </td>
+                <td>
+                    {{item.date}}
+                </td>
+                <td>
+                    {{item.dateCreated}}
+                </td>
+                <td>
+                    {{item.status}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

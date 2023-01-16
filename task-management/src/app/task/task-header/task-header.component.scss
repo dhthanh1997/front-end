@@ -1,0 +1,27 @@
+.task_header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.task_header .float-right button {
+  margin-right: 4px;
+//   text-align: center;
+//   display: inline-block;
+}
+
+::ng-deep {
+    .task_header button span > svg {
+        margin-bottom: 6px;
+    }
+
+    .dropdown_menu {
+        margin-top: 10px  ;
+    }
+    
+}
+
+
+
+
+
