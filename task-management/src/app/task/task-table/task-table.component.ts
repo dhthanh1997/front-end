@@ -1,6 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { initListDataObject } from 'src/app/_base/util';
 import { todoTable } from 'src/app/_core/model/task';
 
 @Component({
@@ -14,34 +15,44 @@ export class TaskTableComponent implements OnInit {
 
   public isHover: boolean = false;
 
+  public todoTable: todoTable = {
+    id: 0,
+    name: '',
+    date: new Date(),
+    dateCreated: new Date(),
+    status: '',
+    expand: false
+  }
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
   }
 
   initForm() {
-    this.formValidation = this.fb.group(
-      {
-        taskArray: this.fb.array([
-          this.buildObjectGroup()
-        ])
-      }
-    )
+    // this.formValidation = this.fb.group(
+    //   {
+    //     taskArray: this.fb.array([
+    //       this.buildObjectGroup()
+    //     ])
+    //   }
+    // )
+    initListDataObject(this.listOfData, this.todoTable , "taskArray", this.formValidation);
   }
 
   get taskArray() {
     return this.formValidation.get("taskArray") as FormArray;
   }
 
-  buildObjectGroup(): FormGroup {
-    const group = this.fb.group({
-      name: ['', []],
-      date: ['', []],
-      dateCreated: ['', []],
-      status: ['', []],
-    })
-    return group;
-  }
+  // buildObjectGroup(): FormGroup {
+  //   const group = this.fb.group({
+  //     name: ['', []],
+  //     date: ['', []],
+  //     dateCreated: ['', []],
+  //     status: ['', []],
+  //   })
+  //   return group;
+  // }
 
   public listOfData: todoTable[] = [
     {
