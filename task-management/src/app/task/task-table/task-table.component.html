@@ -1,30 +1,32 @@
 <div class="table-responsive" [formGroup]="formValidation">
     <table class="table">
         <thead>
-            <th>Name</th>
-            <th>Date</th>
-            <th>DateCreated</th>
-            <th>Status</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Date</th>
+            <th class="text-center">DateCreated</th>
+            <th class="text-center">Status</th>
         </thead>
-        <tbody cdkDropList (cdkDropListDropped)="onDrop($event)">
-            <tr *ngFor="let item of listOfData" cdkDrag cdkDragLockAxis="y" formArrayName="taskArray">
+        <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="taskArray">
+            <tr *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y" >
                 <td>
                     <ng-container *ngIf="isHover">
-                        <input type="text" nz-input class="task_table_input" formControlName="name">
+                        <input type="text" nz-input class="task_table_input" [formControlName]="idx">
                     </ng-container>
                     <ng-container *ngIf="!isHover">
-                        {{item.name}}
+                        {{item.get('name')!.value}}
                     </ng-container>
                    
                 </td>
                 <td>
-                    {{item.date}}
+                    <nz-date-picker formControlName="date" (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                    <!-- {{item.date | date :'dd/MM/yyyy HH:mm:ss'}} -->
                 </td>
                 <td>
-                    {{item.dateCreated}}
+                    <nz-date-picker formControlName="dateCreated" (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                    <!-- {{item.dateCreated | date :'dd/MM/yyyy HH:mm:ss'}} -->
                 </td>
                 <td>
-                    {{item.status}}
+                    {{item.get('status')!.value}}
                 </td>
             </tr>
         </tbody>

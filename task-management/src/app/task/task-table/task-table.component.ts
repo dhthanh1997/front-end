@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { todoTable } from 'src/app/@core/model/task';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { todoTable } from 'src/app/_core/model/task';
 
 @Component({
   selector: 'app-task-table',
@@ -22,9 +22,25 @@ export class TaskTableComponent implements OnInit {
   initForm() {
     this.formValidation = this.fb.group(
       {
-        taskArray: this.fb.array([])
+        taskArray: this.fb.array([
+          this.buildObjectGroup()
+        ])
       }
     )
+  }
+
+  get taskArray() {
+    return this.formValidation.get("taskArray") as FormArray;
+  }
+
+  buildObjectGroup(): FormGroup {
+    const group = this.fb.group({
+      name: ['', []],
+      date: ['', []],
+      dateCreated: ['', []],
+      status: ['', []],
+    })
+    return group;
   }
 
   public listOfData: todoTable[] = [
@@ -58,5 +74,10 @@ export class TaskTableComponent implements OnInit {
     console.log(event);
     moveItemInArray(this.listOfData, event.previousIndex, event.currentIndex);
   }
+
+  onOpenChange($event: any) {
+
+  }
+
 
 }
