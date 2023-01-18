@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { TaskRoutingModule } from './task-routing.module';
 import { TaskComponent } from './task.component';
-import { IconsProviderModule } from '../@theme/iconsProvider.module';
-import { NgZorroModule } from '../@theme/ng-zorro.module';
+import { IconsProviderModule } from '../_theme/iconsProvider.module';
+import { NgZorroModule } from '../_theme/ng-zorro.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskHeaderComponent } from './task-header/task-header.component';
 import { TaskTableComponent } from './task-table/task-table.component';

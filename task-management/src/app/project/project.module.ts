@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectComponent } from './project.component';
-import { IconsProviderModule } from '../@theme/iconsProvider.module';
-import { NgZorroModule } from '../@theme/ng-zorro.module';
+import { IconsProviderModule } from '../_theme/iconsProvider.module';
+import { NgZorroModule } from '../_theme/ng-zorro.module';
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteComponent } from './delete/delete.component';

@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WelcomeRoutingModule } from './welcome-routing.module';
-import { IconsProviderModule } from '../@theme/iconsProvider.module';
-import { NgZorroModule } from '../@theme/ng-zorro.module';
+import { IconsProviderModule } from '../_theme/iconsProvider.module';
+import { NgZorroModule } from '../_theme/ng-zorro.module';
 import { WelcomeComponent } from './welcome.component';
 import { TableViewComponent } from './table-view/table-view.component';
 import { BoardViewComponent } from './board-view/board-view.component';
