@@ -7,6 +7,11 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
   },
+  {
+    path: 'welcome/:id',
+    loadChildren: () =>
+      import('../welcome/welcome.module').then((m) => m.WelcomeModule),
+  },
 ];
 
 @NgModule({

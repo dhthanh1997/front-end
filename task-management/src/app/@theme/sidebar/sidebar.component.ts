@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { debug } from 'console';
 import { ShareService } from '../shared/share.service';
 
 @Component({
@@ -12,22 +11,28 @@ export class SidebarComponent implements OnInit {
 
   isActive = false;
 
+  isHidden = true;
+
   constructor(private shareService: ShareService, private element: ElementRef) {
     // do something
   }
 
   ngOnInit(): void {
-    // do something
+    this.hide();
   }
 
-  linkActive(e: any) {
-    if (
-      this.element.nativeElement.querySelector('#navList a.active') !== null
-    ) {
-      this.element.nativeElement
-        .querySelector('#navList a.active')
-        .classList.remove('active');
-    }
-    e.target.className = 'nav-link active';
+  popUp() {
+    this.isHidden = !this.isHidden;
+  }
+
+  hide() {
+    let a = this.element.nativeElement.querySelector('.popup');
+    this.isHidden;
+    window.addEventListener('click', function (e) {
+      if (a.contains(e.target)) {
+      } else {
+        a.classList.add('hidden');
+      }
+    });
   }
 }

@@ -1,6 +1,6 @@
 <div class="wrapper">
-  <!-- <nz-tabset [nzTabBarExtraContent]="extraTemplate" class="tabset"> -->
-  <nz-tabset class="tabset">
+  <nz-tabset [nzTabBarExtraContent]="extraTemplate" class="tabset">
+    <!-- <nz-tabset class="tabset"> -->
     <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab">
       <ng-container *ngIf="tab === 'Board View'">
         <internal-app-board-view></internal-app-board-view>
@@ -13,7 +13,7 @@
       </ng-container>
     </nz-tab>
   </nz-tabset>
-  <!-- <ng-template #extraTemplate>
-    <button nz-button>New Status</button>
-  </ng-template> -->
+  <ng-template #extraTemplate>
+    <button nz-button>Add Task</button>
+  </ng-template>
 </div>

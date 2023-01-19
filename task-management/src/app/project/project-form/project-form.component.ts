@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { content } from '../service/project';
 import { ProjectService } from '../service/project.service';
@@ -36,7 +37,8 @@ export class ProjectFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private service: ProjectService,
-    private modelRef: NzModalRef<ProjectFormComponent>
+    private modelRef: NzModalRef<ProjectFormComponent>,
+    private router: Router
   ) {}
 
   get name() {

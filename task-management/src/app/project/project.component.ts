@@ -10,6 +10,7 @@ import { content } from './service/project';
 import { ProjectService } from './service/project.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { DeleteComponent } from './delete/delete.component';
+import { Router } from '@angular/router';
 
 enum ModeModal {
   CREATE = 'create',
@@ -27,7 +28,8 @@ export class ProjectComponent implements OnInit {
     private service: ProjectService,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
-    private element: ElementRef
+    private element: ElementRef,
+    private router: Router
   ) {}
 
   public listData: any;
@@ -159,8 +161,8 @@ export class ProjectComponent implements OnInit {
               'Thêm mới yêu cầu',
               this.modalOptions
             );
+            this.router.navigate(['/project/welcome/' + res.data.id]);
           }
-          this.getProject();
         },
         error: (res) => {
           console.log(res);

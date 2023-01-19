@@ -33,6 +33,7 @@ import {
   ArrowRightOutline,
   SettingOutline,
   HomeOutline,
+  UnorderedListOutline,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -64,6 +65,7 @@ const icons = [
   ArrowRightOutline,
   SettingOutline,
   HomeOutline,
+  UnorderedListOutline,
 ];
 
 @NgModule({

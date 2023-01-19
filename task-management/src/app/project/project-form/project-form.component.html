@@ -13,7 +13,7 @@
             <nz-form-label nz-col [nzSpan]="3">
               Name <span style="color: red">*</span>
             </nz-form-label>
-            <nz-form-control nz-col [nzSpan]="21" nzErrorTip="Bắt buộc!">
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Name">
               <input
                 nz-input
                 placeholder="Name"
@@ -23,6 +23,14 @@
                 [ngClass]="mode === 'view' ? 'ban' : ''"
                 required
               />
+              <ng-template #Name let-control>
+                <ng-container *ngIf="control.hasError('minlength')"
+                  >MinLength is 5</ng-container
+                >
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
