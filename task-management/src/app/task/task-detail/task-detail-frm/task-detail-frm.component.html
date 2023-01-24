@@ -1,0 +1,61 @@
+<div class="modal-header">
+    <div class="col-6 p-2">
+        <button nz-button class="float-left" nzType="default" (click)="markCompleted()">
+            <span nz-icon nzType="check" nzTheme="outline"></span>
+            <ng-container *ngIf="isCompleted">
+                Hoàn thành
+            </ng-container>
+            <ng-container *ngIf="!isCompleted">
+                Chưa hoàn thành
+            </ng-container>
+        </button>
+    </div>
+    <div class="col-6 p-2">
+        <div class="d-flex flex-row float-right">
+            <button nz-button class="mr-2" nzType="default" (click)="uploadFile()">
+                <span nz-icon nzType="file-add" nzTheme="outline"></span>
+            </button>
+            <button nz-button class="mr-2" nzType="default" (click)="addSubNode()">
+                <span nz-icon nzType="subnode" nzTheme="outline"></span>
+            </button>
+            <button nz-button nzType="default" (click)="close()">
+                <span nz-icon nzType="close" nzTheme="outline"></span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-content">
+
+    <!-- row 4 -->
+    <div nz-row class="flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item nz-row [nzGutter]="2">
+                <nz-form-label [nzSpan]="3">
+                    Địa chỉ
+                </nz-form-label>
+                <nz-form-control [nzSpan]="21">
+                    <textarea nz-input rows="3" placeholder="Tên khách hàng" 
+                        name="address"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <!-- row 5 -->
+    <div nz-row class="flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item nz-row [nzGutter]="2">
+                <nz-form-label [nzSpan]="3">
+                    Mô tả
+                </nz-form-label>
+                <nz-form-control [nzSpan]="21">
+                    <textarea nz-input rows="3" placeholder="Mô tả" 
+                        name="description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+
+</div>

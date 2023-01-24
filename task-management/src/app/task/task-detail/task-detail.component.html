@@ -1,0 +1,37 @@
+<ng-container *ngIf="!isCollapsed">
+    <div class="task_detail_header">
+        <div class="col-6 p-2">
+            <button nz-button class="float-left" nzType="default" (click)="markCompleted()">
+                <span nz-icon nzType="check" nzTheme="outline"></span>
+                <ng-container *ngIf="isCompleted">
+                    Hoàn thành
+                </ng-container>
+                <ng-container *ngIf="!isCompleted">
+                    Chưa hoàn thành
+                </ng-container>
+            </button>
+        </div>
+        <div class="col-6 p-2">
+            <div class="d-flex flex-row float-right">
+                <button nz-button class="mr-2" nzType="default" (click)="uploadFile()">
+                    <span nz-icon nzType="file-add" nzTheme="outline"></span>
+                </button>
+                <button nz-button class="mr-2" nzType="default" (click)="addSubNode()">
+                    <span nz-icon nzType="subnode" nzTheme="outline"></span>
+                </button>
+                <button nz-button class="mr-2" nzType="default" (click)="fullScreen()">
+                    <span nz-icon nzType="fullscreen" nzTheme="outline"></span>
+                </button>
+                <button nz-button nzType="default" (click)="close()">
+                    <span nz-icon nzType="close" nzTheme="outline"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="task_detail_content">
+    
+    </div>
+    <div class="task_detail_footer">
+    
+    </div>
+</ng-container>

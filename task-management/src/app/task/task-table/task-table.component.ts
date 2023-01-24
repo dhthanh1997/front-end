@@ -1,8 +1,9 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { initListDataObject } from 'src/app/_base/util';
+import { initDataObject, initListDataObject } from 'src/app/_base/util';
 import { todoTable } from 'src/app/_core/model/task';
+import { ShareService } from 'src/app/_share/share.service';
 
 @Component({
   selector: 'app-task-table',
@@ -15,44 +16,36 @@ export class TaskTableComponent implements OnInit {
 
   public isHover: boolean = false;
 
+  public isOpen: boolean = true;
+
+  public isCollapsed: boolean = true;
+  public Collapse: boolean = false;
+
   public todoTable: todoTable = {
     id: 0,
     name: '',
     date: new Date(),
     dateCreated: new Date(),
-    status: '',
-    expand: false
+    status: 'To Do',
+    expand: false,
+    isShow: false
   }
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private shareService: ShareService, private elementRef: ElementRef, private renderer2: Renderer2 ) { }
 
   ngOnInit(): void {
+    this.initForm();
   }
 
   initForm() {
-    // this.formValidation = this.fb.group(
-    //   {
-    //     taskArray: this.fb.array([
-    //       this.buildObjectGroup()
-    //     ])
-    //   }
-    // )
-    initListDataObject(this.listOfData, this.todoTable , "taskArray", this.formValidation);
+    this.formValidation = initListDataObject(this.listOfData, this.todoTable, "taskArray");
+    console.log(this.formValidation);
   }
 
   get taskArray() {
     return this.formValidation.get("taskArray") as FormArray;
   }
 
-  // buildObjectGroup(): FormGroup {
-  //   const group = this.fb.group({
-  //     name: ['', []],
-  //     date: ['', []],
-  //     dateCreated: ['', []],
-  //     status: ['', []],
-  //   })
-  //   return group;
-  // }
 
   public listOfData: todoTable[] = [
     {
@@ -62,6 +55,7 @@ export class TaskTableComponent implements OnInit {
       dateCreated: new Date(),
       status: 'To Do',
       expand: false,
+      isShow: false
     },
     {
       id: 2,
@@ -70,6 +64,7 @@ export class TaskTableComponent implements OnInit {
       dateCreated: new Date(),
       status: 'Doing',
       expand: false,
+      isShow: false
     },
     {
       id: 3,
@@ -78,17 +73,59 @@ export class TaskTableComponent implements OnInit {
       dateCreated: new Date(),
       status: 'Done',
       expand: false,
+      isShow: false
     },
   ];
 
   onDrop(event: CdkDragDrop<string[]>) {
     console.log(event);
-    moveItemInArray(this.listOfData, event.previousIndex, event.currentIndex);
+    let data = this.taskArray.controls;
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
   }
 
   onOpenChange($event: any) {
 
   }
 
+
+  mouseOver(event: any, index: number) {
+    // console.log(event);
+    this.taskArray.controls[index].get('isShow')?.setValue(true);
+    // this.isHover = true;
+  }
+
+  mouseLeave(event: any, index: number) {
+    // console.log(event);
+    this.taskArray.controls[index].get('isShow')?.setValue(false);
+  }
+
+  collapseEvent(event: any) {
+    console.log(event);
+    this.isCollapsed = event;
+  }
+
+  detailTask(item: any) {
+    console.log(item);
+    this.isCollapsed = !this.isCollapsed;
+    this.shareService.taskData.next(item);
+  }
+
+  getTask(item: any) {
+    console.log(item);
+    this.shareService.taskData.next(item);
+  }
+
+  addTask() {
+    const form: FormGroup = initDataObject(this.todoTable, this.todoTable);
+    this.taskArray.controls.push(form);
+  }
+
+  updateTask() {
+
+  }
+
+  search() {
+
+  }
 
 }

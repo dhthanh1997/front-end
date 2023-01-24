@@ -1,0 +1,13 @@
+::ng-deep {
+    .modal-header , .modal-content , .modal-footer {
+        border: none !important;
+    }
+    
+
+    .modal-custom {
+        min-width: 60%;
+        max-width: 90%;
+        display: flex;
+        flex-direction: column;
+    }
+}

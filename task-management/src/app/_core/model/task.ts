@@ -5,6 +5,7 @@ export interface todoTable {
     dateCreated: Date;
     status: string;
     expand: boolean;
+    isShow: boolean;
   }
   
   export interface todoTableChild {

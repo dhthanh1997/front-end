@@ -1,3 +1,68 @@
-.task_table_input {
-    
+$task_detail_width: 0% !default;
+
+.task_header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.task_header .float-right button {
+  margin-right: 4px;
+  //   text-align: center;
+  //   display: inline-block;
+}
+
+::ng-deep {
+  .task_header button span > svg {
+    margin-bottom: 6px;
+  }
+
+  .dropdown_menu {
+    margin-top: 10px;
+  }
+}
+
+::ng-deep {
+  tr[class*="task_table_button"]:hover {
+    background-color: #d6d4d4;
+    cursor: pointer;
+  }
+
+  tr[class*="task_table_button"] {
+    div {
+      padding-left: 12px;
+    }
+  }
+
+  .table-responsive {
+    width: calc(100vw - $task_detail_width);
+
+    tbody > tr:hover {
+      cursor: pointer;
+    }
+  }
+
+  .task_detail {
+    display: flex;
+    flex-direction: column;
+    width: $task_detail_width;
+    // border-left: 1px solid #dee2e6;
+    border-top:  1px solid #dee2e6;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .toggle-task-detail {
+    $task_detail_width: 100%;
+    // display: flex;
+    // flex-direction: column;
+    border-left: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+    width: $task_detail_width !important;
+    transition: all 0.5s ease-in-out;
+  }
+
+  // .table-responsive {
+  //   $task_detail_width: 50%;
+  //   width: calc(100vw - $task_detail_width) !important;
+  // }
 }
