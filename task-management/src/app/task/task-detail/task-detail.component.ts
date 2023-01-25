@@ -1,6 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Subscription } from 'rxjs';
+import { initDataObject } from 'src/app/_base/util';
+import { Task } from 'src/app/_core/model/task';
 import { ShareService } from 'src/app/_share/share.service';
 import { TaskDetailFrmComponent } from './task-detail-frm/task-detail-frm.component';
 
@@ -15,12 +18,16 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   public isCompleted: boolean = false;
 
+  // public subTask: Task[] = [];
+
+  private task: Task = new Task();
+
+  public formValidation!: FormGroup;
+
   @Input() isCollapsed: boolean = true;
   @Output() collapEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private item: any;
-
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2, private shareService: ShareService, private modal: NzModalService) { }
+  constructor(private fb: FormBuilder, private elementRef: ElementRef, private renderer2: Renderer2, private shareService: ShareService, private modal: NzModalService) { }
 
   ngOnDestroy(): void {
 
@@ -33,13 +40,22 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   initData() {
     this.shareService.taskData.subscribe({
       next: (res) => {
-        console.log(res);
-        this.item = res;
+        
+        // console.log(res);
+        this.formValidation = res;
       },
       error: (err) => {
         console.log(err);
       }
     })
+  }
+
+  get subTask() {
+    return this.formValidation.get('subTask') as FormArray;
+  }
+
+  onOpenChange(event: any) {
+
   }
 
 
@@ -52,8 +68,15 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   }
 
-  addSubNode() {
-
+  addSubTask() {
+    if(!this.subTask) {
+      this.formValidation.addControl("subTask", this.fb.array([]));
+    } 
+    const formGroup = initDataObject(new Task(), new Task());
+    const formArray =  this.formValidation.get('subTask') as FormArray;
+    formArray.push(formGroup);
+    console.log(formArray);
+    this.formValidation.updateValueAndValidity();
   }
 
   fullScreen() {
@@ -79,5 +102,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
     this.collapEvent.emit(true);
   }
+
+
 
 }

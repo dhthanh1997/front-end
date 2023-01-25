@@ -26,36 +26,133 @@
 </div>
 <div class="modal-content">
 
-    <!-- row 4 -->
-    <div nz-row class="flex flex-row" [nzGutter]="8">
+    <!-- row 1 -->
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item nz-row [nzGutter]="2">
+                <nz-form-label [nzSpan]="24">
+                    <h3>title</h3>
+                </nz-form-label>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- end row 1 -->
+
+    <!-- row 2 -->
+    <div nz-row [nzGutter]="4">
         <div nz-col [nzSpan]="24">
             <nz-form-item nz-row [nzGutter]="2">
                 <nz-form-label [nzSpan]="3">
-                    Địa chỉ
+                    Phụ trách
                 </nz-form-label>
                 <nz-form-control [nzSpan]="21">
-                    <textarea nz-input rows="3" placeholder="Tên khách hàng" 
-                        name="address"></textarea>
+                    <input nz-input class="input_disabled" placeholder="Mô tả" name="description" disabled />
                 </nz-form-control>
             </nz-form-item>
         </div>
     </div>
+    <!-- end row 2 -->
 
-    <!-- row 5 -->
-    <div nz-row class="flex flex-row" [nzGutter]="8">
+    <!-- row 3 -->
+    <div nz-row [nzGutter]="4">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item nz-row [nzGutter]="2">
+                <nz-form-label [nzSpan]="3">
+                    Thời hạn
+                </nz-form-label>
+                <nz-form-control [nzSpan]="21">
+                    <nz-date-picker (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- end row 3 -->
+
+    <!-- row 2 -->
+    <div nz-row [nzGutter]="4">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item nz-row [nzGutter]="2">
+                <nz-form-label [nzSpan]="3">
+                    Dự án
+                </nz-form-label>
+                <nz-form-control [nzSpan]="21">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Lựa chọn dự án">
+                        <nz-option nzLabel="Dự án A" nzValue="A"></nz-option>
+                        <nz-option nzLabel="Dự án B" nzValue="B"></nz-option>
+                        <nz-option nzLabel="Dự án C" nzValue="C"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- end row 2 -->
+
+    <!-- row 4 -->
+    <div nz-row [nzGutter]="4">
         <div nz-col [nzSpan]="24">
             <nz-form-item nz-row [nzGutter]="2">
                 <nz-form-label [nzSpan]="3">
                     Mô tả
                 </nz-form-label>
                 <nz-form-control [nzSpan]="21">
-                    <textarea nz-input rows="3" placeholder="Mô tả" 
-                        name="description"></textarea>
+                    <textarea nz-input rows="3" placeholder="Mô tả" name="description"></textarea>
                 </nz-form-control>
             </nz-form-item>
         </div>
     </div>
-</div>
-<div class="modal-footer">
+    <!-- end row 4 -->
 
+    <!-- row 5 -->
+    <div nz-row [nzGutter]="4">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item nz-row [nzGutter]="2">
+                <nz-form-label [nzSpan]="3">
+                    Ghi chú
+                </nz-form-label>
+                <nz-form-control [nzSpan]="21">
+                    <textarea nz-input rows="3" placeholder="Ghi chú" name="description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- end row 5 -->
+
+    <!-- row 6 -->
+    <div nz-row [nzGutter]="4">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item nz-row [nzGutter]="2">
+                <nz-form-label [nzSpan]="3">
+                    Vướng mắc
+                </nz-form-label>
+                <nz-form-control [nzSpan]="21">
+                    <textarea nz-input rows="3" placeholder="Vướng mắc" name="description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- end row 6 -->
+
+    <!-- row 7 -->
+    <div nz-row [nzGutter]="4">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item nz-row [nzGutter]="2">
+                <nz-form-label [nzSpan]="3">
+                    Giải pháp
+                </nz-form-label>
+                <nz-form-control [nzSpan]="21">
+                    <textarea nz-input rows="3" placeholder="Giải pháp" name="description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- end row 7 -->
+
+</div>
+<div class="modal-footer-custom" *nzModalFooter>
+    <button nz-button class="mr-2" nzType="default" (click)="save()">
+        Lưu
+    </button>
+    <button nz-button nzType="default" (click)="close()">
+        Thoát
+    </button>
 </div>

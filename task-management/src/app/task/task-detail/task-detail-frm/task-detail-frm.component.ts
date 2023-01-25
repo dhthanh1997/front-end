@@ -15,6 +15,11 @@ export class TaskDetailFrmComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onOpenChange(event: any) {
+
+  }
+
+
   markCompleted() {
     this.isCompleted = !this.isCompleted;
   }
@@ -27,6 +32,9 @@ export class TaskDetailFrmComponent implements OnInit {
 
   }
 
+  save() {
+
+  }
 
   close() {
       this.modelRef.close();

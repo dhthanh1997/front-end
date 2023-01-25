@@ -22,6 +22,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 registerLocaleData(en);
 
 const NZ_MODULES = [
@@ -42,6 +43,7 @@ const NZ_MODULES = [
   NzUploadModule,
   NzMessageModule,
   NzTagModule,
+  NzToolTipModule 
 ];
 
 @NgModule({

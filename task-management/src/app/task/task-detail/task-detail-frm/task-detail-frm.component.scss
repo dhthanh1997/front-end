@@ -1,6 +1,12 @@
 ::ng-deep {
-    .modal-header , .modal-content , .modal-footer {
+    .modal-header , .modal-content , .modal-footer-custom {
         border: none !important;
+    }
+
+    .modal-footer-custom {
+        display: flex;
+        justify-content: center;
+        
     }
     
 

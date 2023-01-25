@@ -1,4 +1,14 @@
-.task_detail_header {
+.task-detail-header {
   display: flex;
   flex-direction: row;
+}
+
+.task-detail-content {
+  display: flex;
+  flex-direction: column;
+
+  ::ng-deep .task-detail-subtask {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
 }

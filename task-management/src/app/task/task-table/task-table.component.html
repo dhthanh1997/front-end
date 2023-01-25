@@ -2,9 +2,9 @@
 <div class="task_header p-2">
     <div class="col-md-4">
         <div class="float-left">
-            <button nz-button nzType="primary" (click)="addTask()">
+            <button nz-button nzType="primary"  (click)="addTask()">
                 <span nz-icon nzType="plus"></span>
-                Add Task
+                Thêm công việc
             </button>
         </div>
     </div>
@@ -63,10 +63,10 @@
         <div class="table-responsive" [formGroup]="formValidation">
             <table class="table">
                 <thead>
-                    <th class="text-center col-8">Name</th>
-                    <th class="text-center col-5">Date</th>
-                    <th class="text-center col-5">DateCreated</th>
-                    <th class="text-center col-5">Status</th>
+                    <th class="text-center col-8">Tên</th>
+                    <th class="text-center col-5">Ngày bắt đầu</th>
+                    <th class="text-center col-5">Ngày kết thúc</th>
+                    <th class="text-center col-5">Trạng thái</th>
                 </thead>
                 <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="taskArray">
                     <tr *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y" (click)="!isCollapsed ? getTask(item) : isCollapsed">
@@ -82,7 +82,7 @@
                                     </div>
                                     <ng-container *ngIf="isCollapsed">
                                         <div class="col-4">
-                                            <button class="float-right" nz-button nzType="default" nzShape="circle"
+                                            <button class="float-right" nz-button nzTooltipTitle="Xem chi tiết" nzTooltipPlacement="bottom" nz-tooltip nzType="default" nzShape="circle"
                                                 (click)="detailTask(item)">
                                                 <span nz-icon nzType="eye" nzTheme="outline"></span>
                                             </button>
@@ -91,11 +91,11 @@
                                 </div>
                             </td>
                             <td class="align-items-center col-5">
-                                <nz-date-picker class="form-control" formControlName="date"
+                                <nz-date-picker class="form-control" formControlName="startDate"
                                     (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
                             </td>
                             <td class="align-items-center col-5">
-                                <nz-date-picker class="form-control" formControlName="dateCreated"
+                                <nz-date-picker class="form-control" formControlName="endDate"
                                     (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
                             </td>
                             <td class="text-center align-items-center col-5">
@@ -104,9 +104,9 @@
                         </ng-container>
 
                     </tr>
-                    <tr class="task_table_button" (click)="addTask()">
+                    <tr class="task-table-button" (click)="addTask()">
                         <td colspan="4">
-                            <div> Add Task...</div>
+                            <div> Thêm Công việc...</div>
                         </td>
                     </tr>
                 </tbody>
@@ -117,7 +117,7 @@
 
         <!-- <ng-container *ngIf="!isCollapsed"> -->
         <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
-            [ngClass]="!isCollapsed ? 'toggle-task-detail':''" class="task_detail"></app-task-detail>
+            [ngClass]="!isCollapsed ? 'toggle-task-detail':''" class="task-detail"></app-task-detail>
         <!-- </ng-container> -->
 
 

@@ -23,12 +23,12 @@ $task_detail_width: 0% !default;
 }
 
 ::ng-deep {
-  tr[class*="task_table_button"]:hover {
+  tr[class*="task-table-button"]:hover {
     background-color: #d6d4d4;
     cursor: pointer;
   }
 
-  tr[class*="task_table_button"] {
+  tr[class*="task-table-button"] {
     div {
       padding-left: 12px;
     }
@@ -42,7 +42,7 @@ $task_detail_width: 0% !default;
     }
   }
 
-  .task_detail {
+  .task-detail {
     display: flex;
     flex-direction: column;
     width: $task_detail_width;
