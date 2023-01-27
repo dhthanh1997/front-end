@@ -87,7 +87,10 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       nzDirection: 'ltr',
       nzClassName: 'modal-custom',
       nzFooter: null,
-      nzClosable: false
+      nzClosable: false,
+      nzComponentParams: {
+        formValidation: this.formValidation
+      }
     }).afterClose.subscribe({
       next: res => {
         console.log(res);

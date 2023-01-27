@@ -11,3 +11,7 @@ export class BaseEntity {
         this.lastModifiedDate = new Date();
     }
 }
+
+export interface ReponseObject {
+    
+}

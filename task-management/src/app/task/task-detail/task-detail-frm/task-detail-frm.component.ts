@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+import { initDataObject } from 'src/app/_base/util';
+import { Task } from 'src/app/_core/model/task';
 
 @Component({
   selector: 'app-task-detail-frm',
@@ -9,14 +12,19 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 export class TaskDetailFrmComponent implements OnInit {
 
   @Input() isCompleted: boolean = false;
+  @Input() formValidation!: FormGroup;
   
-  constructor(private modelRef: NzModalRef<TaskDetailFrmComponent> ) { }
+  constructor(private fb: FormBuilder, private modelRef: NzModalRef<TaskDetailFrmComponent> ) { }
 
   ngOnInit(): void {
   }
 
   onOpenChange(event: any) {
 
+  }
+
+  get subTask() {
+    return this.formValidation.get('subTask') as FormArray;
   }
 
 
@@ -28,8 +36,15 @@ export class TaskDetailFrmComponent implements OnInit {
 
   }
 
-  addSubNode() {
-
+  addSubTask() {
+    if(!this.subTask) {
+      this.formValidation.addControl("subTask", this.fb.array([]));
+    } 
+    const formGroup = initDataObject(new Task(), new Task());
+    const formArray =  this.formValidation.get('subTask') as FormArray;
+    formArray.push(formGroup);
+    console.log(formArray);
+    this.formValidation.updateValueAndValidity();
   }
 
   save() {
