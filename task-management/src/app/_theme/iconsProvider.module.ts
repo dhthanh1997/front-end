@@ -35,7 +35,10 @@ import {
   SubnodeOutline,
   FileAddOutline,
   FullscreenOutline,
-  CloseOutline
+  CloseOutline,
+  MoreOutline,
+  DeleteOutline,
+  TagOutline
 
 } from '@ant-design/icons-angular/icons';
 
@@ -70,7 +73,10 @@ const icons = [
   SubnodeOutline,
   FileAddOutline,
   FullscreenOutline,
-  CloseOutline
+  CloseOutline,
+  MoreOutline,
+  DeleteOutline,
+  TagOutline
 ];
 
 @NgModule({

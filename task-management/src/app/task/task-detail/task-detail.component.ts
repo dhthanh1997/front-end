@@ -101,6 +101,14 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     })
   }
 
+  deleteTask() {
+
+  }
+  
+  addTag() {
+    
+  }
+
   close() {
     this.sub.unsubscribe();
     this.collapEvent.emit(true);

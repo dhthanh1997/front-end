@@ -6,7 +6,7 @@ import { Task } from '../../model/task';
 @Injectable()
 export class TaskApi {
 
-  private readonly apiController: string = 'task';
+  private readonly apiController: string = '/task';
 
   constructor(private http: HttpService) { }
 

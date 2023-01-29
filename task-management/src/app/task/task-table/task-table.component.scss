@@ -1,9 +1,11 @@
 $task_detail_width: 0% !default;
+$task_detail_height: 500px !default;
 
 .task_header {
   display: flex;
   flex-direction: row;
   width: 100%;
+  position: static;
 }
 
 .task_header .float-right button {
@@ -36,6 +38,16 @@ $task_detail_width: 0% !default;
 
   .table-responsive {
     width: calc(100vw - $task_detail_width);
+    height: $task_detail_height;
+    table > thead > th {
+      position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
+      position: sticky;
+      top: 0;
+      z-index: 1; // any positive value, layer order is global
+      background: #fff; // any bg-color to overlap
+    }
+
+
 
     tbody > tr:hover {
       cursor: pointer;
@@ -61,8 +73,10 @@ $task_detail_width: 0% !default;
     transition: all 0.5s ease-in-out;
   }
 
-  // .table-responsive {
-  //   $task_detail_width: 50%;
-  //   width: calc(100vw - $task_detail_width) !important;
-  // }
+  app-task-detail {
+    height: $task_detail_height;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
 }
