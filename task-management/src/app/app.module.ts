@@ -5,9 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ThemeModule } from './@theme/theme.module';
-import { IconsProviderModule } from './@theme/iconsProvider.module';
-import { NgZorroModule } from './@theme/ng-zorro.module';
+import { ThemeModule } from './_theme/theme.module';
+import { IconsProviderModule } from './_theme/iconsProvider.module';
+import { NgZorroModule } from './_theme/ng-zorro.module';
+import { CoreModule } from './_core/core.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { NgZorroModule } from './@theme/ng-zorro.module';
     HttpClientModule,
     IconsProviderModule.forRoot(),
     NgZorroModule,
+    CoreModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

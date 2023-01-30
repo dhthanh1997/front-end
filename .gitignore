@@ -2,12 +2,12 @@
 
 # Compiled output
 # /dist
-dashboard/dist
+# dashboard/dist
 task-management/dist
 dashboard/node_modules
 task-management/node_modules
-dashboard/.angular
 task-management/.angular
+dashboard/.angular
 /tmp
 /out-tsc
 /bazel-out
@@ -27,12 +27,27 @@ yarn-error.log
 *.sublime-workspace
 
 # Visual Studio Code
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+
+dashboard/.vscode/*
+dashboard/!.vscode/settings.json
+dashboard/!.vscode/tasks.json
+dashboard/!.vscode/launch.json
+dashboard/!.vscode/extensions.json
+dashboard/.history/*
+
+task-management/.vscode/*
+task-management/!.vscode/settings.json
+task-management/!.vscode/tasks.json
+task-management/!.vscode/launch.json
+task-management/!.vscode/extensions.json
+task-management/.history/*
 
 # Miscellaneous
 /.angular/cache

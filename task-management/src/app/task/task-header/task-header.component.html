@@ -1,0 +1,57 @@
+<div class="task_header">
+    <!-- <div class="row"> -->
+    <div class="col-md-4">
+        <div class="float-left">
+            <!-- <button nz-button nzType="primary" (click)="addTask()">
+                <span nz-icon nzType="plus"></span>
+                Add Task
+            </button> -->
+        </div>
+    </div>
+    <div class="col-md-4 offset-md-4">
+        <div class="float-right">
+            <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuTask">
+                <button nz-button nzType="default">
+                    <span nz-icon nzType="check-circle" nzTheme="outline">
+                    </span>
+                    Imcomplete tasks
+                </button>
+                <nz-dropdown-menu #menuTask="nzDropdownMenu">
+                    <ul class="dropdown_menu" nz-menu>
+                        <li nz-menu-item>Completed task</li>
+                        <li nz-menu-item>All tasks</li>
+                        <li nz-menu-divider></li>
+                        <li nz-submenu nzTitle="sub menu">
+                            <ul>
+                                <li nz-menu-item>3rd menu item</li>
+                                <li nz-menu-item>4th menu item</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nz-dropdown-menu>
+            </a>
+
+            <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuSort">
+
+                <button nz-button nzType="default">
+                    <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>Sort
+                </button>
+                <nz-dropdown-menu #menuSort="nzDropdownMenu">
+                    <ul class="dropdown_menu" nz-menu>
+                        <li nz-menu-item>Sort 1</li>
+                        <li nz-menu-item>Sort 2</li>
+                        <li nz-menu-divider></li>
+                        <li nz-submenu nzTitle="sub menu">
+                            <ul>
+                                <li nz-menu-item>3rd menu item</li>
+                                <li nz-menu-item>4th menu item</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nz-dropdown-menu>
+            </a>
+
+        </div>
+    </div>
+    <!-- </div> -->
+</div>

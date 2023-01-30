@@ -2,10 +2,19 @@
 @import "../../../../node_modules/ng-zorro-antd/ng-zorro-antd.min.css";
 
 // variables
-$sidebar_width: 20% !default;
+$sidebar_width: 12% !default;
 $header_height: 64px !default;
 $breadcrumb_height: 46px !default;
 $footer_height: 64px !default;
+
+$table_col_0: 2.5% !default;
+$table_col_1: 5% !default;
+$table_col_2: 7.5% !default;
+$table_col_3: 10% !default;
+$table_col_4: 15% !default;
+$table_col_5: 20% !default;
+$table_col_6: 25% !default;
+$table_col_7: 30% !default;
 
 @function size($side, $isWidth) {
   @if ($isWidth == "true") {
@@ -93,8 +102,49 @@ $footer_height: 64px !default;
         //   100vh - $header_height - $footer_height - $breadcrumb_height
         // );
         height: calc(100vh - $header_height);
-        overflow: auto;
+        overflow: hidden;
       }
     }
   }
+}
+
+
+.col-0 {
+  width: $table_col_0;
+}
+
+.col-1 {
+  width: $table_col_1;
+}
+
+.col-2 {
+  width: $table_col_2;
+}
+
+.col-3 {
+  width: $table_col_3;
+}
+
+.col-4 {
+  width: $table_col_4;
+}
+
+.col-5 {
+  width: $table_col_5;
+}
+
+.col-6 {
+  width: $table_col_6;
+}
+
+.col-7 {
+  width: $table_col_7;
+}
+
+.col-8 {
+  width: $table_col_7 + $table_col_3;
+}
+
+.input_disabled {
+  border: none;
 }

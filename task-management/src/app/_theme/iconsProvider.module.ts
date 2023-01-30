@@ -32,8 +32,14 @@ import {
   BookOutline,
   ArrowRightOutline,
   SettingOutline,
-  HomeOutline,
-  UnorderedListOutline,
+  SubnodeOutline,
+  FileAddOutline,
+  FullscreenOutline,
+  CloseOutline,
+  MoreOutline,
+  DeleteOutline,
+  TagOutline
+
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -64,8 +70,13 @@ const icons = [
   BookOutline,
   ArrowRightOutline,
   SettingOutline,
-  HomeOutline,
-  UnorderedListOutline,
+  SubnodeOutline,
+  FileAddOutline,
+  FullscreenOutline,
+  CloseOutline,
+  MoreOutline,
+  DeleteOutline,
+  TagOutline
 ];
 
 @NgModule({
