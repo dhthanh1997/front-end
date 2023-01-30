@@ -3,11 +3,12 @@
   <div class="sidebar-header"></div>
   <!-- navigation -->
   <div class="sidebar-content">
-    <div class="projectBtn" role="button" (click)="popUp()">
+    <!-- <div class="projectBtn" role="button" #toggleButton (click)="popUp()">
       <i nz-icon nzType="plus" nzTheme="outline"></i>
       <span class="ml-1">Create</span>
-    </div>
-    <div class="popup" [hidden]="isHidden">
+    </div> -->
+    <button class="projectBtn" #toggleButton (click)="popUp()">Create</button>
+    <div class="popup" #popup *ngIf="isHidden">
       <div class="popup-content">
         <div class="popup-content-wrapper" routerLink="project">
           <i nz-icon nzType="project" nzTheme="outline"></i>

@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { ShareService } from '../shared/share.service';
 
 @Component({
@@ -11,28 +17,31 @@ export class SidebarComponent implements OnInit {
 
   isActive = false;
 
-  isHidden = true;
+  isHidden = false;
 
-  constructor(private shareService: ShareService, private element: ElementRef) {
+  @ViewChild('toggleButton') toggleButton!: ElementRef;
+  @ViewChild('popup') popup!: ElementRef;
+
+  constructor(
+    private shareService: ShareService,
+    private element: ElementRef,
+    private renderer: Renderer2
+  ) {
     // do something
+    this.renderer.listen('window', 'click', (e: Event) => {
+      if (
+        e.target !== this.toggleButton.nativeElement &&
+        e.target !== this.popup.nativeElement
+      ) {
+        this.isHidden = false;
+      }
+    });
   }
 
-  ngOnInit(): void {
-    this.hide();
-  }
+  ngOnInit(): void {}
 
   popUp() {
     this.isHidden = !this.isHidden;
-  }
-
-  hide() {
-    let a = this.element.nativeElement.querySelector('.popup');
-    this.isHidden;
-    window.addEventListener('click', function (e) {
-      if (a.contains(e.target)) {
-      } else {
-        a.classList.add('hidden');
-      }
-    });
+    console.log(this.isHidden);
   }
 }
