@@ -3,6 +3,12 @@
   flex-direction: row;
 }
 
+::ng-deep {
+  .dropdown_menu a > span > svg {
+    margin-bottom: 6px;
+  }
+}
+
 .task-detail-content {
   display: flex;
   flex-direction: column;

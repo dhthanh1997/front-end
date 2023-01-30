@@ -39,6 +39,21 @@ export function initListDataObject(data: any[], _object: any, arrayName: string)
   return form;
 }
 
+export function initFormArray(arrayName: string): FormGroup {
+  const form: FormGroup = new FormGroup({});
+  form.addControl(arrayName, new FormArray([]))
+  return form;
+}
+
+export function setDataInFormArray(data: any[], arrayName: string, form: FormGroup, _object: any): FormGroup  {
+  const array = form.get(arrayName) as FormArray;
+  data.forEach(value => {
+    let obj = initFormObject(value, _object)
+    array.push(obj);
+  });
+  return form;
+}
+
 // export function initValidators() : Validator {
 
 // }

@@ -43,7 +43,8 @@ const NZ_MODULES = [
   NzUploadModule,
   NzMessageModule,
   NzTagModule,
-  NzToolTipModule 
+  NzToolTipModule,
+   
 ];
 
 @NgModule({

@@ -8,6 +8,8 @@ export class ShareService {
 
   // events
   public isAddRow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isOutSide: Subject<any> = new Subject<any>();
 
   // collapse: Subject<boolean> = new Subject<boolean>();
 

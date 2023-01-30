@@ -41,6 +41,7 @@ export class Task {
   status: string;
   expand: boolean;
   isShow: boolean;
+  isUpdate: boolean;
 
   constructor() {
     this.id = 0;
@@ -64,6 +65,7 @@ export class Task {
     this.status = Status.TODO;
     this.expand = false;
     this.isShow = false;
+    this.isUpdate = false;
   }
 
   setName(name: string) {
