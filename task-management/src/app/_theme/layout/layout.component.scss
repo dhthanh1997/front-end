@@ -64,7 +64,8 @@ $table_col_7: 30% !default;
       }
 
       internal-app-sidebar {
-        border-left-color: hsla(0, 0%, 100%, 0.16);
+        // border-left-color: hsla(0, 0%, 100%, 0.16);
+        box-shadow: 4px 1px 3px -3px rgba(0, 21, 41, 0.35);
         width: 100% !important;
       }
 
@@ -87,6 +88,7 @@ $table_col_7: 30% !default;
 
       .page-header {
         height: $header_height;
+        box-shadow: -4px 4px 3px -3px rgba(0, 21, 41, 0.35);
       }
 
       .page-footer {

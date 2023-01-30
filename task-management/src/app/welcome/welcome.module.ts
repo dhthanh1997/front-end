@@ -17,6 +17,7 @@ import vn from '@angular/common/locales/en';
 import { BoardTaskFormComponent } from './board-view/board-task-form/board-task-form.component';
 import { TaskTagComponent } from '../welcome/task-tag/task-tag.component';
 import { DeleteComponent } from './board-view/delete/delete.component';
+import { OverviewComponent } from './overview/overview.component';
 registerLocaleData(vn);
 
 @NgModule({
@@ -28,6 +29,7 @@ registerLocaleData(vn);
     BoardTaskFormComponent,
     DeleteComponent,
     TaskTagComponent,
+    OverviewComponent,
   ],
   imports: [
     CommonModule,
