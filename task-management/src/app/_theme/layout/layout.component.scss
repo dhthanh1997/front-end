@@ -59,11 +59,12 @@ $table_col_7: 30% !default;
         // width: 0;
         min-height: 100%;
         display: flex;
-        background-color: #2094e6;
+        background-color: #f1edea;
         transition: all 0.5s ease-in-out;
       }
 
       internal-app-sidebar {
+        border-left-color: hsla(0, 0%, 100%, 0.16);
         width: 100% !important;
       }
 

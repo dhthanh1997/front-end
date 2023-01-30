@@ -11,11 +11,18 @@ import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
 import vi from '@angular/common/locales/vi';
 import { ShareService } from './shared/share.service';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NgZorroModule } from './ng-zorro.module';
 
 registerLocaleData(vi);
 
 @NgModule({
-  imports: [CommonModule, RouterModule, IconsProviderModule, NzDropDownModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    IconsProviderModule,
+    NzDropDownModule,
+    NgZorroModule.forRoot(),
+  ],
   declarations: [
     LayoutComponent,
     SidebarComponent,

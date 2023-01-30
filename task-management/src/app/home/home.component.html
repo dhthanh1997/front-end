@@ -1,0 +1,120 @@
+<div class="home-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="header d-flex flex-column w-100">
+        <h3 class="my-3">Home</h3>
+        <div class="main-header d-flex flex-column align-items-center">
+          <div class="date-time">
+            {{ now | date : "'Ngày' dd 'tháng' MM 'năm' yyyy" }}
+          </div>
+          <span>Hello, Test</span>
+          <div class="widget w-100 my-4">
+            <div class="row">
+              <div class="col-4"></div>
+              <div class="col-4 widget-content"></div>
+              <div class="col-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="body w-100 p-2">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 body-content-wrapper">
+            <div class="body-content">
+              <span style="font-size: 20px; line-height: 28px">Projects</span>
+              <div class="row" style="padding: 12px 24px 8px">
+                <div class="content col-lg-6" id="project-create">
+                  <div
+                    class="icon d-flex justify-content-center align-items-center"
+                    style="border: 1px dashed black"
+                  >
+                    <i
+                      nz-icon
+                      nzType="plus"
+                      nzTheme="outline"
+                      style="font-size: 24px"
+                    ></i>
+                  </div>
+                  <div class="title ml-2">
+                    <span>Create Project</span>
+                  </div>
+                </div>
+                <div
+                  class="content col-lg-6"
+                  *ngFor="let item of listData; let idx = index"
+                >
+                  <div
+                    class="icon d-flex justify-content-center align-items-center"
+                    [routerLink]="['welcome', item.id]"
+                  >
+                    <i
+                      nz-icon
+                      nzType="unordered-list"
+                      nzTheme="outline"
+                      style="font-size: 24px"
+                    ></i>
+                  </div>
+                  <div class="title ml-2" [routerLink]="['welcome', item.id]">
+                    <span>{{ item.name }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="button-show">
+                <button
+                  nz-button
+                  class="show-more"
+                  (click)="showAllProject()"
+                  [hidden]="isHidden"
+                >
+                  Show more
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 body-content-wrapper">
+            <div class="body-content">
+              <h3>Project</h3>
+              <span
+                >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae,
+                soluta ducimus iste dolorum consequuntur possimus! Velit
+                temporibus quas neque minus reiciendis culpa, dolore est aperiam
+                sunt a? Repellat natus eligendi quas debitis fuga molestias
+                accusantium qui harum illum saepe, quibusdam cumque officia
+                quaerat nisi repudiandae, magnam dolorum laboriosam.
+                Necessitatibus, in.</span
+              >
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 body-content-wrapper">
+            <div class="body-content">
+              <h3>Project</h3>
+              <span
+                >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae,
+                soluta ducimus iste dolorum consequuntur possimus! Velit
+                temporibus quas neque minus reiciendis culpa, dolore est aperiam
+                sunt a? Repellat natus eligendi quas debitis fuga molestias
+                accusantium qui harum illum saepe, quibusdam cumque officia
+                quaerat nisi repudiandae, magnam dolorum laboriosam.
+                Necessitatibus, in.</span
+              >
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 body-content-wrapper">
+            <div class="body-content">
+              <h3>Project</h3>
+              <span
+                >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae,
+                soluta ducimus iste dolorum consequuntur possimus! Velit
+                temporibus quas neque minus reiciendis culpa, dolore est aperiam
+                sunt a? Repellat natus eligendi quas debitis fuga molestias
+                accusantium qui harum illum saepe, quibusdam cumque officia
+                quaerat nisi repudiandae, magnam dolorum laboriosam.
+                Necessitatibus, in.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
