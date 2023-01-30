@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   Renderer2,
   ViewChild,
@@ -18,7 +19,7 @@ enum ModeModal {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit, AfterViewInit {
+export class SidebarComponent implements OnInit {
   isCollapsed = false;
 
   isActive = false;
@@ -28,7 +29,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   @ViewChild('toggleButton') toggleButton!: ElementRef;
   @ViewChild('popupContent') popupContent!: ElementRef;
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
     // do something
   }
 
@@ -36,18 +37,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     nzDuration: 2000,
   };
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  ngAfterViewInit(): void {
-    this.renderer.listen('window', 'click', (e: Event) => {
-      if (
-        e.target !== this.toggleButton!.nativeElement &&
-        e.target !== this.popupContent!.nativeElement
-      ) {
-        this.isHidden = false;
-      }
-    });
+  @HostListener('window:click', ['$event'])
+  clickOutsideButton(e: Event) {
+    if (
+      e.target !== this.toggleButton!.nativeElement
+    ) {
+      this.isHidden = false;
+    }
   }
+
+
 
   popUp() {
     this.isHidden = !this.isHidden;
