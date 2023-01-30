@@ -2,6 +2,9 @@
   <nz-tabset [nzTabBarExtraContent]="extraTemplate" class="tabset">
     <!-- <nz-tabset class="tabset"> -->
     <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab">
+      <ng-container *ngIf="tab === 'Overview'">
+        <internal-app-overview></internal-app-overview>
+      </ng-container>
       <ng-container *ngIf="tab === 'Board View'">
         <internal-app-board-view></internal-app-board-view>
       </ng-container>

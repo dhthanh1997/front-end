@@ -8,7 +8,7 @@
       <span class="ml-1">Create</span>
     </div> -->
     <button class="projectBtn" #toggleButton (click)="popUp()">Create</button>
-    <div class="popup" #popup *ngIf="isHidden">
+    <div class="popup" #popupContent *ngIf="isHidden">
       <div class="popup-content">
         <div class="popup-content-wrapper" routerLink="project">
           <i nz-icon nzType="project" nzTheme="outline"></i>

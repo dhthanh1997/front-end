@@ -11,7 +11,7 @@ export class WelcomeComponent implements OnInit {
     // do something
   }
 
-  tabs = ['Board View', 'Table', 'Timeline'];
+  tabs = ['Overview', 'Board View', 'Table', 'Timeline'];
 
   ngOnInit(): void {
     // do something

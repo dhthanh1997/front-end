@@ -5,7 +5,12 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ShareService } from '../shared/share.service';
+
+enum ModeModal {
+  CREATE = 'create',
+  UPDATE = 'update',
+  VIEW = 'view',
+}
 
 @Component({
   selector: 'internal-app-sidebar',
@@ -20,25 +25,28 @@ export class SidebarComponent implements OnInit {
   isHidden = false;
 
   @ViewChild('toggleButton') toggleButton!: ElementRef;
-  @ViewChild('popup') popup!: ElementRef;
+  @ViewChild('popupContent') popupContent!: ElementRef;
 
-  constructor(
-    private shareService: ShareService,
-    private element: ElementRef,
-    private renderer: Renderer2
-  ) {
+  constructor(private renderer: Renderer2) {
     // do something
+  }
+
+  modalOptions: any = {
+    nzDuration: 2000,
+  };
+
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (
-        e.target !== this.toggleButton.nativeElement &&
-        e.target !== this.popup.nativeElement
+        e.target !== this.toggleButton!.nativeElement &&
+        e.target !== this.popupContent!.nativeElement
       ) {
         this.isHidden = false;
       }
     });
   }
-
-  ngOnInit(): void {}
 
   popUp() {
     this.isHidden = !this.isHidden;
