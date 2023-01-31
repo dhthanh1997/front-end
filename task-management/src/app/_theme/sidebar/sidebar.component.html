@@ -1,67 +1,80 @@
 <!-- <div class="sidebar-main"> -->
-  <div class="sidebar-wrapper">
-    <div class="sidebar-header"></div>
-    <!-- navigation -->
-    <div class="sidebar-content">
-      <!-- <div class="projectBtn" role="button" #toggleButton (click)="popUp()">
+<div class="sidebar-wrapper">
+  <div class="sidebar-header"></div>
+  <!-- navigation -->
+  <div class="sidebar-content">
+    <!-- <div class="projectBtn" role="button" #toggleButton (click)="popUp()">
         <i nz-icon nzType="plus" nzTheme="outline"></i>
         <span class="ml-1">Create</span>
       </div> -->
-      <button class="projectBtn" #toggleButton (click)="popUp()">Create</button>
-      <div class="popup" #popupContent *ngIf="isHidden">
-        <div class="popup-content">
-          <div class="popup-content-wrapper" routerLink="project">
-            <i nz-icon nzType="project" nzTheme="outline"></i>
-            <span class="popup-content-title">Project</span>
-          </div>
-          <div class="popup-content-wrapper">
-            <i nz-icon nzType="project" nzTheme="outline"></i>
-            <span class="popup-content-title" >Task</span>
-          </div>
+    <button class="projectBtn" #toggleButton (click)="popUp()">Create</button>
+    <div class="popup" #popupContent *ngIf="isHidden">
+      <div class="popup-content">
+        <div class="popup-content-wrapper" routerLink="project">
+          <i nz-icon nzType="project" nzTheme="outline"></i>
+          <span class="popup-content-title">Project</span>
+        </div>
+        <div class="popup-content-wrapper">
+          <i nz-icon nzType="project" nzTheme="outline"></i>
+          <span class="popup-content-title">Task</span>
         </div>
       </div>
-      <ul class="nav flex-column" id="navList">
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLink="home"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            ><i nz-icon nzType="home" nzTheme="outline"></i
-            ><span class="ml-2">Home</span></a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLink="project"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            ><i nz-icon nzType="project" nzTheme="outline"></i
-            ><span class="ml-2">Project</span></a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLink="task"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            ><i nz-icon nzType="check-circle" nzTheme="outline"></i
-            ><span class="ml-2">My Tasks</span></a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link 3</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link 4</a>
-        </li>
-        <!-- <li class="nav-item">
+    </div>
+    <ul class="nav flex-column" id="navList">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="home"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ><i nz-icon nzType="home" nzTheme="outline"></i
+          ><span class="ml-2">Home</span></a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="project"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ><i nz-icon nzType="project" nzTheme="outline"></i
+          ><span class="ml-2">Project</span></a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="task"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ><i nz-icon nzType="check-circle" nzTheme="outline"></i
+          ><span class="ml-2">My Tasks</span></a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="#"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ><i nz-icon nzType="reconciliation" nzTheme="outline"></i
+          ><span class="ml-2">Reports</span></a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="#"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ><i nz-icon nzType="setting" nzTheme="outline"></i
+          ><span class="ml-2">Settings</span></a
+        >
+      </li>
+      <!-- <li class="nav-item">
           <a class="nav-link disabled" href="#">Disabled link</a>
         </li> -->
-      </ul>
-    </div>
-    <!-- </div> -->
+    </ul>
   </div>
-  
+  <!-- </div> -->
+</div>

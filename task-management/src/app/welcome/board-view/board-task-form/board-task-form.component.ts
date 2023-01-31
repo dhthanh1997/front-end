@@ -11,13 +11,12 @@ import { BoardViewService } from '../service/board-view.service';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { content } from '../service/task';
 import { tagContent } from '../service/tag';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { TaskTagComponent } from '../../task-tag/task-tag.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
-import { ActivatedRoute } from '@angular/router';
 import { TaskTagService } from '../../task-tag/service/task-tag.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { CommentService } from 'src/app/_core/api/comment/comment.service';
+import { commentContent } from 'src/app/_core/api/comment/comment';
 
 enum ModeModal {
   CREATE = 'create',
@@ -52,10 +51,14 @@ export class BoardTaskFormComponent implements OnInit {
   startValue: any;
   endValue: Date | null = null;
 
+  buttonDisable = true;
+
   public listData: any;
+  public listComment: any;
   public pageNumber = 1;
   public pageSize = 999;
-  public txtSearch: string | undefined;
+  public txtTagSearch: string | undefined;
+  public txtCommentSearch: string | undefined;
 
   inputVisible = false;
   inputValue = '';
@@ -68,9 +71,8 @@ export class BoardTaskFormComponent implements OnInit {
     private fb: FormBuilder,
     private service: BoardViewService,
     private tagService: TaskTagService,
-    private modalService: NzModalService,
+    private commentService: CommentService,
     private msg: NzMessageService,
-    private route: ActivatedRoute,
     private notifyService: NzNotificationService,
     private element: ElementRef,
     private modelRef: NzModalRef<BoardTaskFormComponent>
@@ -124,6 +126,10 @@ export class BoardTaskFormComponent implements OnInit {
     return this.formValidation.get('attachFile');
   }
 
+  get comment() {
+    return this.formValidation.get('comment')?.value;
+  }
+
   ngOnInit(): void {
     this.formValidation = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
@@ -138,9 +144,11 @@ export class BoardTaskFormComponent implements OnInit {
       totalHour: ['', []],
       description: ['', []],
       attachFile: ['', []],
+      comment: ['', []],
     });
 
     this.getTag();
+    this.getComment();
 
     console.log(this.projectId);
 
@@ -164,11 +172,10 @@ export class BoardTaskFormComponent implements OnInit {
     this.fileAction = info.file.name;
   }
 
-  public getIdProject() {
-    let id: number = 0;
-    console.log(this.route.snapshot.paramMap.get('id'));
-    id = parseInt(this.route.snapshot.paramMap.get('id')!);
-    return console.log(id);
+  public searchComment() {
+    console.log(this.id);
+    this.txtCommentSearch = `taskId.eq.${this.id},`;
+    return this.txtCommentSearch;
   }
 
   getById(id: number) {
@@ -197,7 +204,7 @@ export class BoardTaskFormComponent implements OnInit {
 
   public getTag() {
     this.tagService
-      .getTag(this.pageNumber, this.pageSize, this.txtSearch)
+      .getTag(this.pageNumber, this.pageSize, this.txtTagSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -262,6 +269,48 @@ export class BoardTaskFormComponent implements OnInit {
     });
   }
 
+  public getComment() {
+    this.searchComment();
+    this.commentService
+      .getComment(this.pageNumber, this.pageSize, this.txtCommentSearch)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          this.listComment = res.pagingData.content;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  public createComment() {
+    const item: commentContent = {
+      content: '',
+      description: '',
+      id: 0,
+      name: '',
+      taskId: 0,
+    };
+    item.description = this.comment;
+    item.taskId = this.id;
+    this.commentService.addComment(item).subscribe({
+      next: (res: content) => {
+        console.log(res);
+        if (res) {
+          this.getComment();
+          // this.modelRef.close(res);
+        }
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('done');
+      },
+    });
+  }
+
   sliceTagName(tag: string): string {
     const isLongTag = tag.length > 20;
     return isLongTag ? `${tag.slice(0, 20)}...` : tag;
@@ -283,7 +332,6 @@ export class BoardTaskFormComponent implements OnInit {
   }
 
   handleOk(): void {
-    debugger;
     this.isConfirmLoading = true;
     const item: content = this.formValidation.value;
     item.startDate = this.startDate;
@@ -332,7 +380,6 @@ export class BoardTaskFormComponent implements OnInit {
   }
 
   getStartDate() {
-    debugger;
     this.startValue = this.formValidation.get('startDate')?.value;
     let a = this.startDate;
     console.log(this.startValue);
@@ -340,11 +387,16 @@ export class BoardTaskFormComponent implements OnInit {
     return console.log(this.startValue);
   }
 
-  // getRandomColor() {
-  //   let length = 6;
-  //   const chars = '0123456789ABCDEF';
-  //   let hex = '#';
-  //   while (length--) hex += chars[(Math.random() * 16) | 0];
-  //   return hex;
-  // }
+  getCommentInput() {
+    debugger;
+    let commentInput = this.element.nativeElement.querySelector('#comment');
+    if (
+      commentInput.value != null &&
+      commentInput.value != undefined &&
+      commentInput.value != ''
+    ) {
+      this.buttonDisable = false;
+    } else this.buttonDisable = true;
+    console.log(commentInput.value);
+  }
 }

@@ -1,6 +1,14 @@
+::ng-deep .ant-modal-body {
+  height: 500px;
+  overflow-y: scroll;
+}
+
+::ng-deep .ant-tag svg {
+  margin-bottom: 5px;
+}
+
 .wrapper {
-  width: 800px;
-  height: calc(100% - 144px);
+  width: 900px;
   border-radius: 3px;
 }
 
@@ -21,5 +29,9 @@
   border: 1px solid red;
 }
 
-.editable-tag {
+.avatar {
+  width: 32px;
+  height: 32px;
+  background-color: red;
+  border-radius: 50%;
 }
