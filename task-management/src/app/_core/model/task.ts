@@ -1,4 +1,5 @@
 import { Status } from "../enum/Status";
+import { BaseEntity } from "./base";
 
 export interface todoTable {
   id: number;
@@ -18,8 +19,8 @@ export interface todoTableChild {
 
 
 
-
-export class Task {
+ 
+export class Task extends BaseEntity {
   id: number;
   name: string;
   projectId: number;
@@ -42,14 +43,16 @@ export class Task {
   expand: boolean;
   isShow: boolean;
   isUpdate: boolean;
+  isInside: boolean;
 
   constructor() {
+    super();
     this.id = 0;
     this.projectId = 0;
     this.name = '';
     this.totalCost = 0;
     this.revenue = 0;
-    this.totalHour = 0;
+    this.totalHour = 0; 
     this.startDate = new Date();
     this.endDate = new Date();
     this.estimateStartDate = new Date();
@@ -66,6 +69,7 @@ export class Task {
     this.expand = false;
     this.isShow = false;
     this.isUpdate = false;
+    this.isInside = false;
   }
 
   setName(name: string) {

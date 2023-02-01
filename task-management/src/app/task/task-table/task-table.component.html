@@ -81,8 +81,8 @@
                                 <div class="d-flex flex-row">
                                     <div class="col-8" (mouseover)="mouseOver(item, idx)"
                                         (mouseleave)="mouseLeave(item, idx)" >
-                                        <input type="text"
-                                            appAutoFocus (keyup.enter)="addTask()" appClickOutsideAndUpdate
+                                        <input type="text" (click)="detectClickEvent(item,idx)" 
+                                            appAutoFocus (keyup.enter)="addTask()"
                                             [ngClass]="!(item.get('isShow')!.value) ? 'input_disabled' : ''" nz-input
                                             class="form-control" formControlName="name">
                                     </div>

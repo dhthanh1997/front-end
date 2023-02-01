@@ -10,8 +10,11 @@ export class ShareService {
   public isAddRow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isOutSide: Subject<any> = new Subject<any>();
+  public isInside: Subject<any> = new Subject<any>();
+  public isLoading: Subject<boolean> = new Subject<boolean>(); // dung cho spinner
 
-  // collapse: Subject<boolean> = new Subject<boolean>();
+
+  // end events
 
   constructor() { }
 }

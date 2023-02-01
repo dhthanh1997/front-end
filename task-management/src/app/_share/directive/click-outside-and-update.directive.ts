@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { ShareService } from '../share.service';
 
 @Directive({
@@ -6,24 +6,35 @@ import { ShareService } from '../share.service';
 })
 export class ClickOutsideAndUpdateDirective implements AfterViewInit {
 
-  // @Input() appClickOutsideAndUpdate: any;
+  @Output() newOutputEvent = new EventEmitter();
 
-  constructor(private shareService: ShareService, private elementRef: ElementRef) { }
+  private item: any;
 
-  ngAfterViewInit(): void {
-    // this.setAppClickOutsideAndUpdate(this.appClickOutsideAndUpdate)
+  constructor(private shareService: ShareService, private elementRef: ElementRef) {
   }
 
-  private setAppClickOutsideAndUpdate(data: any) {
-    // if(data) {
+  ngAfterViewInit(): void {
+    this.setAppClickOutsideAndUpdate();
+  }
 
-    // }
+
+  private setAppClickOutsideAndUpdate() {
+    this.shareService.isInside.subscribe({
+      next: (res) => {
+        if (res.item && res.item.get('isInside')) {
+          // console.log(res);
+          this.item = res
+        }
+      }
+    })
   }
 
   @HostListener('document:click', ['$event'])
   clickOutside() {
-    console.log("in directive")
-    this.shareService.isOutSide.next(true);
+    // console.log(this.item);
+    if (this.item) {
+      this.newOutputEvent.emit(this.item);
+    }
   }
 
 

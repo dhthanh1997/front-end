@@ -1,15 +1,16 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, DoCheck, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
-import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { BehaviorSubject, debounce, debounceTime, firstValueFrom, map, merge, Subject, take, takeUntil } from 'rxjs';
+import { debounceTime, firstValueFrom, map, merge, pairwise, Subject, take, takeUntil } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { initDataObject, initFormArray, initListDataObject, setDataInFormArray } from 'src/app/_base/util';
+import { initDataObject, initFormArray, setDataInFormArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
 import { ResponseStatus } from 'src/app/_core/enum/responseStatus';
 import { Task, taskList, todoTable } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-task-table',
@@ -26,6 +27,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   public Collapse: boolean = false;
   public listOfData: Task[] = [];
   public task = new Task();
+  // private isInside = false;
   changesUnsubscribe = new Subject();
 
   constructor(private fb: FormBuilder,
@@ -51,8 +53,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.search();
     await this.initForm();
-    await this.isOutSide();
-    // this.watchForChanges();
+    // await this.isOutSide();
+    this.watchForChanges();
   }
 
   initForm() {
@@ -68,6 +70,10 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   get lastItemArray() {
     const array = this.taskArray;
     return array.controls[array.controls.length - 1] as FormGroup;
+  }
+
+  getFormGroupWithId(id: number) {
+    return this.taskArray.controls[id] as FormGroup;
   }
 
 
@@ -100,8 +106,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.taskArray.clear();
     await this.search();
     await this.initForm();
-    console.log(this.formValidation);
-    
+    // console.log(this.formValidation);
+
   }
 
   autoFocus(item: any) {
@@ -112,13 +118,24 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  handlerOutsideEvent(event: any) {
+    // debugger;
+    // console.log(event);
+    // this.watchForChanges();
+  }
+  
+  updateControl() {
+    
+  }
+
   isOutSide() {
-    this.shareService.isOutSide.pipe(take(1)).subscribe(
+    this.shareService.isOutSide.subscribe(
       {
         next: (res) => {
           console.log(res);
           if (res) {
             this.watchForChanges();
+            // this.shareService.isInside.next(false);
           }
         },
         error: (err) => {
@@ -128,6 +145,14 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     )
   }
 
+  detectClickEvent(item: any, index: number) {
+    // console.log(item);
+    item.get('isInside').setValue(true);
+    this.shareService.isInside.next({
+      item,
+      index
+    });
+  }
 
   detailTask(item: any) {
     console.log(item);
@@ -195,22 +220,36 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   watchForChanges() {
-    // clear 
-    // check control changes trong array
-    const array = this.taskArray.controls.map((control: AbstractControl, index: number) => {
-      control.valueChanges.pipe(takeUntil(this.changesUnsubscribe), map(value => ({
-        rowIndex: index,
-        control: control,
-        data: value
-      })));
-    });
 
-    merge(array).subscribe(changes => {
-      console.log(changes);
-    })
-    // array.valueChanges.subscribe(res => {
+    // merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
+    //   control.valueChanges.pipe(pairwise()).subscribe(([prev, current]: [any, any]) => {
+    //     if (prev !== current) {
+    //       console.log(prev + ' - ' + current);
+    //     }
+    //   })
+    // }));
 
-    // })
+    merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
+      control.valueChanges.pipe(pairwise(), debounceTime(500)).subscribe(([prev, current]: [any, any]) => {
+        // so sánh 2 object dùng lodash
+        let prevObject = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand']);
+        let currentObject = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand']);
+
+        if (!_.isEqual(prevObject, currentObject)) {
+          // console.log(prev);
+          // console.log(current);
+          console.log("different in id: " + index);
+          this.updateTask(current);
+        }
+        //  else {
+        //   console.log("not different in id: " + index);
+
+        // }
+
+      })
+
+    }));
+
   }
 
   updateTask(item: Task) {
@@ -240,19 +279,12 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   async search() {
-    // this.taskData.search(1, 10).subscribe({
-    //   next: (res) => {
-    //     console.log(res);
-    //     this.listOfData = res.pagingData.content
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   }
-    // });
+    this.shareService.isLoading.next(true);
     let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
     if (response.message === ResponseStatus.success) {
       this.listOfData = response.pagingData.content;
     }
+    this.shareService.isLoading.next(false);
   }
 
 }

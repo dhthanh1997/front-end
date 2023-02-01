@@ -1,4 +1,7 @@
-<div class="d-flex flex-column">
-    <!-- <app-task-header class="p-2"></app-task-header> -->
-    <app-task-table class="d-flex flex-column"></app-task-table>
-</div>
+
+<nz-spin nzTip="Đang tải..." [nzSpinning]="isLoading">
+    <div class="d-flex flex-column">
+        <!-- <app-task-header class="p-2"></app-task-header> -->
+        <app-task-table class="d-flex flex-column"></app-task-table>
+    </div>
+</nz-spin>
