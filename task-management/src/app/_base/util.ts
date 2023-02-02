@@ -54,7 +54,8 @@ export function setDataInFormArray(data: any[], arrayName: string, form: FormGro
   return form;
 }
 
-// export function initValidators() : Validator {
-
-// }
+export function compareProperties(prevValue: any, currentValue: any): boolean {
+    if (prevValue.toString().trim() === currentValue.toString().trim()) return true;
+    return false;
+}
 

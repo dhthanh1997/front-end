@@ -2,15 +2,17 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, DoCheck, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { debounceTime, firstValueFrom, map, merge, pairwise, Subject, take, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, firstValueFrom, fromEvent, map, merge, Observable, of, pairwise, startWith, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { initDataObject, initFormArray, setDataInFormArray } from 'src/app/_base/util';
+import { compareProperties, initDataObject, initFormArray, setDataInFormArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
 import { ResponseStatus } from 'src/app/_core/enum/responseStatus';
 import { Task, taskList, todoTable } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
 import * as _ from 'lodash';
+
+
 
 @Component({
   selector: 'app-task-table',
@@ -29,7 +31,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   public task = new Task();
   // private isInside = false;
   changesUnsubscribe = new Subject();
-
+  private keyUpEvent$ = new Subject<any>();
   constructor(private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     private notifyService: NotifyService,
@@ -37,6 +39,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     private taskData: TaskData) {
     this.formValidation = initFormArray("taskArray");
     // this.search();
+
   }
 
   ngOnDestroy(): void {
@@ -54,6 +57,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     await this.search();
     await this.initForm();
     // await this.isOutSide();
+    this.keyUpListenEvent();
     this.watchForChanges();
   }
 
@@ -70,10 +74,6 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   get lastItemArray() {
     const array = this.taskArray;
     return array.controls[array.controls.length - 1] as FormGroup;
-  }
-
-  getFormGroupWithId(id: number) {
-    return this.taskArray.controls[id] as FormGroup;
   }
 
 
@@ -118,14 +118,25 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  keyUpListenEvent() {
+    this.shareService.isKeyUp.subscribe(e => {
+      if (e) {
+        this.keyUpEvent$.unsubscribe();
+      }
+    });
+  }
+
   handlerOutsideEvent(event: any) {
     // debugger;
     // console.log(event);
     // this.watchForChanges();
   }
-  
-  updateControl() {
-    
+
+  updateControl(item: any, index: number) {
+    const array = this.taskArray;
+    const formGroup = array.controls[index] as FormGroup;
+    formGroup.patchValue(item);
+    // console.log(formGroup);
   }
 
   isOutSide() {
@@ -220,49 +231,86 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   watchForChanges() {
-
-    // merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
-    //   control.valueChanges.pipe(pairwise()).subscribe(([prev, current]: [any, any]) => {
-    //     if (prev !== current) {
-    //       console.log(prev + ' - ' + current);
-    //     }
-    //   })
-    // }));
-
     merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
-      control.valueChanges.pipe(pairwise(), debounceTime(500)).subscribe(([prev, current]: [any, any]) => {
-        // so sánh 2 object dùng lodash
-        let prevObject = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand']);
-        let currentObject = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand']);
-
-        if (!_.isEqual(prevObject, currentObject)) {
-          // console.log(prev);
-          // console.log(current);
-          console.log("different in id: " + index);
-          this.updateTask(current);
+      control.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(2000),
+        map(
+          ([prev, current]: [any, any]) => {
+            // (value) => {
+            // console.log(control.value.name);
+            // so sánh 2 object dùng lodash
+            let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand','createdBy','createdDate','lastModifiedBy','lastModifiedDate']);
+            let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand','createdBy','createdDate','lastModifiedBy','lastModifiedDate']);
+            // console.log(prevObject);
+            // console.log(currentObject);
+            if (!_.isEqual(prevObject, currentObject)) {
+              // console.log(prev.name);
+              // console.log(current);
+              console.log("different in id: " + index);
+              return {
+                value: current,
+                isUpdate: true
+              };
+            }
+            return {
+              value: current,
+              isUpdate: false
+            }
+          }),
+        switchMap((valueChanged: any) => {
+          // console.log(valueChanged)
+          if (valueChanged.isUpdate) {
+            // this.changesUnsubscribe.complete();
+            console.log("into switchMap");
+            return this.updateTask(valueChanged.value);
+          } else {
+            return of(valueChanged);
+          }
         }
-        //  else {
-        //   console.log("not different in id: " + index);
+        )).subscribe((res) => {
+          console.log(res);
+          if (res.message === ResponseStatus.success) {
+            console.log("ok");
+            this.updateControl(res.data, index);
+          }
 
-        // }
-
-      })
+        })
 
     }));
 
   }
 
-  updateTask(item: Task) {
+  updateTaskAndControl(item: Task, index: number) {
     this.taskData.update(item.id, item).subscribe({
       next: (res) => {
         if (res.message === ResponseStatus.error) {
           this.notifyService.error(res.error);
+        } else {
+          this.updateControl(res.data, index);
         }
       },
       error: (err) => {
         console.log(err);
       }
     });
+
+  }
+
+  async updateTask(item: Task) {
+    let response: ResponseDataObject = await firstValueFrom(this.taskData.update(item.id, item));
+    // if (response.message === ResponseStatus.error) {
+    //   this.notifyService.error(response.error);
+    // } 
+    // this.taskData.update(item.id, item).subscribe({
+    //   next: (res) => {
+    //     if (res.message === ResponseStatus.error) {
+    //       this.notifyService.error(res.error);
+    //     }
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   }
+    // });
+    return response;
   }
 
   deleteTask(id: number) {

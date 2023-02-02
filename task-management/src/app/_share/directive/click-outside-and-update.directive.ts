@@ -1,4 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { debounceTime, map, tap } from 'rxjs';
 import { ShareService } from '../share.service';
 
 @Directive({
@@ -7,6 +8,7 @@ import { ShareService } from '../share.service';
 export class ClickOutsideAndUpdateDirective implements AfterViewInit {
 
   @Output() newOutputEvent = new EventEmitter();
+  @Output() newKeyUpEvent = new EventEmitter();
 
   private item: any;
 
@@ -33,10 +35,16 @@ export class ClickOutsideAndUpdateDirective implements AfterViewInit {
   clickOutside() {
     // console.log(this.item);
     if (this.item) {
-      this.newOutputEvent.emit(this.item);
+      // this.newOutputEvent.emit(this.item);
     }
   }
 
+  // @HostListener('window:keyup', ['$event'])
+  // keyUp() {
+  //   setTimeout(() => {
+  //     this.newKeyUpEvent.emit(true);
+  //   }, 1000)
+  // }
 
 
 }
