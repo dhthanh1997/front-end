@@ -45,7 +45,7 @@ export function initFormArray(arrayName: string): FormGroup {
   return form;
 }
 
-export function setDataInFormArray(data: any[], arrayName: string, form: FormGroup, _object: any): FormGroup  {
+export function setDataInFormArray(data: any[], arrayName: string, form: FormGroup, _object: any): FormGroup {
   const array = form.get(arrayName) as FormArray;
   data.forEach(value => {
     let obj = initFormObject(value, _object)
@@ -54,8 +54,18 @@ export function setDataInFormArray(data: any[], arrayName: string, form: FormGro
   return form;
 }
 
+export function setDataInFormObject(data: any, form: FormGroup, _object: any): FormGroup {
+  // check properties of object
+  const properties = Object.getOwnPropertyNames(_object);
+  properties.forEach(prop => {
+    let control = new FormControl(data[prop], [])
+    form.addControl(prop, control);
+  });
+  return form;
+}
+
 export function compareProperties(prevValue: any, currentValue: any): boolean {
-    if (prevValue.toString().trim() === currentValue.toString().trim()) return true;
-    return false;
+  if (prevValue.toString().trim() === currentValue.toString().trim()) return true;
+  return false;
 }
 

@@ -47,8 +47,6 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
 
-
-
   ngOnChanges(changes: SimpleChanges): void {
 
   }
@@ -57,13 +55,13 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     await this.search();
     await this.initForm();
     // await this.isOutSide();
-    this.keyUpListenEvent();
+    // this.keyUpListenEvent();
     this.watchForChanges();
   }
 
   initForm() {
     this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
-    console.log(this.formValidation);
+    // console.log(this.formValidation);
   }
 
 
@@ -103,9 +101,9 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     console.log(event);
     this.isCollapsed = event.value;
     // clear array sau khi collapse
-    this.taskArray.clear();
-    await this.search();
-    await this.initForm();
+    // this.taskArray.clear();
+    // await this.search();
+    // await this.initForm();
     // console.log(this.formValidation);
 
   }
@@ -113,7 +111,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   autoFocus(item: any) {
     // const array = this.taskArray;
     const lastItem = this.lastItemArray;
-    if (lastItem == item && this.isNotAddRow) {
+    if (lastItem == item) {
       this.shareService.isAddRow.next(true);
     }
   }
@@ -124,12 +122,6 @@ export class TaskTableComponent implements OnInit, OnDestroy {
         this.keyUpEvent$.unsubscribe();
       }
     });
-  }
-
-  handlerOutsideEvent(event: any) {
-    // debugger;
-    // console.log(event);
-    // this.watchForChanges();
   }
 
   updateControl(item: any, index: number) {
@@ -156,6 +148,11 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     )
   }
 
+  watchChange(event: any) {
+    console.log(event);
+    this.updateControl(event.item, event.index);
+  }
+
   detectClickEvent(item: any, index: number) {
     // console.log(item);
     item.get('isInside').setValue(true);
@@ -165,55 +162,69 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  detailTask(item: any) {
-    console.log(item);
+  detailTask(item: any, index: number) {
+    // console.log(item);
     this.isCollapsed = !this.isCollapsed;
-    this.shareService.taskData.next(item);
+    this.shareService.taskData.next({
+      item: item,
+      index: index
+    });
   }
 
-  getTask(item: any) {
-    console.log(item);
-    this.shareService.taskData.next(item);
+  getTask(item: any, index: number) {
+    // console.log(item);
+    this.shareService.taskData.next({
+      item: item,
+      index: index
+    });
   }
 
   addTask() {
-    // const array = this.taskArray;
-    let lastItem = this.lastItemArray;
-    console.log(lastItem);
-    // ten cua task ma null thi khong duoc add tiep vao array
-    if (lastItem.get('name')?.value) {
+    const array = this.taskArray;
+    if (array && array.controls.length > 0) {
+      let lastItem = this.lastItemArray;
+      console.log(lastItem);
+      // ten cua task ma null thi khong duoc add tiep vao array
+      if (lastItem.get('name')?.value) {
+        // console.log(lastItem.get('name')?.value)
+        const form: FormGroup = initDataObject(this.task, this.task);
+        this.taskArray.controls.push(form);
+        setTimeout(() => {
+          this.shareService.isAddRow.next(true);
+          lastItem = this.lastItemArray;
+          if (lastItem.get('name')?.value) {
+            lastItem.valueChanges.pipe(debounceTime(500), take(1)).subscribe(
+              {
+                next: (res) => {
+                  if (res) {
+                    console.log(res);
+                    let task: Task = lastItem.value;
+                    this.saveTask(task);
+                  }
+                },
+                error: (err) => {
+                  console.log(err);
+                },
+                complete: () => {
+
+                }
+              }
+            );
+          }
+        }, 200);
+        // console.log("into")
+        // debugger;
+        // save task sau 0,5s neu khong typing tiep
+
+      } else {
+        this.isNotAddRow = !this.isNotAddRow;
+        this.autoFocus(lastItem);
+      }
+    } else {
       const form: FormGroup = initDataObject(this.task, this.task);
       this.taskArray.controls.push(form);
-      setTimeout(() => {
-        this.shareService.isAddRow.next(true);
-        lastItem = this.lastItemArray;
-        lastItem.valueChanges.pipe(debounceTime(500), take(1)).subscribe(
-          {
-            next: (res) => {
-              if (res) {
-                console.log(res);
-                let task: Task = lastItem.value;
-                this.saveTask(task);
-              }
-            },
-            error: (err) => {
-              console.log(err);
-            },
-            complete: () => {
-
-            }
-          }
-        );
-
-      }, 100);
-      // console.log("into")
-      // debugger;
-      // save task sau 0,5s neu khong typing tiep
-
-    } else {
-      this.isNotAddRow = !this.isNotAddRow;
-      this.autoFocus(lastItem);
     }
+
   }
 
 
@@ -232,14 +243,14 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   watchForChanges() {
     merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
-      control.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(2000),
+      control.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000),
         map(
           ([prev, current]: [any, any]) => {
             // (value) => {
             // console.log(control.value.name);
             // so sánh 2 object dùng lodash
-            let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand','createdBy','createdDate','lastModifiedBy','lastModifiedDate']);
-            let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand','createdBy','createdDate','lastModifiedBy','lastModifiedDate']);
+            let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+            let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
             // console.log(prevObject);
             // console.log(currentObject);
             if (!_.isEqual(prevObject, currentObject)) {
@@ -297,19 +308,6 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   async updateTask(item: Task) {
     let response: ResponseDataObject = await firstValueFrom(this.taskData.update(item.id, item));
-    // if (response.message === ResponseStatus.error) {
-    //   this.notifyService.error(response.error);
-    // } 
-    // this.taskData.update(item.id, item).subscribe({
-    //   next: (res) => {
-    //     if (res.message === ResponseStatus.error) {
-    //       this.notifyService.error(res.error);
-    //     }
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   }
-    // });
     return response;
   }
 

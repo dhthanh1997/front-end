@@ -13,8 +13,27 @@
   display: flex;
   flex-direction: column;
 
-  ::ng-deep .task-detail-subtask {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-  }
+  ::ng-deep {
+
+    .task-detail-subtask {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
+
+    .task-detail-name {
+        font-weight: bold;
+        font-size: 2em;
+    }
+
+    .task-detail-subtask {
+      .table-responsive {
+        min-height: 200px;
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+    }
+
+    
+  } 
 }
