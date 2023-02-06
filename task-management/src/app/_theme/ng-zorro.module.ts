@@ -17,6 +17,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
 
 // NgZorro local english language settings
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
@@ -44,7 +46,8 @@ const NZ_MODULES = [
   NzMessageModule,
   NzTagModule,
   NzToolTipModule,
-   
+  NzMenuModule,
+  NzLayoutModule,
 ];
 
 @NgModule({

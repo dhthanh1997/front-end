@@ -76,7 +76,7 @@
     }
   }
 
-  ul {
+  #navList {
     list-style: none;
     margin: 0px;
     padding: 4px 0 4px 0;
@@ -101,8 +101,8 @@
       }
 
       &[class*="active"] {
-        background-color: #a5a5a5;
-        color: white;
+        background-color: white;
+        color: #f48120;
         border-radius: 0px;
       }
     }

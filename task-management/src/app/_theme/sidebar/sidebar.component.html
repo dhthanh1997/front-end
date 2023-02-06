@@ -38,7 +38,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           ><i nz-icon nzType="project" nzTheme="outline"></i
-          ><span class="ml-2">Project</span></a
+          ><span class="ml-2">Projects</span></a
         >
       </li>
       <li class="nav-item">
@@ -61,19 +61,75 @@
           ><span class="ml-2">Reports</span></a
         >
       </li>
+      <li (click)="subMenu()">
+        <a class="nav-link">
+          <i nz-icon nzType="setting" nzTheme="outline"></i>
+          <span class="ml-2">Settings</span>
+          <i
+            nz-icon
+            nzType="down"
+            nzTheme="outline"
+            class="ml-auto mr-1"
+            [hidden]="isOpen"
+          ></i>
+          <i
+            nz-icon
+            nzType="up"
+            nzTheme="outline"
+            class="ml-auto mr-1"
+            [hidden]="!isOpen"
+          ></i>
+        </a>
+        <ul
+          style="list-style: none; width: 100%; padding: 0"
+          *ngIf="isActive"
+          [@panelInOut]
+          (click)="subMenu()"
+        >
+          <li class="sub-nav-item">
+            <a
+              class="nav-link"
+              routerLink="member"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <!-- <i nz-icon nzType="usergroup-add" nzTheme="outline"></i> -->
+              <span class="ml-4">Members</span></a
+            >
+          </li>
+          <li class="sub-nav-item">
+            <a
+              class="nav-link"
+              routerLink="roles-app"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <!-- <i nz-icon nzType="key" nzTheme="outline"></i> -->
+              <span class="ml-4">Roles</span></a
+            >
+          </li>
+        </ul>
+      </li>
+      <!-- <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="member"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ><i nz-icon nzType="usergroup-add" nzTheme="outline"></i
+          ><span class="ml-2">Members</span></a
+        >
+      </li>
       <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="#"
+          routerLink="roles-app"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
-          ><i nz-icon nzType="setting" nzTheme="outline"></i
-          ><span class="ml-2">Settings</span></a
+          ><i nz-icon nzType="key" nzTheme="outline"></i
+          ><span class="ml-2">Roles</span></a
         >
-      </li>
-      <!-- <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled link</a>
-        </li> -->
+      </li> -->
     </ul>
   </div>
   <!-- </div> -->

@@ -1,5 +1,5 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   HostListener,
@@ -18,6 +18,17 @@ enum ModeModal {
   selector: 'internal-app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  // animations: [
+  //   trigger('panelInOut', [
+  //     transition('void => *', [
+  //       style({ transform: 'translateY(-15%)' }),
+  //       animate(200),
+  //     ]),
+  //     transition('* => void', [
+  //       animate(200, style({ transform: 'translateY(-10%)' })),
+  //     ]),
+  //   ]),
+  // ],
 })
 export class SidebarComponent implements OnInit {
   isCollapsed = false;
@@ -25,6 +36,8 @@ export class SidebarComponent implements OnInit {
   isActive = false;
 
   isHidden = false;
+
+  isOpen = false;
 
   @ViewChild('toggleButton') toggleButton!: ElementRef;
   @ViewChild('popupContent') popupContent!: ElementRef;
@@ -37,21 +50,23 @@ export class SidebarComponent implements OnInit {
     nzDuration: 2000,
   };
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   @HostListener('window:click', ['$event'])
   clickOutsideButton(e: Event) {
-    if (
-      e.target !== this.toggleButton!.nativeElement
-    ) {
+    if (e.target !== this.toggleButton!.nativeElement) {
       this.isHidden = false;
     }
   }
 
-
-
   popUp() {
     this.isHidden = !this.isHidden;
     console.log(this.isHidden);
+  }
+
+  subMenu() {
+    this.isActive = !this.isActive;
+    this.isOpen = !this.isOpen;
+    console.log(this.isOpen);
   }
 }

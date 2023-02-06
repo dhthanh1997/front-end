@@ -1,40 +1,28 @@
-/* eslint-disable no-debugger */
-/* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, ElementRef, OnInit } from '@angular/core';
-// import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ProjectFormComponent } from './project-form/project-form.component';
-import { content } from './service/project';
-import { ProjectService } from './service/project.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { roleAppContent } from 'src/app/_core/api/roleApplication/role-app';
+import { RoleAppService } from 'src/app/_core/api/roleApplication/role-app.service';
+import { ModeModal } from 'src/app/_core/enum/modeModal';
 import { DeleteComponent } from './delete/delete.component';
-import { Router } from '@angular/router';
-
-enum ModeModal {
-  CREATE = 'create',
-  UPDATE = 'update',
-  VIEW = 'view',
-}
+import { RoleAppFormComponent } from './role-app-form/role-app-form.component';
 
 @Component({
-  selector: 'internal-app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss'],
+  selector: 'app-role-application',
+  templateUrl: './role-application.component.html',
+  styleUrls: ['./role-application.component.scss'],
 })
-export class ProjectComponent implements OnInit {
+export class RoleApplicationComponent implements OnInit {
   constructor(
-    private service: ProjectService,
+    private service: RoleAppService,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
-    private element: ElementRef,
-    private router: Router
+    private element: ElementRef
   ) {}
 
   public listData: any;
   public listId: number[] = [];
-  public searchField = ['name', 'revenue'];
+  public searchField = ['Name', 'Email', 'Advanced Filter'];
 
   public pageNumber = 1;
   public pageSize = 10;
@@ -45,15 +33,19 @@ export class ProjectComponent implements OnInit {
   checkedBoxAll = false;
   FilterValue = '';
   disableRoute = false;
+  isCollapse = false;
 
   modalOptions: any = {
     nzDuration: 2000,
   };
 
   ngOnInit(): void {
-    this.getProject();
-    this.service.switchLanguage();
+    this.getRoleApp();
     console.log(this.listId);
+  }
+
+  isCollapsed() {
+    this.isCollapse = !this.isCollapse;
   }
 
   search() {
@@ -66,7 +58,7 @@ export class ProjectComponent implements OnInit {
       this.txtSearch = `${this.FilterValue}.cn.${input.value},`;
       console.log(this.txtSearch);
     }
-    this.getProject();
+    this.getRoleApp();
   }
 
   getFilterValue(index: number) {
@@ -112,17 +104,17 @@ export class ProjectComponent implements OnInit {
 
   changePageSize(event: any) {
     this.pageSize = event;
-    this.getProject();
+    this.getRoleApp();
   }
 
   changePageNumber(event: any) {
     this.pageNumber = event;
-    this.getProject();
+    this.getRoleApp();
   }
 
-  public getProject() {
+  public getRoleApp() {
     this.service
-      .getProject(this.pageNumber, this.pageSize, this.txtSearch)
+      .getRoleApp(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -140,9 +132,9 @@ export class ProjectComponent implements OnInit {
   onCreate(): void {
     this.modalService
       .create({
-        nzTitle: 'New Project',
+        nzTitle: 'New Member',
         nzClassName: 'modal-custom',
-        nzContent: ProjectFormComponent,
+        nzContent: RoleAppFormComponent,
         nzWidth: 'modal-custom',
         nzCentered: true,
         nzMaskClosable: false,
@@ -161,7 +153,8 @@ export class ProjectComponent implements OnInit {
               'Thêm mới yêu cầu',
               this.modalOptions
             );
-            this.router.navigate(['/project/welcome/' + res.data.id]);
+            this.getRoleApp();
+            // this.router.navigate(['/project/welcome/' + res.data.id]);
           }
         },
         error: (res) => {
@@ -170,12 +163,12 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  onUpdate(item: content): void {
+  onUpdate(item: roleAppContent): void {
     this.modalService
       .create({
-        nzTitle: 'Update Project',
+        nzTitle: 'Update Member',
         nzClassName: 'modal-custom',
-        nzContent: ProjectFormComponent,
+        nzContent: RoleAppFormComponent,
         nzWidth: 'modal-custom',
         nzCentered: true,
         nzMaskClosable: false,
@@ -195,7 +188,7 @@ export class ProjectComponent implements OnInit {
               this.modalOptions
             );
           }
-          this.getProject();
+          this.getRoleApp();
         },
         error: (res) => {
           console.log(res);
@@ -203,17 +196,17 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  onView(item: content): void {
+  onView(item: roleAppContent): void {
     this.modalService.create({
-      nzTitle: 'View Project',
+      nzTitle: 'View Member',
       nzClassName: 'modal-custom',
-      nzContent: ProjectFormComponent,
+      nzContent: RoleAppFormComponent,
       nzWidth: 'modal-custom',
       nzCentered: true,
       nzMaskClosable: false,
       nzComponentParams: {
         mode: ModeModal.VIEW,
-        title: 'View Project',
+        title: 'View Member',
         id: item.id,
       },
       nzDirection: 'ltr', // left to right
@@ -223,7 +216,7 @@ export class ProjectComponent implements OnInit {
   onDelete(id: number): void {
     this.modalService
       .create({
-        nzTitle: 'Delete Project',
+        nzTitle: 'Delete Member',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -234,7 +227,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteProject(id).subscribe({
+            this.service.deleteRoleApp(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -243,7 +236,7 @@ export class ProjectComponent implements OnInit {
                     this.modalOptions
                   );
                 }
-                this.getProject();
+                this.getRoleApp();
               },
               error: (err) => {
                 console.log(err);
@@ -261,7 +254,7 @@ export class ProjectComponent implements OnInit {
   onDeleteAll(listId: number[]) {
     this.modalService
       .create({
-        nzTitle: 'Delete Selected Project',
+        nzTitle: 'Delete Selected Member',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -272,7 +265,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteSelectedProject(listId).subscribe({
+            this.service.deleteSelectedRoleApp(listId).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -281,7 +274,7 @@ export class ProjectComponent implements OnInit {
                     this.modalOptions
                   );
                 }
-                this.getProject();
+                this.getRoleApp();
               },
               error: (err) => {
                 console.log(err);

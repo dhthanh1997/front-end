@@ -1,0 +1,145 @@
+<div class="wrapper">
+  <div class="modal-content">
+    <form
+      nz-form
+      style="width: 100%"
+      [formGroup]="formValidation"
+      method="POST"
+    >
+      <!-- row 1 -->
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Name <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Name">
+              <input
+                nz-input
+                placeholder="Name"
+                formControlName="name"
+                name="name"
+                [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
+                required
+              />
+              <ng-template #Name let-control>
+                <ng-container *ngIf="control.hasError('minlength')"
+                  >MinLength is 5</ng-container
+                >
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- row 2 -->
+
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Email <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Email">
+              <input
+                nz-input
+                placeholder="Email"
+                formControlName="email"
+                name="email"
+                [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
+              />
+              <ng-template #Email let-control>
+                <ng-container *ngIf="control.hasError('email')"
+                  >Email not valid</ng-container
+                >
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- row 3 -->
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Phone <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Phone">
+              <input
+                nz-input
+                placeholder="Phone Number"
+                formControlName="phone"
+                name="phone"
+                [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
+              />
+              <ng-template #Phone let-control>
+                <ng-container *ngIf="control.hasError('pattern')"
+                  >Must be a valid number</ng-container
+                >
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+                <ng-container *ngIf="control.hasError('minlength')"
+                  >MinLength is 9</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- row 4 -->
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Username <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Username">
+              <input
+                nz-input
+                placeholder="Username"
+                formControlName="username"
+                name="username"
+                [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
+              />
+              <ng-template #Username let-control>
+                <ng-container *ngIf="control.hasError('minlength')"
+                  >Minlength is 8</ng-container
+                >
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center" *nzModalFooter>
+  <button
+    [hidden]="mode === 'view'"
+    nz-button
+    nzType="primary"
+    [disabled]="!formValidation.valid"
+    (click)="handleOk()"
+    [nzLoading]="isConfirmLoading"
+  >
+    Lưu
+  </button>
+  <button nz-button nzType="default" (click)="handleCancel()">Hủy</button>
+</div>

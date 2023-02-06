@@ -6,7 +6,6 @@ import { content } from './project';
 import { en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const url = 'http://10.2.6.142:8092/taskManagement/api/project';
-// const url = 'http://localhost:8098/taskManagement/api/project';
 
 @Injectable({
   providedIn: 'root',
