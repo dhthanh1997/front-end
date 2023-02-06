@@ -99,7 +99,11 @@
               {{ item.id }}
             </td>
             <td>
-              {{ item.name }}
+              <span
+                style="cursor: pointer"
+                [routerLink]="['roles-app-detail', item.id]"
+                >{{ item.name }}</span
+              >
             </td>
             <td>
               {{ item.code }}

@@ -7,12 +7,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { RoleApplicationRoutingModule } from './role-application-routing.module';
 import { RoleApplicationComponent } from './role-application.component';
-import { RoleAppDetailComponent } from './role-app-detail/role-app-detail.component';
 import { DeleteComponent } from './delete/delete.component';
 import { RoleAppFormComponent } from './role-app-form/role-app-form.component';
 
 @NgModule({
-  declarations: [RoleApplicationComponent, RoleAppDetailComponent, DeleteComponent, RoleAppFormComponent],
+  declarations: [
+    RoleApplicationComponent,
+    DeleteComponent,
+    RoleAppFormComponent,
+  ],
   imports: [
     CommonModule,
     RoleApplicationRoutingModule,

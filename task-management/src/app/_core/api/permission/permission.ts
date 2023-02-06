@@ -4,19 +4,19 @@ export interface Member {
 }
 
 export interface pagingData {
-  content: [roleAppContent];
+  content: [permissionContent];
   pageable: pageable;
   totalElements: number;
   totalPages?: number;
   size?: number;
 }
 
-export interface roleAppContent {
+export interface permissionContent {
   code: string;
   createdBy?: string;
   createdDate?: string;
   description: string;
-  id?: number;
+  id: number;
   lastModifiedBy?: string;
   lastModifiedDate?: string;
   name: string;

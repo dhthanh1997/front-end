@@ -7,6 +7,13 @@ const routes: Routes = [
     path: '',
     component: RoleApplicationComponent,
   },
+  {
+    path: 'roles-app-detail/:id',
+    loadChildren: () =>
+      import('./role-app-detail/role-app-detail.module').then(
+        (m) => m.RoleAppDetailModule
+      ),
+  },
 ];
 
 @NgModule({
