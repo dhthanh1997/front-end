@@ -200,45 +200,27 @@
         <!-- end row 8 -->
 
         <!-- row 9 -->
-        <div class="task-detail-subtask" *ngIf="subTask && subTask.controls.length > 0">
-            <div class="ml-2" formArrayName="subTask">
-                <div nz-row class="p-1">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tbody>
-                                <tr *ngFor="let item of subTask.controls; index as idx">
-                                    <ng-container [formGroupName]="idx">
-                                        <!-- <div nz-col [nzSpan]="24">
-                                            <nz-form-item nz-row>
-                                                <nz-form-control [nzSpan]="24">
-                                                    <input nz-input autofocus name="subName" formControlName="name" />
-                                                </nz-form-control>
-                                            </nz-form-item>
-                                        </div> -->
-                                        <td class="align-items-center">
-                                                <input appAutoFocus type="text" (keyup.enter)="addTask()"
-                                                    [ngClass]="!(item.get('isShow')!.value) ? 'input_disabled' : ''"
-                                                    nz-input class="form-control" formControlName="name">
-    
-                                        </td>
-                                    </ng-container>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                
-                </div>
-                <!-- <div nz-row class="p-1" *ngFor="let item of subTask.controls; index as idx">
-                    <ng-container [formGroupName]="idx">
-                        <div nz-col [nzSpan]="24">
-                            <nz-form-item nz-row>
-                                <nz-form-control [nzSpan]="24">
-                                    <input nz-input autofocus name="subName" formControlName="name" />
-                                </nz-form-control>
-                            </nz-form-item>
+        <div>
+            <div class="task-detail-subtask" *ngIf="subTask && subTask.controls.length > 0">
+                <div class="ml-2" formArrayName="subTask">
+                    <div nz-row class="p-1">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr *ngFor="let item of subTask.controls; index as idx">
+                                        <ng-container [formGroupName]="idx">
+                                            <td class="align-items-center">
+                                                <input type="text" class="form-control input_disabled"
+                                                    formControlName="name">
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </ng-container>
-                </div> -->
+
+                    </div>
+                </div>
             </div>
         </div>
         <!-- end row 9 -->

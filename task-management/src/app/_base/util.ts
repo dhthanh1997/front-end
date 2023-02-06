@@ -69,3 +69,14 @@ export function compareProperties(prevValue: any, currentValue: any): boolean {
   return false;
 }
 
+export function updateControlInArray(value: any, index: number, formArray: FormArray): FormArray {
+  const formGroup = formArray.controls[index] as FormGroup;
+  formGroup.patchValue(value);
+  return formArray;
+}
+
+export function updateControl(value: any, formGroup: FormGroup): FormGroup {
+  formGroup.patchValue(value);
+  return formGroup;
+}
+

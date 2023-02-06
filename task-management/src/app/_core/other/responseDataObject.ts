@@ -4,6 +4,7 @@ export interface ResponseDataObject {
     status: number;
     timestamp: Date;
     data: any;
+    listData: any[];
     pagingData: any
 }
 

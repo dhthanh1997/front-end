@@ -97,7 +97,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.taskArray.controls[index].get('isShow')?.setValue(false);
   }
 
-  async collapseEvent(event: any) {
+  collapseEvent(event: any) {
     console.log(event);
     this.isCollapsed = event.value;
     // clear array sau khi collapse
@@ -253,15 +253,20 @@ export class TaskTableComponent implements OnInit, OnDestroy {
             let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
             // console.log(prevObject);
             // console.log(currentObject);
-            if (!_.isEqual(prevObject, currentObject)) {
-              // console.log(prev.name);
-              // console.log(current);
-              console.log("different in id: " + index);
-              return {
-                value: current,
-                isUpdate: true
-              };
+
+            // mảng ban đầu phải không rỗng mới check 2 object
+            if (prevObject) {
+              if (!_.isEqual(prevObject, currentObject)) {
+                // console.log(prev.name);
+                // console.log(current);
+                console.log("different in id: " + index);
+                return {
+                  value: current,
+                  isUpdate: true
+                };
+              }
             }
+          
             return {
               value: current,
               isUpdate: false

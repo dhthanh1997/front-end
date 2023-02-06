@@ -10,6 +10,10 @@ export class TaskService implements TaskData {
 
   constructor(private api: TaskApi) { }
 
+  getByParentId(id: number): Observable<ResponseDataObject> {
+     return this.api.getByParentId(id);
+  }
+
   search(pageNumber: number, pageSize: number, txtSearch?: string): Observable<ResponseDataObject> {
     return this.api.search(pageNumber, pageSize, txtSearch);
   }

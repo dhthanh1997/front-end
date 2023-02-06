@@ -29,6 +29,10 @@ export class TaskApi {
     return this.http.get(`${this.apiController}` + "/" + id);
   }
 
+  getByParentId(id: number): Observable<ResponseDataObject> {
+    return this.http.get(`${this.apiController}` + "/withParent/" + id);
+  }
+
   deleteById(id: number): Observable<ResponseDataObject> {
     return this.http.delete(`${this.apiController}` + "/" + id);
   }

@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { ShareModule } from '../_share/share.module';
 import { TaskDetailFrmComponent } from './task-detail/task-detail-frm/task-detail-frm.component';
+import { TaskDetailTableComponent } from './task-detail/task-detail-table/task-detail-table.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { TaskDetailFrmComponent } from './task-detail/task-detail-frm/task-detai
     TaskHeaderComponent,
     TaskTableComponent,
     TaskDetailComponent,
-    TaskDetailFrmComponent
+    TaskDetailFrmComponent,
+    TaskDetailTableComponent
   ],
   imports: [
     CommonModule,

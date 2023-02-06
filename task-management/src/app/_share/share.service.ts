@@ -13,6 +13,7 @@ export class ShareService {
   public isInside: Subject<any> = new Subject<any>();
   public isLoading: Subject<boolean> = new Subject<boolean>(); // dung cho spinner
   public isKeyUp: Subject<any> = new Subject<any>();
+  public isAddSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   // end events
 
