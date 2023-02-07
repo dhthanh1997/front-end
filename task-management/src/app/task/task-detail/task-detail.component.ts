@@ -43,7 +43,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder,
     private taskData: TaskData,
     private shareService: ShareService,
-    private notifyServce: NotifyService,
+    private notifyService: NotifyService,
     private modal: NzModalService) {
     this.formValidation = initFormObject(this.task, this.task);
     this.formValidation.addControl("subTask", this.fb.array([]));
@@ -87,7 +87,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
           console.log("--- detail ok");
           this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
         } else {
-          this.notifyServce.error("Có lỗi xảy ra");
+          this.notifyService.error("Có lỗi xảy ra");
         }
       },
       error: (err) => {
@@ -118,7 +118,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
           console.log("--- detail ok");
           this.formValidation.patchValue(res.data);
         } else {
-          this.notifyServce.error("Có lỗi xảy ra");
+          this.notifyService.error("Có lỗi xảy ra");
         }
       },
       error: (err) => {
@@ -197,13 +197,16 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     // this.shareService.isAddSub.next(true);
     this.modal.create({
       nzContent: TaskDetailTableComponent,
+      nzTitle: "Thêm mới công việc",
       nzCentered: true,
       nzMaskClosable: false,
       nzDirection: 'ltr',
       nzClassName: 'modal-custom',
       nzClosable: true,
       nzComponentParams: {
-        formValidation: this.formValidation
+        // formValidation: this.formValidation
+        idTask: (this.formValidation.get('id')?.value) ? this.formValidation.get('id')?.value : 0,
+        isDialog: true
       }
     }).afterClose.subscribe({
       next: res => {
@@ -226,7 +229,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       nzFooter: null,
       nzClosable: false,
       nzComponentParams: {
-        formValidation: this.formValidation
+        // formValidation: this.formValidation
+        idTask: (this.formValidation.get('id')?.value) ? this.formValidation.get('id')?.value : 0
       }
     }).afterClose.subscribe({
       next: res => {
@@ -249,7 +253,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       next: (res) => {
         console.log(res);
         if (res.message === ResponseStatus.error) {
-          this.notifyServce.error(res.error);
+          this.notifyService.error(res.error);
         }
         if (res.message === ResponseStatus.success) {
           this.close();
@@ -270,7 +274,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.taskData.save(item).subscribe({
       next: (res) => {
         if (res.message === ResponseStatus.error) {
-          this.notifyServce.error(res.error);
+          this.notifyService.error(res.error);
         }
       },
       error: (err) => {

@@ -18,8 +18,8 @@ export interface todoTableChild {
 }
 
 
-
- 
+// 1: Monday ... 5: Friday
+export const dayNumberIgnoreWeekend = [1, 2, 3, 4, 5]
 export class Task extends BaseEntity {
   id: number;
   name: string;
@@ -39,6 +39,7 @@ export class Task extends BaseEntity {
   note: string;
   attachFile: string;
   parendId: number;
+  state: number;
   status: string;
   expand: boolean;
   isShow: boolean;
@@ -52,7 +53,7 @@ export class Task extends BaseEntity {
     this.name = '';
     this.totalCost = 0;
     this.revenue = 0;
-    this.totalHour = 0; 
+    this.totalHour = 0;
     this.startDate = new Date();
     this.endDate = new Date();
     this.estimateStartDate = new Date();
@@ -65,11 +66,13 @@ export class Task extends BaseEntity {
     this.note = '';
     this.attachFile = '';
     this.parendId = 0;
-    this.status = Status.TODO;
+    this.state = Status.TODO;
+    this.status = '';
     this.expand = false;
     this.isShow = false;
     this.isUpdate = false;
     this.isInside = false;
+    this.state = 0
   }
 
   setName(name: string) {
@@ -79,6 +82,26 @@ export class Task extends BaseEntity {
   setDescription(description: string) {
     this.description = description;
   }
+
+  // mặc định là ngày trong tuần
+  // nêu tạo cuối tuần t7,cn sẽ nhảy sang t2
+  setStartDate(date: Date) {
+    if (dayNumberIgnoreWeekend.includes(date.getDay())) {
+      this.startDate = date;
+    } else {
+      this.startDate.setDate(date.getDate() + (date.getDay() === 5 ? 2 : 1));
+    }
+  }
+
+  // mặc định là thứ 6
+  setEndDate(date: Date) {
+    if (dayNumberIgnoreWeekend.includes(date.getDay())) {
+      this.endDate.setDate(date.getDate() + (5 - date.getDay()));
+    } else {
+      this.endDate.setDate(date.getDate() + (date.getDay() === 6 ? 7 : 6));
+    }
+  }
+
 
 }
 

@@ -1,12 +1,12 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { forEach } from 'lodash';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subscription, switchMap, take, tap, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { initDataObject, initFormArray, setDataInFormArray, updateControlInArray } from 'src/app/_base/util';
+import { initDataObject, initFormArray, initFormObject, setDataInFormArray, updateControlInArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
 import { ResponseStatus } from 'src/app/_core/enum/responseStatus';
 import { Task } from 'src/app/_core/model/task';
@@ -16,15 +16,20 @@ import { ShareService } from 'src/app/_share/share.service';
 @Component({
   selector: 'app-task-detail-table',
   templateUrl: './task-detail-table.component.html',
-  styleUrls: ['./task-detail-table.component.scss']
+  // template: `
+
+  // `,
+  styleUrls: ['./task-detail-table.component.scss'],
 })
-export class TaskDetailTableComponent implements OnInit {
+export class TaskDetailTableComponent implements OnInit, AfterViewInit {
 
   private sub: Subscription = new Subscription()
 
   public isCompleted: boolean = false;
 
   private task: Task = new Task();
+
+  @Input() public isDialog: boolean = false;
 
   public formValidation!: FormGroup;
 
@@ -39,10 +44,15 @@ export class TaskDetailTableComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private taskData: TaskData,
     private shareService: ShareService,
-    private notifyServce: NotifyService,
+    private notifyService: NotifyService,
     private modelRef: NzModalRef<TaskDetailTableComponent>
-    ) {
+  ) {
     this.formValidation = initFormArray("subTask");
+
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
   get subTask() {
@@ -55,44 +65,34 @@ export class TaskDetailTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // debugger;
+    this.getSubData();
+    this.task.setStartDate(new Date());
+    this.task.setEndDate(new Date());
+    const formGroup = initFormObject(this.task, new Task());
+    this.subTask.push(formGroup);
     console.log(this.formValidation);
-    // this.getData();
-    setTimeout(() => {
-      this.watchForChange();
-    }, 300)
+
   }
 
-  // getData() {
-  //   const shareData$ = (this.shareService.taskData);
-  //   const source$ = shareData$.asObservable().pipe(concatMap(res => {
-  //     // console.log(res);
-  //     if (res) {
-  //       this.idTask = res.item.controls.id.value;
-  //       // clear mảng
-  //       this.subTask.clear();
-  //       return this.taskData.getByParentId(this.idTask);
-  //     }
-  //     return of(null);
-  //   }),
-  //     catchError(err => throwError(() => new Error(err))));
-
-  //   // subscribe
-  //   source$.subscribe({
-  //     next: (res) => {
-  //       console.log(res);
-  //       if (res?.message === ResponseStatus.success) {
-  //         console.log("--- detail ok");
-  //         this.formValidation = setDataInFormArray(res.data, "subTask", this.formValidation, this.task);
-  //       }
-  //       else {
-  //         this.notifyServce.error("Có lỗi xảy ra");
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     }
-  //   })
-  // }
+  getSubData() {
+    this.taskData.getByParentId(this.idTask).subscribe(
+      {
+        next: (res) => {
+          console.log(res);
+          if (res?.message === ResponseStatus.success) {
+            console.log("--- detail ok");
+            this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
+          } else {
+            this.notifyService.error("Có lỗi xảy ra");
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      }
+    )
+  }
 
 
   // event
@@ -125,48 +125,6 @@ export class TaskDetailTableComponent implements OnInit {
   }
 
 
-  watchForChange() {
-    console.log("--is change--");
-
-    // this.subTask.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000), map(([prev, current]: [any, any]) => {
-    //   let ignorePropeties = ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate'];
-    //   let prevObject: any;
-    //   let currentObject: any;
-    //   if (prev) {
-    //     prevObject = Object.entries(prev)[0][1];
-    //     currentObject = Object.entries(current)[0][1];
-    //   }
-
-    //   console.log(prevObject);
-    //   if (prevObject) {
-    //     let prevObjectIgnore = _.omit(prevObject, ignorePropeties);
-    //     let currentObjectIIgnore = _.omit(currentObject, ignorePropeties);
-    //     if (!_.isEqual(prevObjectIgnore, currentObjectIIgnore)) {
-    //       // console.log(prev.name);
-    //       // console.log(current);  
-    //       console.log("sub different in id: ");
-    //       return {
-    //         value: current,
-    //         isUpdate: true
-    //       };
-    //     }
-    //   }
-    //   console.log(current);
-    //   return current;
-    // }), switchMap((valueChanged: any) => {
-    //   if (valueChanged) {
-    //     return of(valueChanged);
-    //   }
-    //   return of(null);
-    // })).subscribe(res => {
-    //   console.log(res);
-
-    // })
-
-  }
-  //
-
-
   addSubTask() {
     const array = this.subTask;
     if (array && array.controls.length > 0) {
@@ -189,15 +147,16 @@ export class TaskDetailTableComponent implements OnInit {
 
   }
 
-  saveTask() {
+  saveListTask() {
     const item = this.formValidation.get('subTask')?.value;
-    this.taskData.save(item).subscribe({
+    this.taskData.saveListTask(item).subscribe({
       next: (res) => {
         if (res.message === ResponseStatus.error) {
-          this.notifyServce.error(res.error);
+          this.notifyService.error(res.error);
         }
         if (res.message === ResponseStatus.success) {
-          this.notifyServce.success("Thành công");
+          this.notifyService.success("Thành công");
+          this.dismiss(res.data);
         }
       },
       error: (err) => {
@@ -208,6 +167,10 @@ export class TaskDetailTableComponent implements OnInit {
 
   close() {
     this.modelRef.close();
+  }
+
+  dismiss(item: any) {
+    this.modelRef.close(item);
   }
 
 }

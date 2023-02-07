@@ -80,3 +80,12 @@ export function updateControl(value: any, formGroup: FormGroup): FormGroup {
   return formGroup;
 }
 
+export function updateFormData(value: any, formGroup: FormGroup, _object: any): FormGroup {
+  const properties = Object.getOwnPropertyNames(_object);
+  properties.forEach(prop => {
+   let form =  formGroup.controls[prop] as FormGroup;
+   form.patchValue(value.prop)
+  });
+  return formGroup;
+}
+

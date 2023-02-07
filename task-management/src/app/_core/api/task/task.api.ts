@@ -17,8 +17,13 @@ export class TaskApi {
     return this.http.get(this.apiController, { params });
   }
 
+  
   save(data: Task): Observable<ResponseDataObject> {
     return this.http.post(this.apiController, data);
+  }
+
+  saveListTask(data: Task[]): Observable<ResponseDataObject> {
+    return this.http.post(`${this.apiController}/listTask`, data);
   }
 
   update(id: number, data: Task): Observable<ResponseDataObject> {

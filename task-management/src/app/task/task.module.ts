@@ -22,7 +22,7 @@ import { TaskDetailTableComponent } from './task-detail/task-detail-table/task-d
     TaskTableComponent,
     TaskDetailComponent,
     TaskDetailFrmComponent,
-    TaskDetailTableComponent
+    TaskDetailTableComponent,
   ],
   imports: [
     CommonModule,

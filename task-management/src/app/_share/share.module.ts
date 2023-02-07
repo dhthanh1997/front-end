@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ShareService } from './share.service';
 import { AutoFocusDirective } from './directive/auto-focus.directive';
 import { ClickOutsideAndUpdateDirective } from './directive/click-outside-and-update.directive';
+import { StateTaskPipe } from './pipe/state-task.pipe';
 
 
 
@@ -10,6 +11,7 @@ import { ClickOutsideAndUpdateDirective } from './directive/click-outside-and-up
   declarations: [
     AutoFocusDirective,
     ClickOutsideAndUpdateDirective,
+    StateTaskPipe,
   ],
   imports: [
     CommonModule
@@ -17,6 +19,7 @@ import { ClickOutsideAndUpdateDirective } from './directive/click-outside-and-up
   exports: [
     AutoFocusDirective,
     ClickOutsideAndUpdateDirective,
+    StateTaskPipe
   ],
   providers: [
     ShareService
