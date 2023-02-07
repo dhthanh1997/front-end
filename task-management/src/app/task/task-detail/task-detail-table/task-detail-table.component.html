@@ -33,7 +33,7 @@
                                         (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
                                 </td>
                                 <td class="text-center align-items-center col-5">
-                                    {{item.get('status')!.value}}
+                                    {{item.get('status')!.value | stateTask}}
                                 </td>
                             </ng-container>
 

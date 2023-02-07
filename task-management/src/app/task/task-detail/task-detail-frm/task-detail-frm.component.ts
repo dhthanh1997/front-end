@@ -68,13 +68,14 @@ export class TaskDetailFrmComponent implements OnInit {
   }
 
   addSubTask() {
-    if (!this.subTask) {
-      this.formValidation.addControl("subTask", this.fb.array([]));
-    }
-    const formGroup = initDataObject(new Task(), new Task());
-    const formArray = this.formValidation.get('subTask') as FormArray;
-    formArray.push(formGroup);
-    console.log(formArray);
+    this.shareService.isAddSubTask.next(true);
+    // if (!this.subTask) {
+    //   this.formValidation.addControl("subTask", this.fb.array([]));
+    // }
+    // const formGroup = initDataObject(new Task(), new Task());
+    // const formArray = this.formValidation.get('subTask') as FormArray;
+    // formArray.push(formGroup);
+    // console.log(formArray);
     // this.formValidation.updateValueAndValidity();
   }
 
@@ -87,6 +88,7 @@ export class TaskDetailFrmComponent implements OnInit {
           // this.formValidation = updateFormData(res.data, this.formValidation, new Task());
           this.formValidation.patchValue(res.data);
           console.log(this.formValidation);
+          this.idTask = res.data.id;
         } else {
           this.notifyService.error("Có lỗi xảy ra");
         }
@@ -110,8 +112,43 @@ export class TaskDetailFrmComponent implements OnInit {
   }
 
   save() {
+    let item = this.formValidation.value;
+    const task$ = this.taskData.update(item.id, item);
+    const subTask$ = this.shareService.isDialogSave;
+    const source$ = task$.pipe(concatMap(res => {
+      console.log(res);
+        if (res.message === ResponseStatus.success) {
+          return of(subTask$.next(true));
+        }
+        return of(res);
+    }))
 
+    source$.subscribe({
+      next:(res) => { 
+          console.log(res);
+      },
+      error:(err) => {
+        console.log(err);
+      }
+    })
+
+    // this.taskData.save(item).subscribe({
+    //   next: (res) => {
+    //     console.log(res);
+    //     if (res.message === ResponseStatus.error) {
+    //       this.notifyService.error(res.error);
+    //     }
+    //     if (res.message === ResponseStatus.success) {
+    //       // this.notifyService.success("Thành công");
+    //       this.shareService.isDialogSave.next(true);
+    //     }
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   }
+    // });
   }
+
 
   close() {
     this.modelRef.close();

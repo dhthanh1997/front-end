@@ -24,21 +24,16 @@ import { ShareService } from 'src/app/_share/share.service';
 export class TaskDetailTableComponent implements OnInit, AfterViewInit {
 
   private sub: Subscription = new Subscription()
-
   public isCompleted: boolean = false;
-
   private task: Task = new Task();
-
-  @Input() public isDialog: boolean = false;
-
   public formValidation!: FormGroup;
-
-  public idTask: number = 0;
   public indexSubTask: number = 0;
-
   public isShow: boolean = false;
   public isNotAddRow: boolean = false;
   public listOfData: Task[] = [];
+
+  @Input() public isDialog: boolean = false;
+  @Input() public idTask: number = 0;
 
 
   constructor(private fb: FormBuilder,
@@ -51,10 +46,6 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
-
-  }
-
   get subTask() {
     return this.formValidation.get("subTask") as FormArray;
   }
@@ -64,15 +55,40 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
     return array.controls[array.controls.length - 1] as FormGroup;
   }
 
+  ngAfterViewInit(): void {
+
+  }
+  
+
   ngOnInit(): void {
     // debugger;
+    console.log(this.idTask);
     this.getSubData();
+    this.isDialogSave();
+    this.isAddSubTask();
     this.task.setStartDate(new Date());
     this.task.setEndDate(new Date());
     const formGroup = initFormObject(this.task, new Task());
     this.subTask.push(formGroup);
     console.log(this.formValidation);
 
+  }
+
+  isDialogSave() {
+    this.shareService.isDialogSave.subscribe(data => {
+      if(data) {
+        this.saveListTask();
+      }
+    })
+  }
+
+  isAddSubTask() {
+    this.shareService.isAddSubTask.subscribe(data => {
+      console.log(data);
+      if(data) {
+        this.addSubTask();
+      }
+    })
   }
 
   getSubData() {
@@ -133,6 +149,8 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
       // ten cua task ma null thi khong duoc add tiep vao array
       if (lastItem.get('name')?.value) {
         // console.log(lastItem.get('name')?.value)
+        this.task.parendId = this.idTask;
+        console.log(this.task.parendId);
         const form: FormGroup = initDataObject(this.task, this.task);
         this.subTask.controls.push(form);
       } else {
@@ -141,6 +159,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
       }
     }
     else {
+      this.task.parendId = this.idTask;
       const form: FormGroup = initDataObject(this.task, this.task);
       this.subTask.push(form);
     }
@@ -148,6 +167,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
   }
 
   saveListTask() {
+    debugger;
     const item = this.formValidation.get('subTask')?.value;
     this.taskData.saveListTask(item).subscribe({
       next: (res) => {

@@ -15,6 +15,7 @@ export class ShareService {
   public isKeyUp: Subject<any> = new Subject<any>();
   public isAddSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isDialogSave: Subject<boolean> = new Subject<boolean>();
+  public isAddSubTask: Subject<any> = new Subject<any>();
 
   // end events
 
