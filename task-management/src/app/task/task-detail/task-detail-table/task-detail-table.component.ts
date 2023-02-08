@@ -31,6 +31,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
   public isNotAddRow: boolean = false;
   public listOfData: Task[] = [];
   public isUpdate: boolean = false;
+  
 
   @Input() public isDialog: boolean = false;
   @Input() public idTask: number = 0;
@@ -83,12 +84,14 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
   isDialogSave() {
     this.shareService.isDialogSave.subscribe(data => {
-      if (data.isAdd) {
-        this.saveListTask();
-      }
-      if (data.isUpdate) {
-        this.updateListTask();
-      }
+      this.updateListTask();
+
+      // if (data.isAdd) {
+      //   this.saveListTask();
+      // }
+      // if (data.isUpdate) {
+      //   this.updateListTask();
+      // }
     });
   }
 
@@ -328,17 +331,25 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
     });
   }
 
+
+  // update tại form khác
   updateListTask() {
     // debugger;
     const item = this.formValidation.get('subTask')?.value;
     this.taskData.updateListTask(item).subscribe({
       next: (res) => {
         if (res.message === ResponseStatus.error) {
-          this.notifyService.error(res.error);
+          // return of({
+          //   isSuccess: false,
+          //   res: res
+          // });
         }
         if (res.message === ResponseStatus.success) {
-          this.notifyService.success("");
-          this.dismiss(res.data);
+          // return of({
+          //   isSuccess: true,
+          //   res: res
+          // });
+          // this.dismiss(res.data);
         }
       },
       error: (err) => {

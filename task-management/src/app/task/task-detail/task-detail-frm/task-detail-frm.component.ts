@@ -119,17 +119,22 @@ export class TaskDetailFrmComponent implements OnInit {
     const subTask$ = this.shareService.isDialogSave;
     const source$ = task$.pipe(concatMap(res => {
       console.log(res);
-        if (res.message === ResponseStatus.success) {
-          return of(subTask$.next(true));
-        }
-        return of(res);
-    }))
+      if (res.message === ResponseStatus.success) {
+        return of(subTask$.next(true));
+      }
+      return of(res);
+    }), catchError(err => throwError(() => new Error(err))));
 
     source$.subscribe({
-      next:(res) => { 
-          console.log(res);
+      next: (res) => {
+        console.log(res);
+        if (res) {
+          this.notifyService.success("Thành công");
+          this.shareService.isDialogSave.next(true);
+        }
+
       },
-      error:(err) => {
+      error: (err) => {
         console.log(err);
       }
     })

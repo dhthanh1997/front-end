@@ -27,7 +27,7 @@ export class TaskApi {
   }
 
   updateListTask(data: Task[]): Observable<ResponseDataObject> {
-    return this.http.put(`${this.apiController}/updateListTask`, data);
+    return this.http.post(`${this.apiController}/updateListTask`, data);
   }
 
   update(id: number, data: Task): Observable<ResponseDataObject> {
