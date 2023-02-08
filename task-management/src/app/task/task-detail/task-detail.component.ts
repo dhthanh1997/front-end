@@ -28,7 +28,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   private task: Task = new Task();
 
-  public formValidation!: FormGroup;
+  formValidation!: FormGroup;
 
   public idTask: number = 0;
   public indexTask: number = 0;

@@ -1,10 +1,9 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewInit, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
-import { forEach } from 'lodash';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subscription, switchMap, take, tap, throwError } from 'rxjs';
+import { catchError, concatMap, debounceTime, distinctUntilChanged, firstValueFrom, map, merge, of, pairwise, startWith, Subscription, switchMap, take, tap, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initDataObject, initFormArray, initFormObject, setDataInFormArray, updateControlInArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
@@ -21,22 +20,24 @@ import { ShareService } from 'src/app/_share/share.service';
   // `,
   styleUrls: ['./task-detail-table.component.scss'],
 })
-export class TaskDetailTableComponent implements OnInit, AfterViewInit {
+export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck {
 
   private sub: Subscription = new Subscription()
   public isCompleted: boolean = false;
   private task: Task = new Task();
-  public formValidation!: FormGroup;
+  formValidation!: FormGroup;
   public indexSubTask: number = 0;
   public isShow: boolean = false;
   public isNotAddRow: boolean = false;
   public listOfData: Task[] = [];
+  public isUpdate: boolean = false;
 
   @Input() public isDialog: boolean = false;
   @Input() public idTask: number = 0;
 
 
   constructor(private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
     private taskData: TaskData,
     private shareService: ShareService,
     private notifyService: NotifyService,
@@ -44,6 +45,15 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
   ) {
     this.formValidation = initFormArray("subTask");
 
+  }
+
+
+  ngDoCheck(): void {
+    // this.cd.reattach();
+    // this.watchForChange();
+    // setTimeout(() => {
+    //   this.cd.detach();
+    // }, 500)
   }
 
   get subTask() {
@@ -56,58 +66,108 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
+    // this.watchForChange();
   }
-  
+
 
   ngOnInit(): void {
     // debugger;
-    console.log(this.idTask);
+    // console.log(this.idTask);
     this.getSubData();
     this.isDialogSave();
     this.isAddSubTask();
-    this.task.setStartDate(new Date());
-    this.task.setEndDate(new Date());
-    const formGroup = initFormObject(this.task, new Task());
-    this.subTask.push(formGroup);
-    console.log(this.formValidation);
+    // this.watchForChange();
+    // console.log(this.formValidation);
 
   }
 
   isDialogSave() {
     this.shareService.isDialogSave.subscribe(data => {
-      if(data) {
+      if (data.isAdd) {
         this.saveListTask();
       }
-    })
+      if (data.isUpdate) {
+        this.updateListTask();
+      }
+    });
   }
 
   isAddSubTask() {
     this.shareService.isAddSubTask.subscribe(data => {
       console.log(data);
-      if(data) {
+      if (data) {
         this.addSubTask();
       }
     })
   }
 
   getSubData() {
-    this.taskData.getByParentId(this.idTask).subscribe(
-      {
-        next: (res) => {
-          console.log(res);
-          if (res?.message === ResponseStatus.success) {
-            console.log("--- detail ok");
-            this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
-          } else {
-            this.notifyService.error("Có lỗi xảy ra");
-          }
-        },
-        error: (err) => {
-          console.log(err);
+
+    const getByParentId$ = this.taskData.getByParentId(this.idTask);
+    const $source = getByParentId$.pipe(
+      concatMap(res => {
+      console.log(res);
+      if (res?.message === ResponseStatus.success) {
+        console.log("--- detail ok");
+        if (res.data && res.data.length === 0) {
+          this.task.parentId = this.idTask;
+          this.task.setStartDate(new Date());
+          this.task.setEndDate(new Date());
+          const formGroup = initFormObject(this.task, new Task());
+          //  const form = initDataObject(this.task, new Task());
+          this.subTask.push(formGroup);
+        } else {
+          this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
         }
+        console.log(this.formValidation);
+        return of({
+          isSuccess: true,
+          res: res
+        })
+      } else {
+        return of({
+          isSuccess: false,
+          res: res
+        })
       }
-    )
+    }),
+    catchError(err => throwError(() => new Error(err))) );
+
+    $source.subscribe(res => {
+      if(res.isSuccess) {
+        this.watchForChange();
+      } else {
+        this.notifyService.error("Có lỗi xảy ra");
+      }
+    })
+
+
+    // this.taskData.getByParentId(this.idTask).subscribe(
+    //   {
+    //     next: (res) => {
+    //       console.log(res);
+    //       if (res?.message === ResponseStatus.success) {
+    //         console.log("--- detail ok");
+    //         if (res.data && res.data.length === 0) {
+    //           this.task.parentId = this.idTask;
+    //           this.task.setStartDate(new Date());
+    //           this.task.setEndDate(new Date());
+    //           const formGroup = initFormObject(this.task, new Task());
+    //           //  const form = initDataObject(this.task, new Task());
+    //           this.subTask.push(formGroup);
+    //         } else {
+    //           this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
+    //         }
+    //         console.log(this.formValidation);
+    //       } else {
+    //         this.notifyService.error("Có lỗi xảy ra");
+    //       }
+    //     },
+    //     error: (err) => {
+    //       console.log(err);
+    //     }
+    //   }
+    // )
   }
 
 
@@ -140,6 +200,86 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
     moveItemInArray(data, event.previousIndex, event.currentIndex);
   }
 
+  watchForChange() {
+
+    console.log(this.subTask.controls);
+    merge(...this.subTask.controls.map((control: AbstractControl, index: number) =>
+      control.valueChanges.pipe(pairwise(), debounceTime(300),
+        map(([prev, current]: [any, any]) => {
+          // debugger;
+          // so sánh 2 object dùng lodash
+          let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+          let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+          // console.log(prevObject);
+          // console.log(currentObject);
+          // mảng ban đầu phải không rỗng mới check 2 object
+          if (prevObject) {
+            if (!_.isEqual(prevObject, currentObject)) {
+              console.log("different detail in id: " + index);
+              return {
+                value: current,
+                isUpdate: true
+              };
+            }
+          }
+          return {
+            value: current,
+            isUpdate: false
+          }
+
+
+        }
+        ), switchMap((valueChanged: any) => {
+          if (valueChanged.isUpdate) return of(valueChanged);
+          return of(null);
+        }))))
+      .subscribe(changes => {
+        console.log(changes);
+      });
+
+
+    // merge(this.subTask.controls.map((control: AbstractControl, index: number) => {
+    //   control.valueChanges.pipe(startWith(undefined), distinctUntilChanged(), debounceTime(500), map(value => {
+    //     console.log(value)
+    //   }))
+    // })).subscribe(res => {
+    //   console.log(res);
+    // });
+
+    // this.subTask.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(500), map(([prev, current]: [any, any]) => {
+    //   // so sánh 2 object dùng lodash
+    //   let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+    //   let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+    //   // console.log(prevObject);
+    //   // console.log(currentObject);
+    //   // mảng ban đầu phải không rỗng mới check 2 object
+    //   if (prevObject) {
+    //     if (!_.isEqual(prevObject, currentObject)) {
+    //       console.log("different detail in id: ");
+    //       return {
+    //         value: current,
+    //         isUpdate: true
+    //       };
+    //     }
+    //   }
+
+    //   return {
+    //     value: current,
+    //     isUpdate: false
+    //   }
+
+    // }), switchMap((valueChanged: any) => {
+    //   if (valueChanged.isUpdate) {
+    //     return of(valueChanged);
+    //   }
+    //   return of(null);
+    // })).subscribe(res => {
+    //   console.log(res);
+    // });
+  }
+
+  // end event
+
 
   addSubTask() {
     const array = this.subTask;
@@ -149,25 +289,28 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
       // ten cua task ma null thi khong duoc add tiep vao array
       if (lastItem.get('name')?.value) {
         // console.log(lastItem.get('name')?.value)
-        this.task.parendId = this.idTask;
-        console.log(this.task.parendId);
-        const form: FormGroup = initDataObject(this.task, this.task);
-        this.subTask.controls.push(form);
+        this.task.parentId = this.idTask;
+        this.task.setStartDate(new Date());
+        this.task.setEndDate(new Date());
+        const formGroup = initFormObject(this.task, new Task());
+        this.subTask.push(formGroup);
       } else {
         this.isNotAddRow = !this.isNotAddRow;
         this.autoFocus(lastItem);
       }
     }
     else {
-      this.task.parendId = this.idTask;
+      this.task.parentId = this.idTask;
+      console.log(this.task.parentId);
       const form: FormGroup = initDataObject(this.task, this.task);
       this.subTask.push(form);
+      console.log(form);
     }
 
   }
 
   saveListTask() {
-    debugger;
+    // debugger;
     const item = this.formValidation.get('subTask')?.value;
     this.taskData.saveListTask(item).subscribe({
       next: (res) => {
@@ -175,7 +318,26 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit {
           this.notifyService.error(res.error);
         }
         if (res.message === ResponseStatus.success) {
-          this.notifyService.success("Thành công");
+          this.notifyService.success("");
+          this.dismiss(res.data);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  updateListTask() {
+    // debugger;
+    const item = this.formValidation.get('subTask')?.value;
+    this.taskData.updateListTask(item).subscribe({
+      next: (res) => {
+        if (res.message === ResponseStatus.error) {
+          this.notifyService.error(res.error);
+        }
+        if (res.message === ResponseStatus.success) {
+          this.notifyService.success("");
           this.dismiss(res.data);
         }
       },

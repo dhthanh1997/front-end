@@ -10,6 +10,10 @@ export class TaskService implements TaskData {
 
   constructor(private api: TaskApi) { }
 
+  updateListTask(data: Task[]): Observable<ResponseDataObject> {
+     return this.api.updateListTask(data);
+  }
+
   saveListTask(data: Task[]): Observable<ResponseDataObject> {
     return this.api.saveListTask(data);
   }

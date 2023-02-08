@@ -17,7 +17,7 @@ import { ShareService } from 'src/app/_share/share.service';
 export class TaskDetailFrmComponent implements OnInit {
 
   public isShow: boolean = false;
-  public formValidation!: FormGroup;
+  formValidation!: FormGroup;
   public idTask: number = 0;
   public task: Task = new Task();
 
@@ -68,7 +68,9 @@ export class TaskDetailFrmComponent implements OnInit {
   }
 
   addSubTask() {
-    this.shareService.isAddSubTask.next(true);
+    this.shareService.isAddSubTask.next({
+      isAdd: true,
+    });
     // if (!this.subTask) {
     //   this.formValidation.addControl("subTask", this.fb.array([]));
     // }

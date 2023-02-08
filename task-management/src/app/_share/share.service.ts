@@ -14,7 +14,7 @@ export class ShareService {
   public isLoading: Subject<boolean> = new Subject<boolean>(); // dung cho spinner
   public isKeyUp: Subject<any> = new Subject<any>();
   public isAddSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public isDialogSave: Subject<boolean> = new Subject<boolean>();
+  public isDialogSave: Subject<any> = new Subject<any>();
   public isAddSubTask: Subject<any> = new Subject<any>();
 
   // end events
