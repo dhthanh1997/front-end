@@ -1,12 +1,15 @@
 <div class="role-detail-wrapper">
-  <div class="collapse-wrapper" *ngFor="let item of listData; let idx = index">
+  <div
+    class="collapse-wrapper"
+    *ngFor="let item of listParent; let idx = index"
+  >
     <nz-collapse>
       <nz-collapse-panel nzHeader="{{ item.code }}" nzActive="true">
         <div class="checkUncheck">
           <label
             nz-checkbox
             [ngModel]="checkedBoxAll"
-            (ngModelChange)="checkedAll($event)"
+            (ngModelChange)="checkedAll(idx, $event)"
           >
             Checked / Unchecked</label
           >
@@ -16,28 +19,26 @@
             item.name
           }}</label>
         </div> -->
-        <nz-checkbox-wrapper style="width: 100%">
-          <div nz-row>
-            <div nz-col nzSpan="12">
-              <label
-                nz-checkbox
-                [ngModel]="item.isChecked"
-                (ngModelChange)="isChecked($event, idx)"
-                style="line-height: 1.5"
-                >{{ item.name }}</label
-              >
-            </div>
+        <div nz-row>
+          <div
+            class="my-2"
+            style="width: 50%"
+            *ngFor="let child of listChild; let cursor = index"
+            [hidden]="child.parentCode !== listParent[idx].code"
+          >
+            <label
+              *ngIf="child.parentCode === listParent[idx].code"
+              nz-checkbox
+              [ngModel]="child.isChecked"
+              (ngModelChange)="isChecked($event, cursor)"
+              style="line-height: 1.5"
+              >{{ child.name }}</label
+            >
           </div>
-        </nz-checkbox-wrapper>
+        </div>
       </nz-collapse-panel>
     </nz-collapse>
   </div>
 
-  <!-- <div class="collapse-wrapper">
-    <nz-collapse>
-      <nz-collapse-panel nzHeader="Test 2" nzActive="true">
-        <p>Test 2</p>
-      </nz-collapse-panel>
-    </nz-collapse>
-  </div> -->
+  <button nz-button>Save</button>
 </div>

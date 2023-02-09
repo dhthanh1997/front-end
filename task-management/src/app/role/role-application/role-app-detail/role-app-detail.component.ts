@@ -1,9 +1,4 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PermissionService } from 'src/app/_core/api/permission/permission.service';
 
 @Component({
@@ -11,10 +6,10 @@ import { PermissionService } from 'src/app/_core/api/permission/permission.servi
   templateUrl: './role-app-detail.component.html',
   styleUrls: ['./role-app-detail.component.scss'],
 })
-export class RoleAppDetailComponent implements OnInit, AfterViewInit {
+export class RoleAppDetailComponent implements OnInit {
   public listData: any;
-  public list1: any;
-  public list2: any;
+  public listParent: any = [];
+  public listChild: any = [];
   public listId: number[] = [];
 
   public pageNumber = 1;
@@ -30,26 +25,18 @@ export class RoleAppDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getPermission();
-    console.log(this.listData);
   }
 
-  ngAfterViewInit() {
-    console.log(this.listData);
-    // this.pushArr();
-  }
-
-  // ngAfterViewChecked() {
-  //   console.log(this.listData);
-  // }
-
-  public getPermission() {
-    debugger;
+  getPermission() {
+    // debugger;
     this.service
       .getPermission(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
           this.listData = res.pagingData.content;
+          this.getParentCode();
+          this.getChildCode();
           console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
@@ -60,39 +47,53 @@ export class RoleAppDetailComponent implements OnInit, AfterViewInit {
       });
   }
 
-  pushArr() {
-    // debugger;
-    for (let item of this.listData) {
-      if (item.code === 'string') {
-        this.list1.push(item);
-      } else this.list2.push(item);
+  getParentCode() {
+    for (let i = 0; i < this.listData.length; i++) {
+      if (this.listData[i].parentCode == null)
+        this.listParent.push(this.listData[i]);
+      console.log(this.listParent);
     }
-    console.log(this.list1);
   }
 
-  checkedAll(event: any) {
+  getChildCode() {
+    for (let i = 0; i < this.listData.length; i++) {
+      if (this.listData[i].parentCode != null)
+        this.listChild.push(this.listData[i]);
+      console.log(this.listChild);
+    }
+  }
+
+  checkedAll(index: number, event: any) {
     console.log(event);
-    this.listData.forEach((item: { isChecked: any; id: number }) => {
-      item.isChecked = event;
-      if (item.isChecked === true && this.listId.indexOf(item.id) === -1)
-        this.listId.push(item.id);
-      else if (item.isChecked === true && this.listId.indexOf(item.id) !== -1) {
-        return;
-      } else this.listId = [];
-      // console.log(item.isChecked);
-      console.log(this.listId);
-    });
+    this.listChild.forEach(
+      (item: { isChecked: any; id: number; parentCode: string }) => {
+        if (item.parentCode === this.listParent[index].code) {
+          item.isChecked = event;
+          if (item.isChecked === true && this.listId.indexOf(item.id) === -1)
+            this.listId.push(item.id);
+          else if (
+            item.isChecked === true &&
+            this.listId.indexOf(item.id) !== -1
+          ) {
+            return;
+          } else this.listId = [];
+          // console.log(item.isChecked);
+          console.log(this.listId);
+        }
+      }
+    );
   }
 
   isChecked(event: any, index: number) {
-    this.listData[index].isChecked = event;
+    // debugger;
+    this.listChild[index].isChecked = event;
     this.checkIntoArr(index);
     // console.log(this.listData[index].isChecked);
     console.log(this.listId);
   }
 
   checkIntoArr(index: number) {
-    let a = this.listData[index];
+    let a = this.listChild[index];
     // debugger;
     if (a.isChecked === true && this.listId.indexOf(a.id) === -1) {
       this.listId.push(a.id);

@@ -1,0 +1,35 @@
+.main-wrapper {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  //   margin-top: 10%;
+  //   position: absolute;
+  height: 50%;
+  width: 30%;
+//   padding: 10px;
+
+  .login-content {
+    
+    margin-top: 5%;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);;
+    padding: 30px;
+
+    .login-title {
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    
+
+    internal-app-login {
+    
+    }
+  }
+}

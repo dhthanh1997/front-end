@@ -20,7 +20,7 @@ import { CoreModule } from './_core/core.module';
     HttpClientModule,
     IconsProviderModule.forRoot(),
     NgZorroModule,
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
