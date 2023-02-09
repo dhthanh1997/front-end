@@ -44,7 +44,7 @@ export class TaskService implements TaskData {
 
   }
 
-  markCompleted(id: number): Observable<ResponseDataObject> {
-    return this.api.markCompleted(id);
+  markCompleteTask(id: number): Observable<ResponseDataObject> {
+    return this.api.markCompleteTask(id);
   }
 }

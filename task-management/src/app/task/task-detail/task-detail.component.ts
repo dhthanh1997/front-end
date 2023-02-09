@@ -5,7 +5,7 @@ import { catchError, concatMap, debounceTime, firstValueFrom, from, map, of, pai
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initDataObject, initFormArray, initFormObject, setDataInFormArray, updateControlInArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
-import { ResponseStatus } from 'src/app/_core/enum/responseStatus';
+import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 import { Task } from 'src/app/_core/model/task';
 import { ShareService } from 'src/app/_share/share.service';
 import { TaskDetailFrmComponent } from './task-detail-frm/task-detail-frm.component';
@@ -83,7 +83,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     source$.subscribe({
       next: (res) => {
         // console.log(res);
-        if (res?.message === ResponseStatus.success) {
+        if (res?.message === ResponseStatusEnum.success) {
           console.log("--- detail ok");
           this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
         } else {
@@ -114,7 +114,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     source$.subscribe({
       next: (res) => {
         // console.log(res);
-        if (res?.message === ResponseStatus.success) {
+        if (res?.message === ResponseStatusEnum.success) {
           console.log("--- detail ok");
           this.formValidation.patchValue(res.data);
         } else {
@@ -252,10 +252,10 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.taskData.deleteById(id).subscribe({
       next: (res) => {
         console.log(res);
-        if (res.message === ResponseStatus.error) {
+        if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         }
-        if (res.message === ResponseStatus.success) {
+        if (res.message === ResponseStatusEnum.success) {
           this.close();
         }
       },
@@ -273,7 +273,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   saveTask(item: any) {
     this.taskData.save(item).subscribe({
       next: (res) => {
-        if (res.message === ResponseStatus.error) {
+        if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         }
       },

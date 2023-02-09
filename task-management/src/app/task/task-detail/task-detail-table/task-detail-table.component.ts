@@ -7,7 +7,7 @@ import { catchError, concatMap, debounceTime, distinctUntilChanged, firstValueFr
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initDataObject, initFormArray, initFormObject, setDataInFormArray, updateControlInArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
-import { ResponseStatus } from 'src/app/_core/enum/responseStatus';
+import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 import { Task } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
@@ -110,7 +110,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
     const $source = getByParentId$.pipe(
       concatMap(res => {
       console.log(res);
-      if (res?.message === ResponseStatus.success) {
+      if (res?.message === ResponseStatusEnum.success) {
         console.log("--- detail ok");
         if (res.data && res.data.length === 0) {
           this.task.parentId = this.idTask;
@@ -149,7 +149,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
     //   {
     //     next: (res) => {
     //       console.log(res);
-    //       if (res?.message === ResponseStatus.success) {
+    //       if (res?.message === ResponseStatusEnum.success) {
     //         console.log("--- detail ok");
     //         if (res.data && res.data.length === 0) {
     //           this.task.parentId = this.idTask;
@@ -317,10 +317,10 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
     const item = this.formValidation.get('subTask')?.value;
     this.taskData.saveListTask(item).subscribe({
       next: (res) => {
-        if (res.message === ResponseStatus.error) {
+        if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         }
-        if (res.message === ResponseStatus.success) {
+        if (res.message === ResponseStatusEnum.success) {
           this.notifyService.success("");
           this.dismiss(res.data);
         }
@@ -338,13 +338,13 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
     const item = this.formValidation.get('subTask')?.value;
     this.taskData.updateListTask(item).subscribe({
       next: (res) => {
-        if (res.message === ResponseStatus.error) {
+        if (res.message === ResponseStatusEnum.error) {
           // return of({
           //   isSuccess: false,
           //   res: res
           // });
         }
-        if (res.message === ResponseStatus.success) {
+        if (res.message === ResponseStatusEnum.success) {
           // return of({
           //   isSuccess: true,
           //   res: res

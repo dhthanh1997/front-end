@@ -1,4 +1,5 @@
-import { Status } from "../enum/Status";
+import { StateEnum } from "../enum/StateEnum";
+import { StatusEnum } from "../enum/StatusEnum";
 import { BaseEntity } from "./base";
 
 export interface todoTable {
@@ -66,7 +67,7 @@ export class Task extends BaseEntity {
     this.note = '';
     this.attachFile = '';
     this.parentId = 0;
-    this.state = Status.TODO;
+    this.state = StateEnum.NOT_DONE;
     this.status = '';
     this.expand = false;
     this.isShow = false;

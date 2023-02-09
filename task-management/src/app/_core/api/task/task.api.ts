@@ -46,8 +46,8 @@ export class TaskApi {
     return this.http.delete(`${this.apiController}` + "/" + id);
   }
 
-  markCompleted(id: number): Observable<ResponseDataObject> {
-    return this.http.put(`${this.apiController}/markCompleted` + "/" + id, {});
+  markCompleteTask(id: number): Observable<ResponseDataObject> {
+    return this.http.put(`${this.apiController}/markCompleteTask/`+ id, {});
   }
 
   uploadFile(data: Blob): Observable<ResponseDataObject> {

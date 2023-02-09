@@ -5,7 +5,7 @@ import { catchError, concatMap, of, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initDataObject, initFormArray, initFormObject, setDataInFormArray, setDataInFormObject, updateFormData } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
-import { ResponseStatus } from 'src/app/_core/enum/responseStatus';
+import {  ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 import { Task } from 'src/app/_core/model/task';
 import { ShareService } from 'src/app/_share/share.service';
 
@@ -59,8 +59,9 @@ export class TaskDetailFrmComponent implements OnInit {
   }
   // end event
 
-  markCompleted() {
+  markCompleteTask() {
     this.isCompleted = !this.isCompleted;
+    this.taskData.markCompleteTask(this.idTask);
   }
 
   uploadFile() {
@@ -85,7 +86,7 @@ export class TaskDetailFrmComponent implements OnInit {
     this.taskData.getById(this.idTask).subscribe({
       next: (res) => {
         console.log(res);
-        if (res?.message === ResponseStatus.success) {
+        if (res?.message === ResponseStatusEnum.success) {
           // console.log("--- detail ok");
           // this.formValidation = updateFormData(res.data, this.formValidation, new Task());
           this.formValidation.patchValue(res.data);
@@ -102,7 +103,7 @@ export class TaskDetailFrmComponent implements OnInit {
     this.taskData.getByParentId(this.idTask).subscribe({
       next: (res) => {
         console.log(res);
-        if (res?.message === ResponseStatus.success) {
+        if (res?.message === ResponseStatusEnum.success) {
           console.log("--- detail ok");
           this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, new Task());
         } else {
@@ -119,7 +120,7 @@ export class TaskDetailFrmComponent implements OnInit {
     const subTask$ = this.shareService.isDialogSave;
     const source$ = task$.pipe(concatMap(res => {
       console.log(res);
-      if (res.message === ResponseStatus.success) {
+      if (res.message === ResponseStatusEnum.success) {
         return of(subTask$.next(true));
       }
       return of(res);
@@ -142,10 +143,10 @@ export class TaskDetailFrmComponent implements OnInit {
     // this.taskData.save(item).subscribe({
     //   next: (res) => {
     //     console.log(res);
-    //     if (res.message === ResponseStatus.error) {
+    //     if (res.message === ResponseStatusEnum.error) {
     //       this.notifyService.error(res.error);
     //     }
-    //     if (res.message === ResponseStatus.success) {
+    //     if (res.message === ResponseStatusEnum.success) {
     //       // this.notifyService.success("Thành công");
     //       this.shareService.isDialogSave.next(true);
     //     }

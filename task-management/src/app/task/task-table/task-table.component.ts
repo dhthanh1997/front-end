@@ -6,11 +6,11 @@ import { debounceTime, distinctUntilChanged, firstValueFrom, fromEvent, map, mer
 import { NotifyService } from 'src/app/_base/notify.service';
 import { compareProperties, initDataObject, initFormArray, setDataInFormArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
-import { ResponseStatus } from 'src/app/_core/enum/responseStatus';
 import { Task, taskList, todoTable } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
 import * as _ from 'lodash';
+import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 
 
 
@@ -231,7 +231,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   saveTask(item: any) {
     this.taskData.save(item).subscribe({
       next: (res) => {
-        if (res.message === ResponseStatus.error) {
+        if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         }
       },
@@ -284,7 +284,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
         }
         )).subscribe((res) => {
           console.log(res);
-          if (res.message === ResponseStatus.success) {
+          if (res.message === ResponseStatusEnum.success) {
             console.log("ok");
             this.updateControl(res.data, index);
           }
@@ -298,7 +298,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   updateTaskAndControl(item: Task, index: number) {
     this.taskData.update(item.id, item).subscribe({
       next: (res) => {
-        if (res.message === ResponseStatus.error) {
+        if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         } else {
           this.updateControl(res.data, index);
@@ -319,7 +319,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   deleteTask(id: number) {
     this.taskData.deleteById(id).subscribe({
       next: (res) => {
-        if (res.message === ResponseStatus.error) {
+        if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         }
       },
@@ -332,7 +332,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   async search() {
     this.shareService.isLoading.next(true);
     let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
-    if (response.message === ResponseStatus.success) {
+    if (response.message === ResponseStatusEnum.success) {
       this.listOfData = response.pagingData.content;
     }
     this.shareService.isLoading.next(false);
