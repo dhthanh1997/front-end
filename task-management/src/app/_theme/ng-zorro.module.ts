@@ -48,8 +48,7 @@ const NZ_MODULES = [
   NzMessageModule,
   NzTagModule,
   NzToolTipModule,
-  NzSpinModule
-   
+  NzSpinModule,
   NzMenuModule,
   NzLayoutModule,
   NzCollapseModule,
