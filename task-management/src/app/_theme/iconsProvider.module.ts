@@ -44,6 +44,9 @@ import {
   ReconciliationOutline,
   UsergroupAddOutline,
   KeyOutline,
+  CheckCircleFill,
+  CaretDownOutline,
+  CaretRightOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -86,6 +89,9 @@ const icons = [
   ReconciliationOutline,
   UsergroupAddOutline,
   KeyOutline,
+  CheckCircleFill,
+  CaretDownOutline,
+  CaretRightOutline
 ];
 
 @NgModule({

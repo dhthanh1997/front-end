@@ -8,14 +8,14 @@ export class StateTaskPipe implements PipeTransform {
   transform(value: unknown, ...args: any[]): any {
     switch (value) {
       case 0:
-        return "Chưa thực hiện";
+        return "Chưa hoàn thành";
       case 1:
-        return "Đang thực hiện";
+        return "Đã hoàn thành";
 
-      case 2:
-        return "Đã thực hiện";
+      // case 2:
+      //   return "Đã thực hiện";
       default:
-        return "Chưa thực hiện";
+        return "UNKOWNS";
     }
   }
 

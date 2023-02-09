@@ -1,5 +1,4 @@
-import { StateEnum } from "../enum/StateEnum";
-import { StatusEnum } from "../enum/StatusEnum";
+import { StateEnum } from "../enum/stateEnum";
 import { BaseEntity } from "./base";
 
 export interface todoTable {

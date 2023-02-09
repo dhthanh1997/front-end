@@ -1,11 +1,20 @@
 $task_detail_width: 0% !default;
 $task_detail_height: 500px !default;
 
+:host {
+  font-size: 12px;
+}
+
 .task_header {
   display: flex;
   flex-direction: row;
   width: 100%;
   position: static;
+}
+
+
+.table td, .table th {
+  padding: 0.3rem;
 }
 
 .task_header .float-right button {
@@ -18,7 +27,7 @@ $task_detail_height: 500px !default;
   .task_header button span > svg {
     margin-bottom: 6px;
   }
-  
+
   .dropdown_menu {
     margin-top: 10px;
   }
@@ -36,6 +45,18 @@ $task_detail_height: 500px !default;
     }
   }
 
+  .table-responsive-custom-header {
+    width: calc(100vw - $task_detail_width);
+    // height: 0;
+    table > thead > th {
+      position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
+      position: sticky;
+      top: 0;
+      z-index: 1; // any positive value, layer order is global
+      background: #fff; // any bg-color to overlap
+    }
+  }
+
   .table-responsive {
     width: calc(100vw - $task_detail_width);
     height: $task_detail_height;
@@ -47,10 +68,13 @@ $task_detail_height: 500px !default;
       background: #fff; // any bg-color to overlap
     }
 
-
-
     tbody > tr:hover {
       cursor: pointer;
+    }
+
+    tbody tr > td .check-circle-custom >span > svg {
+      margin-top: 6px;
+      font-size: 18px;
     }
   }
 
@@ -59,7 +83,7 @@ $task_detail_height: 500px !default;
     flex-direction: column;
     width: $task_detail_width;
     // border-left: 1px solid #dee2e6;
-    border-top:  1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
     transition: all 0.5s ease-in-out;
   }
 
@@ -79,5 +103,6 @@ $task_detail_height: 500px !default;
     overflow-x: hidden;
     // transition: all 0.5s ease-in-out;
   }
+
   
 }

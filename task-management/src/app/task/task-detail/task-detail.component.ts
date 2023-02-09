@@ -11,7 +11,7 @@ import { ShareService } from 'src/app/_share/share.service';
 import { TaskDetailFrmComponent } from './task-detail-frm/task-detail-frm.component';
 import * as _ from 'lodash';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
-import { TaskDetailTableComponent } from './task-detail-table/task-detail-table.component';
+import { TaskDetailTableComponent } from './common/task-detail-table/task-detail-table.component';
 
 @Component({
   selector: 'app-task-detail',

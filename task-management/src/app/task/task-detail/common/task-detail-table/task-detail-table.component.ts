@@ -9,15 +9,11 @@ import { initDataObject, initFormArray, initFormObject, setDataInFormArray, upda
 import { TaskData } from 'src/app/_core/api/task/taskData';
 import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 import { Task } from 'src/app/_core/model/task';
-import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
 
 @Component({
   selector: 'app-task-detail-table',
   templateUrl: './task-detail-table.component.html',
-  // template: `
-
-  // `,
   styleUrls: ['./task-detail-table.component.scss'],
 })
 export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck {
@@ -50,11 +46,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
 
   ngDoCheck(): void {
-    // this.cd.reattach();
-    // this.watchForChange();
-    // setTimeout(() => {
-    //   this.cd.detach();
-    // }, 500)
+  
   }
 
   get subTask() {
@@ -145,32 +137,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
     })
 
 
-    // this.taskData.getByParentId(this.idTask).subscribe(
-    //   {
-    //     next: (res) => {
-    //       console.log(res);
-    //       if (res?.message === ResponseStatusEnum.success) {
-    //         console.log("--- detail ok");
-    //         if (res.data && res.data.length === 0) {
-    //           this.task.parentId = this.idTask;
-    //           this.task.setStartDate(new Date());
-    //           this.task.setEndDate(new Date());
-    //           const formGroup = initFormObject(this.task, new Task());
-    //           //  const form = initDataObject(this.task, new Task());
-    //           this.subTask.push(formGroup);
-    //         } else {
-    //           this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
-    //         }
-    //         console.log(this.formValidation);
-    //       } else {
-    //         this.notifyService.error("Có lỗi xảy ra");
-    //       }
-    //     },
-    //     error: (err) => {
-    //       console.log(err);
-    //     }
-    //   }
-    // )
+    
   }
 
 
@@ -240,45 +207,6 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
         console.log(changes);
       });
 
-
-    // merge(this.subTask.controls.map((control: AbstractControl, index: number) => {
-    //   control.valueChanges.pipe(startWith(undefined), distinctUntilChanged(), debounceTime(500), map(value => {
-    //     console.log(value)
-    //   }))
-    // })).subscribe(res => {
-    //   console.log(res);
-    // });
-
-    // this.subTask.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(500), map(([prev, current]: [any, any]) => {
-    //   // so sánh 2 object dùng lodash
-    //   let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-    //   let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-    //   // console.log(prevObject);
-    //   // console.log(currentObject);
-    //   // mảng ban đầu phải không rỗng mới check 2 object
-    //   if (prevObject) {
-    //     if (!_.isEqual(prevObject, currentObject)) {
-    //       console.log("different detail in id: ");
-    //       return {
-    //         value: current,
-    //         isUpdate: true
-    //       };
-    //     }
-    //   }
-
-    //   return {
-    //     value: current,
-    //     isUpdate: false
-    //   }
-
-    // }), switchMap((valueChanged: any) => {
-    //   if (valueChanged.isUpdate) {
-    //     return of(valueChanged);
-    //   }
-    //   return of(null);
-    // })).subscribe(res => {
-    //   console.log(res);
-    // });
   }
 
   // end event

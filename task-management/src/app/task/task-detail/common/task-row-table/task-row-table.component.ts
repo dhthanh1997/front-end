@@ -1,45 +1,41 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, DoCheck, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { debounceTime, distinctUntilChanged, firstValueFrom, fromEvent, map, merge, Observable, of, pairwise, startWith, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import * as _ from 'lodash';
+import { debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { compareProperties, initDataObject, initFormArray, setDataInFormArray } from 'src/app/_base/util';
+import { initFormArray, setDataInFormArray, initDataObject } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/taskData';
-import { Task, taskList, todoTable } from 'src/app/_core/model/task';
+import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
+import { Task } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
-import * as _ from 'lodash';
-import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
-
-
 
 @Component({
-  selector: 'app-task-table',
-  templateUrl: './task-table.component.html',
-  styleUrls: ['./task-table.component.scss']
+  selector: 'app-task-row-table',
+  templateUrl: './task-row-table.component.html',
+  styleUrls: ['./task-row-table.component.scss']
 })
-export class TaskTableComponent implements OnInit, OnDestroy {
+export class TaskRowTableComponent implements OnInit {
 
   public formValidation!: FormGroup;
   public isHover: boolean = false;
   public isOpen: boolean = true;
   public isNotAddRow: boolean = false;
   public isCollapsed: boolean = true;
+  public isCollapsedTable: boolean = true;
   public Collapse: boolean = false;
   public listOfData: Task[] = [];
   public task = new Task();
-  // private isInside = false;
   changesUnsubscribe = new Subject();
   private keyUpEvent$ = new Subject<any>();
+
+
   constructor(private fb: FormBuilder,
-    private cd: ChangeDetectorRef,
     private notifyService: NotifyService,
     private shareService: ShareService,
     private taskData: TaskData) {
     this.formValidation = initFormArray("taskArray");
-    // this.search();
-
   }
 
   ngOnDestroy(): void {
@@ -54,8 +50,6 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.search();
     await this.initForm();
-    // await this.isOutSide();
-    // this.keyUpListenEvent();
     this.watchForChanges();
   }
 
@@ -74,6 +68,10 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     return array.controls[array.controls.length - 1] as FormGroup;
   }
 
+
+  collapsedTask() {
+    this.isCollapsedTable = !this.isCollapsedTable;
+  }
 
   onDrop(event: CdkDragDrop<string[]>) {
     console.log(event);
@@ -336,6 +334,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   async search() {
     this.shareService.isLoading.next(true);
     let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
+    console.log(response);
     if (response.message === ResponseStatusEnum.success) {
       this.listOfData = response.pagingData.content;
     }

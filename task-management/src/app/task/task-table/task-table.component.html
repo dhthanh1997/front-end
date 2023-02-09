@@ -14,12 +14,12 @@
                 <button nz-button nzType="default">
                     <span nz-icon nzType="check-circle" nzTheme="outline">
                     </span>
-                    Imcomplete tasks
+                    Chưa hoàn thành
                 </button>
                 <nz-dropdown-menu #menuTask="nzDropdownMenu">
                     <ul class="dropdown_menu" nz-menu>
-                        <li nz-menu-item>Completed task</li>
-                        <li nz-menu-item>All tasks</li>
+                        <li nz-menu-item>Đã hoàn thành</li>
+                        <li nz-menu-item>Tất cả</li>
                         <li nz-menu-divider></li>
                         <li nz-submenu nzTitle="sub menu">
                             <ul>
@@ -34,7 +34,7 @@
             <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuSort">
 
                 <button nz-button nzType="default">
-                    <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>Sort
+                    <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>Sắp xếp
                 </button>
                 <nz-dropdown-menu #menuSort="nzDropdownMenu">
                     <ul class="dropdown_menu" nz-menu>
@@ -60,81 +60,118 @@
 <div class="p-2">
     <div class="d-flex flex-row">
         <!-- table -->
-        <div class="table-responsive" [formGroup]="formValidation">
-            <table class="table">
-                <thead>
-                    <th class="text-center col-8">Tên</th>
-                    <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
-                        <th class="text-center col-5">Ngày kết thúc</th>
-                    </ng-template>
-                    <ng-template #collapsedTemplate>
-                        <th class="text-center col-5">Ngày bắt đầu</th>
-                        <th class="text-center col-5">Ngày kết thúc</th>
-                        <th class="text-center col-5">Trạng thái</th>
-                    </ng-template>
-                </thead>
-                <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="taskArray">
-                    <tr *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y"
-                        (click)="!isCollapsed ? getTask(item, idx) : isCollapsed">
-                        <ng-container [formGroupName]="idx">
-                            <td class="align-items-center col-8">
-                                <div class="d-flex flex-row">
-                                    <div class="col-8" (mouseover)="mouseOver(item, idx)"
-                                        (mouseleave)="mouseLeave(item, idx)" >
-                                        <input type="text" (click)="detectClickEvent(item,idx)" 
-                                            appAutoFocus (keyup.enter)="addTask()" appClickOutsideAndUpdate
-                                            [ngClass]="!(item.get('isShow')!.value) ? 'input_disabled' : ''" nz-input
-                                            class="form-control" formControlName="name">
-                                    </div>
-                                    <ng-container *ngIf="isCollapsed">
-                                        <div class="col-4">
-                                            <button class="float-right" nz-button nzTooltipTitle="Xem chi tiết"
-                                                nzTooltipPlacement="bottom" nz-tooltip nzType="default" nzShape="circle"
-                                                (click)="detailTask(item, idx)">
-                                                <span nz-icon nzType="eye" nzTheme="outline"></span>
-                                            </button>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </td>
+
+        <div>
+            <div class="d-flex flex-column">
+                <div class="table-responsive-custom-header">
+                    <table class="table">
+                        <thead>
+                            <th class="text-center col-8">Tên</th>
                             <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
-                                <td class="align-items-center col-5">
-                                    <nz-date-picker class="form-control" formControlName="endDate"
-                                        (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
-                                </td>
+                                <th class="text-center col-5">Ngày kết thúc</th>
                             </ng-template>
                             <ng-template #collapsedTemplate>
-                                <td class="align-items-center col-5">
-                                    <nz-date-picker class="form-control" formControlName="startDate"
-                                        (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
-                                </td>
-                                <td class="align-items-center col-5">
-                                    <nz-date-picker class="form-control" formControlName="endDate"
-                                        (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
-                                </td>
-                                <td class="text-center align-items-center col-5">
-                                    {{item.get('status')!.value}}
-                                </td>
+                                <th class="text-center col-5">Ngày bắt đầu</th>
+                                <th class="text-center col-5">Ngày kết thúc</th>
+                                <th class="text-center col-5">Trạng thái</th>
                             </ng-template>
+                        </thead>
+                    </table>
+                </div>
+                <!-- <div class="table-responsive" [formGroup]="formValidation">
+                    <table class="table">
+                        <thead>
+                            <th class="text-center col-8">Tên</th>
+                            <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
+                                <th class="text-center col-5">Ngày kết thúc</th>
+                            </ng-template>
+                            <ng-template #collapsedTemplate>
+                                <th class="text-center col-5">Ngày bắt đầu</th>
+                                <th class="text-center col-5">Ngày kết thúc</th>
+                                <th class="text-center col-5">Trạng thái</th>
+                            </ng-template>
+                        </thead>
+                        <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="taskArray">
+                            <tr *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y"
+                                (click)="!isCollapsed ? getTask(item, idx) : isCollapsed">
+                                <ng-container [formGroupName]="idx">
+                                    <td class="align-items-center col-8">
+                                        <div class="d-flex flex-row">
+                                            <div class="col-1 check-circle-custom">
+                                                <span nz-icon nzType="check-circle" (click)="markCompleteTask(item)"
+                                                    nzTheme="outline"></span>
+                                            </div>
+                                            <div class="col-7" (mouseover)="mouseOver(item, idx)"
+                                                (mouseleave)="mouseLeave(item, idx)">
+                                                <input type="text" (click)="detectClickEvent(item,idx)" appAutoFocus
+                                                    (keyup.enter)="addTask()" appClickOutsideAndUpdate
+                                                    [ngClass]="!(item.get('isShow')!.value) ? 'input_disabled' : ''"
+                                                    nz-input class="form-control" formControlName="name">
+    
+                                            </div>
+                                            <ng-container *ngIf="isCollapsed">
+                                                <div class="col-4">
+                                                    <button class="float-right" nz-button nzTooltipTitle="Xem chi tiết"
+                                                        nzTooltipPlacement="bottom" nz-tooltip nzType="default"
+                                                        nzShape="circle" (click)="detailTask(item, idx)">
+                                                        <span nz-icon nzType="eye" nzTheme="outline"></span>
+                                                    </button>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </td>
+                                    <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
+                                        <td class="align-items-center col-5">
+                                            <nz-date-picker class="form-control" formControlName="endDate"
+                                                (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                                        </td>
+                                    </ng-template>
+                                    <ng-template #collapsedTemplate>
+                                        <td class="align-items-center col-5">
+                                            <nz-date-picker class="form-control" formControlName="startDate"
+                                                (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                                        </td>
+                                        <td class="align-items-center col-5">
+                                            <nz-date-picker class="form-control" formControlName="endDate"
+                                                (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                                        </td>
+                                        <td class="text-center align-items-center col-5" style="justify-content: center;">
+                                            <p>{{item.get('state')!.value | stateTask }}
+                                            <p></p>
+                                        </td>
+                                    </ng-template>
+    
+                                </ng-container>
+    
+                            </tr>
+                            <tr class="task-table-button" (click)="addTask()">
+                                <td colspan="4">
+                                    <div> Thêm Công việc...</div>
+                                </td>
+                            </tr>
+                        </tbody>
+    
+                    </table>
+                </div> -->
+                <app-task-row-table>
 
-                        </ng-container>
+                </app-task-row-table>
+                <br />
+                <app-task-row-table>
 
-                    </tr>
-                    <tr class="task-table-button" (click)="addTask()">
-                        <td colspan="4">
-                            <div> Thêm Công việc...</div>
-                        </td>
-                    </tr>
-                </tbody>
-
-            </table>
+                </app-task-row-table>
+            </div>
         </div>
+
+
+
         <!-- end table -->
 
-        <!-- <ng-container *ngIf="!isCollapsed"> -->
-        <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed" (watchChange)="watchChange($event)"
-            [ngClass]="!isCollapsed ? 'toggle-task-detail':''" class="task-detail"></app-task-detail>
-        <!-- </ng-container> -->
+        <!-- detail task -->
+        <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
+            (watchChange)="watchChange($event)" [ngClass]="!isCollapsed ? 'toggle-task-detail':''"
+            class="task-detail"></app-task-detail>
+        <!-- end detail task -->
 
 
     </div>

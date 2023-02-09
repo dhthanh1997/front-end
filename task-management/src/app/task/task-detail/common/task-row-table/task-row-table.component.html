@@ -1,0 +1,92 @@
+<div class="task-row-table-header">
+    <div class="p-1">
+        <div class="col-md-4">
+            <div class="float-left">
+                <button nz-button nzType="primary" (click)="collapsedTask()">
+                    <ng-container *ngIf="isCollapsedTable else iconCollapsedTpl">
+                        <span nz-icon nzType="caret-right" nzTheme="outline"></span>
+                    </ng-container>
+                    <ng-template #iconCollapsedTpl>
+                        <span nz-icon nzType="caret-down" nzTheme="outline"></span>
+                    </ng-template>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="isCollapsedTable else collapsedTplTask">
+
+    </ng-container>
+    <ng-template #collapsedTplTask>
+        <div class="p-1">
+            <div class="table-responsive" [formGroup]="formValidation">
+                <table class="table">
+
+                    <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="taskArray">
+                        <tr *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y"
+                            (click)="!isCollapsed ? getTask(item, idx) : isCollapsed">
+                            <ng-container [formGroupName]="idx">
+                                <td class="align-items-center col-8">
+                                    <div class="d-flex flex-row">
+                                        <div class="col-1 check-circle-custom">
+                                            <span nz-icon nzType="check-circle" (click)="markCompleteTask(item)"
+                                                nzTheme="outline"></span>
+                                        </div>
+                                        <div class="col-7" (mouseover)="mouseOver(item, idx)"
+                                            (mouseleave)="mouseLeave(item, idx)">
+                                            <input type="text" (click)="detectClickEvent(item,idx)" appAutoFocus
+                                                (keyup.enter)="addTask()" appClickOutsideAndUpdate
+                                                [ngClass]="!(item.get('isShow')!.value) ? 'input_disabled' : ''"
+                                                nz-input class="form-control" formControlName="name">
+
+                                        </div>
+                                        <ng-container *ngIf="isCollapsed">
+                                            <div class="col-4">
+                                                <button class="float-right" nz-button nzTooltipTitle="Xem chi tiết"
+                                                    nzTooltipPlacement="bottom" nz-tooltip nzType="default"
+                                                    nzShape="circle" (click)="detailTask(item, idx)">
+                                                    <span nz-icon nzType="eye" nzTheme="outline"></span>
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </td>
+                                <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
+                                    <td class="align-items-center col-5">
+                                        <nz-date-picker class="form-control" formControlName="endDate"
+                                            (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                                    </td>
+                                </ng-template>
+                                <ng-template #collapsedTemplate>
+                                    <td class="align-items-center col-5">
+                                        <nz-date-picker class="form-control" formControlName="startDate"
+                                            (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                                    </td>
+                                    <td class="align-items-center col-5">
+                                        <nz-date-picker class="form-control" formControlName="endDate"
+                                            (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                                    </td>
+                                    <td class="text-center align-items-center col-5" style="justify-content: center;">
+                                        <p>{{item.get('state')!.value | stateTask }}
+                                        <p></p>
+                                    </td>
+                                </ng-template>
+
+                            </ng-container>
+
+                        </tr>
+                        <tr class="task-table-button" (click)="addTask()">
+                            <td colspan="4">
+                                <div> Thêm Công việc...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </ng-template>
+
+
+</div>
