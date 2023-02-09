@@ -1,14 +1,10 @@
-::ng-deep .ant-modal-body {
-  height: 500px;
-  overflow-y: scroll;
-}
-
-::ng-deep .ant-tag svg {
-  margin-bottom: 5px;
+.ban {
+  cursor: no-drop;
 }
 
 .wrapper {
-  width: 900px;
+  width: 800px;
+  height: calc(100% - 144px);
   border-radius: 3px;
 }
 
@@ -27,11 +23,4 @@
 
 .invalid-data {
   border: 1px solid red;
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  background-color: red;
-  border-radius: 50%;
 }

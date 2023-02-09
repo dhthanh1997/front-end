@@ -1,0 +1,30 @@
+* {
+  font-size: 16px;
+}
+
+::ng-deep .ant-collapse-arrow svg {
+  margin-bottom: 5px;
+}
+
+.role-detail-wrapper {
+  padding: 40px;
+
+  .collapse-wrapper {
+    margin: 30px 0;
+
+    .checkUncheck {
+      display: flex;
+      justify-content: end;
+      margin-bottom: 5px;
+
+      span {
+        transition: 0.3s all ease-in-out;
+      }
+
+      span:hover {
+        color: #f48120;
+        transition: 0.3s all ease-in-out;
+      }
+    }
+  }
+}

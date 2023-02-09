@@ -4,8 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () =>
-      import('./home/home.module').then((m) => m.HomeModule),
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
   },
   {
     path: 'project',
@@ -14,9 +13,20 @@ const routes: Routes = [
   },
   {
     path: 'task',
+    loadChildren: () => import('./task/task.module').then((m) => m.TaskModule),
+  },
+  {
+    path: 'member',
     loadChildren: () =>
-      import('./task/task.module').then((m) => m.TaskModule),
-  }
+      import('./member/member.module').then((m) => m.MemberModule),
+  },
+  {
+    path: 'roles-app',
+    loadChildren: () =>
+      import('./role/role-application/role-application.module').then(
+        (m) => m.RoleApplicationModule
+      ),
+  },
 ];
 
 @NgModule({

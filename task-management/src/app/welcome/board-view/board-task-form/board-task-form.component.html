@@ -116,24 +116,11 @@
       </div>
 
       <!-- row 6 -->
-      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+      <!-- <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label [nzSpan]="3"> Upload file </nz-form-label>
             <nz-form-control [nzSpan]="21">
-              <!-- <nz-upload
-                nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                [nzHeaders]="{ authorization: 'authorization-text' }"
-                (nzChange)="handleChange($event)"
-                name="attachFile"
-                formControlName="attachFile"
-                type="file"
-              >
-                <button nz-button>
-                  <span nz-icon nzType="upload"></span>
-                  Click to Upload
-                </button>
-              </nz-upload> -->
               <input
                 type="file"
                 formControlName="attachFile"
@@ -149,23 +136,13 @@
             </nz-form-control>
           </nz-form-item>
         </div>
-      </div>
+      </div> -->
 
       <!-- row 7 -->
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label [nzSpan]="3">
-              <!-- <button
-                nz-button
-                nzShape="circle"
-                class="d-flex align-items-center justify-content-center mr-1"
-                (click)="onCreateTag()"
-              >
-                <i nz-icon nzType="tags" nzTheme="outline"></i>
-              </button> -->
-              Tags
-            </nz-form-label>
+            <nz-form-label [nzSpan]="3"> Tags </nz-form-label>
             <nz-form-control [nzSpan]="21">
               <nz-tag
                 class="editable-tag"
@@ -202,20 +179,76 @@
           </nz-form-item>
         </div>
       </div>
+
+      <div
+        nz-row
+        class="d-flex flex-row"
+        [nzGutter]="8"
+        [hidden]="mode === 'create' || mode === 'view'"
+      >
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label [nzSpan]="3">
+              <div class="avatar"></div>
+            </nz-form-label>
+            <nz-form-control [nzSpan]="21">
+              <textarea
+                nz-input
+                id="comment"
+                [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                rows="2"
+                Placeholder="Write a comment ..."
+                formControlName="comment"
+                name="comment"
+                [readonly]="mode === 'view'"
+                (keyup)="getCommentInput()"
+              ></textarea>
+              <button
+                nz-button
+                [disabled]="buttonDisable"
+                class="my-3"
+                (click)="createComment()"
+              >
+                Save
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div
+        [hidden]="mode === 'create'"
+        nz-row
+        class="d-flex flex-row"
+        [nzGutter]="8"
+        *ngFor="let item of listComment; let idx = index"
+      >
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label [nzSpan]="3">
+              <div class="avatar"></div>
+            </nz-form-label>
+            <nz-form-control [nzSpan]="21">
+              <div>{{ item.name }}</div>
+              <div>{{ item.description }}</div>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
     </form>
   </div>
-</div>
 
-<div class="d-flex justify-content-center" *nzModalFooter>
-  <button
-    [hidden]="mode === 'view'"
-    nz-button
-    nzType="primary"
-    [disabled]="!formValidation.valid"
-    (click)="handleOk()"
-    [nzLoading]="isConfirmLoading"
-  >
-    Lưu
-  </button>
-  <button nz-button nzType="default" (click)="handleCancel()">Hủy</button>
+  <div class="d-flex justify-content-center" *nzModalFooter>
+    <button
+      [hidden]="mode === 'view'"
+      nz-button
+      nzType="primary"
+      [disabled]="!formValidation.valid"
+      (click)="handleOk()"
+      [nzLoading]="isConfirmLoading"
+    >
+      Lưu
+    </button>
+    <button nz-button nzType="default" (click)="handleCancel()">Hủy</button>
+  </div>
 </div>

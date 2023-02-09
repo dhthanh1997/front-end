@@ -39,8 +39,11 @@ import {
   MoreOutline,
   DeleteOutline,
   TagOutline,
-  HomeOutline
-
+  HomeOutline,
+  UnorderedListOutline,
+  ReconciliationOutline,
+  UsergroupAddOutline,
+  KeyOutline,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -78,7 +81,11 @@ const icons = [
   MoreOutline,
   DeleteOutline,
   TagOutline,
-  HomeOutline
+  HomeOutline,
+  UnorderedListOutline,
+  ReconciliationOutline,
+  UsergroupAddOutline,
+  KeyOutline,
 ];
 
 @NgModule({
