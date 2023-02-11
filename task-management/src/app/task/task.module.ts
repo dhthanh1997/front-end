@@ -6,7 +6,6 @@ import { TaskComponent } from './task.component';
 import { IconsProviderModule } from '../_theme/iconsProvider.module';
 import { NgZorroModule } from '../_theme/ng-zorro.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { TaskHeaderComponent } from './task-header/task-header.component';
 import { TaskTableComponent } from './task-table/task-table.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
@@ -19,7 +18,6 @@ import { TaskDetailTableComponent } from './task-detail/common/task-detail-table
 @NgModule({
   declarations: [
     TaskComponent,
-    TaskHeaderComponent,
     TaskTableComponent,
     TaskDetailComponent,
     TaskDetailFrmComponent,

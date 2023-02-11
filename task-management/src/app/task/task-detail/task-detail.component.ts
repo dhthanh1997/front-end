@@ -55,13 +55,14 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    console.log(this.isCollapsed);
     // this.initData();
 
     this.getData();
     this.getSubData();
     // không cần watch change, angular tự check change và update theo hàm watchForChange ở parent component
     this.watchForChange();
+    this.collapseListenEvent();
     // console.log(this.formValidation);
   }
 
@@ -69,7 +70,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   getSubData() {
     const shareData$ = (this.shareService.taskData);
     const source$ = shareData$.asObservable().pipe(concatMap(res => {
-      // console.log(res);
+      console.log(res);
       if (res) {
         this.idTask = res.item.controls.id.value;
         this.indexTask = res.index;
@@ -169,6 +170,16 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  // event
+  collapseListenEvent() {
+    this.shareService.isCollapseDetailTask.subscribe(res => {
+      console.log(res);
+      // if (res) {
+        this.isCollapsed = !this.isCollapsed;
+      // }
+    })
+  }
+
   mouseOver(event: any) {
     this.isShow = true;
   }
@@ -182,6 +193,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   onOpenChange(event: any) {
 
   }
+
+  // end event
 
 
 

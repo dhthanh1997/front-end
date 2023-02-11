@@ -1,17 +1,32 @@
 <div class="task-row-table-header">
     <div class="p-1">
-        <div class="col-md-4">
-            <div class="float-left">
-                <button nz-button nzType="primary" (click)="collapsedTask()">
-                    <ng-container *ngIf="isCollapsedTable else iconCollapsedTpl">
-                        <span nz-icon nzType="caret-right" nzTheme="outline"></span>
-                    </ng-container>
-                    <ng-template #iconCollapsedTpl>
-                        <span nz-icon nzType="caret-down" nzTheme="outline"></span>
-                    </ng-template>
-                </button>
-            </div>
-        </div>
+        <nz-page-header>
+            <nz-page-header-title>
+                <nz-space  [nzSize]="8">
+                    <button *nzSpaceItem nz-button nzType="default" (click)="collapsedTask()">
+                        <ng-container *ngIf="isCollapsedTable else iconCollapsedTpl">
+                            <span nz-icon class="icon-custom" nzType="caret-right" nzTheme="outline"></span>
+                        </ng-container>
+                        <ng-template #iconCollapsedTpl>
+                            <span nz-icon class="icon-custom" nzType="caret-down" nzTheme="outline"></span>
+                        </ng-template>
+                    </button>
+                    <div *nzSpaceItem>
+                        <p>{{title}}</p>
+                    </div>
+
+                </nz-space>
+            </nz-page-header-title>
+         
+            <ng-template #iconCustomizeTmpl>
+                <ng-container *ngIf="isCollapsedTable else iconCollapsedTpl">
+                    <span nz-icon nzType="caret-right" nzTheme="outline"></span>
+                </ng-container>
+                <ng-template #iconCollapsedTpl>
+                    <span nz-icon nzType="caret-down" nzTheme="outline"></span>
+                </ng-template>
+            </ng-template>
+        </nz-page-header>
     </div>
 
     <ng-container *ngIf="isCollapsedTable else collapsedTplTask">
@@ -19,7 +34,7 @@
     </ng-container>
     <ng-template #collapsedTplTask>
         <div class="p-1">
-            <div class="table-responsive" [formGroup]="formValidation">
+            <div class="table-responsive-task-row" [formGroup]="formValidation">
                 <table class="table">
 
                     <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="taskArray">
@@ -87,6 +102,4 @@
         </div>
 
     </ng-template>
-
-
 </div>

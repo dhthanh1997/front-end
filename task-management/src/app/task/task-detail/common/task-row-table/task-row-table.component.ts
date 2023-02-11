@@ -1,6 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { is } from 'date-fns/locale';
 import * as _ from 'lodash';
 import { debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
@@ -14,7 +15,8 @@ import { ShareService } from 'src/app/_share/share.service';
 @Component({
   selector: 'app-task-row-table',
   templateUrl: './task-row-table.component.html',
-  styleUrls: ['./task-row-table.component.scss']
+  styleUrls: ['./task-row-table.component.scss'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class TaskRowTableComponent implements OnInit {
 
@@ -30,6 +32,11 @@ export class TaskRowTableComponent implements OnInit {
   changesUnsubscribe = new Subject();
   private keyUpEvent$ = new Subject<any>();
 
+  @Input() title: string = "";
+  @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
+
+
+  // @ViewChild('iconCustomizeTmpl', { read: TemplateRef }) iconCustomizeTmpl: TemplateRef<any> | string = "";
 
   constructor(private fb: FormBuilder,
     private notifyService: NotifyService,
@@ -146,10 +153,10 @@ export class TaskRowTableComponent implements OnInit {
     )
   }
 
-  watchChange(event: any) {
-    console.log(event);
-    this.updateControl(event.item, event.index);
-  }
+  // watchChange(event: any) {
+  //   console.log(event);
+  //   this.updateControl(event.item, event.index);
+  // }
 
   detectClickEvent(item: any, index: number) {
     // console.log(item);
@@ -162,11 +169,13 @@ export class TaskRowTableComponent implements OnInit {
 
   detailTask(item: any, index: number) {
     // console.log(item);
+    this.collapEvent.next(this.isCollapsed);
     this.isCollapsed = !this.isCollapsed;
     this.shareService.taskData.next({
       item: item,
       index: index
     });
+    this.shareService.isCollapseDetailTask.next(this.isCollapsed);
   }
 
   getTask(item: any, index: number) {
@@ -175,6 +184,8 @@ export class TaskRowTableComponent implements OnInit {
       item: item,
       index: index
     });
+
+    this.shareService.isCollapseDetailTask.next(true);
   }
 
   addTask() {
@@ -268,7 +279,7 @@ export class TaskRowTableComponent implements OnInit {
                 };
               }
             }
-          
+
             return {
               value: current,
               isUpdate: false

@@ -20,6 +20,9 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 // NgZorro local english language settings
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
@@ -52,6 +55,9 @@ const NZ_MODULES = [
   NzMenuModule,
   NzLayoutModule,
   NzCollapseModule,
+  NzPageHeaderModule,
+  NzSpaceModule,
+  NzDescriptionsModule
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 @Injectable()
 export class ShareService {
 
-  taskData: Subject<any> = new Subject<any>();
+  public taskData: Subject<any> = new Subject<any>();
 
   // events
   public isAddRow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -16,6 +16,7 @@ export class ShareService {
   public isAddSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isDialogSave: Subject<any> = new Subject<any>();
   public isAddSubTask: Subject<any> = new Subject<any>();
+  public isCollapseDetailTask: Subject<any> = new Subject<any>();
 
   // end events
 

@@ -57,6 +57,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     // await this.isOutSide();
     // this.keyUpListenEvent();
     this.watchForChanges();
+    this.collapseListenEvent();
   }
 
   initForm() {
@@ -97,6 +98,19 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.taskArray.controls[index].get('isShow')?.setValue(false);
   }
 
+  collapseEventTaskRow(event: any) {
+    // console.log(event);
+    this.isCollapsed = !this.isCollapsed;
+    console.log(this.isCollapsed);
+    
+    // clear array sau khi collapse
+    // this.taskArray.clear();
+    // await this.search();
+    // await this.initForm();
+    // console.log(this.formValidation);
+
+  }
+
   collapseEvent(event: any) {
     console.log(event);
     this.isCollapsed = event.value;
@@ -122,6 +136,15 @@ export class TaskTableComponent implements OnInit, OnDestroy {
         this.keyUpEvent$.unsubscribe();
       }
     });
+  }
+
+  collapseListenEvent() {
+    this.shareService.isCollapseDetailTask.subscribe(res => {
+      console.log(res);
+      // if (res) {
+        // this.isCollapsed = !this.isCollapsed;
+      // }
+    })
   }
 
   updateControl(item: any, index: number) {
@@ -162,88 +185,90 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  detailTask(item: any, index: number) {
-    // console.log(item);
-    this.isCollapsed = !this.isCollapsed;
-    this.shareService.taskData.next({
-      item: item,
-      index: index
-    });
-  }
+  // detailTask(item: any, index: number) {
+  //   // console.log(item);
+  //   this.isCollapsed = !this.isCollapsed;
+  //   console.log(this.isCollapsed);
+  //   this.shareService.taskData.next({
+  //     item: item,
+  //     index: index
+  //   });
+  // }
 
-  getTask(item: any, index: number) {
-    // console.log(item);
-    this.shareService.taskData.next({
-      item: item,
-      index: index
-    });
-  }
+  // getTask(item: any, index: number) {
+  //   // console.log(item);
+  //   // this.isCollapsed = !this.isCollapsed;
+  //   this.shareService.taskData.next({
+  //     item: item,
+  //     index: index
+  //   });
+  // }
 
   addTask() {
-    const array = this.taskArray;
-    if (array && array.controls.length > 0) {
-      let lastItem = this.lastItemArray;
-      console.log(lastItem);
-      // ten cua task ma null thi khong duoc add tiep vao array
-      if (lastItem.get('name')?.value) {
-        // console.log(lastItem.get('name')?.value)
-        const form: FormGroup = initDataObject(this.task, this.task);
-        this.taskArray.controls.push(form);
-        setTimeout(() => {
-          this.shareService.isAddRow.next(true);
-          lastItem = this.lastItemArray;
-          if (lastItem.get('name')?.value) {
-            lastItem.valueChanges.pipe(debounceTime(500), take(1)).subscribe(
-              {
-                next: (res) => {
-                  if (res) {
-                    console.log(res);
-                    let task: Task = lastItem.value;
-                    this.saveTask(task);
-                  }
-                },
-                error: (err) => {
-                  console.log(err);
-                },
-                complete: () => {
+    // const array = this.taskArray;
+    // if (array && array.controls.length > 0) {
+    //   let lastItem = this.lastItemArray;
+    //   console.log(lastItem);
+    //   // ten cua task ma null thi khong duoc add tiep vao array
+    //   if (lastItem.get('name')?.value) {
+    //     // console.log(lastItem.get('name')?.value)
+    //     const form: FormGroup = initDataObject(this.task, this.task);
+    //     this.taskArray.controls.push(form);
+    //     setTimeout(() => {
+    //       this.shareService.isAddRow.next(true);
+    //       lastItem = this.lastItemArray;
+    //       if (lastItem.get('name')?.value) {
+    //         lastItem.valueChanges.pipe(debounceTime(500), take(1)).subscribe(
+    //           {
+    //             next: (res) => {
+    //               if (res) {
+    //                 console.log(res);
+    //                 let task: Task = lastItem.value;
+    //                 this.saveTask(task);
+    //               }
+    //             },
+    //             error: (err) => {
+    //               console.log(err);
+    //             },
+    //             complete: () => {
 
-                }
-              }
-            );
-          }
-        }, 200);
-        // console.log("into")
-        // debugger;
-        // save task sau 0,5s neu khong typing tiep
+    //             }
+    //           }
+    //         );
+    //       }
+    //     }, 200);
+    //     // console.log("into")
+    //     // debugger;
+    //     // save task sau 0,5s neu khong typing tiep
 
-      } else {
-        this.isNotAddRow = !this.isNotAddRow;
-        this.autoFocus(lastItem);
-      }
-    } else {
-      const form: FormGroup = initDataObject(this.task, this.task);
-      this.taskArray.controls.push(form);
-    }
+    //   } else {
+    //     this.isNotAddRow = !this.isNotAddRow;
+    //     this.autoFocus(lastItem);
+    //   }
+    // } else {
+    //   const form: FormGroup = initDataObject(this.task, this.task);
+    //   this.taskArray.controls.push(form);
+    // }
 
   }
 
-  markCompleteTask(item: any) {
-    let id = item.get('id')?.value;
-    this.taskData.markCompleteTask(id);
-  }
+  // markCompleteTask(item: any) {
+  //   let id = item.get('id')?.value;
+  //   this.taskData.markCompleteTask(id);
+  // }
 
-  saveTask(item: any) {
-    this.taskData.save(item).subscribe({
-      next: (res) => {
-        if (res.message === ResponseStatusEnum.error) {
-          this.notifyService.error(res.error);
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-  }
+  // saveTask(item: any) {
+  //   this.taskData.save(item).subscribe({
+  //     next: (res) => {
+  //       if (res.message === ResponseStatusEnum.error) {
+  //         this.notifyService.error(res.error);
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.log(err);
+  //     }
+  //   });
+  // }
 
   watchForChanges() {
     merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
@@ -270,7 +295,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
                 };
               }
             }
-          
+
             return {
               value: current,
               isUpdate: false
