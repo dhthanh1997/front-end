@@ -62,13 +62,13 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.getSubData();
     // không cần watch change, angular tự check change và update theo hàm watchForChange ở parent component
     this.watchForChange();
-    this.collapseListenEvent();
+    // this.collapseListenEvent();
     // console.log(this.formValidation);
   }
 
 
   getSubData() {
-    const shareData$ = (this.shareService.taskData);
+    const shareData$ = (this.shareService.taskDataShare);
     const source$ = shareData$.asObservable().pipe(concatMap(res => {
       console.log(res);
       if (res) {
@@ -99,7 +99,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    const shareData$ = (this.shareService.taskData);
+    const shareData$ = (this.shareService.taskDataShare);
     const source$ = shareData$.asObservable().pipe(concatMap(res => {
       // console.log(res);
       if (res) {
@@ -140,7 +140,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   watchForChange() {
     if (this.formValidation) {
-      this.formValidation.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(300), map(([prev, current]: [any, any]) => {
+      this.formValidation.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1500), map(([prev, current]: [any, any]) => {
         let prevValue = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'subTask']);
         let currentValue = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'subTask']);
         // console.log(prevValue);
@@ -163,7 +163,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       })).subscribe(res => {
         console.log(res);
         if (res.isUpdate) {
-          this.watchChange.next(res);
+          this.shareService.taskDetailShare.next(res);
         }
 
       })

@@ -52,12 +52,12 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    await this.search();
-    await this.initForm();
+    // await this.search();
+    // await this.initForm();
     // await this.isOutSide();
     // this.keyUpListenEvent();
-    this.watchForChanges();
-    this.collapseListenEvent();
+    // this.watchForChanges();
+    // this.collapseListenEvent();
   }
 
   initForm() {
@@ -113,7 +113,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   collapseEvent(event: any) {
     console.log(event);
-    this.isCollapsed = event.value;
+    this.isCollapsed = !this.isCollapsed;
     // clear array sau khi collapse
     // this.taskArray.clear();
     // await this.search();
@@ -148,42 +148,46 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   updateControl(item: any, index: number) {
+    this.cd.detectChanges();
+    // console.log(item);
     const array = this.taskArray;
     const formGroup = array.controls[index] as FormGroup;
     formGroup.patchValue(item);
-    // console.log(formGroup);
+    // this.taskArray.controls[index].patchValue(item);
+    this.formValidation.updateValueAndValidity();
+    console.log(this.formValidation);
   }
 
-  isOutSide() {
-    this.shareService.isOutSide.subscribe(
-      {
-        next: (res) => {
-          console.log(res);
-          if (res) {
-            this.watchForChanges();
-            // this.shareService.isInside.next(false);
-          }
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      }
-    )
-  }
+  // isOutSide() {
+  //   this.shareService.isOutSide.subscribe(
+  //     {
+  //       next: (res) => {
+  //         console.log(res);
+  //         if (res) {
+  //           this.watchForChanges();
+  //           // this.shareService.isInside.next(false);
+  //         }
+  //       },
+  //       error: (err) => {
+  //         console.log(err);
+  //       }
+  //     }
+  //   )
+  // }
 
   watchChange(event: any) {
     console.log(event);
     this.updateControl(event.item, event.index);
   }
 
-  detectClickEvent(item: any, index: number) {
-    // console.log(item);
-    item.get('isInside').setValue(true);
-    this.shareService.isInside.next({
-      item,
-      index
-    });
-  }
+  // detectClickEvent(item: any, index: number) {
+  //   // console.log(item);
+  //   item.get('isInside').setValue(true);
+  //   this.shareService.isInside.next({
+  //     item,
+  //     index
+  //   });
+  // }
 
   // detailTask(item: any, index: number) {
   //   // console.log(item);
@@ -270,59 +274,59 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   //   });
   // }
 
-  watchForChanges() {
-    merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
-      control.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000),
-        map(
-          ([prev, current]: [any, any]) => {
-            // (value) => {
-            // console.log(control.value.name);
-            // so sánh 2 object dùng lodash
-            let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-            let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-            // console.log(prevObject);
-            // console.log(currentObject);
+  // watchForChanges() {
+  //   merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
+  //     control.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000),
+  //       map(
+  //         ([prev, current]: [any, any]) => {
+  //           // (value) => {
+  //           // console.log(control.value.name);
+  //           // so sánh 2 object dùng lodash
+  //           let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+  //           let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+  //           // console.log(prevObject);
+  //           // console.log(currentObject);
 
-            // mảng ban đầu phải không rỗng mới check 2 object
-            if (prevObject) {
-              if (!_.isEqual(prevObject, currentObject)) {
-                // console.log(prev.name);
-                // console.log(current);
-                console.log("different in id: " + index);
-                return {
-                  value: current,
-                  isUpdate: true
-                };
-              }
-            }
+  //           // mảng ban đầu phải không rỗng mới check 2 object
+  //           if (prevObject) {
+  //             if (!_.isEqual(prevObject, currentObject)) {
+  //               // console.log(prev.name);
+  //               // console.log(current);
+  //               console.log("different in id: " + index);
+  //               return {
+  //                 value: current,
+  //                 isUpdate: true
+  //               };
+  //             }
+  //           }
 
-            return {
-              value: current,
-              isUpdate: false
-            }
-          }),
-        switchMap((valueChanged: any) => {
-          // console.log(valueChanged)
-          if (valueChanged.isUpdate) {
-            // this.changesUnsubscribe.complete();
-            console.log("into switchMap");
-            return this.updateTask(valueChanged.value);
-          } else {
-            return of(valueChanged);
-          }
-        }
-        )).subscribe((res) => {
-          console.log(res);
-          if (res.message === ResponseStatusEnum.success) {
-            console.log("ok");
-            this.updateControl(res.data, index);
-          }
+  //           return {
+  //             value: current,
+  //             isUpdate: false
+  //           }
+  //         }),
+  //       switchMap((valueChanged: any) => {
+  //         // console.log(valueChanged)
+  //         if (valueChanged.isUpdate) {
+  //           // this.changesUnsubscribe.complete();
+  //           console.log("into switchMap");
+  //           return this.updateTask(valueChanged.value);
+  //         } else {
+  //           return of(valueChanged);
+  //         }
+  //       }
+  //       )).subscribe((res) => {
+  //         console.log(res);
+  //         if (res.message === ResponseStatusEnum.success) {
+  //           console.log("ok");
+  //           this.updateControl(res.data, index);
+  //         }
 
-        })
+  //       })
 
-    }));
+  //   }));
 
-  }
+  // }
 
   updateTaskAndControl(item: Task, index: number) {
     this.taskData.update(item.id, item).subscribe({

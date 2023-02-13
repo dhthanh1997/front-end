@@ -79,7 +79,7 @@ $task_detail_height: 500px !default;
   }
 
   .task-table-left-toggle {
-    $task_detail_width: 100%;
+    $task_detail_width: 50%;
     width: calc(100vw - $task_detail_width) !important;
   }
 
@@ -114,7 +114,7 @@ $task_detail_height: 500px !default;
   }
 
   .toggle-task-detail {
-    $task_detail_width: 100%;
+    $task_detail_width: 50%;
     // display: flex;
     // flex-direction: column;
     border-left: 1px solid #dee2e6;

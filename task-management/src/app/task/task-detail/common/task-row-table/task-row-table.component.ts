@@ -29,6 +29,7 @@ export class TaskRowTableComponent implements OnInit {
   public Collapse: boolean = false;
   public listOfData: Task[] = [];
   public task = new Task();
+  public isLoading: boolean = true;
   changesUnsubscribe = new Subject();
   private keyUpEvent$ = new Subject<any>();
 
@@ -55,9 +56,12 @@ export class TaskRowTableComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.isLoadingSpinner();
+    this.watchForChanges();
+    this.updateDataForm();
     await this.search();
     await this.initForm();
-    this.watchForChanges();
+  
   }
 
   initForm() {
@@ -76,8 +80,11 @@ export class TaskRowTableComponent implements OnInit {
   }
 
 
-  collapsedTask() {
+  // event
+  async collapsedTask() {
     this.isCollapsedTable = !this.isCollapsedTable;
+    await this.search();
+    await this.initForm();
   }
 
   onDrop(event: CdkDragDrop<string[]>) {
@@ -129,49 +136,77 @@ export class TaskRowTableComponent implements OnInit {
     });
   }
 
+  updateDataForm() {
+    this.shareService.taskDetailShare.subscribe(async (res) => {
+      // this.updateControl(res.item, res.index);
+      let result = await this.updateTask(res.item);
+      if (result.message === ResponseStatusEnum.error) {
+        this.notifyService.error(res.error);
+      } else {
+        console.log("update task");
+        this.updateControl(result.data, res.index);
+      }
+    });
+  }
+
+  isLoadingSpinner() {
+    this.shareService.isLoading.subscribe({
+      next: (res) => {
+        this.isLoading = res;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  // end event
+
   updateControl(item: any, index: number) {
     const array = this.taskArray;
     const formGroup = array.controls[index] as FormGroup;
     formGroup.patchValue(item);
+    formGroup.updateValueAndValidity();
     // console.log(formGroup);
   }
 
-  isOutSide() {
-    this.shareService.isOutSide.subscribe(
-      {
-        next: (res) => {
-          console.log(res);
-          if (res) {
-            this.watchForChanges();
-            // this.shareService.isInside.next(false);
-          }
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      }
-    )
-  }
+
+  // isOutSide() {
+  //   this.shareService.isOutSide.subscribe(
+  //     {
+  //       next: (res) => {
+  //         console.log(res);
+  //         if (res) {
+  //           this.watchForChanges();
+  //           // this.shareService.isInside.next(false);
+  //         }
+  //       },
+  //       error: (err) => {
+  //         console.log(err);
+  //       }
+  //     }
+  //   )
+  // }
 
   // watchChange(event: any) {
   //   console.log(event);
   //   this.updateControl(event.item, event.index);
   // }
 
-  detectClickEvent(item: any, index: number) {
-    // console.log(item);
-    item.get('isInside').setValue(true);
-    this.shareService.isInside.next({
-      item,
-      index
-    });
-  }
+  // detectClickEvent(item: any, index: number) {
+  //   // console.log(item);
+  //   item.get('isInside').setValue(true);
+  //   this.shareService.isInside.next({
+  //     item,
+  //     index
+  //   });
+  // }
 
   detailTask(item: any, index: number) {
     // console.log(item);
     this.collapEvent.next(this.isCollapsed);
     this.isCollapsed = !this.isCollapsed;
-    this.shareService.taskData.next({
+    this.shareService.taskDataShare.next({
       item: item,
       index: index
     });
@@ -180,7 +215,7 @@ export class TaskRowTableComponent implements OnInit {
 
   getTask(item: any, index: number) {
     // console.log(item);
-    this.shareService.taskData.next({
+    this.shareService.taskDataShare.next({
       item: item,
       index: index
     });
@@ -343,13 +378,18 @@ export class TaskRowTableComponent implements OnInit {
   }
 
   async search() {
-    this.shareService.isLoading.next(true);
-    let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
-    console.log(response);
-    if (response.message === ResponseStatusEnum.success) {
-      this.listOfData = response.pagingData.content;
-    }
-    this.shareService.isLoading.next(false);
+    // if(this.taskArray && this.taskArray.controls.length == 0) {
+      this.taskArray.clear();
+      this.shareService.isLoading.next(true);
+      if (!this.isCollapsedTable) {
+        let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
+        console.log(response);
+        if (response.message === ResponseStatusEnum.success) {
+          this.listOfData = response.pagingData.content;
+        }
+      }
+      this.shareService.isLoading.next(false);
+    // }
   }
 
 }

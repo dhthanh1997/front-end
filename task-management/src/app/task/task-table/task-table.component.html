@@ -107,8 +107,8 @@
         <!-- <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
             (watchChange)="watchChange($event)" [ngClass]="!isCollapsed ? 'toggle-task-detail':''"
             class="task-detail"></app-task-detail> -->
-        <app-task-detail (collapEvent)="collapseEvent($event)" 
-            (watchChange)="watchChange($event)" [ngClass]="(!isCollapsed) ? 'toggle-task-detail':''"
+        <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
+             [ngClass]="(!isCollapsed) ? 'toggle-task-detail':''"
             class="task-detail"></app-task-detail>
         <!-- end detail task -->
 

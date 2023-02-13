@@ -4,7 +4,8 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 @Injectable()
 export class ShareService {
 
-  public taskData: Subject<any> = new Subject<any>();
+  public taskDataShare: Subject<any> = new Subject<any>();
+  public taskDetailShare: Subject<any> = new Subject<any>();
 
   // events
   public isAddRow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
