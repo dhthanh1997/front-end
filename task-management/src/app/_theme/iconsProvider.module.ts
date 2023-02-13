@@ -45,6 +45,7 @@ import {
   UsergroupAddOutline,
   KeyOutline,
   SecurityScanOutline,
+  MailOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -88,6 +89,7 @@ const icons = [
   UsergroupAddOutline,
   KeyOutline,
   SecurityScanOutline,
+  MailOutline
 ];
 
 @NgModule({

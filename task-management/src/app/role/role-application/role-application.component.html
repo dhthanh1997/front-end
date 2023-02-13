@@ -1,4 +1,4 @@
-<div class="member-wrapper">
+<div class="member-wrapper" *ngIf="outlet.isActivated == false">
   <div class="container">
     <div class="row">
       <div class="tool" style="width: 100%; margin-top: 1.5em">
@@ -20,26 +20,6 @@
         <button nz-button nzDanger class="mr-2" (click)="onDeleteAll(listId)">
           Delete Selected
         </button>
-        <!-- <button
-          nz-button
-          nz-dropdown
-          nzTrigger="click"
-          [nzDropdownMenu]="menu"
-          class="d-flex align-items-center mr-2"
-        >
-          <i nz-icon nzType="sort-ascending" nzTheme="outline"></i>
-        </button>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-          <ul
-            nz-menu
-            nzSelectable
-            *ngFor="let item of searchField; let idx = index"
-          >
-            <li nz-menu-item (click)="getFilterValue(idx)">
-              {{ item }}
-            </li>
-          </ul>
-        </nz-dropdown-menu> -->
         <button
           nz-button
           (click)="isCollapsed()"
@@ -48,17 +28,6 @@
           <i nz-icon nzType="filter" nzTheme="outline"></i>
           <span>Filter</span>
         </button>
-        <!-- <nz-dropdown-menu #menu="nzDropdownMenu">
-          <ul
-            nz-menu
-            nzSelectable
-            *ngFor="let item of searchField; let idx = index"
-          >
-            <li nz-menu-item (click)="getFilterValue(idx)">
-              {{ item }}
-            </li>
-          </ul>
-        </nz-dropdown-menu> -->
       </div>
       <div class="date-picker-custom mt-3" [hidden]="!isCollapse">
         <nz-date-picker [nzSize]="'default'" class="mr-2"></nz-date-picker>
@@ -101,7 +70,7 @@
             <td>
               <span
                 style="cursor: pointer"
-                [routerLink]="['roles-app-detail', item.id]"
+                [routerLink]="['/roles-app/roles-app-detail', item.id]"
                 >{{ item.name }}</span
               >
             </td>
@@ -166,3 +135,5 @@
     </div>
   </div>
 </div>
+
+<router-outlet #outlet="outlet"></router-outlet>

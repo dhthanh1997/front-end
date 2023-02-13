@@ -17,12 +17,7 @@ import { TaskTagService } from '../../task-tag/service/task-tag.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CommentService } from 'src/app/_core/api/comment/comment.service';
 import { commentContent } from 'src/app/_core/api/comment/comment';
-
-enum ModeModal {
-  CREATE = 'create',
-  UPDATE = 'update',
-  VIEW = 'view',
-}
+import { ModeModal } from 'src/app/_core/enum/modeModal';
 
 @Component({
   selector: 'internal-app-board-task-form',

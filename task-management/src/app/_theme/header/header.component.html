@@ -26,16 +26,20 @@
   </div>
   <div class="col-md-6 align-items-center pl-0 pr-0">
     <div class="header-user">
-      <a class="border rounded-circle" nz-dropdown [nzDropdownMenu]="menu">
+      <a
+        class="border rounded-circle"
+        nz-dropdown
+        nzTrigger="click"
+        [nzDropdownMenu]="menu"
+      >
         <!-- <div class=""> -->
         <span nz-icon nzType="user"></span>
         <!-- </div> -->
       </a>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
-          <li nz-menu-item>My Profile</li>
+          <li nz-menu-item routerLink="user-profile">My Profile</li>
           <li nz-menu-item>My Settings</li>
-          <!-- <li nz-menu-item>Members</li> -->
           <li nz-menu-item nzDanger>Log Out</li>
         </ul>
       </nz-dropdown-menu>

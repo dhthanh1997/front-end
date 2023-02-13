@@ -29,7 +29,7 @@
             <label
               *ngIf="child.parentCode === listParent[idx].code"
               nz-checkbox
-              [ngModel]="child.isChecked"
+              [(ngModel)]="child.isChecked"
               (ngModelChange)="isChecked($event, cursor)"
               style="line-height: 1.5"
               >{{ child.name }}</label
@@ -40,5 +40,5 @@
     </nz-collapse>
   </div>
 
-  <button nz-button>Save</button>
+  <button nz-button (click)="onCreate()">Save</button>
 </div>

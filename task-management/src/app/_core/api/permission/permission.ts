@@ -20,7 +20,9 @@ export interface permissionContent {
   lastModifiedBy?: string;
   lastModifiedDate?: string;
   name: string;
+  parentCode?: string;
   status?: string;
+  type?: String;
   isChecked?: Boolean;
 }
 

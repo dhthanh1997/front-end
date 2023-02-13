@@ -8,7 +8,7 @@
     <div cdkDropListGroup class="d-flex">
       <div
         class="example-container"
-        *ngFor="let list of taskList; let idx = index"
+        *ngFor="let list of sectionList; let idx = index"
         cdkDrag
         [cdkDragDisabled]="isEdit"
       >
@@ -17,7 +17,25 @@
           class="task p-3 d-flex align-items-center"
           style="border-bottom: 1px solid #c9cbcf"
         >
-          <h2 style="font-size: 1.2rem">{{ list.status }}</h2>
+          <h2
+            style="font-size: 1.2rem; width: 100%; cursor: pointer"
+            class="editable-cell"
+            [hidden]="editIdx === idx"
+            (click)="startEdit(idx)"
+          >
+            {{ list.name }}
+          </h2>
+          <input
+            [hidden]="editIdx !== idx"
+            type="text"
+            nz-input
+            nzAutoFocus
+            [value]="list.name"
+            (keyup.enter)="editSection(list.id, idx)"
+            (blur)="editSection(list.id, idx)"
+            style="padding-left: 8px"
+            class="sectionName"
+          />
           <div class="boardBtn d-flex">
             <button
               class="newTaskBtn py-2 px-3"
@@ -29,8 +47,10 @@
             </button>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu>
-                <li nz-menu-item>Delete List</li>
-                <li nz-menu-item>2nd menu item</li>
+                <li nz-menu-item (click)="startEdit(idx)">Rename Section</li>
+                <li nz-menu-item nzDanger (click)="deleteSection(list.id)">
+                  Delete Section
+                </li>
               </ul>
             </nz-dropdown-menu>
             <!-- <button class="newTaskBtn" (click)="addToDo()">

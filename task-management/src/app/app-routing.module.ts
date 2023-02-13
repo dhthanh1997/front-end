@@ -32,6 +32,13 @@ const routes: Routes = [
         (m) => m.RoleApplicationModule
       ),
   },
+  {
+    path: 'user-profile',
+    loadChildren: () =>
+      import('./user/profile/profile.module').then(
+        (m) => m.ProfileModule
+      ),
+  },
 ];
 
 @NgModule({

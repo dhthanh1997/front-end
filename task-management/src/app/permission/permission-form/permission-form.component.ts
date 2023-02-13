@@ -15,6 +15,9 @@ export class PermissionFormComponent implements OnInit {
   isConfirmLoading = false;
   checked = false;
 
+  public listData: any;
+  public listParent: any = [];
+
   @Input() mode!: string;
 
   @Input() title: string = '';
@@ -41,6 +44,10 @@ export class PermissionFormComponent implements OnInit {
     return this.formValidation.get('parentCode');
   }
 
+  get type() {
+    return this.formValidation.get('type');
+  }
+
   get description() {
     return this.formValidation.get('description');
   }
@@ -50,9 +57,10 @@ export class PermissionFormComponent implements OnInit {
 
     this.formValidation = this.fb.group({
       id: ['', []],
-      name: ['', [Validators.required, Validators.minLength(5)]],
+      name: ['', [Validators.required, Validators.minLength(4)]],
       code: ['', [Validators.required]],
-      parentCode: [''],
+      parentCode: ['', []],
+      type: ['', [Validators.required]],
       description: ['', []],
     });
 
@@ -61,10 +69,36 @@ export class PermissionFormComponent implements OnInit {
         this.getById(this.id);
       }
     }
+
+    this.getPermission();
   }
 
   changeChecked() {
     this.checked = !this.checked;
+  }
+
+  getPermission() {
+    this.service.getPermission(1, 999, '').subscribe({
+      next: (res) => {
+        console.log(res);
+        this.listData = res.pagingData.content;
+        // console.log(this.listData);
+        this.getParentCode();
+        // this.totalElements = res.pagingData.totalElements;
+        // this.totalPages = res.pagingData.totalPages;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getParentCode() {
+    for (let i = 0; i < this.listData.length; i++) {
+      if (this.listData[i].parentCode == null)
+        this.listParent.push(this.listData[i]);
+      console.log(this.listParent);
+    }
   }
 
   getById(id: number) {
@@ -75,6 +109,7 @@ export class PermissionFormComponent implements OnInit {
           id: this.id,
           name: res.data.name,
           code: res.data.code,
+          type: res.data.type,
           parentCode: res.data.parentCode,
           description: res.data.description,
         });
@@ -83,6 +118,7 @@ export class PermissionFormComponent implements OnInit {
   }
 
   handleOk(): void {
+    debugger;
     this.isConfirmLoading = true;
     const item: permissionContent = this.formValidation.value;
     if (this.mode === ModeModal.CREATE) {

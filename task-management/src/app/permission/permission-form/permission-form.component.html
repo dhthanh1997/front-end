@@ -22,12 +22,11 @@
                 formControlName="name"
                 name="name"
                 [readonly]="mode === 'view'"
-                [ngClass]="mode === 'view' ? 'ban' : ''"
                 required
               />
               <ng-template #Name let-control>
                 <ng-container *ngIf="control.hasError('minlength')"
-                  >MinLength is 5</ng-container
+                  >MinLength is 4</ng-container
                 >
                 <ng-container *ngIf="control.hasError('required')"
                   >Input is required</ng-container
@@ -41,19 +40,18 @@
       <!-- row 2 -->
 
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
-        <div nz-col [nzSpan]="12">
+        <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label nz-col [nzSpan]="6">
+            <nz-form-label nz-col [nzSpan]="3">
               Code <span style="color: red">*</span>
             </nz-form-label>
-            <nz-form-control nz-col [nzSpan]="18" [nzErrorTip]="Code">
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Code">
               <input
                 nz-input
                 placeholder="Code"
                 formControlName="code"
                 name="code"
                 [readonly]="mode === 'view'"
-                [ngClass]="mode === 'view' ? 'ban' : ''"
               />
               <ng-template #Code let-control>
                 <ng-container *ngIf="control.hasError('required')"
@@ -63,33 +61,70 @@
             </nz-form-control>
           </nz-form-item>
         </div>
+      </div>
 
-        <div nz-col [nzSpan]="12">
+      <!-- row 3 -->
+
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label nz-col [nzSpan]="6">
+            <nz-form-label nz-col [nzSpan]="3">
               Parent Code
               <!-- <span style="color: red">*</span> -->
             </nz-form-label>
-            <nz-form-control nz-col [nzSpan]="18" [nzErrorTip]="Code">
-              <input
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Code">
+              <!-- <input
                 nz-input
                 placeholder="Parent Code"
                 formControlName="parentCode"
                 name="parentCode"
                 [readonly]="mode === 'view'"
-                [ngClass]="mode === 'view' ? 'ban' : ''"
-              />
-              <!-- <ng-template #Code let-control>
-                <ng-container *ngIf="control.hasError('required')"
-                  >Input is required</ng-container
+
+              /> -->
+              <nz-select
+                formControlName="parentCode"
+                name="parentCode"
+                [nzDisabled]="mode === 'view'"
+              >
+                <nz-option
+                  *ngFor="let item of listParent"
+                  nzValue="{{ item.code }}"
+                  nzLabel="{{ item.name }}"
                 >
-              </ng-template> -->
+                </nz-option>
+              </nz-select>
             </nz-form-control>
           </nz-form-item>
         </div>
       </div>
 
-      <!-- row 3 -->
+      <!-- row 4 -->
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label [nzSpan]="3">
+              Type <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control [nzSpan]="21" [nzErrorTip]="Type">
+              <nz-radio-group
+                formControlName="type"
+                name="type"
+                [nzDisabled]="mode === 'view'"
+              >
+                <label nz-radio nzValue="0"> Menu </label>
+                <label nz-radio nzValue="1"> Action </label>
+              </nz-radio-group>
+              <ng-template #Type let-control>
+                <ng-container *ngIf="control.hasError('required')"
+                  >Type is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- row 5 -->
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">

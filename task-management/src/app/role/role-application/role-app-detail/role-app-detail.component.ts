@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PermissionService } from 'src/app/_core/api/permission/permission.service';
+import { rolePermissionContent } from 'src/app/_core/api/rolePermission/role-permission';
+import { RolePermissionService } from 'src/app/_core/api/rolePermission/role-permission.service';
 
 @Component({
   selector: 'app-role-app-detail',
@@ -8,6 +11,7 @@ import { PermissionService } from 'src/app/_core/api/permission/permission.servi
 })
 export class RoleAppDetailComponent implements OnInit {
   public listData: any;
+  public listRolePer: any;
   public listParent: any = [];
   public listChild: any = [];
   public listId: number[] = [];
@@ -15,29 +19,63 @@ export class RoleAppDetailComponent implements OnInit {
   public pageNumber = 1;
   public pageSize = 999;
   public txtSearch: string | undefined;
+  public txtRolePer: string | undefined;
   public totalElements = 0;
   public totalPages: number | undefined;
 
   checkedBoxAll = false;
   isClicked = false;
 
-  constructor(private service: PermissionService) {}
+  constructor(
+    private service: PermissionService,
+    private rolePerService: RolePermissionService,
+    private route: ActivatedRoute,
+    private rolePermission: RolePermissionService
+  ) {}
 
   ngOnInit(): void {
     this.getPermission();
   }
 
-  getPermission() {
+  public getIdRole() {
     // debugger;
+    let id = this.route.snapshot.paramMap.get('id');
+    this.txtRolePer =  `roleId.eq.${id},`;
+    console.log(id);
+    return parseInt(id!);
+  }
+
+  async getPermission() {
+    // debugger;
+    this.getRolePer();
     this.service
       .getPermission(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
-        next: (res) => {
+        next: async (res) => {
           console.log(res);
           this.listData = res.pagingData.content;
           this.getParentCode();
           this.getChildCode();
           console.log(this.listData);
+          this.totalElements = res.pagingData.totalElements;
+          this.totalPages = res.pagingData.totalPages;
+          await this.rolePerChecked();
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  getRolePer() {
+    this.getIdRole();
+    this.rolePerService
+      .getRolePer(this.pageNumber, this.pageSize, this.txtRolePer)
+      .subscribe({
+        next: (res) => {
+          console.log("on role per");
+          this.listRolePer = res.pagingData.content;
+          console.log(this.listRolePer);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
         },
@@ -47,11 +85,37 @@ export class RoleAppDetailComponent implements OnInit {
       });
   }
 
+  onCreate() {
+    debugger;
+    let items:any = [];
+    for(let i=0; i<this.listId.length; i++) {
+
+    let item: rolePermissionContent = {} ;
+      item.roleId = this.getIdRole();
+      item.permissionId = this.listId[i];
+      items.push(item);
+    }
+    this.rolePermission.createRolePer(items).subscribe({
+      next: (res: rolePermissionContent) => {
+        // console.log(res);
+        if (res) {
+          console.log(res);
+        }
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('done');
+      },
+    });
+  }
+
   getParentCode() {
     for (let i = 0; i < this.listData.length; i++) {
       if (this.listData[i].parentCode == null)
         this.listParent.push(this.listData[i]);
-      console.log(this.listParent);
+      // console.log(this.listParent);
     }
   }
 
@@ -59,7 +123,7 @@ export class RoleAppDetailComponent implements OnInit {
     for (let i = 0; i < this.listData.length; i++) {
       if (this.listData[i].parentCode != null)
         this.listChild.push(this.listData[i]);
-      console.log(this.listChild);
+      // console.log(this.listChild);
     }
   }
 
@@ -78,17 +142,30 @@ export class RoleAppDetailComponent implements OnInit {
             return;
           } else this.listId = [];
           // console.log(item.isChecked);
-          console.log(this.listId);
+          // console.log(this.listId);
         }
       }
     );
+  }
+
+  rolePerChecked() {
+    // debugger;
+    setTimeout(() => {
+      for(let i = 0; i < this.listRolePer.length; i++) {
+        for(let j = 0; j < this.listData.length; j++) {
+          if(this.listRolePer[i].permissionId === this.listData[j].id) {
+            this.listData[j].isChecked = true;
+          }
+        }
+      }
+    }, 100)
+
   }
 
   isChecked(event: any, index: number) {
     // debugger;
     this.listChild[index].isChecked = event;
     this.checkIntoArr(index);
-    // console.log(this.listData[index].isChecked);
     console.log(this.listId);
   }
 

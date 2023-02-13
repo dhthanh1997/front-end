@@ -83,6 +83,7 @@
             <th>Name</th>
             <th>Code</th>
             <th>Parent Code</th>
+            <th>Type</th>
             <th>Description</th>
             <th>Action</th>
           </tr>
@@ -101,8 +102,6 @@
             </td>
             <td>
               <span
-                style="cursor: pointer"
-                [routerLink]="['roles-app-detail', item.id]"
                 >{{ item.name }}</span
               >
             </td>
@@ -111,6 +110,10 @@
             </td>
             <td>
               {{ item.parentCode }}
+            </td>
+            <td>
+              <span *ngIf="item.type === 0">Menu</span>
+              <span *ngIf="item.type === 1">Action</span>
             </td>
             <td>
               {{ item.description }}
