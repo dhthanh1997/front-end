@@ -79,41 +79,47 @@
         </div>
     </div>
 
+    <!-- content -->
+    <div class="p-2">
+        <div class="d-flex flex-row">
+            <!-- table -->
+            <div class="task-table-left" [ngClass]="(!isCollapsed) ? 'task-table-left-toggle':''">
+
+                <app-task-row-table (collapEvent)="collapseEventTaskRow($event)" [title]="'Công việc trong tuần'">
+
+                </app-task-row-table>
+                <br />
+                <app-task-row-table (collapEvent)="collapseEventTaskRow($event)" [title]="'Kế hoạch tuần sau'">
+
+                </app-task-row-table>
+            </div>
+
+
+
+            <!-- end table -->
+
+            <!-- detail task -->
+            <!-- <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
+            (watchChange)="watchChange($event)" [ngClass]="!isCollapsed ? 'toggle-task-detail':''"
+            class="task-detail"></app-task-detail> -->
+            <!-- <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
+             [ngClass]="(!isCollapsed) ? 'toggle-task-detail':''"
+            class="task-detail"></app-task-detail> -->
+            <!-- end detail task -->
+
+
+        </div>
+
+    </div>
+    <!-- end content -->
+
 
 </div>
 <!-- end header -->
 
-<!-- content -->
-<div class="p-2">
-    <div class="d-flex flex-row">
-        <!-- table -->
-
-        <div class="task-table-left" [ngClass]="(!isCollapsed) ? 'task-table-left-toggle':''">
-
-            <app-task-row-table (collapEvent)="collapseEventTaskRow($event)"  [title]="'Công việc trong tuần'">
-
-            </app-task-row-table>
-            <br />
-            <app-task-row-table (collapEvent)="collapseEventTaskRow($event)"  [title]="'Kế hoạch tuần sau'">
-
-            </app-task-row-table>
-        </div>
-
-
-
-        <!-- end table -->
-
-        <!-- detail task -->
-        <!-- <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
-            (watchChange)="watchChange($event)" [ngClass]="!isCollapsed ? 'toggle-task-detail':''"
-            class="task-detail"></app-task-detail> -->
-        <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
-             [ngClass]="(!isCollapsed) ? 'toggle-task-detail':''"
-            class="task-detail"></app-task-detail>
-        <!-- end detail task -->
-
-
-    </div>
-
+<!-- detail -->
+<div class="task-detail p-2" [ngClass]="(!isCollapsed) ? 'toggle-task-detail':''">
+    <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
+         class=""></app-task-detail>
 </div>
 <!-- end content -->

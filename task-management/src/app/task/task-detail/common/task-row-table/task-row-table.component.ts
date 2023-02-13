@@ -59,6 +59,7 @@ export class TaskRowTableComponent implements OnInit {
     this.isLoadingSpinner();
     this.watchForChanges();
     this.updateDataForm();
+    this.closeDetailTask();
     await this.search();
     await this.initForm();
   
@@ -156,6 +157,14 @@ export class TaskRowTableComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
+      }
+    })
+  }
+
+  closeDetailTask() {
+    this.shareService.isCloseDetailTask.subscribe(res => {
+      if(res) {
+        this.isCollapsed = !this.isCollapsed;
       }
     })
   }

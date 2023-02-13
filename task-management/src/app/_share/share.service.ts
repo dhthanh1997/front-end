@@ -18,7 +18,7 @@ export class ShareService {
   public isDialogSave: Subject<any> = new Subject<any>();
   public isAddSubTask: Subject<any> = new Subject<any>();
   public isCollapseDetailTask: Subject<any> = new Subject<any>();
-
+  public isCloseDetailTask: Subject<boolean> = new Subject<boolean>();
   // end events
 
   constructor() { }

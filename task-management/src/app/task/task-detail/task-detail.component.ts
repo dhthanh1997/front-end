@@ -302,6 +302,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       isChange: true,
       value: true
     });
+    this.shareService.isCloseDetailTask.next(true);
   }
 
 }
