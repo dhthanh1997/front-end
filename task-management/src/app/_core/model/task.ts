@@ -1,4 +1,4 @@
-import { StateEnum } from "../enum/stateEnum";
+import { StateEnum } from "../enum/StateEnum";
 import { BaseEntity } from "./base";
 
 export interface todoTable {
@@ -45,6 +45,8 @@ export class Task extends BaseEntity {
   isShow: boolean;
   isUpdate: boolean;
   isInside: boolean;
+  isSubTask: boolean;
+  numberOfSubTask: number; 
 
   constructor() {
     super();
@@ -72,7 +74,9 @@ export class Task extends BaseEntity {
     this.isShow = false;
     this.isUpdate = false;
     this.isInside = false;
-    this.state = 0
+    this.state = 0;
+    this.isSubTask = false;
+    this.numberOfSubTask = 0;
   }
 
   setName(name: string) {

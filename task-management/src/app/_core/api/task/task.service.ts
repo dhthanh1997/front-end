@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Task } from '../../model/task';
 import { ResponseDataObject } from '../../other/responseDataObject';
 import { TaskApi } from './task.api';
-import { TaskData } from './taskData';
+import { TaskData } from './task-data';
 
 @Injectable()
 export class TaskService implements TaskData {

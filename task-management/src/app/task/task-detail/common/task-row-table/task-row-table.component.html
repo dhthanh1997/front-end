@@ -48,6 +48,7 @@
                                                 <span nz-icon nzType="check-circle" (click)="markCompleteTask(item)"
                                                     nzTheme="outline"></span>
                                             </div>
+
                                             <div class="col-7" (mouseover)="mouseOver(item, idx)"
                                                 (mouseleave)="mouseLeave(item, idx)">
                                                 <input type="text" appAutoFocus (keyup.enter)="addTask()"
@@ -55,14 +56,34 @@
                                                     nz-input class="form-control" formControlName="name">
 
                                             </div>
+                                            <div class="col-2">
+                                                <button class="float-right" nz-button nzTooltipTitle="Công việc con"
+                                                    nzTooltipPlacement="bottom" nz-tooltip nzType="default"
+                                                    nzShape="circle">
+                                                    <span nz-icon nzType="sisternode" nzTheme="outline"></span>
+                                                         6
+                                                </button>
+
+                                            </div>
+
                                             <ng-container *ngIf="isCollapsed">
-                                                <div class="col-4">
+                                                <div class="col-2">
                                                     <button class="float-right" nz-button nzTooltipTitle="Xem chi tiết"
                                                         nzTooltipPlacement="bottom" nz-tooltip nzType="default"
                                                         nzShape="circle" (click)="detailTask(item, idx)">
                                                         <span nz-icon nzType="eye" nzTheme="outline"></span>
                                                     </button>
                                                 </div>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="isLoadSubTask">
+                                                <table >
+                                                    <tbody>
+                                                        <tr >
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </ng-container>
                                         </div>
                                     </td>
@@ -81,10 +102,8 @@
                                             <nz-date-picker class="form-control" formControlName="endDate"
                                                 (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
                                         </td>
-                                        <td class="text-center align-items-center col-5"
-                                            style="justify-content: center;">
-                                            <p>{{item.get('state')!.value | stateTask }}
-                                            <p></p>
+                                        <td class="text-center align-items-center col-5">
+                                            {{item.get('state')!.value | stateTask }}
                                         </td>
                                     </ng-template>
 

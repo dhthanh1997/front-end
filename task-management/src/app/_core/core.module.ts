@@ -1,6 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TaskData } from './api/task/taskData';
+import { TaskData } from './api/task/task-data';
 import { TaskService } from './api/task/task.service';
 import { TaskApi } from './api/task/task.api';
 import { BaseModule } from '../_base/base.module';

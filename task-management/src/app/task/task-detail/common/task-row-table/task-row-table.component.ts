@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initFormArray, setDataInFormArray, initDataObject } from 'src/app/_base/util';
-import { TaskData } from 'src/app/_core/api/task/taskData';
+import { TaskData } from 'src/app/_core/api/task/task-data';
 import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 import { Task } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
@@ -30,6 +30,7 @@ export class TaskRowTableComponent implements OnInit {
   public listOfData: Task[] = [];
   public task = new Task();
   public isLoading: boolean = true;
+  public isLoadSubTask: boolean = false;
   changesUnsubscribe = new Subject();
   private keyUpEvent$ = new Subject<any>();
 
@@ -44,6 +45,7 @@ export class TaskRowTableComponent implements OnInit {
     private shareService: ShareService,
     private taskData: TaskData) {
     this.formValidation = initFormArray("taskArray");
+
   }
 
   ngOnDestroy(): void {
@@ -67,6 +69,7 @@ export class TaskRowTableComponent implements OnInit {
 
   initForm() {
     this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
+    
     // console.log(this.formValidation);
   }
 
@@ -384,6 +387,7 @@ export class TaskRowTableComponent implements OnInit {
         console.log(err);
       }
     });
+    console.log("hasdagdhsag")
   }
 
   async search() {
