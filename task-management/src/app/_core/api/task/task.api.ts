@@ -17,8 +17,17 @@ export class TaskApi {
     return this.http.get(this.apiController, { params });
   }
 
+  
   save(data: Task): Observable<ResponseDataObject> {
     return this.http.post(this.apiController, data);
+  }
+
+  saveListTask(data: Task[]): Observable<ResponseDataObject> {
+    return this.http.post(`${this.apiController}/listTask`, data);
+  }
+
+  updateListTask(data: Task[]): Observable<ResponseDataObject> {
+    return this.http.post(`${this.apiController}/updateListTask`, data);
   }
 
   update(id: number, data: Task): Observable<ResponseDataObject> {
@@ -29,12 +38,16 @@ export class TaskApi {
     return this.http.get(`${this.apiController}` + "/" + id);
   }
 
+  getByParentId(id: number): Observable<ResponseDataObject> {
+    return this.http.get(`${this.apiController}` + "/withParent/" + id);
+  }
+
   deleteById(id: number): Observable<ResponseDataObject> {
     return this.http.delete(`${this.apiController}` + "/" + id);
   }
 
-  markCompleted(id: number): Observable<ResponseDataObject> {
-    return this.http.put(`${this.apiController}/markCompleted` + "/" + id, {});
+  markCompleteTask(id: number): Observable<ResponseDataObject> {
+    return this.http.put(`${this.apiController}/markCompleteTask/`+ id, {});
   }
 
   uploadFile(data: Blob): Observable<ResponseDataObject> {

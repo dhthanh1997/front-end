@@ -4,6 +4,7 @@ import { FormArray, FormControl, FormGroup, Validator } from "@angular/forms";
 // data : json object
 export function initDataObject(data: any, _object: any): FormGroup {
   // check properties of object
+  debugger;
   const form: FormGroup = new FormGroup({});
   let properties = Object.getOwnPropertyNames(_object);
   properties.forEach(prop => {
@@ -45,7 +46,7 @@ export function initFormArray(arrayName: string): FormGroup {
   return form;
 }
 
-export function setDataInFormArray(data: any[], arrayName: string, form: FormGroup, _object: any): FormGroup  {
+export function setDataInFormArray(data: any[], arrayName: string, form: FormGroup, _object: any): FormGroup {
   const array = form.get(arrayName) as FormArray;
   data.forEach(value => {
     let obj = initFormObject(value, _object)
@@ -54,7 +55,38 @@ export function setDataInFormArray(data: any[], arrayName: string, form: FormGro
   return form;
 }
 
-// export function initValidators() : Validator {
+export function setDataInFormObject(data: any, form: FormGroup, _object: any): FormGroup {
+  // check properties of object
+  const properties = Object.getOwnPropertyNames(_object);
+  properties.forEach(prop => {
+    let control = new FormControl(data[prop], [])
+    form.addControl(prop, control);
+  });
+  return form;
+}
 
-// }
+export function compareProperties(prevValue: any, currentValue: any): boolean {
+  if (prevValue.toString().trim() === currentValue.toString().trim()) return true;
+  return false;
+}
+
+export function updateControlInArray(value: any, index: number, formArray: FormArray): FormArray {
+  const formGroup = formArray.controls[index] as FormGroup;
+  formGroup.patchValue(value);
+  return formArray;
+}
+
+export function updateControl(value: any, formGroup: FormGroup): FormGroup {
+  formGroup.patchValue(value);
+  return formGroup;
+}
+
+export function updateFormData(value: any, formGroup: FormGroup, _object: any): FormGroup {
+  const properties = Object.getOwnPropertyNames(_object);
+  properties.forEach(prop => {
+   let form =  formGroup.controls[prop] as FormGroup;
+   form.patchValue(value.prop)
+  });
+  return formGroup;
+}
 

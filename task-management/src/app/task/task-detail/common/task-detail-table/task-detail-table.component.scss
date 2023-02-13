@@ -1,0 +1,62 @@
+::ng-deep {
+  .modal-header,
+  .modal-content,
+  .modal-footer-custom {
+    border: none !important;
+  }
+
+  .modal-footer-custom {
+    display: flex;
+    justify-content: center;
+  }
+
+  .ant-modal-title {
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .modal-custom {
+    min-width: 90%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .table-responsive {
+      height: 400px;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      table {
+        border-top: none;
+      }
+
+      table > thead > th {
+        position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
+        position: sticky;
+        top: 0;
+        z-index: 1; // any positive value, layer order is global
+        background: #fff; // any bg-color to overlap
+      }
+    }
+  }
+
+  // dùng cho các form popup khác
+  .table-responsive-custom {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    table {
+      border-top: none;
+    }
+
+    table > thead > th {
+      position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
+      position: sticky;
+      top: 0;
+      z-index: 1; // any positive value, layer order is global
+      background: #fff; // any bg-color to overlap
+    }
+  }
+}

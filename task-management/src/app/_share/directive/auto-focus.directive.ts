@@ -27,15 +27,16 @@ export class AutoFocusDirective implements AfterViewInit {
 
   private setAppAutoFocus(autofocus: boolean) {
     if (autofocus) {
-      setTimeout(() => {
-        this.el.nativeElement.focus();
-        // scroll nearest element which is focused
-        this.el.nativeElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'nearest',
-        });
-      }, 300);
+      this.el.nativeElement.focus();
+      // scroll nearest element which is focused
+      this.el.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      });
+      // setTimeout(() => {
+       
+      // }, 100);
     }
   }
 }

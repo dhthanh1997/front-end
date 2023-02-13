@@ -1,0 +1,108 @@
+<ng-container *ngIf="isDialog else tmpViewTaskTable">
+    <div class="model-content">
+        <div class="d-flex flex-row">
+            <!-- table -->
+            <div class="table-responsive" [formGroup]="formValidation">
+                <table class="table">
+                    <thead>
+                        <th class="text-center col-8">Tên</th>
+                        <th class="text-center col-5">Ngày bắt đầu</th>
+                        <th class="text-center col-5">Ngày kết thúc</th>
+                        <th class="text-center col-6">Trạng thái</th>
+                    </thead>
+                    <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="subTask">
+                        <tr *ngFor="let item of subTask.controls; index as idx" cdkDrag cdkDragLockAxis="y">
+                            <ng-container [formGroupName]="idx">
+                                <td class="align-items-center col-8">
+                                    <div class="d-flex flex-row">
+                                        <div class="col-8" (mouseover)="mouseOver(item, idx)"
+                                            (mouseleave)="mouseLeave(item, idx)">
+                                            <input type="text" appAutoFocus (keyup.enter)="addSubTask()"
+                                                appClickOutsideAndUpdate
+                                                [ngClass]="!(item.get('isShow')!.value) ? 'input_disabled' : ''"
+                                                nz-input class="form-control" formControlName="name">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-items-center col-5">
+                                    <nz-date-picker class="form-control" formControlName="startDate"
+                                        (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                                </td>
+                                <td class="align-items-center col-5">
+                                    <nz-date-picker class="form-control" formControlName="endDate"
+                                        (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                                </td>
+                                <td class="text-center align-items-center col-5">
+                                    {{item.get('status')!.value | stateTask}}
+                                </td>
+                            </ng-container>
+
+                        </tr>
+                        <tr class="task-table-button" (click)="addSubTask()">
+                            <td colspan="4">
+                                <div> Thêm Công việc...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <!-- end table -->
+
+        </div>
+    </div>
+    <div class="modal-footer-custom" *nzModalFooter>
+        <button nz-button nzType="primary" [disabled]="!formValidation.valid" (click)="saveListTask()">Lưu</button>
+        <button nz-button nzType="default" (click)="close()">Hủy</button>
+    </div>
+</ng-container>
+
+<ng-template #tmpViewTaskTable>
+        <!-- table -->
+        <div class="table-responsive-custom" [formGroup]="formValidation">
+            <table class="table">
+                <thead>
+                    <th class="text-center col-8">Tên</th>
+                    <th class="text-center col-5">Ngày bắt đầu</th>
+                    <th class="text-center col-5">Ngày kết thúc</th>
+                    <th class="text-center col-6">Trạng thái</th>
+                </thead>
+                <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="subTask">
+                    <tr *ngFor="let item of subTask.controls; index as idx" cdkDrag cdkDragLockAxis="y">
+                        <ng-container [formGroupName]="idx">
+                            <td class="align-items-center col-8">
+                                <div class="d-flex flex-row">
+                                    <div (mouseover)="mouseOver(item, idx)"
+                                        (mouseleave)="mouseLeave(item, idx)">
+                                        <input type="text" appAutoFocus (keyup.enter)="addSubTask()"
+                                            appClickOutsideAndUpdate
+                                            [ngClass]="!(item.get('isShow')!.value) ? 'input_disabled' : ''" nz-input
+                                            class="form-control" formControlName="name">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-items-center col-5">
+                                <nz-date-picker class="form-control" formControlName="startDate"
+                                    (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                            </td>
+                            <td class="align-items-center col-5">
+                                <nz-date-picker class="form-control" formControlName="endDate"
+                                    (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
+                            </td>
+                            <td class="text-center align-items-center col-5">
+                                {{item.get('status')!.value | stateTask}}
+                            </td>
+                        </ng-container>
+
+                    </tr>
+                    <tr class="task-table-button" (click)="addSubTask()">
+                        <td colspan="4">
+                            <div> Thêm Công việc...</div>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <!-- end table -->
+</ng-template>

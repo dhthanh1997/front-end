@@ -13,7 +13,7 @@ export class LayoutComponent implements OnInit, OnChanges {
 
   constructor(private shareService: ShareService) {
     // do something
-    this.isCollapsed = false;
+    this.isCollapsed = true;
     
   }
 

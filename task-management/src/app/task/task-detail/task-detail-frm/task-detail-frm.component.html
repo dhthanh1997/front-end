@@ -1,6 +1,6 @@
 <div class="modal-header">
     <div class="col-6 p-2">
-        <button nz-button class="float-left" nzType="default" (click)="markCompleted()">
+        <button nz-button class="float-left" nzType="default" (click)="markCompleteTask()">
             <span nz-icon nzType="check" nzTheme="outline"></span>
             <ng-container *ngIf="isCompleted">
                 Hoàn thành
@@ -26,165 +26,217 @@
 </div>
 <div class="modal-content" [formGroup]="formValidation">
     <!-- row 1 -->
-    <div nz-row [nzGutter]="1">
-        <div nz-col [nzSpan]="24">
-            <nz-form-item nz-row [nzGutter]="1">
-                <nz-form-label class="align-items-center" [nzSpan]="24">
-                    <h3 class="pl-2 pt-2">{{formValidation.get('name')!.value}}</h3>
-                </nz-form-label>
-            </nz-form-item>
-        </div>
-    </div>
-    <!-- end row 1 -->
-
-    <!-- row 2 -->
-    <div nz-row [nzGutter]="1">
-        <div nz-col [nzSpan]="24">
-            <nz-form-item nz-row [nzGutter]="1">
-                <nz-form-label [nzSpan]="3">
-                    Phụ trách
-                </nz-form-label>
-                <nz-form-control [nzSpan]="21">
-                    <input nz-input class="input_disabled" name="assignee" disabled />
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </div>
-    <!-- end row 2 -->
-
-    <!-- row 3 -->
-    <div nz-row [nzGutter]="1">
-        <div nz-col [nzSpan]="24">
-            <nz-form-item nz-row [nzGutter]="1">
-                <nz-form-label [nzSpan]="3">
-                    Thời hạn
-                </nz-form-label>
-                <nz-form-control [nzSpan]="21">
-                    <nz-date-picker (nzOnOpenChange)="onOpenChange($event)" formControlName="endDate"></nz-date-picker>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </div>
-    <!-- end row 3 -->
-
-    <!-- row 2 -->
-    <div nz-row [nzGutter]="1">
-        <div nz-col [nzSpan]="24">
-            <nz-form-item nz-row [nzGutter]="1">
-                <nz-form-label [nzSpan]="3">
-                    Dự án
-                </nz-form-label>
-                <nz-form-control [nzSpan]="21">
-                    <nz-select nzShowSearch nzAllowClear formControlName="projectId" nzPlaceHolder="Lựa chọn dự án">
-                        <nz-option nzLabel="Dự án A" nzValue="1"></nz-option>
-                        <nz-option nzLabel="Dự án B" nzValue="2"></nz-option>
-                        <nz-option nzLabel="Dự án C" nzValue="3"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </div>
-    <!-- end row 2 -->
-
-    <!-- row 4 -->
-    <div nz-row [nzGutter]="1">
-        <div nz-col [nzSpan]="24">
-            <nz-form-item nz-row [nzGutter]="1">
-                <nz-form-label [nzSpan]="3">
-                    Mô tả
-                </nz-form-label>
-                <nz-form-control [nzSpan]="21">
-                    <textarea nz-input rows="2" placeholder="Mô tả" formControlName="description"
-                        name="description"></textarea>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </div>
-    <!-- end row 4 -->
-
-    <!-- row 5 -->
-    <div nz-row [nzGutter]="1">
-        <div nz-col [nzSpan]="24">
-            <nz-form-item nz-row [nzGutter]="1">
-                <nz-form-label [nzSpan]="3">
-                    Ghi chú
-                </nz-form-label>
-                <nz-form-control [nzSpan]="21">
-                    <textarea nz-input rows="2" placeholder="Ghi chú" formControlName="note" name="note"></textarea>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </div>
-    <!-- end row 5 -->
-
-    <!-- row 6 -->
-    <div nz-row [nzGutter]="1">
-        <div nz-col [nzSpan]="24">
-            <nz-form-item nz-row [nzGutter]="1">
-                <nz-form-label [nzSpan]="3">
-                    Vướng mắc
-                </nz-form-label>
-                <nz-form-control [nzSpan]="21">
-                    <textarea nz-input rows="2" placeholder="Vướng mắc" formControlName="problem"
-                        name="problem"></textarea>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </div>
-    <!-- end row 6 -->
-
-    <!-- row 7 -->
-    <div nz-row [nzGutter]="1">
-        <div nz-col [nzSpan]="24">
-            <nz-form-item nz-row [nzGutter]="1">
-                <nz-form-label [nzSpan]="3">
-                    Giải pháp
-                </nz-form-label>
-                <nz-form-control [nzSpan]="21">
-                    <textarea nz-input rows="2" placeholder="Giải pháp" formControlName="solution"
-                        name="solution"></textarea>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </div>
-    <!-- end row 7 -->
-
-    <!-- row 8 -->
-    <div nz-row [nzGutter]="2">
-        <div nz-col [nzSpan]="6">
-            <div class="p-2">
-                <button nz-button class="float-left" nzType="primary" nzTooltipTitle="Thêm subtask"
-                    nzTooltipPlacement="bottom" nz-tooltip (click)="addSubTask()">
-                    <span nz-icon nzType="plus" nzTheme="outline"></span>
-                    subtask
-                </button>
-
+    <div nz-row>
+        <div nz-col [nzSpan]="12">
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-control [nzSpan]="24">
+                            <input class="task-detail-name" (mouseover)="mouseOver($event)"
+                                (mouseleave)="mouseLeave($event)" [ngClass]="!isShow ? 'input_disabled' : ''" nz-input
+                                formControlName="name" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
             </div>
-        </div>
-    </div>
-    <!-- end row 8 -->
+            <!-- end row 1 -->
 
-    <!-- row 9 -->
-    <div class="task-detail-subtask" *ngIf="subTask && subTask.controls.length > 0">
-        <div class="ml-2" formArrayName="subTask">
-            <div nz-row class="p-1" *ngFor="let item of subTask.controls; index as idx">
-                <ng-container [formGroupName]="idx">
-                    <div nz-col [nzSpan]="24">
-                        <nz-form-item nz-row>
-                            <nz-form-control [nzSpan]="24">
-                                <input nz-input autofocus name="subName" formControlName="name" />
-                            </nz-form-control>
-                        </nz-form-item>
+            <!-- row 2 -->
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="6">
+                            Phụ trách
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <input nz-input class="input_disabled" name="assignee" disabled />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="6">
+                            Thời hạn
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <nz-date-picker (nzOnOpenChange)="onOpenChange($event)"
+                                formControlName="endDate"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <!-- end row 2 -->
+
+            <!-- row 3 -->
+            <!-- <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="3">
+                            Thời hạn
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="21">
+                            <nz-date-picker (nzOnOpenChange)="onOpenChange($event)" formControlName="endDate"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div> -->
+            <!-- end row 3 -->
+
+            <!-- row 4 -->
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="3">
+                            Dự án
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="21">
+                            <nz-select nzShowSearch nzAllowClear formControlName="projectId"
+                                nzPlaceHolder="Lựa chọn dự án">
+                                <nz-option nzLabel="Dự án A" nzValue="1"></nz-option>
+                                <nz-option nzLabel="Dự án B" nzValue="2"></nz-option>
+                                <nz-option nzLabel="Dự án C" nzValue="3"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <!-- end row 4 -->
+
+            <!-- row 5 -->
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="6">
+                            Mô tả
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <textarea nz-input rows="3" placeholder="Mô tả" formControlName="description"
+                                name="description"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="6">
+                            Ghi chú
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <textarea nz-input rows="3" placeholder="Ghi chú" formControlName="note"
+                                name="note"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <!-- end row 5 -->
+
+            <!-- row 6 -->
+            <!-- <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="3">
+                            Ghi chú
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="21">
+                            <textarea nz-input rows="2" placeholder="Ghi chú" formControlName="note" name="note"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div> -->
+            <!-- end row 6 -->
+
+            <!-- row 7 -->
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="6">
+                            Vướng mắc
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <textarea nz-input rows="3" placeholder="Vướng mắc" formControlName="problem"
+                                name="problem"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="6">
+                            Giải pháp
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <textarea nz-input rows="3" placeholder="Giải pháp" formControlName="solution"
+                                name="solution"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <!-- end row 7 -->
+
+            <!-- row 8 -->
+            <!-- <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item nz-row [nzGutter]="1">
+                        <nz-form-label [nzSpan]="3">
+                            Giải pháp
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="21">
+                            <textarea nz-input rows="2" placeholder="Giải pháp" formControlName="solution"
+                                name="solution"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div> -->
+            <!-- end row 8 -->
+
+            <!-- row 9 -->
+            <!-- <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="6">
+                    <div class="p-2">
+                        <button nz-button class="float-left" nzType="primary" nzTooltipTitle="Thêm subtask"
+                            nzTooltipPlacement="bottom" nz-tooltip (click)="addSubTask()">
+                            <span nz-icon nzType="plus" nzTheme="outline"></span>
+                            subtask
+                        </button>
+
                     </div>
-                </ng-container>
+                </div>
+            </div> -->
+            <!-- end row 9 -->
+
+            <!-- row 10 -->
+            <!-- <div class="task-detail-subtask" *ngIf="subTask && subTask.controls.length > 0">
+                <div class="ml-2" formArrayName="subTask">
+                    <div nz-row class="p-1" *ngFor="let item of subTask.controls; index as idx">
+                        <ng-container [formGroupName]="idx">
+                            <div nz-col [nzSpan]="24">
+                                <nz-form-item nz-row>
+                                    <nz-form-control [nzSpan]="24">
+                                        <input nz-input autofocus name="subName" formControlName="name" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div> -->
+            <!-- end row 10 -->
+
+        </div>
+
+        <div nz-col [nzSpan]="12">
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="24" class="task-detail-subtask">
+                    <div class="ml-2">
+                        <app-task-detail-table [isDialog]="false" [idTask]="idTask"></app-task-detail-table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- end row 9 -->
+
 
 </div>
 <div class="modal-footer-custom" *nzModalFooter>
-    <button nz-button class="mr-2" nzType="default" (click)="save()">
+    <button nz-button class="mr-2" nzType="primary" (click)="save()">
         Lưu
     </button>
     <button nz-button nzType="default" (click)="close()">

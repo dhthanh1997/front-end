@@ -103,7 +103,7 @@ $table_col_7: 30% !default;
         //   100vh - $header_height - $footer_height - $breadcrumb_height
         // );
         height: calc(100vh - $header_height);
-        overflow-y: scroll;
+        overflow-y: hidden;
       }
     }
   }
@@ -146,5 +146,5 @@ $table_col_7: 30% !default;
 }
 
 .input_disabled {
-  border: none;
+  border-color: white transparent;
 }

@@ -9,6 +9,7 @@ import { ThemeModule } from './_theme/theme.module';
 import { IconsProviderModule } from './_theme/iconsProvider.module';
 import { NgZorroModule } from './_theme/ng-zorro.module';
 import { CoreModule } from './_core/core.module';
+import { ShareModule } from './_share/share.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +21,8 @@ import { CoreModule } from './_core/core.module';
     HttpClientModule,
     IconsProviderModule.forRoot(),
     NgZorroModule,
-    CoreModule.forRoot(),
+    ShareModule,
+    CoreModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

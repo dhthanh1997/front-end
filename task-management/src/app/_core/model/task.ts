@@ -1,4 +1,5 @@
-import { Status } from "../enum/Status";
+import { StateEnum } from "../enum/StateEnum";
+import { BaseEntity } from "./base";
 
 export interface todoTable {
   id: number;
@@ -17,9 +18,9 @@ export interface todoTableChild {
 }
 
 
-
-
-export class Task {
+// 1: Monday ... 5: Friday
+export const dayNumberIgnoreWeekend = [1, 2, 3, 4, 5]
+export class Task extends BaseEntity {
   id: number;
   name: string;
   projectId: number;
@@ -37,13 +38,18 @@ export class Task {
   solution: string;
   note: string;
   attachFile: string;
-  parendId: number;
+  parentId: number;
+  state: number;
   status: string;
   expand: boolean;
   isShow: boolean;
   isUpdate: boolean;
+  isInside: boolean;
+  isSubTask: boolean;
+  numberOfSubTask: number; 
 
   constructor() {
+    super();
     this.id = 0;
     this.projectId = 0;
     this.name = '';
@@ -61,11 +67,16 @@ export class Task {
     this.solution = '';
     this.note = '';
     this.attachFile = '';
-    this.parendId = 0;
-    this.status = Status.TODO;
+    this.parentId = 0;
+    this.state = StateEnum.NOT_DONE;
+    this.status = '';
     this.expand = false;
     this.isShow = false;
     this.isUpdate = false;
+    this.isInside = false;
+    this.state = 0;
+    this.isSubTask = false;
+    this.numberOfSubTask = 0;
   }
 
   setName(name: string) {
@@ -75,6 +86,26 @@ export class Task {
   setDescription(description: string) {
     this.description = description;
   }
+
+  // mặc định là ngày trong tuần
+  // nêu tạo cuối tuần t7,cn sẽ nhảy sang t2
+  setStartDate(date: Date) {
+    if (dayNumberIgnoreWeekend.includes(date.getDay())) {
+      this.startDate = date;
+    } else {
+      this.startDate.setDate(date.getDate() + (date.getDay() === 5 ? 2 : 1));
+    }
+  }
+
+  // mặc định là thứ 6
+  setEndDate(date: Date) {
+    if (dayNumberIgnoreWeekend.includes(date.getDay())) {
+      this.endDate.setDate(date.getDate() + (5 - date.getDay()));
+    } else {
+      this.endDate.setDate(date.getDate() + (date.getDay() === 6 ? 7 : 6));
+    }
+  }
+
 
 }
 

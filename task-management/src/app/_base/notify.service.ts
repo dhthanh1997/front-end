@@ -11,7 +11,7 @@ export class NotifyService {
   constructor(private service: NzNotificationService) { }
 
   success(message: string) {
-    this.service.success('Thành công', message , this.modalOptions);
+    this.service.success('Thành công', message, this.modalOptions);
   }
 
   error(message: string) {
