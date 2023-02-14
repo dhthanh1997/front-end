@@ -291,7 +291,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
   public updateListTaskFromAnotherComponent() {
     const item = this.formValidation.get('subTask')?.value;
-    console.log(item);
+    // console.log(item);
     return this.taskData.updateListTask(item);
   }
 
