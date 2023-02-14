@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
   },
   {
@@ -16,6 +16,11 @@ const routes: Routes = [
     loadChildren: () => import('./task/task.module').then((m) => m.TaskModule),
   },
   {
+    path: 'permission',
+    loadChildren: () =>
+      import('./permission/permission.module').then((m) => m.PermissionModule),
+  },
+  {
     path: 'member',
     loadChildren: () =>
       import('./member/member.module').then((m) => m.MemberModule),
@@ -25,6 +30,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./role/role-application/role-application.module').then(
         (m) => m.RoleApplicationModule
+      ),
+  },
+  {
+    path: 'user-profile',
+    loadChildren: () =>
+      import('./user/profile/profile.module').then(
+        (m) => m.ProfileModule
       ),
   },
 ];

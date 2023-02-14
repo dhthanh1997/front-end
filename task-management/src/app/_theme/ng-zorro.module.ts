@@ -20,6 +20,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
@@ -55,6 +56,7 @@ const NZ_MODULES = [
   NzMenuModule,
   NzLayoutModule,
   NzCollapseModule,
+  NzRadioModule,
   NzPageHeaderModule,
   NzSpaceModule,
   NzDescriptionsModule

@@ -13,6 +13,8 @@ import { AfterViewChecked, Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { sectionContent } from 'src/app/_core/api/section/section';
+import { SectionService } from 'src/app/_core/api/section/section.service';
 import { BoardTaskFormComponent } from './board-task-form/board-task-form.component';
 import { DeleteComponent } from './delete/delete.component';
 import { BoardViewService } from './service/board-view.service';
@@ -43,12 +45,13 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
 
   // public tagList: any;
   public taskList: any;
-  public taskStatus: any;
+  public sectionList: any;
 
   modalOptions: any = {
     nzDuration: 2000,
   };
 
+  editIdx: number | null = null;
   public isEdit = false;
 
   public t: unknown;
@@ -56,8 +59,9 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private service: BoardViewService,
-    private element: ElementRef,
+    private sectionService: SectionService,
     private modalService: NzModalService,
+    private element: ElementRef,
     private notifyService: NzNotificationService,
     private route: ActivatedRoute
   ) {}
@@ -69,28 +73,12 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     // this.getTag();
     this.getTask();
+    this.getSection();
   }
 
   onKeydown(e: any) {
     e.preventDefault();
   }
-
-  // public getTag() {
-  //   this.service
-  //     .getTag(this.pageNumber, this.pageSize, this.txtSearch)
-  //     .subscribe({
-  //       next: (res) => {
-  //         console.log(res);
-  //         this.tagList = res.pagingData.content;
-  //         // console.log(this.listData);
-  //         this.totalElements = res.pagingData.totalElements;
-  //         this.totalPages = res.pagingData.totalPages;
-  //       },
-  //       error: (err) => {
-  //         console.log(err);
-  //       },
-  //     });
-  // }
 
   public getIdProject() {
     let id = this.route.snapshot.paramMap.get('id');
@@ -111,7 +99,6 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
         next: (res) => {
           console.log(res);
           this.taskList = res.pagingData.content;
-          this.taskStatus = res.pagingData.content;
           // console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
@@ -320,7 +307,89 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
   //   if (this.addnew == true) this.addnew = false;
   // }
 
-  drop(event: CdkDragDrop<content[]>) {
+  public getSection() {
+    this.sectionService.getSection(this.pageNumber, this.pageSize).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.sectionList = res.pagingData.content;
+        // console.log(this.listData);
+        this.totalElements = res.pagingData.totalElements;
+        this.totalPages = res.pagingData.totalPages;
+        console.log(this.taskList);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  startEdit(index: number): void {
+    this.editIdx = index;
+  }
+
+  editSection(id: number, index: number) {
+    // debugger;
+    let input = this.element.nativeElement.querySelectorAll('.sectionName');
+    const item: sectionContent = { name: '' };
+    item.name = input[index].value;
+    item.id = id;
+    this.sectionService.updateSection(id, item).subscribe({
+      next: (res: sectionContent) => {
+        console.log(res);
+        if (res) {
+          this.getSection();
+          // this.modelRef.close(res);
+        }
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+      complete: () => {
+        this.editIdx = null;
+        console.log('done');
+      },
+    });
+  }
+
+  deleteSection(id: number) {
+    this.modalService
+      .create({
+        nzTitle: 'Delete Section',
+        nzClassName: 'modal-custom',
+        nzContent: DeleteComponent,
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzDirection: 'ltr', // left to right
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res) {
+            this.sectionService.deleteSection(id).subscribe({
+              next: (res) => {
+                if (res) {
+                  this.notifyService.success(
+                    'Thành công',
+                    'Xóa yêu cầu',
+                    this.modalOptions
+                  );
+                }
+                this.getSection();
+              },
+              error: (err) => {
+                console.log(err);
+              },
+              complete: () => {},
+            });
+          }
+        },
+        error: (res) => {
+          console.log(res);
+        },
+      });
+  }
+
+  drop(event: CdkDragDrop<sectionContent[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

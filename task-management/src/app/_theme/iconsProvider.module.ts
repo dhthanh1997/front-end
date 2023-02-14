@@ -44,6 +44,8 @@ import {
   ReconciliationOutline,
   UsergroupAddOutline,
   KeyOutline,
+  SecurityScanOutline,
+  MailOutline,
   CheckCircleFill,
   CaretDownOutline,
   CaretRightOutline,

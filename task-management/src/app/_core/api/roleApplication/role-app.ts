@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-export interface Member {
+export interface roleApp {
   pagingData: pagingData;
 }
 

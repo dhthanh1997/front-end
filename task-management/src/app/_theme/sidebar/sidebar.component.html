@@ -24,7 +24,7 @@
       <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="home"
+          routerLink=""
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           ><i nz-icon nzType="home" nzTheme="outline"></i
@@ -61,6 +61,16 @@
           ><span class="ml-2">Reports</span></a
         >
       </li>
+      <!-- <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="permission"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ><i nz-icon nzType="security-scan" nzTheme="outline"></i
+          ><span class="ml-2">Permissions</span></a
+        >
+      </li> -->
       <li (click)="subMenu()">
         <a class="nav-link">
           <i nz-icon nzType="setting" nzTheme="outline"></i>
@@ -107,29 +117,19 @@
               <span class="ml-4">Roles</span></a
             >
           </li>
+          <li class="sub-nav-item">
+            <a
+              class="nav-link"
+              routerLink="permission"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <!-- <i nz-icon nzType="key" nzTheme="outline"></i> -->
+              <span class="ml-4">Permissions</span></a
+            >
+          </li>
         </ul>
       </li>
-      <!-- <li class="nav-item">
-        <a
-          class="nav-link"
-          routerLink="member"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          ><i nz-icon nzType="usergroup-add" nzTheme="outline"></i
-          ><span class="ml-2">Members</span></a
-        >
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          routerLink="roles-app"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          ><i nz-icon nzType="key" nzTheme="outline"></i
-          ><span class="ml-2">Roles</span></a
-        >
-      </li> -->
     </ul>
   </div>
-  <!-- </div> -->
 </div>
