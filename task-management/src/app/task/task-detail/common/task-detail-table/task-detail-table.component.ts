@@ -76,7 +76,9 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
   isDialogSave() {
     this.shareService.isDialogSave.subscribe(data => {
-      this.updateListTask();
+      if(data) {
+        this.updateListTask();
+      }
 
       // if (data.isAdd) {
       //   this.saveListTask();
@@ -174,7 +176,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
     console.log(this.subTask.controls);
     merge(...this.subTask.controls.map((control: AbstractControl, index: number) =>
-      control.valueChanges.pipe(pairwise(), debounceTime(300),
+      control.valueChanges.pipe(pairwise(), debounceTime(500),
         map(([prev, current]: [any, any]) => {
           // debugger;
           // so sánh 2 object dùng lodash
@@ -261,11 +263,12 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
 
   // update tại form khác
-  updateListTask() {
-    // debugger;
+  public updateListTask() {
+    debugger;
     const item = this.formValidation.get('subTask')?.value;
     this.taskData.updateListTask(item).subscribe({
       next: (res) => {
+        console.log(res);
         if (res.message === ResponseStatusEnum.error) {
           // return of({
           //   isSuccess: false,
@@ -284,6 +287,12 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
         console.log(err);
       }
     });
+  }
+
+  public updateListTaskFromAnotherComponent() {
+    const item = this.formValidation.get('subTask')?.value;
+    console.log(item);
+    return this.taskData.updateListTask(item);
   }
 
   close() {

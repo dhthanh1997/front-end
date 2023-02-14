@@ -46,7 +46,8 @@ import {
   KeyOutline,
   CheckCircleFill,
   CaretDownOutline,
-  CaretRightOutline
+  CaretRightOutline,
+  SisternodeOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -91,7 +92,8 @@ const icons = [
   KeyOutline,
   CheckCircleFill,
   CaretDownOutline,
-  CaretRightOutline
+  CaretRightOutline,
+  SisternodeOutline
 ];
 
 @NgModule({
