@@ -1,92 +1,42 @@
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
 .profile-wrapper {
-  padding: 32px 0;
+  padding: 40px;
+  padding-right: 80px;
 
-  .profile-page {
+  .profile-header{
     display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    max-width: 1200px;
-    min-width: 856px;
-    padding-left: 32px;
-    padding-right: 32px;
-    row-gap: 32px;
-
-    .profile-header {
-      align-items: flex-end;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      .profile-info {
-        align-items: center;
-        -moz-column-gap: 32px;
-        column-gap: 32px;
-        display: flex;
-        flex-direction: row;
-        max-width: 840px;
-        min-width: 544px;
-
-        .avatar {
-          font-size: 56px;
-          height: 160px;
-          line-height: 160px;
-          min-width: 160px;
-          width: 160px;
-          align-items: center;
-          background: black;
-          border-radius: 50%;
-          box-shadow: inset 0 0 0 1px rgb(0 0 0 / 7%);
-          box-sizing: border-box;
-          color: #fff;
-          display: inline-flex;
-          justify-content: center;
-          position: relative;
-          vertical-align: top;
-        }
-
-        .info-content {
-          .info-name {
-            display: flex;
-            overflow-wrap: break-word;
-
-            h2 {
-              font-size: 32px;
-              line-height: 40px;
-            }
-          }
-
-          .info-mail {
-            display: flex;
-            align-items: center;
-
-            i {
-              font-size: 16px;
-              margin-right: 4px;
-            }
-
-            span {
-              font-size: 14px;
-              line-height: 22px;
-            }
-          }
-
-          .info-real-time {
-            display: flex;
-            align-items: center;
-
-            i {
-              font-size: 16px;
-              margin-right: 4px;
-            }
-
-            span {
-              font-size: 14px;
-              line-height: 22px;
-            }
-          }
-
-        }
-      }
-    }
+    font-size: 30px;
+    line-height: 40px;
+    margin-bottom: 80px;
   }
+}
+
+.ban {
+  cursor: no-drop;
+}
+
+.wrapper {
+  width: 800px;
+  height: calc(100% - 144px);
+  border-radius: 3px;
+}
+
+.ant-modal-title {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.modal-content {
+  display: grid;
+  grid-template-rows: none;
+  border: none;
+}
+
+.invalid-data {
+  border: 1px solid red;
 }

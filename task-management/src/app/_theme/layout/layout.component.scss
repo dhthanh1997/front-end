@@ -103,7 +103,7 @@ $table_col_7: 30% !default;
         //   100vh - $header_height - $footer_height - $breadcrumb_height
         // );
         height: calc(100vh - $header_height);
-        overflow-y: hidden;
+        overflow-y: scroll;
       }
     }
   }

@@ -1,28 +1,144 @@
 <div class="profile-wrapper">
-  <div class="profile-page">
-    <div class="profile-header">
-      <div class="profile-info">
-        <div class="avatar">
+  <h1 class="profile-header">Profile</h1>
+  <div class="profile-content">
+    <form
+      nz-form
+      style="width: 100%"
+      [formGroup]="formValidation"
+      method="POST"
+    >
+      <input formControlName="id" name="id" hidden="true" />
 
-        </div>
-        <div class="info-content">
-          <div class="info-name"><h2>Đoàn Hữu Thành</h2></div>
-          <div class="info-mail">
-            <i nz-icon nzType="mail" nzTheme="outline"></i>
-            <span>huuthanh1308@gmail.com</span>
-          </div>
-          <div class="info-real-time">
-            <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
-            <span>00:00:00</span>
-          </div>
+      <!-- row 1 -->
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Username <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Username">
+              <input
+                nz-input
+                placeholder="Username"
+                formControlName="username"
+                name="username"
+                required
+              />
+              <ng-template #Username let-control>
+                <ng-container *ngIf="control.hasError('minlength')"
+                  >MinLength is 5</ng-container
+                >
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
         </div>
       </div>
-      <div class="profile-edit">
 
+      <!-- row 2 -->
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Name <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Name">
+              <input
+                nz-input
+                placeholder="Name"
+                formControlName="name"
+                name="name"
+                required
+              />
+              <ng-template #Name let-control>
+                <ng-container *ngIf="control.hasError('minlength')"
+                  >MinLength is 5</ng-container
+                >
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
       </div>
-    </div>
-    <div class="profile-content">
 
-    </div>
+      <!-- row 3 -->
+
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Email <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Email">
+              <input
+                nz-input
+                placeholder="Email"
+                formControlName="email"
+                name="email"
+              />
+              <ng-template #Email let-control>
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- row 4 -->
+
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Phone <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Phone">
+              <input
+                nz-input
+                placeholder="Phone"
+                formControlName="phone"
+                name="phone"
+              />
+              <ng-template #Phone let-control>
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- row 5 -->
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Role <span style="color: red">*</span>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Role">
+              <input
+                nz-input
+                placeholder="Role"
+                formControlName="role"
+                name="role"
+              />
+              <ng-template #Role let-control>
+                <ng-container *ngIf="control.hasError('required')"
+                  >Input is required</ng-container
+                >
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+    <button nz-button class="mt-3" style="float: right;">Save</button>
   </div>
 </div>
