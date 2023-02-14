@@ -12,6 +12,14 @@ export class BaseEntity {
     }
 }
 
+export interface BaseEntity {
+    createdBy: any;
+    createdDate: Date;
+    lastModifiedBy:any;
+    lastModifiedDate: Date;
+}
+
+
 export interface ReponseObject {
     
 }

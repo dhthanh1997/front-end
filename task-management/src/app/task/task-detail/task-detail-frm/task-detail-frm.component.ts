@@ -1,26 +1,29 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { catchError, concatMap, of, throwError } from 'rxjs';
+import { catchError, concatMap, Observable, of, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initDataObject, initFormArray, initFormObject, setDataInFormArray, setDataInFormObject, updateFormData } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import {  ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
+import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 import { Task } from 'src/app/_core/model/task';
 import { ShareService } from 'src/app/_share/share.service';
+import { TaskDetailTableComponent } from '../common/task-detail-table/task-detail-table.component';
 
 @Component({
   selector: 'app-task-detail-frm',
   templateUrl: './task-detail-frm.component.html',
-  styleUrls: ['./task-detail-frm.component.scss']
+  styleUrls: ['./task-detail-frm.component.scss'],
 })
-export class TaskDetailFrmComponent implements OnInit {
+export class TaskDetailFrmComponent implements OnInit, AfterViewInit {
 
   public isShow: boolean = false;
   formValidation!: FormGroup;
   public idTask: number = 0;
   public task: Task = new Task();
+  public observableTaskDetail$ = new Observable<any>();
 
+  @ViewChild('taskDetailTable') taskDetailTable!: TaskDetailTableComponent;
   @Input() isCompleted: boolean = false;
 
 
@@ -28,9 +31,14 @@ export class TaskDetailFrmComponent implements OnInit {
     private shareService: ShareService,
     private taskData: TaskData,
     private notifyService: NotifyService,
+    // private taskDetailTable: TaskDetailTableComponent,
     private modelRef: NzModalRef<TaskDetailFrmComponent>) {
     this.formValidation = initFormObject(this.task, new Task());
     this.formValidation.addControl('subTask', this.fb.array([]));
+  }
+
+  ngAfterViewInit(): void {
+    this.observableTaskDetail$ = this.taskDetailTable.updateListTaskFromAnotherComponent();
   }
 
   ngOnInit(): void {
@@ -38,6 +46,7 @@ export class TaskDetailFrmComponent implements OnInit {
     console.log(this.idTask);
     this.getData();
     this.getSubData();
+
   }
 
   onOpenChange(event: any) {
@@ -117,11 +126,14 @@ export class TaskDetailFrmComponent implements OnInit {
   save() {
     let item = this.formValidation.value;
     const task$ = this.taskData.update(item.id, item);
-    const subTask$ = this.shareService.isDialogSave;
+
+    // const subTask$ = this.taskDetailTable.updateListTask();
+    const subTask$ = this.taskDetailTable.updateListTaskFromAnotherComponent();
+    // const subTask$ =  this.taskData.updateListTask(item);
     const source$ = task$.pipe(concatMap(res => {
       console.log(res);
       if (res.message === ResponseStatusEnum.success) {
-        return of(subTask$.next(true));
+        return subTask$;
       }
       return of(res);
     }), catchError(err => throwError(() => new Error(err))));
@@ -131,7 +143,8 @@ export class TaskDetailFrmComponent implements OnInit {
         console.log(res);
         if (res) {
           this.notifyService.success("Thành công");
-          this.shareService.isDialogSave.next(true);
+          // this.shareService.isDialogSave.next(true);
+          this.closeWithData();
         }
 
       },
@@ -160,6 +173,10 @@ export class TaskDetailFrmComponent implements OnInit {
 
   close() {
     this.modelRef.close();
+  }
+
+  closeWithData() {
+    this.modelRef.close(this.formValidation.value);
   }
 
 }

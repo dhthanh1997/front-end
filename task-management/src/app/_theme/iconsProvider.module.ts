@@ -50,6 +50,7 @@ import {
   CaretDownOutline,
   CaretRightOutline,
   TeamOutline,
+  SisternodeOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -98,6 +99,7 @@ const icons = [
   CaretDownOutline,
   CaretRightOutline,
   TeamOutline,
+  SisternodeOutline
 ];
 
 @NgModule({
