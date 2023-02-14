@@ -3,9 +3,9 @@ FROM node:14.17.3-alpine as build
 WORKDIR /app
 COPY login/package*.json ./
 RUN npm cache clean --force
-RUN npm install -g @angular/cli@14.2.10
+# RUN npm install -g @angular/cli@14.2.10
 RUN npm install
-COPY login/ ./
+# COPY login/ ./
 RUN ls -la /app/*
 RUN ng build --configuration=production
 # # RUN ng serve --port 4250
