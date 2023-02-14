@@ -2,9 +2,9 @@
 FROM node:14.17.3-alpine as build
 WORKDIR /app
 COPY task-management/package*.json ./
-# RUN npm install -g @angular/cli@14.2.10
+RUN npm install -g @angular/cli@14.2.10
 RUN npm install
-# COPY task-management/ ./
+COPY task-management/ ./
 RUN ng build --configuration=production
 
 # START
