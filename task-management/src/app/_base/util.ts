@@ -55,12 +55,14 @@ export function setDataInFormArray(data: any[], arrayName: string, form: FormGro
   return form;
 }
 
+
 export function setDataInFormObject(data: any, form: FormGroup, _object: any): FormGroup {
   // check properties of object
   const properties = Object.getOwnPropertyNames(_object);
   properties.forEach(prop => {
-    let control = new FormControl(data[prop], [])
-    form.addControl(prop, control);
+    if(data[prop]) {
+      form.get(prop)?.patchValue(data[prop]);
+    }
   });
   return form;
 }

@@ -3,9 +3,9 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, Simp
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { is } from 'date-fns/locale';
 import * as _ from 'lodash';
-import { concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take } from 'rxjs';
+import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { initFormArray, setDataInFormArray, initDataObject } from 'src/app/_base/util';
+import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 import { Task } from 'src/app/_core/model/task';
@@ -140,17 +140,55 @@ export class TaskRowTableComponent implements OnInit {
     });
   }
 
+  // sửa ở form detail sẽ emit ra đây để update lên component này
   updateDataForm() {
-    this.shareService.taskDetailShare.subscribe(async (res) => {
-      // this.updateControl(res.item, res.index);
-      let result = await this.updateTask(res.item);
-      if (result.message === ResponseStatusEnum.error) {
-        this.notifyService.error(res.error);
-      } else {
-        console.log("update task");
-        this.updateControl(result.data, res.index);
+    let index = 0;
+    let id = 0;
+    let item = new Task();
+    const taskDetail$ = this.shareService.taskDetailShare
+    const source$ = taskDetail$.pipe(concatMap(res => {
+      if (res.isUpdate) {
+        index = res.index;
+        id = res.item.id;
+        item = res.item;
+        return this.taskData.update(id, item);
+      }
+      return of(null);
+    })
+      , catchError((err) => throwError(() => new Error(err))));
+
+
+    source$.subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res.message === ResponseStatusEnum.error) {
+          this.notifyService.error(res.error);
+        }
+        if (res.message === ResponseStatusEnum.success) {
+          console.log("update task");
+          this.updateControl(res.data, index);
+        }
+
+      },
+      error: (err) => {
+        console.log(err);
       }
     });
+
+
+    // this.shareService.taskDetailShare.subscribe(async (res) => {
+    //   // this.updateControl(res.item, res.index);
+    //   if (res.isUpdate) {
+    //     let result = await this.updateTask(res.item);
+    //     console.log(result);
+    //     if (result.message === ResponseStatusEnum.error) {
+    //       this.notifyService.error(res.error);
+    //     } else {
+    //       console.log("update task");
+    //       this.updateControl(result.data, res.index);
+    //     }
+    //   }
+    // });
   }
 
   isLoadingSpinner() {
@@ -172,29 +210,44 @@ export class TaskRowTableComponent implements OnInit {
     });
   }
 
- async openSubTask(item:any, index: number) {
-    const formGroup = this.taskArray.controls[index] as FormGroup;
-    const array = formGroup.get('subTask') as FormArray;
-    let id = item.get('id')?.value;
-    let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
-    if(res.data.length > 0) {
-       array.patchValue(res.data);
-       array.updateValueAndValidity();
+  async openSubTask(item: any, index: number) {
+
+    let formGroup = this.taskArray.controls[index] as FormGroup;
+    let array = formGroup.get('subTask') as FormArray;
+    let oldValue = formGroup.get('isSubTask')!.value
+    if (!array) {
+      formGroup.addControl('subTask', this.fb.array([]));
+      let id = item.get('id')?.value;
+      let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
+      if (res.data.length > 0) {
+        formGroup = setDataInFormArray(res.data, 'subTask', formGroup, new Task());
+      }
+      formGroup.get('isSubTask')!.patchValue(!oldValue);
+    } else {
+      formGroup.get('isSubTask')!.patchValue(!oldValue);
     }
-    this.isLoadSubTask = !this.isLoadSubTask;
+    formGroup.updateValueAndValidity();
+
   }
 
   // end event
 
   updateControl(item: any, index: number) {
+    // debugger;
     const array = this.taskArray;
-    const formGroup = array.controls[index] as FormGroup;
-    formGroup.patchValue(item);
-    formGroup.updateValueAndValidity();
+    let formGroup = array.controls[index] as FormGroup;
+    // console.log(formGroup);
+    if (formGroup) {
+      formGroup = setDataInFormObject(item, formGroup, new Task());
+      formGroup.updateValueAndValidity();
+    }
+    // item = new Task();
+    // formGroup.patchValue(item);
+    // formGroup.updateValueAndValidity();
     // console.log(formGroup);
   }
 
-   // isOutSide() {
+  // isOutSide() {
   //   this.shareService.isOutSide.subscribe(
   //     {
   //       next: (res) => {
