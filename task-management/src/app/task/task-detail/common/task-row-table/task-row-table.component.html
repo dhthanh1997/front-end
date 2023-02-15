@@ -58,10 +58,10 @@
                                             </div>
                                             <div class="col-2">
                                                 <button class="float-right" nz-button nzTooltipTitle="Công việc con"
-                                                    nzTooltipPlacement="bottom" nz-tooltip nzType="default"
+                                                    nzTooltipPlacement="bottom" nz-tooltip nzType="default" (click)="openSubTask(item, idx)"
                                                     nzShape="circle">
                                                     <span nz-icon nzType="sisternode" nzTheme="outline"></span>
-                                                         6
+                                                    6
                                                 </button>
 
                                             </div>
@@ -77,13 +77,23 @@
                                             </ng-container>
 
                                             <ng-container *ngIf="isLoadSubTask">
-                                                <table >
-                                                    <tbody>
-                                                        <tr >
+                                                <ng-container
+                                                    *ngIf="item.get('subTask') && item.get('subTask')?.value.length > 0">
+                                                    <table>
+                                                        <thead>
+                                                            <th class="text-center">Tên</th>
+                                                            <th class="text-center">Ngày kết thúc</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr
+                                                                *ngFor="let sub of item.get('subTask')?.value; index as idxSub">
+                                                                <td class="text-center">{{sub.name}}</td>
+                                                                <td class="text-center">{{sub.endDate}}</td>
+                                                            </tr>
 
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                        </tbody>
+                                                    </table>
+                                                </ng-container>
                                             </ng-container>
                                         </div>
                                     </td>

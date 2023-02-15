@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, Simp
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { is } from 'date-fns/locale';
 import * as _ from 'lodash';
-import { debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take } from 'rxjs';
+import { concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initFormArray, setDataInFormArray, initDataObject } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
@@ -64,12 +64,12 @@ export class TaskRowTableComponent implements OnInit {
     this.closeDetailTask();
     await this.search();
     await this.initForm();
-  
+
   }
 
   initForm() {
     this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
-    
+
     // console.log(this.formValidation);
   }
 
@@ -166,10 +166,22 @@ export class TaskRowTableComponent implements OnInit {
 
   closeDetailTask() {
     this.shareService.isCloseDetailTask.subscribe(res => {
-      if(res) {
+      if (res) {
         this.isCollapsed = !this.isCollapsed;
       }
-    })
+    });
+  }
+
+ async openSubTask(item:any, index: number) {
+    const formGroup = this.taskArray.controls[index] as FormGroup;
+    const array = formGroup.get('subTask') as FormArray;
+    let id = item.get('id')?.value;
+    let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
+    if(res.data.length > 0) {
+       array.patchValue(res.data);
+       array.updateValueAndValidity();
+    }
+    this.isLoadSubTask = !this.isLoadSubTask;
   }
 
   // end event
@@ -182,8 +194,7 @@ export class TaskRowTableComponent implements OnInit {
     // console.log(formGroup);
   }
 
-
-  // isOutSide() {
+   // isOutSide() {
   //   this.shareService.isOutSide.subscribe(
   //     {
   //       next: (res) => {
@@ -387,21 +398,20 @@ export class TaskRowTableComponent implements OnInit {
         console.log(err);
       }
     });
-    console.log("hasdagdhsag")
   }
 
   async search() {
     // if(this.taskArray && this.taskArray.controls.length == 0) {
-      this.taskArray.clear();
-      this.shareService.isLoading.next(true);
-      if (!this.isCollapsedTable) {
-        let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
-        console.log(response);
-        if (response.message === ResponseStatusEnum.success) {
-          this.listOfData = response.pagingData.content;
-        }
+    this.taskArray.clear();
+    this.shareService.isLoading.next(true);
+    if (!this.isCollapsedTable) {
+      let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
+      console.log(response);
+      if (response.message === ResponseStatusEnum.success) {
+        this.listOfData = response.pagingData.content;
       }
-      this.shareService.isLoading.next(false);
+    }
+    this.shareService.isLoading.next(false);
     // }
   }
 
