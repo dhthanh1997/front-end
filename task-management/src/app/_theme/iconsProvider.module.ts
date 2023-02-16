@@ -49,6 +49,7 @@ import {
   CheckCircleFill,
   CaretDownOutline,
   CaretRightOutline,
+  TeamOutline,
   SisternodeOutline
 } from '@ant-design/icons-angular/icons';
 
@@ -92,9 +93,12 @@ const icons = [
   ReconciliationOutline,
   UsergroupAddOutline,
   KeyOutline,
+  MailOutline,
+  SecurityScanOutline,
   CheckCircleFill,
   CaretDownOutline,
   CaretRightOutline,
+  TeamOutline,
   SisternodeOutline
 ];
 

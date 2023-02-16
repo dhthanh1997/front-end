@@ -102,7 +102,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     // console.log(event);
     this.isCollapsed = !this.isCollapsed;
     console.log(this.isCollapsed);
-    
+
     // clear array sau khi collapse
     // this.taskArray.clear();
     // await this.search();
