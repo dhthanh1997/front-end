@@ -245,12 +245,13 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   fullScreen() {
     this.modal.create({
+      // nzTitle: 'AAAA',
       nzContent: TaskDetailFrmComponent,
       nzCentered: true,
       nzMaskClosable: false,
       nzDirection: 'ltr',
       nzClassName: 'modal-custom',
-      nzFooter: null,
+      // nzFooter: null,
       nzClosable: false,
       nzComponentParams: {
         // formValidation: this.formValidation
