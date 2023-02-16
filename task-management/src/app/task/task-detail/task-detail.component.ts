@@ -86,6 +86,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         // console.log(res);
         if (res?.message === ResponseStatusEnum.success) {
           console.log("--- detail ok");
+          this.subTask.clear();
           this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
         } else {
           this.notifyService.error("Có lỗi xảy ra");

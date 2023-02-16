@@ -51,7 +51,9 @@
     font-size: 18px;
   }
 
-  .table-subTask {
-    width: 100%;
-  }
+  
+}
+
+::ng-deep .table-subTask {
+  width: 100%;
 }
