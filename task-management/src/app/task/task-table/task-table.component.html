@@ -1,6 +1,6 @@
 <!-- header -->
 <div class="task_header p-2">
-    <div class="p-1">
+    <div class="p-1"  [formGroup]="formValidation">
         <div class="d-flex flex-row">
             <div class="col-md-4">
                 <div class="float-left">
@@ -14,16 +14,17 @@
             <div class="col-md-4 offset-md-4">
                 <div class="float-right d-flex flex-row">
                     <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuTask">
-                        <button nz-button nzType="default" (click)="filter()">
+                        <button nz-button nzType="default" (click)="filterTask()">
                             <span nz-icon nzType="check-circle" nzTheme="outline">
                             </span>
                             Chưa hoàn thành
                         </button>
                         <nz-dropdown-menu #menuTask="nzDropdownMenu">
                             <ul class="dropdown_menu" nz-menu>
-                                <li nz-menu-item>Đã hoàn thành</li>
+                                <li nz-menu-item *ngFor="let item of filters">{{item}}</li>
+                                <!-- <li nz-menu-item>Đã hoàn thành</li>
                                 <li nz-menu-item>Chưa hoàn thành</li>
-                                <li nz-menu-item>Tất cả</li>
+                                <li nz-menu-item>Tất cả</li> -->
                             </ul>
                         </nz-dropdown-menu>
                     </a>
@@ -37,13 +38,15 @@
                             <ul class="dropdown_menu" nz-menu>
                                 <li nz-menu-item>Tăng dần (tên)</li>
                                 <li nz-menu-item>Giảm dần (tên)</li>
-                                <li nz-menu-divider></li>
+                                <li nz-menu-item>Tăng dần (ngày tạo)</li>
+                                <li nz-menu-item>Giảm dần (ngày tạo)</li>
+                                <!-- <li nz-menu-divider></li>
                                 <li nz-submenu nzTitle="Theo ngày">
                                     <ul>
                                         <li nz-menu-item>Tăng dần (ngày tạo)</li>
                                         <li nz-menu-item>Giảm dần (ngày tạo)</li>
                                     </ul>
-                                </li>
+                                </li> -->
                             </ul>
                         </nz-dropdown-menu>
                     </a>

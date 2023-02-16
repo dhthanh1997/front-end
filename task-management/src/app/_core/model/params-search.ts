@@ -1,12 +1,6 @@
 export interface ParamSearch {
-    sort: Sort;
-    filter: Filter;
-}
-
-export interface Sort {
-
-}
-
-export interface Filter {
-
+    sorts?: any[];
+    filters?: any[];
+    sortName?: string;
+    filterName?: string;
 }

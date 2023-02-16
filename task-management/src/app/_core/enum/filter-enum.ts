@@ -1,6 +1,6 @@
 export enum Filter {
-    name = 'name',
-    createdDate = 'createdDate',
-    startDate = 'startDate',
-    endDate = 'endDate'
+    // Chưa hoàn thành
+    NOT_DONE,
+    // Hoàn thành
+    DONE
 }
