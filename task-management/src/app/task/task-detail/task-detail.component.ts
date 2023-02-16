@@ -200,6 +200,16 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   markCompleted() {
     this.isCompleted = !this.isCompleted;
+    const formGroup = this.formValidation.get('state') as FormControl;
+    // 0: Chưa hoàn thành
+    // 1: Hoàn thành
+    if(formGroup.value === 0) {
+      formGroup.setValue(1);
+    } 
+    if(formGroup.value === 1) {
+      formGroup.setValue(0);
+    }
+    this.formValidation.updateValueAndValidity();
   }
 
   uploadFile() {

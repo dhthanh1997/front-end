@@ -13,6 +13,6 @@ FROM nginx:1.17.1-alpine as nginx
 COPY --from=build app/dist/task-management /usr/share/nginx/html
 COPY --from=build app/nginx.conf /etc/nginx/conf.d
 RUN chmod -R 777 /usr/share/nginx/html
-# CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
 
 # EXPOSE 9096

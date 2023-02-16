@@ -124,7 +124,7 @@ $task_detail_height: 500px !default;
   }
 
   app-task-detail {
-    height: $task_detail_height;
+    height: 620px;
     overflow-y: auto;
     overflow-x: hidden;
     // transition: all 0.5s ease-in-out;
