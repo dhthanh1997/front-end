@@ -7,7 +7,7 @@ import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pa
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
+import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
 import { Task } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';

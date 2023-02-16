@@ -5,7 +5,7 @@ import { catchError, concatMap, Observable, of, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initDataObject, initFormArray, initFormObject, setDataInFormArray, setDataInFormObject, updateFormData } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
+import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
 import { Task } from 'src/app/_core/model/task';
 import { ShareService } from 'src/app/_share/share.service';
 import { TaskDetailTableComponent } from '../common/task-detail-table/task-detail-table.component';

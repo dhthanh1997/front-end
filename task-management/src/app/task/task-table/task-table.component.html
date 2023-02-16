@@ -14,7 +14,7 @@
             <div class="col-md-4 offset-md-4">
                 <div class="float-right d-flex flex-row">
                     <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuTask">
-                        <button nz-button nzType="default">
+                        <button nz-button nzType="default" (click)="filter()">
                             <span nz-icon nzType="check-circle" nzTheme="outline">
                             </span>
                             Chưa hoàn thành
@@ -22,14 +22,8 @@
                         <nz-dropdown-menu #menuTask="nzDropdownMenu">
                             <ul class="dropdown_menu" nz-menu>
                                 <li nz-menu-item>Đã hoàn thành</li>
+                                <li nz-menu-item>Chưa hoàn thành</li>
                                 <li nz-menu-item>Tất cả</li>
-                                <li nz-menu-divider></li>
-                                <li nz-submenu nzTitle="sub menu">
-                                    <ul>
-                                        <li nz-menu-item>3rd menu item</li>
-                                        <li nz-menu-item>4th menu item</li>
-                                    </ul>
-                                </li>
                             </ul>
                         </nz-dropdown-menu>
                     </a>
@@ -41,13 +35,13 @@
                         </button>
                         <nz-dropdown-menu #menuSort="nzDropdownMenu">
                             <ul class="dropdown_menu" nz-menu>
-                                <li nz-menu-item>Sort 1</li>
-                                <li nz-menu-item>Sort 2</li>
+                                <li nz-menu-item>Tăng dần (tên)</li>
+                                <li nz-menu-item>Giảm dần (tên)</li>
                                 <li nz-menu-divider></li>
-                                <li nz-submenu nzTitle="sub menu">
+                                <li nz-submenu nzTitle="Theo ngày">
                                     <ul>
-                                        <li nz-menu-item>3rd menu item</li>
-                                        <li nz-menu-item>4th menu item</li>
+                                        <li nz-menu-item>Tăng dần (ngày tạo)</li>
+                                        <li nz-menu-item>Giảm dần (ngày tạo)</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -95,24 +89,10 @@
             </div>
 
 
-
-            <!-- end table -->
-
-            <!-- detail task -->
-            <!-- <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
-            (watchChange)="watchChange($event)" [ngClass]="!isCollapsed ? 'toggle-task-detail':''"
-            class="task-detail"></app-task-detail> -->
-            <!-- <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed"
-             [ngClass]="(!isCollapsed) ? 'toggle-task-detail':''"
-            class="task-detail"></app-task-detail> -->
-            <!-- end detail task -->
-
-
         </div>
 
     </div>
     <!-- end content -->
-
 
 </div>
 <!-- end header -->

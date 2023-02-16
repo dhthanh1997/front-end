@@ -109,7 +109,6 @@ $task_detail_height: 500px !default;
     flex-direction: column;
     width: $task_detail_width;
     // border-left: 1px solid #dee2e6;
-    border-top: 1px solid #dee2e6;
     transition: all 0.5s ease-in-out;
   }
 
@@ -117,6 +116,7 @@ $task_detail_height: 500px !default;
     $task_detail_width: 100%;
     // display: flex;
     // flex-direction: column;
+    border-top: 1px solid #dee2e6;
     border-left: 1px solid #dee2e6;
     border-top: 1px solid white;
     width: $task_detail_width !important;

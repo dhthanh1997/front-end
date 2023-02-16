@@ -39,8 +39,7 @@
                     <table class="table" cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="taskArray">
                         <tbody *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y"
                             (click)="!isCollapsed ? getTask(item, idx) : isCollapsed">
-                            <!-- <div *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y"
-                                (click)="!isCollapsed ? getTask(item, idx) : isCollapsed"> -->
+                        
                             <ng-container [formGroupName]="idx">
                                 <tr>
                                     <td class="align-items-center col-8">
@@ -107,9 +106,6 @@
                                 </tr>
                                 <tr *ngIf="(item.get('isSubTask')!.value)">
 
-                                    <!-- <ng-container *ngIf="(item.get('isSubTask')!.value)"> -->
-                                    <!-- <tr *ngIf="item.get('subTask') && item.get('subTask')?.value.length > 0"> -->
-
                                     <ng-container *ngIf="item.get('subTask') && item.get('subTask')?.value.length > 0">
                                         <td [attr.colspan]="!isCollapsed ? 2: 5">
                                             <nz-card class="table-subTask">
@@ -135,124 +131,13 @@
 
                                                     </tbody>
                                                   </nz-table>
-                                                <!-- <div class="table-responsive-task-row">
-                                                    <table class="table-responsive">
-                                                        <thead>
-                                                            <th class="col-9 text-center">Tên</th>
-                                                            <th class="col-9 text-center">Ngày kết thúc</th>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr
-                                                                *ngFor="let sub of item.get('subTask')?.value; index as idxSub">
-                                                                <td class="col-9 text-center">{{sub.name}}</td>
-                                                                <td class="col-9 text-center">{{sub.endDate |
-                                                                    date:'dd/MM/yyyy'}}</td>
-                                                            </tr>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div> -->
                                             </nz-card>
                                         </td>
                                     </ng-container>
-                                    <!-- </tr> -->
 
-                                    <!-- </ng-container> -->
                                 </tr>
 
                             </ng-container>
-
-
-
-
-                            <!-- </div> -->
-                            <!-- <tr *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y"
-                                (click)="!isCollapsed ? getTask(item, idx) : isCollapsed">
-                                <ng-container [formGroupName]="idx">
-                                    <td class="align-items-center col-8">
-
-                                        <div class="d-flex flex-row">
-                                            <div class="col-1 check-circle-custom">
-                                                <span nz-icon nzType="check-circle" (click)="markCompleteTask(item)"
-                                                    nzTheme="outline"></span>
-                                            </div>
-
-                                            <div class="col-7" (mouseover)="mouseOver(item, idx)"
-                                                (mouseleave)="mouseLeave(item, idx)">
-                                                <input type="text" appAutoFocus (keyup.enter)="addTask()"
-                                                    [ngClass]="!(item.get('isShow')!.value) ? 'input_disabled' : ''"
-                                                    nz-input class="form-control" formControlName="name">
-
-                                            </div>
-                                            <div class="col-2">
-                                                <button class="float-right"
-                                                    *ngIf="(item.get('numberOfSubTask')!.value > 0) " nz-button
-                                                    nzTooltipTitle="Công việc con" nzTooltipPlacement="bottom"
-                                                    nz-tooltip nzType="default" (click)="openSubTask(item, idx)"
-                                                    nzShape="circle">
-                                                    <span nz-icon nzType="sisternode" nzTheme="outline"></span>
-                                                    {{(item.get('numberOfSubTask')!.value)}}
-                                                </button>
-
-                                            </div>
-
-                                            <ng-container *ngIf="isCollapsed">
-                                                <div class="col-2">
-                                                    <button class="float-right" nz-button nzTooltipTitle="Xem chi tiết"
-                                                        nzTooltipPlacement="bottom" nz-tooltip nzType="default"
-                                                        nzShape="circle" (click)="detailTask(item, idx)">
-                                                        <span nz-icon nzType="eye" nzTheme="outline"></span>
-                                                    </button>
-                                                </div>
-                                            </ng-container>
-                                        </div>
-
-                                    </td>
-                                    <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
-                                        <td class="align-items-center col-5">
-                                            <nz-date-picker class="form-control" formControlName="endDate"
-                                                (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
-                                        </td>
-                                    </ng-template>
-                                    <ng-template #collapsedTemplate>
-                                        <td class="align-items-center col-5">
-                                            <nz-date-picker class="form-control" formControlName="startDate"
-                                                (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
-                                        </td>
-                                        <td class="align-items-center col-5">
-                                            <nz-date-picker class="form-control" formControlName="endDate"
-                                                (nzOnOpenChange)="onOpenChange($event)"></nz-date-picker>
-                                        </td>
-                                        <td class="text-center align-items-center col-5">
-                                            {{item.get('state')!.value | stateTask }}
-                                        </td>
-                                    </ng-template>
-                                    <ng-container *ngIf="(item.get('isSubTask')!.value)">
-                                        <ng-container
-                                            *ngIf="item.get('subTask') && item.get('subTask')?.value.length > 0">
-                                            <div class="table-subTask">
-                                                <table class="">
-                                                    <thead>
-                                                        <th class="text-center">Tên</th>
-                                                        <th class="text-center">Ngày kết thúc</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr
-                                                            *ngFor="let sub of item.get('subTask')?.value; index as idxSub">
-                                                            <td class="text-center">{{sub.name}}</td>
-                                                            <td class="text-center">{{sub.endDate}}</td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </ng-container>
-                                    </ng-container>
-
-
-                                </ng-container>
-
-                            </tr> -->
 
 
                         </tbody>
