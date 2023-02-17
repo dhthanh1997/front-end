@@ -26,15 +26,14 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   public filters: any[] = [];
   public sortName: string = '';
   public filterName: string = '';
-  public params: ParamSearch = {
-   
-  }
+  public params: ParamSearch = {};
+
   constructor(private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     private notifyService: NotifyService,
     private shareService: ShareService,
     private taskData: TaskData) {
-      this.formValidation = initFormObject(this.params, this.params);
+    this.formValidation = initFormObject(this.params, this.params);
 
   }
 
@@ -66,10 +65,16 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   buildParams() {
-    this.sorts = EnumUtils.getEnumKeys(Sort, EnumType.String);
-    this.filters = EnumUtils.getEnumKeys(Filter, EnumType.String);
-    console.log(this.sorts);
-    console.log(this.filters);
+    this.params.filterName = EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE);
+    this.params.sortName = EnumUtils.getKeyByValue(Sort, Sort.name_asc);
+    this.sortName = Sort.name_asc;
+    this.filterName = Filter.NOT_DONE;
+    this.params.sorts = EnumUtils.getEnumValues(Sort, EnumType.String);
+    this.params.filters = EnumUtils.getEnumValues(Filter, EnumType.String);
+    
+    // console.log(EnumUtils.getEnumKeys(Sort, EnumType.String));
+    // console.log(this.sorts);
+    // console.log(this.params.filterName);
   }
 
 
@@ -79,11 +84,15 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   filterTask() {
-    
+
   }
 
   sortTask() {
 
+  }
+
+  selectedItem(event: any) {
+    console.log(event);
   }
 
 

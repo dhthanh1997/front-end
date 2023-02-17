@@ -1,6 +1,6 @@
 <!-- header -->
 <div class="task_header p-2">
-    <div class="p-1"  [formGroup]="formValidation">
+    <div class="p-1" [formGroup]="formValidation">
         <div class="d-flex flex-row">
             <div class="col-md-4">
                 <div class="float-left">
@@ -17,11 +17,11 @@
                         <button nz-button nzType="default" (click)="filterTask()">
                             <span nz-icon nzType="check-circle" nzTheme="outline">
                             </span>
-                            Chưa hoàn thành
+                            {{filterName}}
                         </button>
                         <nz-dropdown-menu #menuTask="nzDropdownMenu">
-                            <ul class="dropdown_menu" nz-menu>
-                                <li nz-menu-item *ngFor="let item of filters">{{item}}</li>
+                            <ul class="dropdown_menu" nz-menu (nzClick)="selectedItem($event)">
+                                <li nz-menu-item [value]="item" *ngFor="let item of params.filters">{{item}}</li>
                                 <!-- <li nz-menu-item>Đã hoàn thành</li>
                                 <li nz-menu-item>Chưa hoàn thành</li>
                                 <li nz-menu-item>Tất cả</li> -->
@@ -31,15 +31,16 @@
 
                     <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuSort">
 
-                        <button nz-button nzType="default">
-                            <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>Sắp xếp
+                        <button nz-button nzType="default" (click)="sortTask()">
+                            <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>{{sortName}}
                         </button>
                         <nz-dropdown-menu #menuSort="nzDropdownMenu">
                             <ul class="dropdown_menu" nz-menu>
-                                <li nz-menu-item>Tăng dần (tên)</li>
+                                <li nz-menu-item [value]="item" *ngFor="let item of params.sorts">{{item}}</li>
+                                <!-- <li nz-menu-item>Tăng dần (tên)</li>
                                 <li nz-menu-item>Giảm dần (tên)</li>
                                 <li nz-menu-item>Tăng dần (ngày tạo)</li>
-                                <li nz-menu-item>Giảm dần (ngày tạo)</li>
+                                <li nz-menu-item>Giảm dần (ngày tạo)</li> -->
                                 <!-- <li nz-menu-divider></li>
                                 <li nz-submenu nzTitle="Theo ngày">
                                     <ul>
@@ -82,11 +83,13 @@
             <!-- table -->
             <div class="task-table-left" [ngClass]="(!isCollapsed) ? 'task-table-left-toggle':''">
 
-                <app-task-row-table (collapEvent)="collapseEventTaskRow($event)" [title]="'Công việc trong tuần'">
+                <app-task-row-table [paramSearch]="params" (collapEvent)="collapseEventTaskRow($event)"
+                    [title]="'Công việc trong tuần'">
 
                 </app-task-row-table>
                 <br />
-                <app-task-row-table (collapEvent)="collapseEventTaskRow($event)" [title]="'Kế hoạch tuần sau'">
+                <app-task-row-table [paramSearch]="params" (collapEvent)="collapseEventTaskRow($event)"
+                    [title]="'Kế hoạch tuần sau'">
 
                 </app-task-row-table>
             </div>

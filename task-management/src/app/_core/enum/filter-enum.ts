@@ -1,6 +1,6 @@
 export enum Filter {
     // Chưa hoàn thành
-    NOT_DONE,
+    NOT_DONE = "Chưa hoàn thành",
     // Hoàn thành
-    DONE
+    DONE = "Hoàn thành",
 }

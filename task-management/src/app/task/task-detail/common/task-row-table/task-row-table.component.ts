@@ -5,9 +5,11 @@ import { is } from 'date-fns/locale';
 import * as _ from 'lodash';
 import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject } from 'src/app/_base/util';
+import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject, EnumUtils } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
+import { Filter } from 'src/app/_core/enum/filter-enum';
 import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
+import { ParamSearch } from 'src/app/_core/model/params-search';
 import { Task } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
@@ -29,14 +31,14 @@ export class TaskRowTableComponent implements OnInit {
   public Collapse: boolean = false;
   public listOfData: Task[] = [];
   public task = new Task();
-  public isLoading: boolean = true;
+  public isLoading: boolean = false;
   public isLoadSubTask: boolean = false;
   changesUnsubscribe = new Subject();
   private keyUpEvent$ = new Subject<any>();
 
   @Input() title: string = "";
+  @Input() paramSearch: ParamSearch = {}
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
-
 
   // @ViewChild('iconCustomizeTmpl', { read: TemplateRef }) iconCustomizeTmpl: TemplateRef<any> | string = "";
 
@@ -58,13 +60,12 @@ export class TaskRowTableComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log(this.paramSearch);
     this.isLoadingSpinner();
     this.watchForChanges();
     this.updateDataForm();
     this.closeDetailTask();
-    await this.search();
     await this.initForm();
-
   }
 
   initForm() {
@@ -176,19 +177,7 @@ export class TaskRowTableComponent implements OnInit {
     });
 
 
-    // this.shareService.taskDetailShare.subscribe(async (res) => {
-    //   // this.updateControl(res.item, res.index);
-    //   if (res.isUpdate) {
-    //     let result = await this.updateTask(res.item);
-    //     console.log(result);
-    //     if (result.message === ResponseStatusEnum.error) {
-    //       this.notifyService.error(res.error);
-    //     } else {
-    //       console.log("update task");
-    //       this.updateControl(result.data, res.index);
-    //     }
-    //   }
-    // });
+
   }
 
   isLoadingSpinner() {
@@ -247,36 +236,6 @@ export class TaskRowTableComponent implements OnInit {
     // console.log(formGroup);
   }
 
-  // isOutSide() {
-  //   this.shareService.isOutSide.subscribe(
-  //     {
-  //       next: (res) => {
-  //         console.log(res);
-  //         if (res) {
-  //           this.watchForChanges();
-  //           // this.shareService.isInside.next(false);
-  //         }
-  //       },
-  //       error: (err) => {
-  //         console.log(err);
-  //       }
-  //     }
-  //   )
-  // }
-
-  // watchChange(event: any) {
-  //   console.log(event);
-  //   this.updateControl(event.item, event.index);
-  // }
-
-  // detectClickEvent(item: any, index: number) {
-  //   // console.log(item);
-  //   item.get('isInside').setValue(true);
-  //   this.shareService.isInside.next({
-  //     item,
-  //     index
-  //   });
-  // }
 
   detailTask(item: any, index: number) {
     // console.log(item);
@@ -457,8 +416,23 @@ export class TaskRowTableComponent implements OnInit {
     // if(this.taskArray && this.taskArray.controls.length == 0) {
     this.taskArray.clear();
     this.shareService.isLoading.next(true);
+    // set state 0 = Chưa hoàn thành; 1= Hoàn thành
+    switch (this.paramSearch.filterName) {
+      case EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE):
+        this.paramSearch.filterName = 'state.eq.' + '0' + ',';
+        break;
+      case EnumUtils.getKeyByValue(Filter, Filter.DONE):
+        this.paramSearch.filterName = 'state.eq.' + '1' + ',';
+        break;
+      default:
+        this.paramSearch.filterName = '';
+        break;
+    }
+    // this.paramSearch.filterName += ''
+    // set 
+    console.log(this.paramSearch);
     if (!this.isCollapsedTable) {
-      let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
+      let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 999, this.paramSearch.filterName, this.paramSearch.sortName));
       console.log(response);
       if (response.message === ResponseStatusEnum.success) {
         this.listOfData = response.pagingData.content;

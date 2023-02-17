@@ -12,8 +12,18 @@ export class TaskApi {
 
   constructor(private http: HttpService) { }
 
-  search(pageNumber: number, pageSize: number, txtSearch?: string): Observable<ResponseDataObject> {
-    let params = new HttpParams().set('pageNumber', pageNumber).set('pageSize', pageSize);
+  search(pageNumber: number, pageSize: number, txtSearch?: string, sort?: string): Observable<ResponseDataObject> {
+    let params = new HttpParams()
+    .set('pageNumber', pageNumber)
+    .set('pageSize', pageSize)
+    .set('search', (txtSearch) ? txtSearch : '')
+    .set('sort', (sort) ? sort : '')
+    // if(txtSearch) {
+    //   params.append('txtSearch', txtSearch);
+    // }
+    // if(sort) {
+    //   params.append('sort', sort);
+    // }
     return this.http.get(this.apiController, { params });
   }
 

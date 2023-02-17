@@ -92,17 +92,27 @@ export function updateFormData(value: any, formGroup: FormGroup, _object: any): 
   return formGroup;
 }
 
+export function sliptStringToArray(value: string): string[] {
+  const sliptString = value.split('_') as string[];
+  return sliptString;
+}
+
 
 // utils enum
 export class EnumUtils {
-  static getEnumKeys(enumObj: any, enumType: EnumType): any[] {
+  static getEnumValues(enumObj: any, enumType: EnumType): any[] {
     // const properties = Object.getOwnPropertyNames(enumType);
-    return EnumUtils.getEnumValues(enumObj, enumType).map(value => enumObj[value]);
+    return EnumUtils.getEnumKeys(enumObj, enumType).map(value => enumObj[value]);
 
   }
 
-  static getEnumValues(enumObj: any, enumType: EnumType): any[] {
+  static getEnumKeys(enumObj: any, enumType: EnumType): any[] {
     return Object.keys(enumObj).filter(propertyName => typeof enumObj[propertyName] === enumType);
+  }
+
+  static getKeyByValue(enumObj: any, value: any): any {
+    // console.log(Object.keys);
+    return Object.keys(enumObj)[Object.values(enumObj ).indexOf(value)];
   }
 }
 
