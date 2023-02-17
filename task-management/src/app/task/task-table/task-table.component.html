@@ -20,8 +20,8 @@
                             {{filterName}}
                         </button>
                         <nz-dropdown-menu #menuTask="nzDropdownMenu">
-                            <ul class="dropdown_menu" nz-menu (nzClick)="selectedItem($event)">
-                                <li nz-menu-item [value]="item" *ngFor="let item of params.filters">{{item}}</li>
+                            <ul class="dropdown_menu" nz-menu>
+                                <li nz-menu-item (click)="selectedItemFilter(item)" *ngFor="let item of params.filters">{{item}}</li>
                                 <!-- <li nz-menu-item>Đã hoàn thành</li>
                                 <li nz-menu-item>Chưa hoàn thành</li>
                                 <li nz-menu-item>Tất cả</li> -->
@@ -36,7 +36,7 @@
                         </button>
                         <nz-dropdown-menu #menuSort="nzDropdownMenu">
                             <ul class="dropdown_menu" nz-menu>
-                                <li nz-menu-item [value]="item" *ngFor="let item of params.sorts">{{item}}</li>
+                                <li nz-menu-item  (click)="selectedItemSort(item)" *ngFor="let item of params.sorts">{{item}}</li>
                                 <!-- <li nz-menu-item>Tăng dần (tên)</li>
                                 <li nz-menu-item>Giảm dần (tên)</li>
                                 <li nz-menu-item>Tăng dần (ngày tạo)</li>

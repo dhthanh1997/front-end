@@ -8,6 +8,7 @@ import { Sort } from 'src/app/_core/enum/sort-enum';
 import { Filter } from 'src/app/_core/enum/filter-enum';
 import { EnumType, EnumUtils, initFormObject } from 'src/app/_base/util';
 import { ParamSearch } from 'src/app/_core/model/params-search';
+import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
 
 
 
@@ -84,15 +85,22 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   filterTask() {
-
+     
   }
 
   sortTask() {
 
   }
 
-  selectedItem(event: any) {
+  selectedItemFilter(event: any) {
     console.log(event);
+  
+  }
+
+  selectedItemSort(event: any) {
+    console.log(event);
+    
+  
   }
 
 

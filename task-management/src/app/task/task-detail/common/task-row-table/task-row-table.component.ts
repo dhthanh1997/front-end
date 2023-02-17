@@ -40,8 +40,6 @@ export class TaskRowTableComponent implements OnInit {
   @Input() paramSearch: ParamSearch = {}
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  // @ViewChild('iconCustomizeTmpl', { read: TemplateRef }) iconCustomizeTmpl: TemplateRef<any> | string = "";
-
   constructor(private fb: FormBuilder,
     private notifyService: NotifyService,
     private shareService: ShareService,
@@ -90,6 +88,7 @@ export class TaskRowTableComponent implements OnInit {
     this.isCollapsedTable = !this.isCollapsedTable;
     await this.search();
     await this.initForm();
+    this.watchForChanges();
   }
 
   onDrop(event: CdkDragDrop<string[]>) {
@@ -326,7 +325,7 @@ export class TaskRowTableComponent implements OnInit {
 
   watchForChanges() {
     merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
-      control.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000),
+      control.valueChanges.pipe(pairwise(), debounceTime(1000),
         map(
           ([prev, current]: [any, any]) => {
             // (value) => {
@@ -334,8 +333,8 @@ export class TaskRowTableComponent implements OnInit {
             // so sánh 2 object dùng lodash
             let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
             let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-            // console.log(prevObject);
-            // console.log(currentObject);
+            console.log(prevObject);
+            console.log(currentObject);
 
             // mảng ban đầu phải không rỗng mới check 2 object
             if (prevObject) {
@@ -428,7 +427,7 @@ export class TaskRowTableComponent implements OnInit {
         this.paramSearch.filterName = '';
         break;
     }
-    // this.paramSearch.filterName += ''
+    this.paramSearch.filterName += 'parentId.nu' + ',';
     // set 
     console.log(this.paramSearch);
     if (!this.isCollapsedTable) {
