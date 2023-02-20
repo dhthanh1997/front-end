@@ -9,6 +9,8 @@ import { Filter } from 'src/app/_core/enum/filter-enum';
 import { EnumType, EnumUtils, initFormObject } from 'src/app/_base/util';
 import { ParamSearch } from 'src/app/_core/model/params-search';
 import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
+import { Observable } from 'rxjs/internal/Observable';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 
 
@@ -34,6 +36,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     private notifyService: NotifyService,
     private shareService: ShareService,
     private taskData: TaskData) {
+    
     this.formValidation = initFormObject(this.params, this.params);
 
   }
@@ -73,34 +76,28 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.params.sorts = EnumUtils.getEnumValues(Sort, EnumType.String);
     this.params.filters = EnumUtils.getEnumValues(Filter, EnumType.String);
     
-    // console.log(EnumUtils.getEnumKeys(Sort, EnumType.String));
-    // console.log(this.sorts);
-    // console.log(this.params.filterName);
   }
 
 
   addTask() {
-
-
-  }
-
-  filterTask() {
-     
-  }
-
-  sortTask() {
+    
 
   }
+
 
   selectedItemFilter(event: any) {
     console.log(event);
-  
+    this.params.filterName = EnumUtils.getKeyByValue(Filter, event);
+    this.shareService.isFilterTask.next(this.params);
+    this.filterName = event;
+    
   }
 
   selectedItemSort(event: any) {
     console.log(event);
-    
-  
+    this.params.sortName = EnumUtils.getKeyByValue(Sort, event);
+    this.shareService.isSortTask.next(this.params);
+    this.sortName = event;
   }
 
 

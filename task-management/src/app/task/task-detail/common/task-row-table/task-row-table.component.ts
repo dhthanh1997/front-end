@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { is } from 'date-fns/locale';
 import * as _ from 'lodash';
@@ -48,13 +48,10 @@ export class TaskRowTableComponent implements OnInit {
 
   }
 
-  ngOnDestroy(): void {
-
-  }
 
 
   ngOnChanges(changes: SimpleChanges): void {
-
+    console.log(changes);
   }
 
   async ngOnInit() {
@@ -63,13 +60,14 @@ export class TaskRowTableComponent implements OnInit {
     this.watchForChanges();
     this.updateDataForm();
     this.closeDetailTask();
+    this.isFilterTask();
+    this.isSortTask();
     await this.initForm();
   }
 
   initForm() {
     this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
 
-    // console.log(this.formValidation);
   }
 
 
@@ -116,12 +114,6 @@ export class TaskRowTableComponent implements OnInit {
   collapseEvent(event: any) {
     console.log(event);
     this.isCollapsed = event.value;
-    // clear array sau khi collapse
-    // this.taskArray.clear();
-    // await this.search();
-    // await this.initForm();
-    // console.log(this.formValidation);
-
   }
 
   autoFocus(item: any) {
@@ -229,10 +221,7 @@ export class TaskRowTableComponent implements OnInit {
       formGroup = setDataInFormObject(item, formGroup, new Task());
       formGroup.updateValueAndValidity();
     }
-    // item = new Task();
-    // formGroup.patchValue(item);
-    // formGroup.updateValueAndValidity();
-    // console.log(formGroup);
+ 
   }
 
 
@@ -333,8 +322,8 @@ export class TaskRowTableComponent implements OnInit {
             // so sánh 2 object dùng lodash
             let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
             let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-            console.log(prevObject);
-            console.log(currentObject);
+            // console.log(prevObject);
+            // console.log(currentObject);
 
             // mảng ban đầu phải không rỗng mới check 2 object
             if (prevObject) {
@@ -411,8 +400,30 @@ export class TaskRowTableComponent implements OnInit {
     });
   }
 
+  isFilterTask() {
+    this.shareService.isFilterTask.subscribe(async (res) => {
+      if (res) {
+        this.paramSearch = res;
+        await this.search();
+        await this.initForm();
+        this.watchForChanges();
+      }
+    });
+  }
+
+  isSortTask() {
+    this.shareService.isSortTask.subscribe(async (res) => {
+      if (res) {
+        this.paramSearch = res;
+        await this.search();
+        await this.initForm();
+        this.watchForChanges();
+      }
+    });
+  }
+
   async search() {
-    // if(this.taskArray && this.taskArray.controls.length == 0) {
+
     this.taskArray.clear();
     this.shareService.isLoading.next(true);
     // set state 0 = Chưa hoàn thành; 1= Hoàn thành
@@ -424,10 +435,13 @@ export class TaskRowTableComponent implements OnInit {
         this.paramSearch.filterName = 'state.eq.' + '1' + ',';
         break;
       default:
-        this.paramSearch.filterName = '';
+        // this.paramSearch.filterName = '';
         break;
     }
-    this.paramSearch.filterName += 'parentId.nu' + ',';
+    // với các trường hợp search với điều kiện null 
+    // => cú pháp field.nu.abs (với abs ghi thế nào cx được: là ký tự tượng trưng nhưng bắt buộc phải có)
+    this.paramSearch.filterName += 'parentId.nu.nu' + ',';
+    this.paramSearch.sortName += ',';
     // set 
     console.log(this.paramSearch);
     if (!this.isCollapsedTable) {
@@ -438,7 +452,9 @@ export class TaskRowTableComponent implements OnInit {
       }
     }
     this.shareService.isLoading.next(false);
-    // }
+    // clear filter và sort lúc trước;      
+    this.paramSearch.filterName = '';
+    this.paramSearch.sortName  = '';
   }
 
 }
