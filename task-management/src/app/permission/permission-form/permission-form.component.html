@@ -22,6 +22,7 @@
                 formControlName="name"
                 name="name"
                 [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
                 required
               />
               <ng-template #Name let-control>
@@ -52,6 +53,7 @@
                 formControlName="code"
                 name="code"
                 [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
               />
               <ng-template #Code let-control>
                 <ng-container *ngIf="control.hasError('required')"
@@ -85,6 +87,7 @@
                 formControlName="parentCode"
                 name="parentCode"
                 [nzDisabled]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
               >
                 <nz-option
                   *ngFor="let item of listParent"
@@ -110,6 +113,7 @@
                 formControlName="type"
                 name="type"
                 [nzDisabled]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
               >
                 <label nz-radio nzValue="0"> Menu </label>
                 <label nz-radio nzValue="1"> Action </label>
@@ -137,6 +141,7 @@
                 formControlName="description"
                 name="description"
                 [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
               ></textarea>
             </nz-form-control>
           </nz-form-item>

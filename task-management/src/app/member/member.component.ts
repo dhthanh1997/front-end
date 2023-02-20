@@ -1,11 +1,12 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { memberContent } from '../_core/api/member/member';
-import { MemberService } from '../_core/api/member/member.service';
+import { memberContent } from '../_core/model/member';
+// import { MemberService } from '../_core/api/member/member.service';
 import { DeleteComponent } from './delete/delete.component';
 import { MemberFormComponent } from './member-form/member-form.component';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
+import { MemberData } from '../_core/api/member/member-data';
 
 @Component({
   selector: 'app-member',
@@ -14,7 +15,8 @@ import { ModeModal } from 'src/app/_core/enum/modeModal';
 })
 export class MemberComponent implements OnInit {
   constructor(
-    private service: MemberService,
+    // private service: MemberService,
+    private memberData: MemberData,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
     private element: ElementRef
@@ -113,8 +115,8 @@ export class MemberComponent implements OnInit {
   }
 
   public getMember() {
-    this.service
-      .getMember(this.pageNumber, this.pageSize, this.txtSearch)
+    this.memberData
+      .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -227,7 +229,7 @@ export class MemberComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteMember(id).subscribe({
+            this.memberData.deleteById(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -265,7 +267,7 @@ export class MemberComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteSelectedMember(listId).subscribe({
+            this.memberData.deleteSelectedId(listId).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(

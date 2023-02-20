@@ -1,31 +1,31 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { commentContent } from './comment';
+import { commentContent } from '../../model/comment';
+import { CommentData } from './comment-data';
+import { CommentApi } from './comment.api';
 
-const urlComment = 'http://10.2.6.142:8092/taskManagement/api/comment';
+@Injectable()
+export class CommentService implements CommentData {
 
-@Injectable({
-  providedIn: 'root',
-})
-export class CommentService {
-  constructor(private http: HttpClient) {}
+  constructor(private api: CommentApi) { }
 
-  public getComment(
-    pageNumber: number,
-    pageSize: number,
-    txtSearch?: string
-  ): Observable<any> {
-    return this.http.get(
-      `${urlComment}?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${txtSearch}`
-    );
+  search(pageNumber: number, pageSize: number, txtSearch?: string): Observable<any> {
+    return this.api.search(pageNumber, pageSize, txtSearch);
   }
 
-  public addComment(comment: commentContent): Observable<any> {
-    return this.http.post(urlComment, comment);
+  save(data: commentContent): Observable<any> {
+    return this.api.save(data);
   }
 
-  public getCommentById(id: number): Observable<any> {
-    return this.http.get(`${urlComment}/${id}`);
+  update(id:number, data: commentContent): Observable<any> {
+    return this.api.update(id, data);
+  }
+
+  getById(id: number): Observable<any> {
+    return this.api.getById(id);
+  }
+
+  deleteById(id: number): Observable<any> {
+    return this.api.deleteById(id);
   }
 }

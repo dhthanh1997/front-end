@@ -5,7 +5,7 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
-import { ProjectService } from '../project/service/project.service';
+import { ProjectService } from '../_core/api/project/project.service';
 
 @Component({
   selector: 'app-home',

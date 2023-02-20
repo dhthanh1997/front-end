@@ -78,6 +78,7 @@
                 formControlName="description"
                 name="description"
                 [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
               ></textarea>
             </nz-form-control>
           </nz-form-item>

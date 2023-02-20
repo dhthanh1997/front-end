@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { sectionContent } from '../../model/section';
-import { SectionData } from './section-data';
-import { SectionApi } from './section.api';
+import { rolePermissionContent } from '../../model/role-permission';
+import { RolePermissionData } from './role-permission-data';
+import { RolePermissionApi } from './role-permission.api';
 
 @Injectable()
-export class SectionService implements SectionData {
+export class RolePermissionService implements RolePermissionData {
 
-  constructor(private api: SectionApi) { }
+  constructor(private api: RolePermissionApi) { }
 
   search(pageNumber: number, pageSize: number, txtSearch?: string): Observable<any> {
     return this.api.search(pageNumber, pageSize, txtSearch);
   }
 
-  save(data: sectionContent): Observable<any> {
+  save(data: rolePermissionContent): Observable<any> {
     return this.api.save(data);
   }
 
-  update(id:number, data: sectionContent): Observable<any> {
+  update(id:number, data: rolePermissionContent): Observable<any> {
     return this.api.update(id, data);
   }
 

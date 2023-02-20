@@ -7,17 +7,18 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BoardViewService } from '../service/board-view.service';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { content } from '../service/task';
-import { tagContent } from '../service/tag';
+import { tagContent } from '../../../_core/model/tag';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
-import { TaskTagService } from '../../task-tag/service/task-tag.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { CommentService } from 'src/app/_core/api/comment/comment.service';
-import { commentContent } from 'src/app/_core/api/comment/comment';
+// import { CommentService } from 'src/app/_core/api/comment/comment.service';
+import { commentContent } from 'src/app/_core/model/comment';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
+import { CommentData } from 'src/app/_core/api/comment/comment-data';
+import { TagData } from 'src/app/_core/api/tag/tag-data';
+import { TaskData } from 'src/app/_core/api/task/task-data';
+import { Task } from 'src/app/_core/model/task';
 
 @Component({
   selector: 'internal-app-board-task-form',
@@ -64,9 +65,10 @@ export class BoardTaskFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: BoardViewService,
-    private tagService: TaskTagService,
-    private commentService: CommentService,
+    private taskData: TaskData,
+    private tagData: TagData,
+    // private commentService: CommentService,
+    private commentData: CommentData,
     private msg: NzMessageService,
     private notifyService: NzNotificationService,
     private element: ElementRef,
@@ -174,7 +176,7 @@ export class BoardTaskFormComponent implements OnInit {
   }
 
   getById(id: number) {
-    this.service.getTaskById(id).subscribe({
+    this.taskData.getById(id).subscribe({
       next: (res) => {
         console.log(res);
         this.formValidation.setValue({
@@ -191,6 +193,7 @@ export class BoardTaskFormComponent implements OnInit {
           totalHour: res.data.totalHour,
           description: res.data.description,
           attachFile: res.data.attachFile,
+          comment: '',
           // isChecked: res.data.isChecked,
         });
       },
@@ -198,8 +201,8 @@ export class BoardTaskFormComponent implements OnInit {
   }
 
   public getTag() {
-    this.tagService
-      .getTag(this.pageNumber, this.pageSize, this.txtTagSearch)
+    this.tagData
+      .search(this.pageNumber, this.pageSize, this.txtTagSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -226,8 +229,8 @@ export class BoardTaskFormComponent implements OnInit {
     item.name = tagName;
     console.log(tagName);
 
-    this.tagService.addTag(item).subscribe({
-      next: (res: content) => {
+    this.tagData.save(item).subscribe({
+      next: (res: tagContent) => {
         console.log(res);
         if (res) {
           this.inputVisible = false;
@@ -246,7 +249,7 @@ export class BoardTaskFormComponent implements OnInit {
   }
 
   public onDelete(id: number): void {
-    this.tagService.deleteTag(id).subscribe({
+    this.tagData.deleteById(id).subscribe({
       next: (res) => {
         if (res) {
           this.notifyService.success(
@@ -265,9 +268,10 @@ export class BoardTaskFormComponent implements OnInit {
   }
 
   public getComment() {
+    // debugger;
     this.searchComment();
-    this.commentService
-      .getComment(this.pageNumber, this.pageSize, this.txtCommentSearch)
+    this.commentData
+      .search(this.pageNumber, this.pageSize, this.txtCommentSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -289,8 +293,8 @@ export class BoardTaskFormComponent implements OnInit {
     };
     item.description = this.comment;
     item.taskId = this.id;
-    this.commentService.addComment(item).subscribe({
-      next: (res: content) => {
+    this.commentData.save(item).subscribe({
+      next: (res: commentContent) => {
         console.log(res);
         if (res) {
           this.getComment();
@@ -328,13 +332,13 @@ export class BoardTaskFormComponent implements OnInit {
 
   handleOk(): void {
     this.isConfirmLoading = true;
-    const item: content = this.formValidation.value;
+    const item: Task = this.formValidation.value;
     item.startDate = this.startDate;
     item.endDate = this.endDate;
     item.projectId = this.projectId;
     if (this.mode == ModeModal.CREATE) {
-      this.service.addTask(item).subscribe({
-        next: (res: content) => {
+      this.taskData.save(item).subscribe({
+        next: (res) => {
           console.log(res);
           if (res) {
             this.isVisible = false;
@@ -350,8 +354,8 @@ export class BoardTaskFormComponent implements OnInit {
         },
       });
     } else if (this.mode == ModeModal.UPDATE) {
-      this.service.updateTask(this.id, item).subscribe({
-        next: (res: content) => {
+      this.taskData.update(this.id, item).subscribe({
+        next: (res) => {
           console.log(res);
           if (res) {
             this.isVisible = false;
@@ -383,7 +387,7 @@ export class BoardTaskFormComponent implements OnInit {
   }
 
   getCommentInput() {
-    debugger;
+    // debugger;
     let commentInput = this.element.nativeElement.querySelector('#comment');
     if (
       commentInput.value != null &&

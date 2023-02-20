@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { roleAppContent } from 'src/app/_core/api/roleApplication/role-app';
-import { RoleAppService } from 'src/app/_core/api/roleApplication/role-app.service';
+import { roleAppContent } from 'src/app/_core/model/role-app';
+import { RoleAppService } from 'src/app/_core/api/role-application/role-app.service';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
+import { RoleAppData } from 'src/app/_core/api/role-application/role-app-data';
 
 @Component({
   selector: 'app-role-app-form',
@@ -25,7 +26,7 @@ export class RoleAppFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: RoleAppService,
+    private roleAppData: RoleAppData,
     private modelRef: NzModalRef<RoleAppFormComponent>
   ) {}
 
@@ -63,7 +64,7 @@ export class RoleAppFormComponent implements OnInit {
   }
 
   getById(id: number) {
-    this.service.getRoleAppById(id).subscribe({
+    this.roleAppData.getById(id).subscribe({
       next: (res) => {
         console.log(res);
         this.formValidation.setValue({
@@ -80,7 +81,7 @@ export class RoleAppFormComponent implements OnInit {
     this.isConfirmLoading = true;
     const item: roleAppContent = this.formValidation.value;
     if (this.mode === ModeModal.CREATE) {
-      this.service.addRoleApp(item).subscribe({
+      this.roleAppData.save(item).subscribe({
         next: (res: roleAppContent) => {
           console.log(res);
           if (res) {
@@ -97,7 +98,7 @@ export class RoleAppFormComponent implements OnInit {
         },
       });
     } else if (this.mode === ModeModal.UPDATE) {
-      this.service.updateRoleApp(this.id, item).subscribe({
+      this.roleAppData.update(this.id, item).subscribe({
         next: (res: roleAppContent) => {
           console.log(res);
           if (res) {

@@ -1,11 +1,12 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { permissionContent } from '../_core/api/permission/permission';
-import { PermissionService } from '../_core/api/permission/permission.service';
+import { permissionContent } from '../_core/model/permission';
+// import { PermissionService } from '../_core/api/permission/permission.service';
 import { ModeModal } from '../_core/enum/modeModal';
 import { DeleteComponent } from './delete/delete.component';
 import { PermissionFormComponent } from './permission-form/permission-form.component';
+import { PermissionData } from '../_core/api/permission/permission-data';
 
 @Component({
   selector: 'app-permission',
@@ -14,7 +15,7 @@ import { PermissionFormComponent } from './permission-form/permission-form.compo
 })
 export class PermissionComponent implements OnInit {
   constructor(
-    private service: PermissionService,
+    private permissionData: PermissionData,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
     private element: ElementRef
@@ -113,8 +114,8 @@ export class PermissionComponent implements OnInit {
   }
 
   public getPermission() {
-    this.service
-      .getPermission(this.pageNumber, this.pageSize, this.txtSearch)
+    this.permissionData
+      .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -227,7 +228,7 @@ export class PermissionComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deletePermission(id).subscribe({
+            this.permissionData.deleteById(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -265,7 +266,7 @@ export class PermissionComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteSelectedPermission(listId).subscribe({
+            this.permissionData.deleteSelectedId(listId).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(

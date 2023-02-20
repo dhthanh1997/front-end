@@ -1,11 +1,12 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { roleAppContent } from 'src/app/_core/api/roleApplication/role-app';
-import { RoleAppService } from 'src/app/_core/api/roleApplication/role-app.service';
+import { roleAppContent } from 'src/app/_core/model/role-app';
+import { RoleAppService } from 'src/app/_core/api/role-application/role-app.service';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
 import { DeleteComponent } from './delete/delete.component';
 import { RoleAppFormComponent } from './role-app-form/role-app-form.component';
+import { RoleAppData } from 'src/app/_core/api/role-application/role-app-data';
 
 @Component({
   selector: 'app-role-application',
@@ -14,7 +15,7 @@ import { RoleAppFormComponent } from './role-app-form/role-app-form.component';
 })
 export class RoleApplicationComponent implements OnInit {
   constructor(
-    private service: RoleAppService,
+    private roleAppData: RoleAppData,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
     private element: ElementRef
@@ -113,8 +114,8 @@ export class RoleApplicationComponent implements OnInit {
   }
 
   public getRoleApp() {
-    this.service
-      .getRoleApp(this.pageNumber, this.pageSize, this.txtSearch)
+    this.roleAppData
+      .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -227,7 +228,7 @@ export class RoleApplicationComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteRoleApp(id).subscribe({
+            this.roleAppData.deleteById(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -265,7 +266,7 @@ export class RoleApplicationComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteSelectedRoleApp(listId).subscribe({
+            this.roleAppData.deleteSelectedId(listId).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(

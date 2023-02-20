@@ -6,8 +6,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { content } from '../service/project';
-import { ProjectService } from '../service/project.service';
+import { projectContent } from '../../_core/model/project';
+import { ProjectService } from '../../_core/api/project/project.service';
 
 enum ModeModal {
   CREATE = 'create',
@@ -129,12 +129,12 @@ export class ProjectFormComponent implements OnInit {
 
   handleOk(): void {
     this.isConfirmLoading = true;
-    const item: content = this.formValidation.value;
+    const item: projectContent = this.formValidation.value;
     item.startDate = this.startDate;
     item.endDate = this.endDate;
     if (this.mode == ModeModal.CREATE) {
       this.service.addProject(item).subscribe({
-        next: (res: content) => {
+        next: (res: projectContent) => {
           console.log(res);
           if (res) {
             this.isVisible = false;
@@ -151,7 +151,7 @@ export class ProjectFormComponent implements OnInit {
       });
     } else if (this.mode == ModeModal.UPDATE) {
       this.service.updateProject(this.id, item).subscribe({
-        next: (res: content) => {
+        next: (res: projectContent) => {
           console.log(res);
           if (res) {
             this.isVisible = false;

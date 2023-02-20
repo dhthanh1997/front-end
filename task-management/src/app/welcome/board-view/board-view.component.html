@@ -3,16 +3,15 @@
     cdkDropList
     cdkDropListOrientation="horizontal"
     (cdkDropListDropped)="dropGroup($event)"
-    style="display: flex; flex-wrap: wrap"
+    style="display: flex"
   >
     <div cdkDropListGroup class="d-flex">
       <div
         class="example-container"
         *ngFor="let list of sectionList; let idx = index"
         cdkDrag
-        [cdkDragDisabled]="isEdit"
+        [cdkDragDisabled]="canDrop()"
       >
-        <!-- <div class="test" *cdkDragPlaceholder></div> -->
         <div
           class="task p-3 d-flex align-items-center"
           style="border-bottom: 1px solid #c9cbcf"
@@ -26,6 +25,7 @@
             {{ list.name }}
           </h2>
           <input
+            appAutoFocus
             [hidden]="editIdx !== idx"
             type="text"
             nz-input
@@ -92,27 +92,6 @@
               </button>
             </div>
           </div>
-          <!-- <ng-container *ngIf="addtodo ? true : false">
-            <div class="example-box">
-              <textarea
-                contenteditable="true"
-                nz-input
-                type="text"
-                id="inputToDo"
-                (blur)="addToDoArray()"
-                (keydown.enter)="onKeydown($event)"
-                (keyup.enter)="addToDoArray()"
-                rows="2"
-                placeholder="Untitled"
-                style="
-                  width: 100%;
-                  white-space: pre-wrap;
-                  word-break: break-word;
-                  line-height: 1.5;
-                "
-              ></textarea>
-            </div>
-          </ng-container> -->
           <div
             class="example-box"
             role="button"
@@ -123,15 +102,22 @@
           </div>
         </div>
       </div>
-      <!-- <div class="addTaskBtn"></div> -->
+    </div>
+
+    <div class="add-section-wrapper">
+      <div class="add-section" (click)="startCreate()" [hidden]="addSection === 1">
+        <span class="ml-2 mr-1" style="font-size: 20px">+</span>
+        <span>Add Section</span>
+      </div>
+      <input
+        (keyup.enter)="createSection()"
+        (blur)="createSection()"
+        id="input-add-section"
+        nz-input
+        type="text"
+        nzAutoFocus
+        [hidden]="addSection !== 1"
+      />
     </div>
   </div>
 </div>
-
-<!-- <nz-modal
-  [(nzVisible)]="isVisible"
-  (nzOnCancel)="handleCancel()"
-  nzTitle="Modal Title"
->
-  <internal-app-board-task-form *nzModalContent></internal-app-board-task-form>
-</nz-modal> -->

@@ -2,7 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { content } from './project';
+import { projectContent } from '../../model/project';
 import { en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const url = 'http://10.2.6.142:8092/taskManagement/api/project';
@@ -27,7 +27,7 @@ export class ProjectService {
     );
   }
 
-  public addProject(project: content): Observable<any> {
+  public addProject(project: projectContent): Observable<any> {
     return this.http.post(url, project);
   }
 
@@ -35,7 +35,7 @@ export class ProjectService {
     return this.http.get(`${url}/${id}`);
   }
 
-  public updateProject(id: number, project: content): Observable<any> {
+  public updateProject(id: number, project: projectContent): Observable<any> {
     return this.http.put(`${url}/${id}`, project);
   }
 

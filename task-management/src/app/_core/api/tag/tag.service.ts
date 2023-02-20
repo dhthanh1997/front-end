@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { sectionContent } from '../../model/section';
-import { SectionData } from './section-data';
-import { SectionApi } from './section.api';
+import { tagContent } from '../../model/tag';
+import { TagData } from './tag-data';
+import { TagApi } from './tag.api';
 
 @Injectable()
-export class SectionService implements SectionData {
+export class TagService implements TagData {
 
-  constructor(private api: SectionApi) { }
+  constructor(private api: TagApi) { }
 
   search(pageNumber: number, pageSize: number, txtSearch?: string): Observable<any> {
     return this.api.search(pageNumber, pageSize, txtSearch);
   }
 
-  save(data: sectionContent): Observable<any> {
+  save(data: tagContent): Observable<any> {
     return this.api.save(data);
   }
 
-  update(id:number, data: sectionContent): Observable<any> {
+  update(id:number, data: tagContent): Observable<any> {
     return this.api.update(id, data);
   }
 

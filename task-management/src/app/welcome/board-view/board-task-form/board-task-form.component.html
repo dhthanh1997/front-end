@@ -116,27 +116,27 @@
       </div>
 
       <!-- row 6 -->
-      <!-- <div nz-row class="d-flex flex-row" [nzGutter]="8">
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label [nzSpan]="3"> Upload file </nz-form-label>
             <nz-form-control [nzSpan]="21">
-              <input
-                type="file"
-                formControlName="attachFile"
-                name="attachFile"
-                multiple
+              <nz-upload
+              nzAction="http://10.2.6.142:8092/taskManagement/api/task/uploadFileExcel"
+                [nzHeaders]="{ authorization: 'authorization-text' }"
+                nzFileType="image/png"
+                (nzChange)="handleChange($event)"
                 [hidden]="mode === 'view'"
-              />
-              <span
-                formControlName="attachFile"
-                name="attachFile"
-                [hidden]="mode === 'view'"
-              ></span>
+              >
+                <button nz-button>
+                  <span nz-icon nzType="upload"></span>
+                  Click to Upload
+                </button>
+              </nz-upload>
             </nz-form-control>
           </nz-form-item>
         </div>
-      </div> -->
+      </div>
 
       <!-- row 7 -->
       <div nz-row class="d-flex flex-row" [nzGutter]="8">

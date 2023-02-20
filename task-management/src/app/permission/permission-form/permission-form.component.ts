@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { permissionContent } from 'src/app/_core/api/permission/permission';
-import { PermissionService } from 'src/app/_core/api/permission/permission.service';
+import { permissionContent } from 'src/app/_core/model/permission';
+// import { PermissionService } from 'src/app/_core/api/permission/permission.service';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
+import { PermissionData } from 'src/app/_core/api/permission/permission-data';
 
 @Component({
   selector: 'app-permission-form',
@@ -28,7 +29,7 @@ export class PermissionFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: PermissionService,
+    private permissionData: PermissionData,
     private modelRef: NzModalRef<PermissionFormComponent>
   ) {}
 
@@ -78,7 +79,7 @@ export class PermissionFormComponent implements OnInit {
   }
 
   getPermission() {
-    this.service.getPermission(1, 999, '').subscribe({
+    this.permissionData.search(1, 999, '').subscribe({
       next: (res) => {
         console.log(res);
         this.listData = res.pagingData.content;
@@ -102,7 +103,7 @@ export class PermissionFormComponent implements OnInit {
   }
 
   getById(id: number) {
-    this.service.getPermissionById(id).subscribe({
+    this.permissionData.getById(id).subscribe({
       next: (res) => {
         console.log(res);
         this.formValidation.setValue({
@@ -122,7 +123,7 @@ export class PermissionFormComponent implements OnInit {
     this.isConfirmLoading = true;
     const item: permissionContent = this.formValidation.value;
     if (this.mode === ModeModal.CREATE) {
-      this.service.addPermission(item).subscribe({
+      this.permissionData.save(item).subscribe({
         next: (res: permissionContent) => {
           console.log(res);
           if (res) {
@@ -139,7 +140,7 @@ export class PermissionFormComponent implements OnInit {
         },
       });
     } else if (this.mode === ModeModal.UPDATE) {
-      this.service.updatePermission(this.id, item).subscribe({
+      this.permissionData.update(this.id, item).subscribe({
         next: (res: permissionContent) => {
           console.log(res);
           if (res) {

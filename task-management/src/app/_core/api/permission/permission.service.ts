@@ -1,46 +1,35 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { permissionContent } from './permission';
+import { permissionContent } from '../../model/permission';
+import { PermissionData } from './permission-data';
+import { PermissionApi } from './permission.api';
 
-const urlPermission = 'http://10.2.6.142:8092/taskManagement/api/permission';
+@Injectable()
+export class PermissionService implements PermissionData {
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PermissionService {
-  constructor(private http: HttpClient) {}
+  constructor(private api: PermissionApi) { }
 
-  public getPermission(
-    pageNumber: number,
-    pageSize: number,
-    txtSearch?: string
-  ): Observable<any> {
-    return this.http.get(
-      `${urlPermission}?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${txtSearch}`
-    );
+  search(pageNumber: number, pageSize: number, txtSearch?: string): Observable<any> {
+    return this.api.search(pageNumber, pageSize, txtSearch);
   }
 
-  public addPermission(permission: permissionContent): Observable<any> {
-    return this.http.post(urlPermission, permission);
+  save(data: permissionContent): Observable<any> {
+    return this.api.save(data);
   }
 
-  public getPermissionById(id: number): Observable<any> {
-    return this.http.get(`${urlPermission}/${id}`);
+  update(id:number, data: permissionContent): Observable<any> {
+    return this.api.update(id, data);
   }
 
-  public updatePermission(
-    id: number,
-    permission: permissionContent
-  ): Observable<any> {
-    return this.http.put(`${urlPermission}/${id}`, permission);
+  getById(id: number): Observable<any> {
+    return this.api.getById(id);
   }
 
-  public deletePermission(id: number): Observable<any> {
-    return this.http.delete(`${urlPermission}/${id}`);
+  deleteById(id: number): Observable<any> {
+    return this.api.deleteById(id);
   }
 
-  public deleteSelectedPermission(ListId: number[]): Observable<any> {
-    return this.http.post(`${urlPermission}/deleteByListId`, ListId);
+  deleteSelectedId(data: number[]): Observable<any> {
+    return this.api.deleteSelectedId(data);
   }
 }

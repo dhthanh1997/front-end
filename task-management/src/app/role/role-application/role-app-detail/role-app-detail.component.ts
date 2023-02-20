@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PermissionService } from 'src/app/_core/api/permission/permission.service';
-import { rolePermissionContent } from 'src/app/_core/api/rolePermission/role-permission';
-import { RolePermissionService } from 'src/app/_core/api/rolePermission/role-permission.service';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { PermissionData } from 'src/app/_core/api/permission/permission-data';
+import { RolePermissionData } from 'src/app/_core/api/role-permission/role-permission-data';
+import { rolePermissionContent } from 'src/app/_core/model/role-permission';
 
 @Component({
   selector: 'app-role-app-detail',
@@ -26,11 +27,15 @@ export class RoleAppDetailComponent implements OnInit {
   checkedBoxAll = false;
   isClicked = false;
 
+  modalOptions: any = {
+    nzDuration: 2000,
+  };
+
   constructor(
-    private service: PermissionService,
-    private rolePerService: RolePermissionService,
+    private permissionData: PermissionData,
+    private rolePerData: RolePermissionData,
     private route: ActivatedRoute,
-    private rolePermission: RolePermissionService
+    private notifyService: NzNotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +45,7 @@ export class RoleAppDetailComponent implements OnInit {
   public getIdRole() {
     // debugger;
     let id = this.route.snapshot.paramMap.get('id');
-    this.txtRolePer =  `roleId.eq.${id},`;
+    this.txtRolePer = `roleId.eq.${id},`;
     console.log(id);
     return parseInt(id!);
   }
@@ -48,8 +53,8 @@ export class RoleAppDetailComponent implements OnInit {
   async getPermission() {
     // debugger;
     this.getRolePer();
-    this.service
-      .getPermission(this.pageNumber, this.pageSize, this.txtSearch)
+    this.permissionData
+      .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: async (res) => {
           console.log(res);
@@ -69,13 +74,17 @@ export class RoleAppDetailComponent implements OnInit {
 
   getRolePer() {
     this.getIdRole();
-    this.rolePerService
-      .getRolePer(this.pageNumber, this.pageSize, this.txtRolePer)
+    this.rolePerData
+      .search(this.pageNumber, this.pageSize, this.txtRolePer)
       .subscribe({
         next: (res) => {
-          console.log("on role per");
+          // console.log("on role per");
           this.listRolePer = res.pagingData.content;
+          for (let i = 0; i < this.listRolePer.length; i++) {
+            this.listId.push(res.pagingData.content[i].permissionId);
+          }
           console.log(this.listRolePer);
+          console.log(this.listId);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
         },
@@ -86,16 +95,40 @@ export class RoleAppDetailComponent implements OnInit {
   }
 
   onCreate() {
-    debugger;
-    let items:any = [];
-    for(let i=0; i<this.listId.length; i++) {
-
-    let item: rolePermissionContent = {} ;
+    let items: any = [];
+    let deleteItems: any = [];
+    let deleteIds: any = [];
+    for (let i = 0; i < this.listId.length; i++) {
+      let item: rolePermissionContent = {
+        id: 0,
+        roleId: 0,
+        permissionId: 0,
+      };
       item.roleId = this.getIdRole();
       item.permissionId = this.listId[i];
+      for(let j = 0; j < this.listRolePer.length; j++) {
+        if(this.listRolePer[j].permissionId === item.permissionId) {
+          item.id = this.listRolePer[j].id;
+        }
+      }
       items.push(item);
     }
-    this.rolePermission.createRolePer(items).subscribe({
+    function getDifference(array1: any[], array2: any[]) {
+      return array1.filter(
+        object1 => !array2.some(
+          object2 => object1.id === object2.id
+        ),
+      );
+    }
+    deleteItems = [
+      ...getDifference(items, this.listRolePer),
+      ...getDifference(this.listRolePer, items)
+    ];
+
+    for (let i = 0; i < deleteItems.length; i++) {
+      deleteIds.push(deleteItems[i].id);
+    }
+    this.rolePerData.save(items).subscribe({
       next: (res: rolePermissionContent) => {
         // console.log(res);
         if (res) {
@@ -109,6 +142,28 @@ export class RoleAppDetailComponent implements OnInit {
         console.log('done');
       },
     });
+    this.rolePerData.deleteSelectedId(deleteIds).subscribe({
+      next: async (res) => {
+        // console.log(res);
+        if (res) {
+          await this.notify();
+        }
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('done');
+      },
+    })
+  }
+
+  notify() {
+    this.notifyService.success(
+      'Success',
+      'Role permission created successfully',
+      this.modalOptions
+    );
   }
 
   getParentCode() {
@@ -142,7 +197,7 @@ export class RoleAppDetailComponent implements OnInit {
             return;
           } else this.listId = [];
           // console.log(item.isChecked);
-          // console.log(this.listId);
+          console.log(this.listId);
         }
       }
     );
@@ -151,15 +206,14 @@ export class RoleAppDetailComponent implements OnInit {
   rolePerChecked() {
     // debugger;
     setTimeout(() => {
-      for(let i = 0; i < this.listRolePer.length; i++) {
-        for(let j = 0; j < this.listData.length; j++) {
-          if(this.listRolePer[i].permissionId === this.listData[j].id) {
+      for (let i = 0; i < this.listRolePer.length; i++) {
+        for (let j = 0; j < this.listData.length; j++) {
+          if (this.listRolePer[i].permissionId === this.listData[j].id) {
             this.listData[j].isChecked = true;
           }
         }
       }
-    }, 100)
-
+    }, 100);
   }
 
   isChecked(event: any, index: number) {

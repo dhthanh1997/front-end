@@ -13,23 +13,13 @@ import { AfterViewChecked, Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { sectionContent } from 'src/app/_core/api/section/section';
-import { SectionService } from 'src/app/_core/api/section/section.service';
+import { sectionContent } from 'src/app/_core/model/section';
+import { TaskData } from 'src/app/_core/api/task/task-data';
+import { ModeModal } from 'src/app/_core/enum/modeModal';
+import { Task } from 'src/app/_core/model/task';
 import { BoardTaskFormComponent } from './board-task-form/board-task-form.component';
 import { DeleteComponent } from './delete/delete.component';
-import { BoardViewService } from './service/board-view.service';
-import { content } from './service/task';
-
-interface BoardList {
-  status: string;
-  content: content;
-}
-
-enum ModeModal {
-  CREATE = 'create',
-  UPDATE = 'update',
-  VIEW = 'view',
-}
+import { SectionData } from 'src/app/_core/api/section/section-data';
 
 @Component({
   selector: 'internal-app-board-view',
@@ -56,10 +46,11 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
 
   public t: unknown;
   isVisible = false;
+  addSection: number | null = null;
 
   constructor(
-    private service: BoardViewService,
-    private sectionService: SectionService,
+    private taskData: TaskData,
+    private sectionData: SectionData,
     private modalService: NzModalService,
     private element: ElementRef,
     private notifyService: NzNotificationService,
@@ -93,8 +84,8 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
 
   public getTask() {
     this.getIdProject();
-    this.service
-      .getTask(this.pageNumber, this.pageSize, this.txtSearch)
+    this.taskData
+      .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -110,7 +101,7 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
       });
   }
 
-  onView(item: content): void {
+  onView(item: Task): void {
     this.modalService.create({
       nzTitle: 'View Task',
       nzClassName: 'modal-custom',
@@ -161,7 +152,7 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
       });
   }
 
-  onUpdate(item: content): void {
+  onUpdate(item: Task): void {
     this.modalService
       .create({
         nzTitle: 'Update Task',
@@ -208,7 +199,7 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteTask(id).subscribe({
+            this.taskData.deleteById(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -232,83 +223,8 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
       });
   }
 
-  // addToDo() {
-  //   if (this.addtodo == false) this.addtodo = true;
-  // }
-
-  // addDoing() {
-  //   if (this.adddoing == false) this.adddoing = true;
-  // }
-
-  // addDone() {
-  //   if (this.adddone == false) this.adddone = true;
-  // }
-
-  // startEditToDo(idx: number) {
-  //   this.edittodo = idx;
-  //   this.isEdit = true;
-  // }
-
-  // stopEditToDo() {
-  //   this.edittodo = null;
-  //   this.isEdit = false;
-  // }
-
-  // startEditDoing(idx: number) {
-  //   this.editdoing = idx;
-  // }
-
-  // stopEditDoing() {
-  //   this.editdoing = null;
-  // }
-
-  // addToDoArray() {
-  //   const inputToDo = this.element.nativeElement.querySelector('#inputToDo');
-  //   const inputValue = inputToDo.value;
-  //   const lastElement = this.todo[this.todo.length - 1];
-  //   console.log(inputValue);
-  //   if (inputValue) {
-  //     this.todo.push({ id: lastElement.id + 1, name: inputValue });
-  //     this.addtodo = false;
-  //   }
-  // }
-
-  // editToDoArray(t: unknown) {
-  //   const editToDo = this.element.nativeElement.querySelectorAll('.editToDo');
-  //   // console.log(editToDo);
-
-  //   for (let i = 0; i <= this.todo.length; i++) {
-  //     if (t == this.todo[i]) {
-  //       // console.log(this.todo[i]);
-  //       this.todo[i].name = editToDo.value;
-  //       this.edittodo = null;
-  //     }
-  //   }
-  //   // console.log(test);
-  // }
-
-  // addDoingArray() {
-  //   const inputToDo = this.element.nativeElement.querySelector('#inputDoing');
-  //   const inputValue = inputToDo.value;
-  //   console.log(inputValue);
-  //   this.doing.push(inputValue);
-  //   this.adddoing = false;
-  // }
-
-  // addDoneArray() {
-  //   const inputToDo = this.element.nativeElement.querySelector('#inputDone');
-  //   const inputValue = inputToDo.value;
-  //   console.log(inputValue);
-  //   this.done.push(inputValue);
-  //   this.adddone = false;
-  // }
-
-  // hideInput() {
-  //   if (this.addnew == true) this.addnew = false;
-  // }
-
   public getSection() {
-    this.sectionService.getSection(this.pageNumber, this.pageSize).subscribe({
+    this.sectionData.search(this.pageNumber, this.pageSize).subscribe({
       next: (res) => {
         console.log(res);
         this.sectionList = res.pagingData.content;
@@ -323,6 +239,38 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  startCreate() {
+    this.addSection = 1;
+  }
+
+  createSection() {
+    // debugger;
+    let input = this.element.nativeElement.querySelector('#input-add-section');
+    const item: sectionContent = {
+      name: ''
+    };
+    item.name = input.value;
+    if(item.name !== '') {
+      this.sectionData.save(item).subscribe({
+        next: (res: sectionContent) => {
+          console.log(res);
+          if (res) {
+            this.getSection();
+            input.value = '';
+            // this.modelRef.close(res);
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+        complete: () => {
+          this.addSection = null;
+          console.log('done');
+        },
+      });
+    }
+  }
+
   startEdit(index: number): void {
     this.editIdx = index;
   }
@@ -333,7 +281,7 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
     const item: sectionContent = { name: '' };
     item.name = input[index].value;
     item.id = id;
-    this.sectionService.updateSection(id, item).subscribe({
+    this.sectionData.update(id, item).subscribe({
       next: (res: sectionContent) => {
         console.log(res);
         if (res) {
@@ -365,7 +313,7 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.sectionService.deleteSection(id).subscribe({
+            this.sectionData.deleteById(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -408,7 +356,12 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  dropGroup(event: CdkDragDrop<content[]>) {
+  dropGroup(event: CdkDragDrop<Task[]>) {
     moveItemInArray(this.taskList, event.previousIndex, event.currentIndex);
+  }
+
+  canDrop() {
+    if(this.editIdx === null) return this.isEdit;
+    else return !this.isEdit;
   }
 }

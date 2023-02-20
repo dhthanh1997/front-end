@@ -6,8 +6,8 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 // import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ProjectFormComponent } from './project-form/project-form.component';
-import { content } from './service/project';
-import { ProjectService } from './service/project.service';
+import { projectContent } from '.././_core/model/project';
+import { ProjectService } from '../_core/api/project/project.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { DeleteComponent } from './delete/delete.component';
 import { Router } from '@angular/router';
@@ -25,7 +25,7 @@ enum ModeModal {
 })
 export class ProjectComponent implements OnInit {
   constructor(
-    private service: ProjectService,
+    private projectData: ProjectService,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
     private element: ElementRef,
@@ -52,7 +52,7 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProject();
-    this.service.switchLanguage();
+    this.projectData.switchLanguage();
     console.log(this.listId);
   }
 
@@ -121,7 +121,7 @@ export class ProjectComponent implements OnInit {
   }
 
   public getProject() {
-    this.service
+    this.projectData
       .getProject(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
@@ -170,7 +170,7 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  onUpdate(item: content): void {
+  onUpdate(item: projectContent): void {
     this.modalService
       .create({
         nzTitle: 'Update Project',
@@ -203,7 +203,7 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  onView(item: content): void {
+  onView(item: projectContent): void {
     this.modalService.create({
       nzTitle: 'View Project',
       nzClassName: 'modal-custom',
@@ -234,7 +234,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteProject(id).subscribe({
+            this.projectData.deleteProject(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -272,7 +272,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.service.deleteSelectedProject(listId).subscribe({
+            this.projectData.deleteSelectedProject(listId).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(

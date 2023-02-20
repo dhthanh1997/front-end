@@ -1,6 +1,6 @@
 <div class="wrapper">
-  <nz-tabset [nzTabBarExtraContent]="extraTemplate" class="tabset">
-    <!-- <nz-tabset class="tabset"> -->
+  <!-- <nz-tabset [nzTabBarExtraContent]="extraTemplate" class="tabset"> -->
+    <nz-tabset class="tabset">
     <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab">
       <ng-container *ngIf="tab === 'Overview'">
         <internal-app-overview></internal-app-overview>
@@ -14,9 +14,10 @@
       <ng-container *ngIf="tab === 'Timeline'">
         <internal-app-timeline></internal-app-timeline>
       </ng-container>
+
     </nz-tab>
   </nz-tabset>
-  <ng-template #extraTemplate>
+  <!-- <ng-template #extraTemplate>
     <button nz-button>Add Section</button>
-  </ng-template>
+  </ng-template> -->
 </div>

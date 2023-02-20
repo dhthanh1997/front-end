@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl:'http://localhost:8098/taskManagement/api'
+  apiUrl:'http://10.2.6.142:8092/taskManagement/api'
 };
 
 /*

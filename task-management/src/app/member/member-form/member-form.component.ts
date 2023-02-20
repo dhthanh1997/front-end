@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { memberContent } from 'src/app/_core/api/member/member';
-import { MemberService } from 'src/app/_core/api/member/member.service';
+import { memberContent } from 'src/app/_core/model/member';
+import { MemberData } from 'src/app/_core/api/member/member-data';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
 
 @Component({
@@ -25,7 +25,7 @@ export class MemberFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: MemberService,
+    private memberData: MemberData,
     private modelRef: NzModalRef<MemberFormComponent>
   ) {}
 
@@ -74,7 +74,7 @@ export class MemberFormComponent implements OnInit {
   }
 
   getById(id: number) {
-    this.service.getMemberById(id).subscribe({
+    this.memberData.getById(id).subscribe({
       next: (res) => {
         console.log(res);
         this.formValidation.setValue({
@@ -92,7 +92,7 @@ export class MemberFormComponent implements OnInit {
     this.isConfirmLoading = true;
     const item: memberContent = this.formValidation.value;
     if (this.mode === ModeModal.CREATE) {
-      this.service.addMember(item).subscribe({
+      this.memberData.save(item).subscribe({
         next: (res: memberContent) => {
           console.log(res);
           if (res) {
@@ -109,7 +109,7 @@ export class MemberFormComponent implements OnInit {
         },
       });
     } else if (this.mode === ModeModal.UPDATE) {
-      this.service.updateMember(this.id, item).subscribe({
+      this.memberData.update(this.id, item).subscribe({
         next: (res: memberContent) => {
           console.log(res);
           if (res) {
