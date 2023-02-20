@@ -1,3 +1,19 @@
+import { BaseEntity } from "./base";
+
+export class Section extends BaseEntity {
+  id: number;
+  name: string;
+  note: string;
+
+  constructor() {
+    super();
+    this.id = 0;
+    this.name = '';
+    this.note = '';
+  }
+}
+
+
 export interface section {
   pagingData: pagingData;
 }

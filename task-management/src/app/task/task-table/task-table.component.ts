@@ -1,16 +1,16 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, DoCheck, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { debounceTime, distinctUntilChanged, firstValueFrom, fromEvent, map, merge, Observable, of, pairwise, startWith, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { compareProperties, initDataObject, initFormArray, setDataInFormArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import { Task, taskList, todoTable } from 'src/app/_core/model/task';
-import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
 import * as _ from 'lodash';
-import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
+import { Sort } from 'src/app/_core/enum/sort-enum';
+import { Filter } from 'src/app/_core/enum/filter-enum';
+import { EnumType, EnumUtils, initFormObject } from 'src/app/_base/util';
+import { ParamSearch } from 'src/app/_core/model/params-search';
+import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
+import { Observable } from 'rxjs/internal/Observable';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 
 
@@ -22,23 +22,22 @@ import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
 export class TaskTableComponent implements OnInit, OnDestroy {
 
   public formValidation!: FormGroup;
-  public isHover: boolean = false;
-  public isOpen: boolean = true;
   public isNotAddRow: boolean = false;
   public isCollapsed: boolean = true;
   public Collapse: boolean = false;
-  public listOfData: Task[] = [];
-  public task = new Task();
-  // private isInside = false;
-  changesUnsubscribe = new Subject();
-  private keyUpEvent$ = new Subject<any>();
+  public sorts: any[] = [];
+  public filters: any[] = [];
+  public sortName: string = '';
+  public filterName: string = '';
+  public params: ParamSearch = {};
+
   constructor(private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     private notifyService: NotifyService,
     private shareService: ShareService,
     private taskData: TaskData) {
-    this.formValidation = initFormArray("taskArray");
-    // this.search();
+    
+    this.formValidation = initFormObject(this.params, this.params);
 
   }
 
@@ -52,323 +51,54 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    // await this.search();
-    // await this.initForm();
-    // await this.isOutSide();
-    // this.keyUpListenEvent();
-    // this.watchForChanges();
-    // this.collapseListenEvent();
-  }
-
-  initForm() {
-    this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
-    // console.log(this.formValidation);
+    this.buildParams();
   }
 
 
-  get taskArray() {
-    return this.formValidation.get("taskArray") as FormArray;
-  }
-
-  get lastItemArray() {
-    const array = this.taskArray;
-    return array.controls[array.controls.length - 1] as FormGroup;
-  }
-
-
-  onDrop(event: CdkDragDrop<string[]>) {
-    console.log(event);
-    let data = this.taskArray.controls;
-    moveItemInArray(data, event.previousIndex, event.currentIndex);
-  }
-
-  onOpenChange($event: any) {
-
-  }
-
-
-  mouseOver(event: any, index: number) {
-    // console.log(event);
-    this.taskArray.controls[index].get('isShow')?.setValue(true);
-    // this.isHover = true;
-  }
-
-  mouseLeave(event: any, index: number) {
-    // console.log(event);
-    this.taskArray.controls[index].get('isShow')?.setValue(false);
-  }
 
   collapseEventTaskRow(event: any) {
     // console.log(event);
     this.isCollapsed = !this.isCollapsed;
     console.log(this.isCollapsed);
 
-    // clear array sau khi collapse
-    // this.taskArray.clear();
-    // await this.search();
-    // await this.initForm();
-    // console.log(this.formValidation);
-
   }
 
   collapseEvent(event: any) {
     console.log(event);
     this.isCollapsed = !this.isCollapsed;
-    // clear array sau khi collapse
-    // this.taskArray.clear();
-    // await this.search();
-    // await this.initForm();
-    // console.log(this.formValidation);
-
   }
 
-  autoFocus(item: any) {
-    // const array = this.taskArray;
-    const lastItem = this.lastItemArray;
-    if (lastItem == item) {
-      this.shareService.isAddRow.next(true);
-    }
+  buildParams() {
+    this.params.filterName = EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE);
+    this.params.sortName = EnumUtils.getKeyByValue(Sort, Sort.name_asc);
+    this.sortName = Sort.name_asc;
+    this.filterName = Filter.NOT_DONE;
+    this.params.sorts = EnumUtils.getEnumValues(Sort, EnumType.String);
+    this.params.filters = EnumUtils.getEnumValues(Filter, EnumType.String);
+    
   }
 
-  keyUpListenEvent() {
-    this.shareService.isKeyUp.subscribe(e => {
-      if (e) {
-        this.keyUpEvent$.unsubscribe();
-      }
-    });
-  }
-
-  collapseListenEvent() {
-    this.shareService.isCollapseDetailTask.subscribe(res => {
-      console.log(res);
-      // if (res) {
-        // this.isCollapsed = !this.isCollapsed;
-      // }
-    })
-  }
-
-  updateControl(item: any, index: number) {
-    this.cd.detectChanges();
-    // console.log(item);
-    const array = this.taskArray;
-    const formGroup = array.controls[index] as FormGroup;
-    formGroup.patchValue(item);
-    // this.taskArray.controls[index].patchValue(item);
-    this.formValidation.updateValueAndValidity();
-    console.log(this.formValidation);
-  }
-
-  // isOutSide() {
-  //   this.shareService.isOutSide.subscribe(
-  //     {
-  //       next: (res) => {
-  //         console.log(res);
-  //         if (res) {
-  //           this.watchForChanges();
-  //           // this.shareService.isInside.next(false);
-  //         }
-  //       },
-  //       error: (err) => {
-  //         console.log(err);
-  //       }
-  //     }
-  //   )
-  // }
-
-  watchChange(event: any) {
-    console.log(event);
-    this.updateControl(event.item, event.index);
-  }
-
-  // detectClickEvent(item: any, index: number) {
-  //   // console.log(item);
-  //   item.get('isInside').setValue(true);
-  //   this.shareService.isInside.next({
-  //     item,
-  //     index
-  //   });
-  // }
-
-  // detailTask(item: any, index: number) {
-  //   // console.log(item);
-  //   this.isCollapsed = !this.isCollapsed;
-  //   console.log(this.isCollapsed);
-  //   this.shareService.taskData.next({
-  //     item: item,
-  //     index: index
-  //   });
-  // }
-
-  // getTask(item: any, index: number) {
-  //   // console.log(item);
-  //   // this.isCollapsed = !this.isCollapsed;
-  //   this.shareService.taskData.next({
-  //     item: item,
-  //     index: index
-  //   });
-  // }
 
   addTask() {
-    // const array = this.taskArray;
-    // if (array && array.controls.length > 0) {
-    //   let lastItem = this.lastItemArray;
-    //   console.log(lastItem);
-    //   // ten cua task ma null thi khong duoc add tiep vao array
-    //   if (lastItem.get('name')?.value) {
-    //     // console.log(lastItem.get('name')?.value)
-    //     const form: FormGroup = initDataObject(this.task, this.task);
-    //     this.taskArray.controls.push(form);
-    //     setTimeout(() => {
-    //       this.shareService.isAddRow.next(true);
-    //       lastItem = this.lastItemArray;
-    //       if (lastItem.get('name')?.value) {
-    //         lastItem.valueChanges.pipe(debounceTime(500), take(1)).subscribe(
-    //           {
-    //             next: (res) => {
-    //               if (res) {
-    //                 console.log(res);
-    //                 let task: Task = lastItem.value;
-    //                 this.saveTask(task);
-    //               }
-    //             },
-    //             error: (err) => {
-    //               console.log(err);
-    //             },
-    //             complete: () => {
-
-    //             }
-    //           }
-    //         );
-    //       }
-    //     }, 200);
-    //     // console.log("into")
-    //     // debugger;
-    //     // save task sau 0,5s neu khong typing tiep
-
-    //   } else {
-    //     this.isNotAddRow = !this.isNotAddRow;
-    //     this.autoFocus(lastItem);
-    //   }
-    // } else {
-    //   const form: FormGroup = initDataObject(this.task, this.task);
-    //   this.taskArray.controls.push(form);
-    // }
+    
 
   }
 
-  // markCompleteTask(item: any) {
-  //   let id = item.get('id')?.value;
-  //   this.taskData.markCompleteTask(id);
-  // }
 
-  // saveTask(item: any) {
-  //   this.taskData.save(item).subscribe({
-  //     next: (res) => {
-  //       if (res.message === ResponseStatusEnum.error) {
-  //         this.notifyService.error(res.error);
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     }
-  //   });
-  // }
-
-  // watchForChanges() {
-  //   merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
-  //     control.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000),
-  //       map(
-  //         ([prev, current]: [any, any]) => {
-  //           // (value) => {
-  //           // console.log(control.value.name);
-  //           // so sánh 2 object dùng lodash
-  //           let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-  //           let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-  //           // console.log(prevObject);
-  //           // console.log(currentObject);
-
-  //           // mảng ban đầu phải không rỗng mới check 2 object
-  //           if (prevObject) {
-  //             if (!_.isEqual(prevObject, currentObject)) {
-  //               // console.log(prev.name);
-  //               // console.log(current);
-  //               console.log("different in id: " + index);
-  //               return {
-  //                 value: current,
-  //                 isUpdate: true
-  //               };
-  //             }
-  //           }
-
-  //           return {
-  //             value: current,
-  //             isUpdate: false
-  //           }
-  //         }),
-  //       switchMap((valueChanged: any) => {
-  //         // console.log(valueChanged)
-  //         if (valueChanged.isUpdate) {
-  //           // this.changesUnsubscribe.complete();
-  //           console.log("into switchMap");
-  //           return this.updateTask(valueChanged.value);
-  //         } else {
-  //           return of(valueChanged);
-  //         }
-  //       }
-  //       )).subscribe((res) => {
-  //         console.log(res);
-  //         if (res.message === ResponseStatusEnum.success) {
-  //           console.log("ok");
-  //           this.updateControl(res.data, index);
-  //         }
-
-  //       })
-
-  //   }));
-
-  // }
-
-  updateTaskAndControl(item: Task, index: number) {
-    this.taskData.update(item.id, item).subscribe({
-      next: (res) => {
-        if (res.message === ResponseStatusEnum.error) {
-          this.notifyService.error(res.error);
-        } else {
-          this.updateControl(res.data, index);
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-
+  selectedItemFilter(event: any) {
+    console.log(event);
+    this.params.filterName = EnumUtils.getKeyByValue(Filter, event);
+    this.shareService.isFilterTask.next(this.params);
+    this.filterName = event;
+    
   }
 
-  async updateTask(item: Task) {
-    let response: ResponseDataObject = await firstValueFrom(this.taskData.update(item.id, item));
-    return response;
+  selectedItemSort(event: any) {
+    console.log(event);
+    this.params.sortName = EnumUtils.getKeyByValue(Sort, event);
+    this.shareService.isSortTask.next(this.params);
+    this.sortName = event;
   }
 
-  deleteTask(id: number) {
-    this.taskData.deleteById(id).subscribe({
-      next: (res) => {
-        if (res.message === ResponseStatusEnum.error) {
-          this.notifyService.error(res.error);
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-  }
-
-  async search() {
-    this.shareService.isLoading.next(true);
-    let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
-    if (response.message === ResponseStatusEnum.success) {
-      this.listOfData = response.pagingData.content;
-    }
-    this.shareService.isLoading.next(false);
-  }
 
 }

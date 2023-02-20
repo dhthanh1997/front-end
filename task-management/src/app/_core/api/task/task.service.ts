@@ -22,8 +22,8 @@ export class TaskService implements TaskData {
      return this.api.getByParentId(id);
   }
 
-  search(pageNumber: number, pageSize: number, txtSearch?: string): Observable<ResponseDataObject> {
-    return this.api.search(pageNumber, pageSize, txtSearch);
+  search(pageNumber: number, pageSize: number, txtSearch?: string, sort?: string): Observable<ResponseDataObject> {
+    return this.api.search(pageNumber, pageSize, txtSearch, sort);
   }
 
   save(data: Task): Observable<ResponseDataObject> {

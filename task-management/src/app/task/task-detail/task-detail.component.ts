@@ -5,7 +5,7 @@ import { catchError, concatMap, debounceTime, firstValueFrom, from, map, of, pai
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initDataObject, initFormArray, initFormObject, setDataInFormArray, updateControlInArray } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
+import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
 import { Task } from 'src/app/_core/model/task';
 import { ShareService } from 'src/app/_share/share.service';
 import { TaskDetailFrmComponent } from './task-detail-frm/task-detail-frm.component';
@@ -86,6 +86,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         // console.log(res);
         if (res?.message === ResponseStatusEnum.success) {
           console.log("--- detail ok");
+          this.subTask.clear();
           this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
         } else {
           this.notifyService.error("Có lỗi xảy ra");
@@ -200,6 +201,16 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   markCompleted() {
     this.isCompleted = !this.isCompleted;
+    const formGroup = this.formValidation.get('state') as FormControl;
+    // 0: Chưa hoàn thành
+    // 1: Hoàn thành
+    if(formGroup.value === 0) {
+      formGroup.setValue(1);
+    } 
+    if(formGroup.value === 1) {
+      formGroup.setValue(0);
+    }
+    this.formValidation.updateValueAndValidity();
   }
 
   uploadFile() {
@@ -234,12 +245,13 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   fullScreen() {
     this.modal.create({
+      // nzTitle: 'AAAA',
       nzContent: TaskDetailFrmComponent,
       nzCentered: true,
       nzMaskClosable: false,
       nzDirection: 'ltr',
       nzClassName: 'modal-custom',
-      nzFooter: null,
+      // nzFooter: null,
       nzClosable: false,
       nzComponentParams: {
         // formValidation: this.formValidation

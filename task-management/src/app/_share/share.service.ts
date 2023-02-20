@@ -19,6 +19,8 @@ export class ShareService {
   public isAddSubTask: Subject<any> = new Subject<any>();
   public isCollapseDetailTask: Subject<any> = new Subject<any>();
   public isCloseDetailTask: Subject<boolean> = new Subject<boolean>();
+  public isFilterTask: Subject<any> = new Subject<any>();
+  public isSortTask: Subject<any> = new Subject<any>();
   // end events
 
   constructor() { }

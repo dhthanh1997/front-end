@@ -209,8 +209,9 @@
                                 <tr *ngFor="let item of subTask.controls; index as idx">
                                     <ng-container [formGroupName]="idx">
                                         <td class="align-items-center">
-                                            <input type="text" class="form-control input_disabled"
-                                                formControlName="name">
+                                            <!-- <input type="text" class="form-control input_disabled"
+                                                formControlName="name"> -->
+                                            {{item.get('name')!.value}}
                                         </td>
                                     </ng-container>
                                 </tr>

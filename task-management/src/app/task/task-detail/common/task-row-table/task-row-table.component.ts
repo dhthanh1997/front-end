@@ -1,13 +1,15 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { is } from 'date-fns/locale';
 import * as _ from 'lodash';
-import { debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take } from 'rxjs';
+import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { initFormArray, setDataInFormArray, initDataObject } from 'src/app/_base/util';
+import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject, EnumUtils } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import { ResponseStatusEnum } from 'src/app/_core/enum/responseStatusEnum';
+import { Filter } from 'src/app/_core/enum/filter-enum';
+import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
+import { ParamSearch } from 'src/app/_core/model/params-search';
 import { Task } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
@@ -29,16 +31,14 @@ export class TaskRowTableComponent implements OnInit {
   public Collapse: boolean = false;
   public listOfData: Task[] = [];
   public task = new Task();
-  public isLoading: boolean = true;
+  public isLoading: boolean = false;
   public isLoadSubTask: boolean = false;
   changesUnsubscribe = new Subject();
   private keyUpEvent$ = new Subject<any>();
 
   @Input() title: string = "";
+  @Input() paramSearch: ParamSearch = {}
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
-
-
-  // @ViewChild('iconCustomizeTmpl', { read: TemplateRef }) iconCustomizeTmpl: TemplateRef<any> | string = "";
 
   constructor(private fb: FormBuilder,
     private notifyService: NotifyService,
@@ -48,29 +48,26 @@ export class TaskRowTableComponent implements OnInit {
 
   }
 
-  ngOnDestroy(): void {
-
-  }
 
 
   ngOnChanges(changes: SimpleChanges): void {
-
+    console.log(changes);
   }
 
   async ngOnInit() {
+    console.log(this.paramSearch);
     this.isLoadingSpinner();
     this.watchForChanges();
     this.updateDataForm();
     this.closeDetailTask();
-    await this.search();
+    this.isFilterTask();
+    this.isSortTask();
     await this.initForm();
-  
   }
 
   initForm() {
     this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
-    
-    // console.log(this.formValidation);
+
   }
 
 
@@ -89,6 +86,7 @@ export class TaskRowTableComponent implements OnInit {
     this.isCollapsedTable = !this.isCollapsedTable;
     await this.search();
     await this.initForm();
+    this.watchForChanges();
   }
 
   onDrop(event: CdkDragDrop<string[]>) {
@@ -116,12 +114,6 @@ export class TaskRowTableComponent implements OnInit {
   collapseEvent(event: any) {
     console.log(event);
     this.isCollapsed = event.value;
-    // clear array sau khi collapse
-    // this.taskArray.clear();
-    // await this.search();
-    // await this.initForm();
-    // console.log(this.formValidation);
-
   }
 
   autoFocus(item: any) {
@@ -140,17 +132,43 @@ export class TaskRowTableComponent implements OnInit {
     });
   }
 
+  // sửa ở form detail sẽ emit ra đây để update lên component này
   updateDataForm() {
-    this.shareService.taskDetailShare.subscribe(async (res) => {
-      // this.updateControl(res.item, res.index);
-      let result = await this.updateTask(res.item);
-      if (result.message === ResponseStatusEnum.error) {
-        this.notifyService.error(res.error);
-      } else {
-        console.log("update task");
-        this.updateControl(result.data, res.index);
+    let index = 0;
+    let id = 0;
+    let item = new Task();
+    const taskDetail$ = this.shareService.taskDetailShare
+    const source$ = taskDetail$.pipe(concatMap(res => {
+      if (res.isUpdate) {
+        index = res.index;
+        id = res.item.id;
+        item = res.item;
+        return this.taskData.update(id, item);
+      }
+      return of(null);
+    })
+      , catchError((err) => throwError(() => new Error(err))));
+
+
+    source$.subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res.message === ResponseStatusEnum.error) {
+          this.notifyService.error(res.error);
+        }
+        if (res.message === ResponseStatusEnum.success) {
+          console.log("update task");
+          this.updateControl(res.data, index);
+        }
+
+      },
+      error: (err) => {
+        console.log(err);
       }
     });
+
+
+
   }
 
   isLoadingSpinner() {
@@ -166,53 +184,46 @@ export class TaskRowTableComponent implements OnInit {
 
   closeDetailTask() {
     this.shareService.isCloseDetailTask.subscribe(res => {
-      if(res) {
+      if (res) {
         this.isCollapsed = !this.isCollapsed;
       }
-    })
+    });
+  }
+
+  async openSubTask(item: any, index: number) {
+
+    let formGroup = this.taskArray.controls[index] as FormGroup;
+    let array = formGroup.get('subTask') as FormArray;
+    let oldValue = formGroup.get('isSubTask')!.value
+    if (!array) {
+      formGroup.addControl('subTask', this.fb.array([]));
+      let id = item.get('id')?.value;
+      let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
+      if (res.data.length > 0) {
+        formGroup = setDataInFormArray(res.data, 'subTask', formGroup, new Task());
+      }
+      formGroup.get('isSubTask')!.patchValue(!oldValue);
+    } else {
+      formGroup.get('isSubTask')!.patchValue(!oldValue);
+    }
+    formGroup.updateValueAndValidity();
+
   }
 
   // end event
 
   updateControl(item: any, index: number) {
+    // debugger;
     const array = this.taskArray;
-    const formGroup = array.controls[index] as FormGroup;
-    formGroup.patchValue(item);
-    formGroup.updateValueAndValidity();
+    let formGroup = array.controls[index] as FormGroup;
     // console.log(formGroup);
+    if (formGroup) {
+      formGroup = setDataInFormObject(item, formGroup, new Task());
+      formGroup.updateValueAndValidity();
+    }
+ 
   }
 
-
-  // isOutSide() {
-  //   this.shareService.isOutSide.subscribe(
-  //     {
-  //       next: (res) => {
-  //         console.log(res);
-  //         if (res) {
-  //           this.watchForChanges();
-  //           // this.shareService.isInside.next(false);
-  //         }
-  //       },
-  //       error: (err) => {
-  //         console.log(err);
-  //       }
-  //     }
-  //   )
-  // }
-
-  // watchChange(event: any) {
-  //   console.log(event);
-  //   this.updateControl(event.item, event.index);
-  // }
-
-  // detectClickEvent(item: any, index: number) {
-  //   // console.log(item);
-  //   item.get('isInside').setValue(true);
-  //   this.shareService.isInside.next({
-  //     item,
-  //     index
-  //   });
-  // }
 
   detailTask(item: any, index: number) {
     // console.log(item);
@@ -303,7 +314,7 @@ export class TaskRowTableComponent implements OnInit {
 
   watchForChanges() {
     merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
-      control.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000),
+      control.valueChanges.pipe(pairwise(), debounceTime(1000),
         map(
           ([prev, current]: [any, any]) => {
             // (value) => {
@@ -387,22 +398,63 @@ export class TaskRowTableComponent implements OnInit {
         console.log(err);
       }
     });
-    console.log("hasdagdhsag")
+  }
+
+  isFilterTask() {
+    this.shareService.isFilterTask.subscribe(async (res) => {
+      if (res) {
+        this.paramSearch = res;
+        await this.search();
+        await this.initForm();
+        this.watchForChanges();
+      }
+    });
+  }
+
+  isSortTask() {
+    this.shareService.isSortTask.subscribe(async (res) => {
+      if (res) {
+        this.paramSearch = res;
+        await this.search();
+        await this.initForm();
+        this.watchForChanges();
+      }
+    });
   }
 
   async search() {
-    // if(this.taskArray && this.taskArray.controls.length == 0) {
-      this.taskArray.clear();
-      this.shareService.isLoading.next(true);
-      if (!this.isCollapsedTable) {
-        let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 10));
-        console.log(response);
-        if (response.message === ResponseStatusEnum.success) {
-          this.listOfData = response.pagingData.content;
-        }
+
+    this.taskArray.clear();
+    this.shareService.isLoading.next(true);
+    // set state 0 = Chưa hoàn thành; 1= Hoàn thành
+    switch (this.paramSearch.filterName) {
+      case EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE):
+        this.paramSearch.filterName = 'state.eq.' + '0' + ',';
+        break;
+      case EnumUtils.getKeyByValue(Filter, Filter.DONE):
+        this.paramSearch.filterName = 'state.eq.' + '1' + ',';
+        break;
+      default:
+        // this.paramSearch.filterName = '';
+        break;
+    }
+    // với các trường hợp search với điều kiện null 
+    // => cú pháp field.nu.abs (với abs ghi thế nào cx được: là ký tự tượng trưng nhưng bắt buộc phải có)
+    this.paramSearch.filterName += 'parentId.nu.nu' + ',';
+    this.paramSearch.sortName += ',';
+    // set 
+    console.log(this.paramSearch);
+    if (!this.isCollapsedTable) {
+      let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 999, this.paramSearch.filterName, this.paramSearch.sortName));
+      console.log(response);
+      if (response.message === ResponseStatusEnum.success) {
+        this.listOfData = response.pagingData.content;
       }
-      this.shareService.isLoading.next(false);
-    // }
+    }
+    this.shareService.isLoading.next(false);
+    // clear filter và sort lúc trước;      
+    this.paramSearch.filterName = '';
+    this.paramSearch.sortName  = '';
   }
 
 }

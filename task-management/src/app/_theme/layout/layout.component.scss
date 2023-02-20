@@ -145,6 +145,10 @@ $table_col_7: 30% !default;
   width: $table_col_7 + $table_col_3;
 }
 
+.col-9 {
+  width: $table_col_7 + $table_col_5;
+}
+
 .input_disabled {
   border-color: white transparent;
 }
