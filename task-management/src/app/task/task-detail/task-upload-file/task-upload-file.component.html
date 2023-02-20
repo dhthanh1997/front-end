@@ -1,0 +1,12 @@
+<div class="modal-content">
+    <app-input-file [isDialog]="true"></app-input-file>
+</div>
+
+<div class="modal-footer-custom" *nzModalFooter>
+    <button nz-button class="mr-2" nzType="primary" (click)="save()">
+        Lưu
+    </button>
+    <button nz-button nzType="default" (click)="close()">
+        Thoát
+    </button>
+</div>

@@ -59,7 +59,7 @@ const NZ_MODULES = [
   NzRadioModule,
   NzPageHeaderModule,
   NzSpaceModule,
-  NzDescriptionsModule
+  NzDescriptionsModule,
 ];
 
 @NgModule({

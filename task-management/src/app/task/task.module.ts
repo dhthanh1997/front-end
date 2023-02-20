@@ -13,6 +13,8 @@ import { ShareModule } from '../_share/share.module';
 import { TaskDetailFrmComponent } from './task-detail/task-detail-frm/task-detail-frm.component';
 import { TaskRowTableComponent } from './task-detail/common/task-row-table/task-row-table.component';
 import { TaskDetailTableComponent } from './task-detail/common/task-detail-table/task-detail-table.component';
+import { ComponentModule } from '../_component/component.module';
+import { TaskUploadFileComponent } from './task-detail/task-upload-file/task-upload-file.component';
 
 
 @NgModule({
@@ -23,15 +25,17 @@ import { TaskDetailTableComponent } from './task-detail/common/task-detail-table
     TaskDetailFrmComponent,
     TaskDetailTableComponent,
     TaskRowTableComponent,
+    TaskUploadFileComponent,
   ],
   imports: [
     CommonModule,
-    IconsProviderModule.forRoot(),
-    NgZorroModule.forRoot(),
+    IconsProviderModule,
+    NgZorroModule,
     TaskRoutingModule,
     DragDropModule,
     ReactiveFormsModule,
     ShareModule,
+    ComponentModule
   ]
 })
 export class TaskModule { }

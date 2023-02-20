@@ -21,7 +21,7 @@ import { ShareModule } from './_share/share.module';
     HttpClientModule,
     IconsProviderModule.forRoot(),
     NgZorroModule,
-    ShareModule,
+    // ShareModule,
     CoreModule.forRoot()
   ],
   providers: [],

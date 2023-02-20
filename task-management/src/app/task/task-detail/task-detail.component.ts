@@ -12,6 +12,8 @@ import { TaskDetailFrmComponent } from './task-detail-frm/task-detail-frm.compon
 import * as _ from 'lodash';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { TaskDetailTableComponent } from './common/task-detail-table/task-detail-table.component';
+import { InputFileComponent } from 'src/app/_component/input-file/input-file.component';
+import { TaskUploadFileComponent } from './task-upload-file/task-upload-file.component';
 
 @Component({
   selector: 'app-task-detail',
@@ -214,6 +216,17 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   uploadFile() {
+    this.modal.create({
+      nzContent: TaskUploadFileComponent,
+      nzTitle: "Upload file",
+      nzCentered: true,
+      nzMaskClosable: false,
+      nzDirection: 'ltr',
+      nzClassName: 'modal-custom',
+      nzClosable: true,
+      nzComponentParams: {
+      }
+    })
 
   }
 

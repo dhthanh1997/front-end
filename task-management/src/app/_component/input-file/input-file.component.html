@@ -1,0 +1,24 @@
+<ng-container *ngIf="isDialog else tmplUploadFile">
+    <nz-upload nzType="drag" [nzMultiple]="true" (nzChange)="handleChange($event)" [nzBeforeUpload]="beforeUpload"
+        [(nzFileList)]="fileList" [nzRemove]="removeFile" [nzShowUploadList]="showUploadList">
+        <p class="ant-upload-drag-icon">
+            <span nz-icon nzType="inbox"></span>
+        </p>
+        <p class="ant-upload-text">Click hoặc kéo thả file vào vùng upload</p>
+        <p class="ant-upload-hint">
+            Hỗ trợ upload 1 file hoặc nhiều file
+        </p>
+    </nz-upload>
+</ng-container>
+<ng-template #tmplUploadFile>
+    <nz-upload nzType="drag" [nzMultiple]="true" (nzChange)="handleChange($event)" [nzBeforeUpload]="beforeUpload"
+        [(nzFileList)]="fileList" [nzAction]="urlBase" [nzRemove]="removeFile" [nzShowUploadList]="showUploadList">
+        <p class="ant-upload-drag-icon">
+            <span nz-icon nzType="inbox"></span>
+        </p>
+        <p class="ant-upload-text">Click hoặc kéo thả file vào vùng upload</p>
+        <p class="ant-upload-hint">
+            Hỗ trợ upload 1 file hoặc nhiều file
+        </p>
+    </nz-upload>
+</ng-template>
