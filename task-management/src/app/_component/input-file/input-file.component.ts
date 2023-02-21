@@ -36,7 +36,7 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
   @Input() isShowLoadList: boolean = true;
   @Input() urlBase: string | undefined;
   @Input() isDialog: boolean = false;
-  
+
   @Input() fileSize: number | undefined = 10; // default is 10
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
@@ -71,7 +71,7 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
   }
 
   ngOnInit(): void {
-    
+
   }
 
   handleChange({ file, fileList }: NzUploadChangeParam): void {
@@ -100,27 +100,27 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
       if (!valid) {
         this.msg.error('Tệp không đúng định dạng')
         this.uploading = false;
+        return false;
+
       }
-      return false;
     }
     // fileSize tính theo MB
     if (this.fileSize) {
       // bytes to MB: 1048576
       // bytes to KB: 1024
       let size = (file.size) ? (file.size / 1048576).toFixed(2) : 0;
-      if(size > this.fileSize) {
+      console.log(size);
+      if (size > this.fileSize) {
         this.msg.error('Kích thước file vượt quá ' + this.fileSize + ' Mb');
+        return false;
       }
-      return false;
     }
     this.fileList = this.fileList.concat(file);
-    if(this.isDialog) {
+    if (this.isDialog) {
       this.onChange.emit(this.fileList);
     }
     console.log(this.fileList);
 
-    
-   
     return false;
   }
 

@@ -12,11 +12,17 @@ export class UploadFileApi {
 
   constructor(private http: HttpService) { }
 
-  uploadFileInTask(data: UploadFile): Observable<ResponseDataObject> {
-    return this.http.post(`${this.apiController}/task`, data);
+  uploadFileInTask(data: UploadFile, file: File): Observable<ResponseDataObject> {
+    const formData = new FormData();
+    formData.append('files', file);
+    formData.append('data', JSON.stringify(data));
+    return this.http.post(`${this.apiController}/task`, formData);
   }
 
-  uploadFileInProject(data: UploadFile): Observable<ResponseDataObject> {
+  uploadFileInProject(data: UploadFile, file: File): Observable<ResponseDataObject> {
+    const formData = new FormData();
+    formData.append('files', file);
+    formData.append('data', JSON.stringify(data));
     return this.http.post(`${this.apiController}/project`, data);
   }
 
