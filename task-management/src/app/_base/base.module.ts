@@ -4,6 +4,8 @@ import { HttpService } from './http.service';
 import { JwtInterceptorService } from './interceptor/jwt-interceptor.service';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NotifyService } from './notify.service';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { MessageService } from './message.service';
 
 const PROVIDERS = [
   HttpService,
@@ -11,14 +13,16 @@ const PROVIDERS = [
 ]
 
 const SERVICES = [
-  NotifyService
+  NotifyService,
+  MessageService
 ]
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    NzNotificationModule
+    NzNotificationModule,
+    NzMessageModule
   ]
 })
 export class BaseModule {

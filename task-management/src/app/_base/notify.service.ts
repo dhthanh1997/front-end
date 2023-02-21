@@ -26,6 +26,4 @@ export class NotifyService {
     this.service.info('Thông tin', message , this.modalOptions);
   }
 
-
-
 }

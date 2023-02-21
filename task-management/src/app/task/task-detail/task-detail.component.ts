@@ -225,6 +225,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       nzClassName: 'modal-custom',
       nzClosable: true,
       nzComponentParams: {
+        taskId: this.formValidation.get('id')?.value
       }
     })
 
