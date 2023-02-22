@@ -24,6 +24,8 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 // NgZorro local english language settings
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
@@ -60,6 +62,8 @@ const NZ_MODULES = [
   NzPageHeaderModule,
   NzSpaceModule,
   NzDescriptionsModule,
+  NzListModule,
+  NzSkeletonModule 
 ];
 
 @NgModule({

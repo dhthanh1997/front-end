@@ -142,6 +142,14 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
     return true;
   }
 
+  downloadFile = (file: NzUploadFile): boolean => {
+    console.log(file);
+    return true;
+  }
+
+
+  
+
 
 
 
