@@ -1,6 +1,8 @@
+import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, Renderer2, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
+import { Observable } from 'rxjs';
 import { MessageService } from 'src/app/_base/message.service';
 
 @Component({
@@ -23,7 +25,7 @@ import { MessageService } from 'src/app/_base/message.service';
 })
 export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAccessor, Validator {
 
-  public progess: number = 0;
+  public progress: number = 0;
   public uploading: boolean = false;
   public fileList: NzUploadFile[] = [];
   public showUploadList = {
@@ -36,9 +38,8 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
   @Input() isShowLoadList: boolean = true;
   @Input() urlBase: string | undefined;
   @Input() isDialog: boolean = false;
-
+  @Input() progessEvent: Observable<any> = new Observable();
   @Input() fileSize: number | undefined = 10; // default is 10
-
   @Output() onChange: EventEmitter<any> = new EventEmitter();
 
 
@@ -88,7 +89,7 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
 
   beforeUpload = (file: NzUploadFile): boolean => {
     // console.log(file);
-    this.progess = 0;
+    // this.progess = 0;
     // validate định dạng file
     if (this.fileType) {
       let fileName: string = file.name;
@@ -119,7 +120,19 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
     if (this.isDialog) {
       this.onChange.emit(this.fileList);
     }
-    console.log(this.fileList);
+    // console.log(this.fileList);
+    // this.progessEvent.subscribe({
+    //   next: (res) => {
+    //     if(res.type === HttpEventType.UploadProgress) {
+    //       this.uploading = true;
+    //       this.progress = Math.round(100 * res.loaded / res.total);
+    //     }
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //     this.uploading = false
+    //   }
+    // })
 
     return false;
   }

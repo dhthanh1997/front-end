@@ -14,16 +14,16 @@ export class UploadFileApi {
 
   uploadFileInTask(data: UploadFile, file: File): Observable<ResponseDataObject> {
     const formData = new FormData();
-    formData.append('files', file);
+    formData.append('file', file);
     formData.append('data', JSON.stringify(data));
-    return this.http.post(`${this.apiController}/task`, formData);
+    return this.http.post(`${this.apiController}/task`, formData, { reportProgress: true, observe: 'events' });
   }
 
   uploadFileInProject(data: UploadFile, file: File): Observable<ResponseDataObject> {
     const formData = new FormData();
-    formData.append('files', file);
+    formData.append('file', file);
     formData.append('data', JSON.stringify(data));
-    return this.http.post(`${this.apiController}/project`, data);
+    return this.http.post(`${this.apiController}/project`, formData, { reportProgress: true, observe: 'events' });
   }
 
 }
