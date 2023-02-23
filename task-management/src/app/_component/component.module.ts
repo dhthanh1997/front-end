@@ -4,13 +4,14 @@ import { ShareModule } from '../_share/share.module';
 import { RowTableComponent } from './row-table/row-table.component';
 import { NgZorroModule } from '../_theme/ng-zorro.module';
 import { InputFileComponent } from './input-file/input-file.component';
-
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 
 @NgModule({
   declarations: [
     RowTableComponent,
-    InputFileComponent
+    InputFileComponent,
+    ProgressBarComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +20,8 @@ import { InputFileComponent } from './input-file/input-file.component';
   ],
   exports: [
     RowTableComponent,
-    InputFileComponent
+    InputFileComponent,
+    ProgressBarComponent
   ]
 })
 export class ComponentModule { }

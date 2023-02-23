@@ -7,7 +7,7 @@ import { IconsProviderModule } from '../_theme/iconsProvider.module';
 import { NgZorroModule } from '../_theme/ng-zorro.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskTableComponent } from './task-table/task-table.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { ShareModule } from '../_share/share.module';
 import { TaskDetailFrmComponent } from './task-detail/task-detail-frm/task-detail-frm.component';
@@ -35,7 +35,8 @@ import { TaskUploadFileComponent } from './task-detail/task-upload-file/task-upl
     DragDropModule,
     ReactiveFormsModule,
     ShareModule,
-    ComponentModule
+    ComponentModule,
+    FormsModule
   ]
 })
 export class TaskModule { }

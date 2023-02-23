@@ -139,6 +139,7 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
 
   removeFile = (file: NzUploadFile): boolean => {
     console.log(file);
+    this.fileList = this.fileList.filter(x => x.name !== file.name);
     return true;
   }
 

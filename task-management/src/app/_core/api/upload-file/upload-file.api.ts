@@ -12,18 +12,50 @@ export class UploadFileApi {
 
   constructor(private http: HttpService) { }
 
-  uploadFileInTask(data: UploadFile, file: File): Observable<ResponseDataObject> {
+  uploadFileInTask(data: UploadFile, files: File[]): Observable<ResponseDataObject> {
     const formData = new FormData();
-    formData.append('file', file);
+    files.forEach((file, index) => {
+      formData.append('files', file);
+    })
+    formData.append('data', JSON.stringify(data));
+    return this.http.post(`${this.apiController}/task`, formData);
+  }
+
+  
+  uploadFileInTaskWithReportProgress(data: UploadFile, files: File[]): Observable<ResponseDataObject> {
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append('files', file);
+    })
     formData.append('data', JSON.stringify(data));
     return this.http.post(`${this.apiController}/task`, formData, { reportProgress: true, observe: 'events' });
   }
 
-  uploadFileInProject(data: UploadFile, file: File): Observable<ResponseDataObject> {
+
+  uploadFileInProject(data: UploadFile, files: File[]): Observable<ResponseDataObject> {
     const formData = new FormData();
-    formData.append('file', file);
+    files.forEach((file, index) => {
+      formData.append('files', file);
+    })
+    formData.append('data', JSON.stringify(data));
+    return this.http.post(`${this.apiController}/project`, formData);
+  }
+
+  uploadFileInProjectWithReportProgress(data: UploadFile, files: File[]): Observable<ResponseDataObject> {
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append('files', file);
+    })
     formData.append('data', JSON.stringify(data));
     return this.http.post(`${this.apiController}/project`, formData, { reportProgress: true, observe: 'events' });
+  }
+
+  downloadFileInTask(id: number): Observable<any> {
+    return this.http.get(`${this.apiController}/task/` + id);
+  }
+
+  downloadFileInProject(id: number): Observable<any> {
+    return this.http.get(`${this.apiController}/project/` + id);
   }
 
 }

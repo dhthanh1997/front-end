@@ -1,0 +1,10 @@
+<ng-container *ngIf="isDialog else tmplProgressBar">
+    <nz-progress [nzPercent]="percentage" [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"
+        nzStatus="active"></nz-progress>
+
+</ng-container>
+<ng-template #tmplProgressBar>
+    <nz-progress [nzPercent]="percentage" [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"
+        nzStatus="active"></nz-progress>
+
+</ng-template>

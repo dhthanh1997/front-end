@@ -1,14 +1,30 @@
-<nz-spin [nzSpinning]="upLoading">
-    <div class="modal-content">
-        <app-input-file [isDialog]="true" (onChange)="onChangeEventUploadFile($event)"></app-input-file>
-    </div>
-    
-    <div class="modal-footer-custom" *nzModalFooter>
-        <button nz-button class="mr-2" nzType="primary" (click)="save()">
-            Lưu
-        </button>
-        <button nz-button nzType="default" (click)="close()">
-            Thoát
-        </button>
-    </div>
-</nz-spin>
+<!-- <div [formGroup]="formValidation"> -->
+
+<div class="modal-header-custom p-2">
+    <button nz-button nzType="default" (click)="close()">
+        <span nz-icon nzType="close" nzTheme="outline"></span>
+    </button>
+</div>
+<div class="modal-content p-2">
+    <app-input-file [isDialog]="true" (onChange)="onChangeEventUploadFile($event)"></app-input-file>
+</div>
+<div class="modal-footer-custom p-2">
+    <button nz-button class="mr-2" [nzLoading]="upLoading" nzType="primary" (click)="save()">
+        Lưu
+    </button>
+    <button nz-button [nzLoading]="upLoading" nzType="default" (click)="close()">
+        Thoát
+    </button>
+</div>
+<!-- </div> -->
+
+
+<!-- Loading state：
+<nz-switch ></nz-switch> -->
+
+
+<!-- <ng-container *ngIf="upLoading"> -->
+<!-- <div class="progress-bar">
+        <app-progress-bar [percentage]="progress"></app-progress-bar>
+    </div> -->
+<!-- </ng-container> -->

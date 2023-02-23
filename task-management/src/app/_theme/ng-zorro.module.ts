@@ -26,6 +26,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 // NgZorro local english language settings
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
@@ -33,6 +34,7 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 registerLocaleData(en);
 
 const NZ_MODULES = [
@@ -63,7 +65,9 @@ const NZ_MODULES = [
   NzSpaceModule,
   NzDescriptionsModule,
   NzListModule,
-  NzSkeletonModule 
+  NzSkeletonModule,
+  NzProgressModule,
+  NzSwitchModule 
 ];
 
 @NgModule({

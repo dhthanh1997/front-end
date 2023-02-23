@@ -11,11 +11,19 @@ export class UploadFileService implements UploadFileData {
 
   constructor(private api: UploadFileApi) { }
 
-  uploadFileInTask(item: UploadFile, file: File): Observable<ResponseDataObject> {
-    return this.api.uploadFileInTask(item, file);
+  downloadFileInTask(id: number): Observable<any> {
+    return this.api.downloadFileInTask(id);
   }
-  uploadFileInProject(item: UploadFile, file: File): Observable<ResponseDataObject> {
-    return this.api.uploadFileInProject(item, file);
+
+  downloadFileInProject(id: number): Observable<any> {
+    return this.api.downloadFileInProject(id);
+  }
+
+  uploadFileInTask(item: UploadFile, files: File[]): Observable<ResponseDataObject> {
+    return this.api.uploadFileInTask(item, files);
+  }
+  uploadFileInProject(item: UploadFile, files: File[]): Observable<ResponseDataObject> {
+    return this.api.uploadFileInProject(item, files);
   }
 
 

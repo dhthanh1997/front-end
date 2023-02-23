@@ -218,13 +218,15 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   uploadFile() {
     this.modal.create({
       nzContent: TaskUploadFileComponent,
-      nzTitle: "Upload file",
+      // nzTitle: "Upload file",
       nzCentered: true,
       nzMaskClosable: false,
       nzDirection: 'ltr',
       nzClassName: 'modal-custom',
-      nzClosable: true,
+      nzClosable: false,
+      nzFooter: null,
       nzComponentParams: {
+        title:"Upload file",
         taskId: this.formValidation.get('id')?.value
       }
     })
