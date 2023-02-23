@@ -26,6 +26,10 @@
 
 }
 
+.toggle-detail {
+  width: calc(100vw - 726px) !important;
+}
+
 .table td,
 .table th {
   padding: 0.3rem;
@@ -51,7 +55,7 @@
     font-size: 18px;
   }
 
-  
+
 }
 
 ::ng-deep .table-subTask {

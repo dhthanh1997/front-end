@@ -14,7 +14,6 @@ import { TaskDetailFrmComponent } from './task-detail/task-detail-frm/task-detai
 import { TaskRowTableComponent } from './task-detail/common/task-row-table/task-row-table.component';
 import { TaskDetailTableComponent } from './task-detail/common/task-detail-table/task-detail-table.component';
 
-
 @NgModule({
   declarations: [
     TaskComponent,
