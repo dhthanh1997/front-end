@@ -16,7 +16,6 @@ import { TaskDetailTableComponent } from './task-detail/common/task-detail-table
 import { ComponentModule } from '../_component/component.module';
 import { TaskUploadFileComponent } from './task-detail/task-upload-file/task-upload-file.component';
 
-
 @NgModule({
   declarations: [
     TaskComponent,

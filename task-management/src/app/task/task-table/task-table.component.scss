@@ -14,7 +14,7 @@ $task_detail_height: 500px !default;
   position: sticky;
   align-self: flex-start; /* <-- this is the fix */
   top: 0;
-  z-index: 1; // any positive value, layer order is global
+  // z-index: 1; // any positive value, layer order is global
   background-color: white;
 }
 
@@ -53,7 +53,7 @@ $task_detail_height: 500px !default;
 
   .task-table-left {
     width: calc(100vw - $task_detail_width);
-    height: $task_detail_height;
+    // height: $task_detail_height;
     display: flex;
     flex-direction: column;
     overflow-y: auto;

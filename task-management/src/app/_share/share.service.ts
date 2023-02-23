@@ -22,6 +22,7 @@ export class ShareService {
   public isFilterTask: Subject<any> = new Subject<any>();
   public isSortTask: Subject<any> = new Subject<any>();
   public isLoadingModal: Subject<boolean> = new Subject<boolean>(); // dung cho spinner tại modal
+  public isCollapsedTest: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   // end events
 
   constructor() { }

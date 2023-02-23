@@ -240,8 +240,15 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
   }
 
   startCreate() {
+    // debugger;
     this.addSection = 1;
+    let inputAddSection = this.element.nativeElement.querySelector('#input-add-section');
+    setTimeout(async() => {
+      await inputAddSection.focus();
+    }, 10)
   }
+
+
 
   createSection() {
     // debugger;
@@ -272,31 +279,38 @@ export class BoardViewComponent implements OnInit, AfterViewChecked {
   }
 
   startEdit(index: number): void {
+    // debugger;
     this.editIdx = index;
+    let editElement = this.element.nativeElement.querySelectorAll('.sectionName');
+    setTimeout(async () => {
+      await editElement[index].focus();
+    }, 50)
   }
 
   editSection(id: number, index: number) {
     // debugger;
     let input = this.element.nativeElement.querySelectorAll('.sectionName');
-    const item: sectionContent = { name: '' };
-    item.name = input[index].value;
-    item.id = id;
-    this.sectionData.update(id, item).subscribe({
-      next: (res: sectionContent) => {
-        console.log(res);
-        if (res) {
-          this.getSection();
-          // this.modelRef.close(res);
-        }
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-      complete: () => {
-        this.editIdx = null;
-        console.log('done');
-      },
-    });
+    if(input[index].value.length > 0) {
+      const item: sectionContent = { name: '' };
+      item.name = input[index].value;
+      item.id = id;
+      this.sectionData.update(id, item).subscribe({
+        next: (res: sectionContent) => {
+          console.log(res);
+          if (res) {
+            this.getSection();
+            // this.modelRef.close(res);
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+        complete: () => {
+          this.editIdx = null;
+          console.log('done');
+        },
+      });
+    }
   }
 
   deleteSection(id: number) {

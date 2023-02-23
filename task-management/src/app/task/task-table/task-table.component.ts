@@ -1,5 +1,18 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+} from '@angular/forms';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import { ShareService } from 'src/app/_share/share.service';
@@ -11,17 +24,16 @@ import { ParamSearch } from 'src/app/_core/model/params-search';
 import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-
-
+import { SectionData } from 'src/app/_core/api/section/section-data';
 
 @Component({
   selector: 'app-task-table',
   templateUrl: './task-table.component.html',
-  styleUrls: ['./task-table.component.scss']
+  styleUrls: ['./task-table.component.scss'],
 })
 export class TaskTableComponent implements OnInit, OnDestroy {
-
   public formValidation!: FormGroup;
+  public section!: FormGroup;
   public isNotAddRow: boolean = false;
   public isCollapsed: boolean = true;
   public Collapse: boolean = false;
@@ -29,38 +41,67 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   public filters: any[] = [];
   public sortName: string = '';
   public filterName: string = '';
-  public params: ParamSearch = {};
+  public sectionList: any = [];
+  public params: ParamSearch = {
+    sorts: [],
+    filters: [],
+    sortName: '',
+    filterName: '',
+  };
+  public isAddSections: boolean = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     private notifyService: NotifyService,
     private shareService: ShareService,
-    private taskData: TaskData) {
-    
+    private taskData: TaskData,
+    private sectionData: SectionData
+  ) {
+    const formGroup = this.fb.array([
+      this.fb.group({
+        id: new FormControl(1, []),
+        isLoading: new FormControl(false, []),
+        name: new FormControl('test 1', []),
+      }),
+      this.fb.group({
+        id: new FormControl(2, []),
+        isLoading: new FormControl(false, []),
+        name: new FormControl('test 2', []),
+      }),
+    ]);
+
     this.formValidation = initFormObject(this.params, this.params);
-
+    this.formValidation.addControl('sections', formGroup);
+    // this.formValidation = this.fb.group({
+    //   sections: this.fb.array([
+    //     this.fb.group({
+    //       isLoading: false,
+    //       name: new FormControl(),
+    //       id: new FormControl(),
+    //     }),
+    //   ]),
+    // });
   }
 
-  ngOnDestroy(): void {
-
+  get sections() {
+    return this.formValidation.get('sections') as FormArray;
   }
 
+  ngOnDestroy(): void {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
   async ngOnInit() {
     this.buildParams();
+    await this.getSection();
+    console.log(this.formValidation);
   }
-
-
 
   collapseEventTaskRow(event: any) {
     // console.log(event);
     this.isCollapsed = !this.isCollapsed;
     console.log(this.isCollapsed);
-
   }
 
   collapseEvent(event: any) {
@@ -75,22 +116,40 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.filterName = Filter.NOT_DONE;
     this.params.sorts = EnumUtils.getEnumValues(Sort, EnumType.String);
     this.params.filters = EnumUtils.getEnumValues(Filter, EnumType.String);
-    
   }
 
+  async getSection() {
+    this.sectionData.search(1, 999).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.sectionList = res.pagingData.content;
+        // console.log(this.listData);
+        console.log(this.sectionList);
 
-  addTask() {
-    
-
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
+  addTask() {}
+
+  addSection() {
+    this.sections.push(
+      this.fb.group({
+        id: new FormControl(this.sections.length+1, []),
+        isLoading: new FormControl(false, []),
+        name: new FormControl(`test ${this.sections.length+1}`, []),
+      })
+    );
+  }
 
   selectedItemFilter(event: any) {
     console.log(event);
     this.params.filterName = EnumUtils.getKeyByValue(Filter, event);
     this.shareService.isFilterTask.next(this.params);
     this.filterName = event;
-    
   }
 
   selectedItemSort(event: any) {
@@ -99,6 +158,4 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.shareService.isSortTask.next(this.params);
     this.sortName = event;
   }
-
-
 }

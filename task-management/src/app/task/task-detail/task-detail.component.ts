@@ -208,7 +208,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     // 1: Hoàn thành
     if(formGroup.value === 0) {
       formGroup.setValue(1);
-    } 
+    }
     if(formGroup.value === 1) {
       formGroup.setValue(0);
     }
