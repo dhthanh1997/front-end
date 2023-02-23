@@ -9,11 +9,9 @@ export class ShareService {
 
   // events
   public isAddRow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public isChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isOutSide: Subject<any> = new Subject<any>();
   public isInside: Subject<any> = new Subject<any>();
   public isLoading: Subject<boolean> = new Subject<boolean>(); // dung cho spinner
-  public isKeyUp: Subject<any> = new Subject<any>();
   public isAddSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isDialogSave: Subject<any> = new Subject<any>();
   public isAddSubTask: Subject<any> = new Subject<any>();
@@ -22,7 +20,7 @@ export class ShareService {
   public isFilterTask: Subject<any> = new Subject<any>();
   public isSortTask: Subject<any> = new Subject<any>();
   public isLoadingModal: Subject<boolean> = new Subject<boolean>(); // dung cho spinner tại modal
-  public isCollapsedTest: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  
   // end events
 
   constructor() { }

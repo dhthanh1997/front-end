@@ -84,6 +84,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.buildParams();
     this.getSection();
+    // this.closeFromDetailTask();
+    this.collapseListenEventFromRow();
     console.log(this.formValidation);
   }
 
@@ -94,9 +96,32 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   collapseEvent(event: any) {
-    console.log(event);
+    // console.log(event);
     this.isCollapsed = !this.isCollapsed;
+    console.log(this.isCollapsed);
   }
+
+
+  collapseListenEventFromRow() {
+    this.shareService.isCollapseDetailTask.subscribe(res => {
+      // console.log(res);
+      // if (res) {
+        this.isCollapsed = !this.isCollapsed;
+        console.log(this.isCollapsed);
+      // }
+    })
+  }
+  
+
+  closeFromDetailTask() {
+    this.shareService.isCloseDetailTask.subscribe(res => {
+      if (res) {
+        console.log(res);
+        this.isCollapsed = !this.isCollapsed;
+      }
+    });
+  }
+
 
   buildParams() {
     this.params.filterName = EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE);

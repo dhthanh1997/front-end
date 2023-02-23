@@ -1,19 +1,14 @@
 <!-- header -->
-<div class="task_header p-2" [formGroup]="formValidation">
+<div class="task-header p-2" [formGroup]="formValidation" [ngClass]="(!isCollapsed) ? 'task-header-toggle' : ''">
   <div class="p-1">
     <div class="d-flex flex-row">
       <div class="col-md-6">
-        <div class="float-left">
+        <div class="float-left d-flex flex-row">
           <button nz-button nzType="primary" (click)="addTask()">
             <span nz-icon nzType="plus"></span>
             Thêm công việc
           </button>
-          <button
-            class="ml-2"
-            nz-button
-            nzType="primary"
-            (click)="addSection()"
-          >
+          <button class="ml-2" nz-button nzType="primary" (click)="addSection()">
             <span nz-icon nzType="plus"></span>
             Add Section
           </button>
@@ -29,11 +24,7 @@
             </button>
             <nz-dropdown-menu #menuTask="nzDropdownMenu">
               <ul class="dropdown_menu" nz-menu>
-                <li
-                  nz-menu-item
-                  (click)="selectedItemFilter(item)"
-                  *ngFor="let item of params.filters"
-                >
+                <li nz-menu-item (click)="selectedItemFilter(item)" *ngFor="let item of params.filters">
                   {{ item }}
                 </li>
               </ul>
@@ -42,16 +33,11 @@
 
           <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuSort">
             <button nz-button nzType="default">
-              <span nz-icon nzType="sort-ascending" nzTheme="outline"></span
-              >{{ sortName }}
+              <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>{{ sortName }}
             </button>
             <nz-dropdown-menu #menuSort="nzDropdownMenu">
               <ul class="dropdown_menu" nz-menu>
-                <li
-                  nz-menu-item
-                  (click)="selectedItemSort(item)"
-                  *ngFor="let item of params.sorts"
-                >
+                <li nz-menu-item (click)="selectedItemSort(item)" *ngFor="let item of params.sorts">
                   {{ item }}
                 </li>
               </ul>
@@ -79,29 +65,17 @@
       </table>
     </div>
   </div>
-
   <!-- content -->
   <div class="p-2">
-    <div class="d-flex flex-row">
-      <!-- table -->
-      <div formArrayName="sections">
-        <div
-          *ngFor="let item of sections.controls; index as idx"
-          class="task-table-left"
-          [ngClass]="!isCollapsed ? 'task-table-left-toggle' : ''"
-        >
-          <div [formGroupName]="idx">
-            <!-- {{item.get('id')!.value}}
-            {{item.get('name')!.value}}
-            {{item.get('isLoading')!.value}} -->
+    <!-- table -->
+    <div formArrayName="sections">
+      <div *ngFor="let item of sections.controls; index as idx" class="task-table-left">
+        <div [formGroupName]="idx">
 
-            <app-task-row-table
-              [paramSearch]="params"
-              [sectionParams]="item.get('id')!.value"
-              [title]="(item.get('name')!.value) ? item.get('name')!.value : ''"
-            >
-            </app-task-row-table>
-            <!-- <app-task-row-table
+          <app-task-row-table [paramSearch]="params" [sectionParams]="item.get('id')!.value"
+            [title]="(item.get('name')!.value) ? item.get('name')!.value : ''">
+          </app-task-row-table>
+          <!-- <app-task-row-table
             [paramSearch]="params"
             [sectionParams]="item.get('id')!.value"
             [isLoading]="item.get('isLoading')!.value"
@@ -109,16 +83,15 @@
             [title]="(item.get('name')!.value) ? item.get('name')!.value : ''"
           >
           </app-task-row-table> -->
-            <br />
-          </div>
+          <br />
+        </div>
 
-          <!-- <app-task-row-table
+        <!-- <app-task-row-table
             [paramSearch]="params"
             (collapEvent)="collapseEventTaskRow($event)"
             [title]="'Kế hoạch tuần sau'"
           >
           </app-task-row-table> -->
-        </div>
       </div>
     </div>
   </div>
@@ -127,15 +100,8 @@
 <!-- end header -->
 
 <!-- detail -->
-<div
-  class="task-detail p-2"
-  [ngClass]="!isCollapsed ? 'toggle-task-detail' : ''"
->
-  <app-task-detail
-    (collapEvent)="collapseEvent($event)"
-    [isCollapsed]="isCollapsed"
-    class=""
-  ></app-task-detail>
+<div class="task-detail p-2" [ngClass]="(!isCollapsed)? 'toggle-task-detail' : ''">
+  <app-task-detail (collapEvent)="collapseEvent($event)" [isCollapsed]="isCollapsed" class=""></app-task-detail>
   <!-- <app-task-detail
     (collapEvent)="collapseEvent($event)"
     

@@ -38,6 +38,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   public isShow: boolean = false;
   public isNotAddRow: boolean = false;
 
+  public isCollapsedTaskDetail: boolean = true;
+
   @Input() isCollapsed: boolean = true;
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() watchChange: EventEmitter<any> = new EventEmitter<any>();
@@ -64,7 +66,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.getSubData();
     // không cần watch change, angular tự check change và update theo hàm watchForChange ở parent component
     this.watchForChange();
-    this.collapseListenEvent();
+    // this.collapseListenEvent();
     // console.log(this.formValidation);
   }
 
@@ -178,7 +180,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.shareService.isCollapseDetailTask.subscribe(res => {
       console.log(res);
       // if (res) {
-        this.isCollapsed = res;
+        // this.isCollapsed = res;
         console.log(this.isCollapsed);
       // }
     })
@@ -331,6 +333,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       isChange: true,
       value: true
     });
+    // this.isCollapsed = !this.isCollapsed;
     this.shareService.isCloseDetailTask.next(true);
   }
 

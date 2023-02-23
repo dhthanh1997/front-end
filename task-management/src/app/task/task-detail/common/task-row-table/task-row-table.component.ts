@@ -18,23 +18,17 @@ import { ShareService } from 'src/app/_share/share.service';
   selector: 'app-task-row-table',
   templateUrl: './task-row-table.component.html',
   styleUrls: ['./task-row-table.component.scss'],
-  // encapsulation: ViewEncapsulation.None
 })
 export class TaskRowTableComponent implements OnInit {
 
   public formValidation!: FormGroup;
-  public isHover: boolean = false;
-  public isOpen: boolean = true;
   public isNotAddRow: boolean = false;
   public isCollapsed: boolean = true;
   public isCollapsedTable: boolean = true;
-  public Collapse: boolean = false;
   public listOfData: Task[] = [];
   public task = new Task();
-  // public isLoading: boolean = false;
   public isLoadSubTask: boolean = false;
   changesUnsubscribe = new Subject();
-  private keyUpEvent$ = new Subject<any>();
   public filterParam: string = "";
 
   @Input() title: string = "";
@@ -134,14 +128,6 @@ export class TaskRowTableComponent implements OnInit {
     }
   }
 
-  keyUpListenEvent() {
-    this.shareService.isKeyUp.subscribe(e => {
-      if (e) {
-        this.keyUpEvent$.unsubscribe();
-      }
-    });
-  }
-
   // sửa ở form detail sẽ emit ra đây để update lên component này
   updateDataForm() {
     let index = 0;
@@ -238,23 +224,22 @@ export class TaskRowTableComponent implements OnInit {
 
   detailTask(item: any, index: number) {
     // console.log(item);
-    // this.collapEvent.next(this.isCollapsed);
     this.isCollapsed = !this.isCollapsed;
     this.shareService.taskDataShare.next({
       item: item,
       index: index
     });
+
     this.shareService.isCollapseDetailTask.next(this.isCollapsed);
   }
 
   getTask(item: any, index: number) {
-    // console.log(item);
+    // console.log("in get task");
     this.shareService.taskDataShare.next({
       item: item,
       index: index
     });
 
-    this.shareService.isCollapseDetailTask.next(true);
   }
 
   addTask() {
@@ -436,7 +421,7 @@ export class TaskRowTableComponent implements OnInit {
 
   async search() {
     // debugger;
-    if(this.paramSearch.filterName !== "") {
+    if (this.paramSearch.filterName !== "") {
       this.filterParam = this.paramSearch.filterName;
     }
     console.log(this.filterParam);
@@ -459,14 +444,11 @@ export class TaskRowTableComponent implements OnInit {
 
     // với các trường hợp search với điều kiện null
     // => cú pháp field.nu.abs (với abs ghi thế nào cx được: là ký tự tượng trưng nhưng bắt buộc phải có)
-    // this.paramSearch.filterName += 'parentId.nu.nu' + ',';
-    // this.paramSearch.filterName += `sectionId.eq.${this.sectionParams},`
-    // this.paramSearch.sortName += ',';
-    // set
+   
     console.log(this.paramSearch);
     if (!this.isCollapsedTable) {
-      let searchParam =  this.paramSearch.filterName + 'parentId.nu.nu' + ',' + `sectionId.eq.${this.sectionParams},`
-      let sortName =  this.paramSearch.sortName + ',';
+      let searchParam = this.paramSearch.filterName + 'parentId.nu.nu' + ',' + `sectionId.eq.${this.sectionParams},`
+      let sortName = this.paramSearch.sortName + ',';
       let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 999, searchParam, sortName));
       console.log(response);
       // console.log(this.paramSearch);
@@ -476,9 +458,7 @@ export class TaskRowTableComponent implements OnInit {
       }
     }
     this.shareService.isLoading.next(false);
-    // clear filter và sort lúc trước;
-    // this.paramSearch.filterName = '';
-    // this.paramSearch.sortName  = '';
+
   }
 
 }
