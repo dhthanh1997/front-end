@@ -72,7 +72,7 @@ export class TaskRowTableComponent implements OnInit {
     this.isFilterTask();
     this.isSortTask();
     // await this.search();
-    await this.initForm();
+    this.initForm();
   }
 
   initForm() {
@@ -238,7 +238,7 @@ export class TaskRowTableComponent implements OnInit {
 
   detailTask(item: any, index: number) {
     // console.log(item);
-    this.collapEvent.next(this.isCollapsed);
+    // this.collapEvent.next(this.isCollapsed);
     this.isCollapsed = !this.isCollapsed;
     this.shareService.taskDataShare.next({
       item: item,
@@ -415,6 +415,7 @@ export class TaskRowTableComponent implements OnInit {
     this.shareService.isFilterTask.subscribe(async (res) => {
       if (res) {
         this.paramSearch = res;
+        console.log(this.paramSearch);
         await this.search();
         await this.initForm();
         this.watchForChanges();
@@ -435,7 +436,7 @@ export class TaskRowTableComponent implements OnInit {
 
   async search() {
     // debugger;
-    if(this.paramSearch.filterName != "") {
+    if(this.paramSearch.filterName !== "") {
       this.filterParam = this.paramSearch.filterName;
     }
     console.log(this.filterParam);
@@ -443,7 +444,6 @@ export class TaskRowTableComponent implements OnInit {
     this.taskArray.clear();
     this.shareService.isLoading.next(true);
     // set state 0 = Chưa hoàn thành; 1= Hoàn thành
-
     switch (this.filterParam) {
       case EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE):
         this.paramSearch.filterName = 'state.eq.' + '0' + ',';
@@ -459,16 +459,17 @@ export class TaskRowTableComponent implements OnInit {
 
     // với các trường hợp search với điều kiện null
     // => cú pháp field.nu.abs (với abs ghi thế nào cx được: là ký tự tượng trưng nhưng bắt buộc phải có)
-    this.paramSearch.filterName += 'parentId.nu.nu' + ',';
-    this.paramSearch.filterName += `sectionId.eq.${this.sectionParams},`
-    this.paramSearch.sortName += ',';
+    // this.paramSearch.filterName += 'parentId.nu.nu' + ',';
+    // this.paramSearch.filterName += `sectionId.eq.${this.sectionParams},`
+    // this.paramSearch.sortName += ',';
     // set
     console.log(this.paramSearch);
     if (!this.isCollapsedTable) {
-
-      let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 999, this.paramSearch.filterName, this.paramSearch.sortName));
+      let searchParam =  this.paramSearch.filterName + 'parentId.nu.nu' + ',' + `sectionId.eq.${this.sectionParams},`
+      let sortName =  this.paramSearch.sortName + ',';
+      let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 999, searchParam, sortName));
       console.log(response);
-      console.log(this.paramSearch);
+      // console.log(this.paramSearch);
 
       if (response.message === ResponseStatusEnum.success) {
         this.listOfData = response.pagingData.content;
@@ -476,8 +477,8 @@ export class TaskRowTableComponent implements OnInit {
     }
     this.shareService.isLoading.next(false);
     // clear filter và sort lúc trước;
-    this.paramSearch.filterName = '';
-    this.paramSearch.sortName  = '';
+    // this.paramSearch.filterName = '';
+    // this.paramSearch.sortName  = '';
   }
 
 }

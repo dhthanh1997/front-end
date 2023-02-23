@@ -64,7 +64,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.getSubData();
     // không cần watch change, angular tự check change và update theo hàm watchForChange ở parent component
     this.watchForChange();
-    // this.collapseListenEvent();
+    this.collapseListenEvent();
     // console.log(this.formValidation);
   }
 
@@ -178,7 +178,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.shareService.isCollapseDetailTask.subscribe(res => {
       console.log(res);
       // if (res) {
-        this.isCollapsed = !this.isCollapsed;
+        this.isCollapsed = res;
+        console.log(this.isCollapsed);
       // }
     })
   }

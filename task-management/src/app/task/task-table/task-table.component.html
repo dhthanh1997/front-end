@@ -91,18 +91,24 @@
           [ngClass]="!isCollapsed ? 'task-table-left-toggle' : ''"
         >
           <div [formGroupName]="idx">
-            {{item.get('id')!.value}}
+            <!-- {{item.get('id')!.value}}
             {{item.get('name')!.value}}
-            {{item.get('isLoading')!.value}}
+            {{item.get('isLoading')!.value}} -->
 
             <app-task-row-table
               [paramSearch]="params"
               [sectionParams]="item.get('id')!.value"
-              [isLoading]="item.get('isLoading')!.value"
-              (collapEvent)="collapseEventTaskRow($event)"
               [title]="(item.get('name')!.value) ? item.get('name')!.value : ''"
             >
             </app-task-row-table>
+            <!-- <app-task-row-table
+            [paramSearch]="params"
+            [sectionParams]="item.get('id')!.value"
+            [isLoading]="item.get('isLoading')!.value"
+            (collapEvent)="collapseEventTaskRow($event)"
+            [title]="(item.get('name')!.value) ? item.get('name')!.value : ''"
+          >
+          </app-task-row-table> -->
             <br />
           </div>
 
@@ -130,5 +136,10 @@
     [isCollapsed]="isCollapsed"
     class=""
   ></app-task-detail>
+  <!-- <app-task-detail
+    (collapEvent)="collapseEvent($event)"
+    
+    class=""
+  ></app-task-detail> -->
 </div>
 <!-- end content -->

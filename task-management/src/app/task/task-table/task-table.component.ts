@@ -19,12 +19,13 @@ import { ShareService } from 'src/app/_share/share.service';
 import * as _ from 'lodash';
 import { Sort } from 'src/app/_core/enum/sort-enum';
 import { Filter } from 'src/app/_core/enum/filter-enum';
-import { EnumType, EnumUtils, initFormObject } from 'src/app/_base/util';
+import { EnumType, EnumUtils, initFormObject, setDataInFormArray } from 'src/app/_base/util';
 import { ParamSearch } from 'src/app/_core/model/params-search';
 import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SectionData } from 'src/app/_core/api/section/section-data';
+import { Section } from 'src/app/_core/model/section';
 
 @Component({
   selector: 'app-task-table',
@@ -33,7 +34,7 @@ import { SectionData } from 'src/app/_core/api/section/section-data';
 })
 export class TaskTableComponent implements OnInit, OnDestroy {
   public formValidation!: FormGroup;
-  public section!: FormGroup;
+  // public section!: FormGroup;
   public isNotAddRow: boolean = false;
   public isCollapsed: boolean = true;
   public Collapse: boolean = false;
@@ -49,6 +50,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     filterName: '',
   };
   public isAddSections: boolean = false;
+  public section: Section = new Section()
 
   constructor(
     private fb: FormBuilder,
@@ -58,43 +60,30 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     private taskData: TaskData,
     private sectionData: SectionData
   ) {
-    const formGroup = this.fb.array([
-      this.fb.group({
-        id: new FormControl(1, []),
-        isLoading: new FormControl(false, []),
-        name: new FormControl('test 1', []),
-      }),
-      this.fb.group({
-        id: new FormControl(2, []),
-        isLoading: new FormControl(false, []),
-        name: new FormControl('test 2', []),
-      }),
-    ]);
+    // const formGroup = this.fb.array([
+    //   this.fb.group({
+    //     id: new FormControl(0, []),
+    //     name: new FormControl('', []),
+    //     note: new FormControl('', []),
+    //   }),
+    // ]);
 
     this.formValidation = initFormObject(this.params, this.params);
-    this.formValidation.addControl('sections', formGroup);
-    // this.formValidation = this.fb.group({
-    //   sections: this.fb.array([
-    //     this.fb.group({
-    //       isLoading: false,
-    //       name: new FormControl(),
-    //       id: new FormControl(),
-    //     }),
-    //   ]),
-    // });
+    this.formValidation.addControl('sections', this.fb.array([]));
+   
   }
 
   get sections() {
     return this.formValidation.get('sections') as FormArray;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.buildParams();
-    await this.getSection();
+    this.getSection();
     console.log(this.formValidation);
   }
 
@@ -118,13 +107,14 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.params.filters = EnumUtils.getEnumValues(Filter, EnumType.String);
   }
 
-  async getSection() {
+  getSection() {
     this.sectionData.search(1, 999).subscribe({
       next: (res) => {
         console.log(res);
         this.sectionList = res.pagingData.content;
         // console.log(this.listData);
         console.log(this.sectionList);
+        this.formValidation = setDataInFormArray(this.sectionList, "sections", this.formValidation, this.section);
 
       },
       error: (err) => {
@@ -133,14 +123,14 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  addTask() {}
+  addTask() { }
 
   addSection() {
     this.sections.push(
       this.fb.group({
-        id: new FormControl(this.sections.length+1, []),
+        id: new FormControl(this.sections.length + 1, []),
         isLoading: new FormControl(false, []),
-        name: new FormControl(`test ${this.sections.length+1}`, []),
+        name: new FormControl(`test ${this.sections.length + 1}`, []),
       })
     );
   }
