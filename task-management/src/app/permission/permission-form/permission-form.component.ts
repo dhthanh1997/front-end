@@ -119,7 +119,7 @@ export class PermissionFormComponent implements OnInit {
   }
 
   handleOk(): void {
-    debugger;
+    // debugger;
     this.isConfirmLoading = true;
     const item: permissionContent = this.formValidation.value;
     if (this.mode === ModeModal.CREATE) {

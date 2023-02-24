@@ -28,6 +28,7 @@ export class TaskRowTableComponent implements OnInit {
   public listOfData: Task[] = [];
   public task = new Task();
   public isLoadSubTask: boolean = false;
+  public isLoading: boolean = false;
   changesUnsubscribe = new Subject();
   public filterParam: string = "";
 
@@ -38,7 +39,7 @@ export class TaskRowTableComponent implements OnInit {
     sortName: '',
     filterName: ''
   }
-  @Input() isLoading: boolean = false;
+  // @Input() isLoading: boolean = false;
   @Input() sectionParams: any;
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -168,7 +169,6 @@ export class TaskRowTableComponent implements OnInit {
   }
 
   isLoadingSpinner() {
-    // debugger;
     this.shareService.isLoading.subscribe({
       next: (res) => {
         this.isLoading = res;
@@ -444,7 +444,7 @@ export class TaskRowTableComponent implements OnInit {
 
     // với các trường hợp search với điều kiện null
     // => cú pháp field.nu.abs (với abs ghi thế nào cx được: là ký tự tượng trưng nhưng bắt buộc phải có)
-   
+
     console.log(this.paramSearch);
     if (!this.isCollapsedTable) {
       let searchParam = this.paramSearch.filterName + 'parentId.nu.nu' + ',' + `sectionId.eq.${this.sectionParams},`
