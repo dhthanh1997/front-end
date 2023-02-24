@@ -11,6 +11,7 @@ import { ProjectService } from '../_core/api/project/project.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { DeleteComponent } from './delete/delete.component';
 import { Router } from '@angular/router';
+import { ProjectData } from '../_core/api/project/project-data';
 
 enum ModeModal {
   CREATE = 'create',
@@ -25,7 +26,7 @@ enum ModeModal {
 })
 export class ProjectComponent implements OnInit {
   constructor(
-    private projectData: ProjectService,
+    private projectData: ProjectData,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
     private element: ElementRef,
@@ -42,7 +43,7 @@ export class ProjectComponent implements OnInit {
   public totalElements = 0;
   public totalPages: number | undefined;
 
-  checkedBoxAll = false;
+  checkedBoxAll: boolean = false;
   FilterValue = '';
   disableRoute = false;
 
@@ -52,7 +53,7 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProject();
-    this.projectData.switchLanguage();
+    // this.projectData.switchLanguage();
     console.log(this.listId);
   }
 
@@ -122,7 +123,7 @@ export class ProjectComponent implements OnInit {
 
   public getProject() {
     this.projectData
-      .getProject(this.pageNumber, this.pageSize, this.txtSearch)
+      .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -234,7 +235,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.projectData.deleteProject(id).subscribe({
+            this.projectData.deleteById(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -272,7 +273,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.projectData.deleteSelectedProject(listId).subscribe({
+            this.projectData.deleteSelectedId(listId).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(

@@ -9,17 +9,18 @@ import { ProjectFormComponent } from './project-form/project-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteComponent } from './delete/delete.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CoreModule } from '../_core/core.module';
 
 @NgModule({
   declarations: [ProjectComponent, ProjectFormComponent, DeleteComponent],
   imports: [
     CommonModule,
     ProjectRoutingModule,
-    IconsProviderModule.forRoot(),
-    NgZorroModule.forRoot(),
-    FormsModule,
+    IconsProviderModule,
+    NgZorroModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FormsModule
   ],
 })
 export class ProjectModule {}

@@ -38,7 +38,7 @@ export class Task extends BaseEntity {
   solution: string;
   note: string;
   attachFile: string;
-  parentId: number;
+  parentId: number | null;
   state: number;
   status: string;
   expand: boolean;
@@ -68,7 +68,7 @@ export class Task extends BaseEntity {
     this.solution = '';
     this.note = '';
     this.attachFile = '';
-    this.parentId = 0;
+    this.parentId = null;
     this.state = StateEnum.NOT_DONE;
     this.status = '';
     this.expand = false;

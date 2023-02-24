@@ -1,9 +1,10 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { isThisSecond } from 'date-fns';
 import { is } from 'date-fns/locale';
 import * as _ from 'lodash';
-import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take, throwError } from 'rxjs';
+import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take, throwError, timer } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject, EnumUtils } from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
@@ -57,10 +58,10 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
-    if(changes['isAddRowEvent'] && changes['isAddRowEvent'].currentValue) {
+    if (changes['isAddRowEvent'] && changes['isAddRowEvent'].currentValue) {
       this.addTask();
     }
-    if(changes['isCollapsedFromParent'] && changes['isCollapsedFromParent'].currentValue) {
+    if (changes['isCollapsedFromParent'] && changes['isCollapsedFromParent'].currentValue) {
 
     }
   }
@@ -176,9 +177,12 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
 
   closeDetailTask() {
-    this.shareService.isCloseDetailTask.subscribe(res => {
+    this.shareService.isCloseDetailTask.subscribe(async (res) => {
+      console.log(this.paramSearch);
       if (res) {
         this.isCollapsed = !this.isCollapsed;
+        await this.search();
+        await this.initForm();
       }
     });
   }
@@ -238,6 +242,42 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
 
   }
 
+
+  saveItem(item: any) {
+    console.log(item);
+    this.saveTask(item);
+  }
+
+  checkChangeItem(index: number) {
+    this.taskArray.controls[index].valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000), map(([prev, current]: [any, any]) => {
+      let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+      let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
+      console.log(prevObject);
+      console.log(currentObject);
+      // mảng ban đầu phải không rỗng mới check 2 object
+      if (prevObject) {
+        if (!_.isEqual(prevObject, currentObject)) {
+          // console.log(prev.name);
+          // console.log(current);
+          console.log("different in control: " + index);
+          return {
+            value: current,
+            isAdd: true
+          };
+        }
+      }
+      return {
+        value: current,
+        isAdd: false
+      }
+    })).subscribe((res) => {
+      console.log(res);
+      if (res.isAdd) {
+        this.saveItem(res.value);
+      }
+    });
+  }
+
   addTask() {
     const array = this.taskArray;
     if (array && array.controls.length > 0) {
@@ -246,31 +286,14 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
       // ten cua task ma null thi khong duoc add tiep vao array
       if (lastItem.get('name')?.value) {
         // console.log(lastItem.get('name')?.value)
+        this.task.sectionId = this.sectionParams;
         const form: FormGroup = initDataObject(this.task, this.task);
         this.taskArray.controls.push(form);
+
         setTimeout(() => {
           this.shareService.isAddRow.next(true);
           lastItem = this.lastItemArray;
-          if (lastItem.get('name')?.value) {
-            lastItem.valueChanges.pipe(debounceTime(500), take(1)).subscribe(
-              {
-                next: (res) => {
-                  if (res) {
-                    console.log(res);
-                    let task: Task = lastItem.value;
-                    task.sectionId = this.sectionParams;
-                    this.saveTask(task);
-                  }
-                },
-                error: (err) => {
-                  console.log(err);
-                },
-                complete: () => {
-
-                }
-              }
-            );
-          }
+          this.checkChangeItem(this.taskArray.controls.length - 1);
         }, 200);
         // console.log("into")
         // debugger;
@@ -283,18 +306,23 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     } else {
       const form: FormGroup = initDataObject(this.task, this.task);
       this.taskArray.controls.push(form);
+      // this.taskArray.updateValueAndValidity()
     }
 
   }
 
   markCompleteTask(item: any) {
+    console.log(item);
     let id = item.get('id')?.value;
     this.taskData.markCompleteTask(id);
+    this.search();
+    this.initForm();
   }
 
   saveTask(item: any) {
     this.taskData.save(item).subscribe({
       next: (res) => {
+        console.log(res);
         if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         }
@@ -315,8 +343,8 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
             // so sánh 2 object dùng lodash
             let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
             let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-            // console.log(prevObject);
-            // console.log(currentObject);
+            console.log(prevObject);
+            console.log(currentObject);
 
             // mảng ban đầu phải không rỗng mới check 2 object
             if (prevObject) {
@@ -418,7 +446,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
 
   async search() {
     // debugger;
-    this.isLoading = true;
+    // this.isLoading = true;
     if (this.paramSearch.filterName !== "") {
       this.filterParam = this.paramSearch.filterName;
     }
@@ -454,7 +482,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
         this.listOfData = response.pagingData.content;
       }
     }
-    this.isLoading = false;
+    // this.isLoading = false;
 
   }
 
