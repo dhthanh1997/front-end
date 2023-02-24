@@ -27,7 +27,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
   public isNotAddRow: boolean = false;
   public listOfData: Task[] = [];
   public isUpdate: boolean = false;
-  
+
 
   @Input() public isDialog: boolean = false;
   @Input() public idTask: number = 0;
@@ -46,7 +46,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
 
   ngDoCheck(): void {
-  
+
   }
 
   get subTask() {
@@ -139,7 +139,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
     })
 
 
-    
+
   }
 
 
@@ -264,7 +264,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
   // update tại form khác
   public updateListTask() {
-    debugger;
+    // debugger;
     const item = this.formValidation.get('subTask')?.value;
     this.taskData.updateListTask(item).subscribe({
       next: (res) => {

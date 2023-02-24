@@ -4,7 +4,7 @@ import { FormArray, FormControl, FormGroup, Validator } from "@angular/forms";
 // data : json object
 export function initDataObject(data: any, _object: any): FormGroup {
   // check properties of object
-  debugger;
+  // debugger;
   const form: FormGroup = new FormGroup({});
   let properties = Object.getOwnPropertyNames(_object);
   properties.forEach(prop => {

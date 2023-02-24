@@ -28,6 +28,7 @@ export class TaskRowTableComponent implements OnInit {
   public listOfData: Task[] = [];
   public task = new Task();
   public isLoadSubTask: boolean = false;
+  public isLoading: boolean = false;
   changesUnsubscribe = new Subject();
   public filterParam: string = "";
 
@@ -38,7 +39,7 @@ export class TaskRowTableComponent implements OnInit {
     sortName: '',
     filterName: ''
   }
-  @Input() isLoading: boolean = false;
+  // @Input() isLoading: boolean = false;
   @Input() sectionParams: any;
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
 

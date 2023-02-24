@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnDestroy,
   OnInit,
   Renderer2,
@@ -25,7 +26,7 @@ import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SectionData } from 'src/app/_core/api/section/section-data';
-import { Section } from 'src/app/_core/model/section';
+import { Section, sectionContent } from 'src/app/_core/model/section';
 
 @Component({
   selector: 'app-task-table',
@@ -43,6 +44,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   public sortName: string = '';
   public filterName: string = '';
   public sectionList: any = [];
+  addSections: number | null = null;
   public params: ParamSearch = {
     sorts: [],
     filters: [],
@@ -58,7 +60,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     private notifyService: NotifyService,
     private shareService: ShareService,
     private taskData: TaskData,
-    private sectionData: SectionData
+    private sectionData: SectionData,
+    private element: ElementRef,
   ) {
     // const formGroup = this.fb.array([
     //   this.fb.group({
@@ -70,7 +73,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
     this.formValidation = initFormObject(this.params, this.params);
     this.formValidation.addControl('sections', this.fb.array([]));
-   
+
   }
 
   get sections() {
@@ -111,7 +114,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
       // }
     })
   }
-  
+
 
   closeFromDetailTask() {
     this.shareService.isCloseDetailTask.subscribe(res => {
@@ -150,14 +153,47 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   addTask() { }
 
-  addSection() {
-    this.sections.push(
-      this.fb.group({
-        id: new FormControl(this.sections.length + 1, []),
-        isLoading: new FormControl(false, []),
-        name: new FormControl(`test ${this.sections.length + 1}`, []),
-      })
-    );
+  async addSection() {
+    this.addSections = 1;
+    let inputAddSection = this.element.nativeElement.querySelector('#input-add-section');
+    setTimeout(async() => {
+      await inputAddSection.focus();
+    }, 10)
+  }
+
+  async createSection() {
+    let input = this.element.nativeElement.querySelector('#input-add-section');
+    const item: sectionContent = {
+      id: 0,
+      name: ''
+    };
+    item.name = input.value;
+    // debugger;
+    if(item.name !== '') {
+      this.sectionData.save(item).subscribe({
+        next: (res: sectionContent) => {
+          console.log(res);
+          if (res) {
+            input.value = '';
+            this.addSections = null;
+            this.sections.push(
+              this.fb.group({
+                id: new FormControl(item.id!, []),
+                name: new FormControl(item.name, []),
+              })
+            );
+            // this.modelRef.close(res);
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+        complete: () => {
+
+          console.log('done');
+        },
+      });
+    }
   }
 
   selectedItemFilter(event: any) {
