@@ -93,11 +93,23 @@
       >
         <div [formGroupName]="idx">
           <app-task-row-table
+            class="sectionName"
             [paramSearch]="params"
             [sectionParams]="item.get('id')!.value"
             [title]="item.get('name')!.value ? item.get('name')!.value : ''"
+            [hidden]="editIdx === idx"
+            (click)="startEdit(idx)"
           >
           </app-task-row-table>
+          <input
+            [hidden]="editIdx !== idx"
+            type="text"
+            nz-input
+            nzAutoFocus
+            [value]="item.get('name')!.value"
+            (keyup.enter)="editSection(item.get('id')!.value, idx)"
+            (blur)="editSection(item.get('id')!.value, idx)"
+          />
 
           <!-- <app-task-row-table
             [paramSearch]="params"

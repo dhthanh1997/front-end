@@ -52,6 +52,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     filterName: '',
   };
   public isAddSections: boolean = false;
+  public editIdx: number | null = null;
   public section: Section = new Section()
 
   constructor(
@@ -182,6 +183,41 @@ export class TaskTableComponent implements OnInit, OnDestroy {
                 name: new FormControl(item.name, []),
               })
             );
+            // this.modelRef.close(res);
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+        complete: () => {
+
+          console.log('done');
+        },
+      });
+    }
+  }
+
+  startEdit(index: number): void {
+    this.editIdx = index;
+    let editElement = this.element.nativeElement.querySelectorAll('.sectionName');
+    setTimeout(async () => {
+      await editElement[index].focus();
+    }, 50)
+  }
+
+  editSection(id: number, index: number) {
+    // debugger;
+    let input = this.element.nativeElement.querySelectorAll('.sectionName');
+    if(input[index].value.length > 0) {
+      const item: sectionContent = { name: '' };
+      item.name = input[index].value;
+      item.id = id;
+      this.sectionData.update(id, item).subscribe({
+        next: (res: sectionContent) => {
+          console.log(res);
+          if (res) {
+            this.editIdx = null;
+            this.sections.at(index).get('name')!.setValue(item.name);
             // this.modelRef.close(res);
           }
         },
