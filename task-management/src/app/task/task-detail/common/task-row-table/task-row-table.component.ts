@@ -19,29 +19,31 @@ import { ShareService } from 'src/app/_share/share.service';
   templateUrl: './task-row-table.component.html',
   styleUrls: ['./task-row-table.component.scss'],
 })
-export class TaskRowTableComponent implements OnInit {
+export class TaskRowTableComponent implements OnInit, OnChanges {
 
   public formValidation!: FormGroup;
   public isNotAddRow: boolean = false;
-  public isCollapsed: boolean = true;
   public isCollapsedTable: boolean = true;
   public listOfData: Task[] = [];
   public task = new Task();
   public isLoadSubTask: boolean = false;
   public isLoading: boolean = false;
+  public isCollapsed: boolean = true;
   changesUnsubscribe = new Subject();
   public filterParam: string = "";
 
   @Input() title: string = "";
+  @Input() isCollapsedFromParent: boolean = true;
   @Input() paramSearch: ParamSearch = {
     sorts: [],
     filters: [],
     sortName: '',
     filterName: ''
   }
-  // @Input() isLoading: boolean = false;
+  @Input() isAddRowEvent: boolean = false;
   @Input() sectionParams: any;
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
+
 
   constructor(private fb: FormBuilder,
     private notifyService: NotifyService,
@@ -55,12 +57,17 @@ export class TaskRowTableComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
+    if(changes['isAddRowEvent'] && changes['isAddRowEvent'].currentValue) {
+      this.addTask();
+    }
+    if(changes['isCollapsedFromParent'] && changes['isCollapsedFromParent'].currentValue) {
 
+    }
   }
 
   async ngOnInit() {
     console.log(this.paramSearch);
-    this.isLoadingSpinner();
+    // this.isLoadingSpinner();
     this.watchForChanges();
     this.updateDataForm();
     this.closeDetailTask();
@@ -168,17 +175,6 @@ export class TaskRowTableComponent implements OnInit {
 
   }
 
-  isLoadingSpinner() {
-    this.shareService.isLoading.subscribe({
-      next: (res) => {
-        this.isLoading = res;
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
-  }
-
   closeDetailTask() {
     this.shareService.isCloseDetailTask.subscribe(res => {
       if (res) {
@@ -262,6 +258,7 @@ export class TaskRowTableComponent implements OnInit {
                   if (res) {
                     console.log(res);
                     let task: Task = lastItem.value;
+                    task.sectionId = this.sectionParams;
                     this.saveTask(task);
                   }
                 },
@@ -421,13 +418,13 @@ export class TaskRowTableComponent implements OnInit {
 
   async search() {
     // debugger;
+    this.isLoading = true;
     if (this.paramSearch.filterName !== "") {
       this.filterParam = this.paramSearch.filterName;
     }
     console.log(this.filterParam);
 
     this.taskArray.clear();
-    this.shareService.isLoading.next(true);
     // set state 0 = Chưa hoàn thành; 1= Hoàn thành
     switch (this.filterParam) {
       case EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE):
@@ -457,7 +454,7 @@ export class TaskRowTableComponent implements OnInit {
         this.listOfData = response.pagingData.content;
       }
     }
-    this.shareService.isLoading.next(false);
+    this.isLoading = false;
 
   }
 

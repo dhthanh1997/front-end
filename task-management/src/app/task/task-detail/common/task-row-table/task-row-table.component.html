@@ -37,7 +37,7 @@
           <table class="table" cdkDropList (cdkDropListDropped)="onDrop($event)" formArrayName="taskArray">
             <tbody *ngFor="let item of taskArray.controls; index as idx" cdkDrag cdkDragLockAxis="y">
               <ng-container [formGroupName]="idx">
-                <ng-container *ngIf="isCollapsed else collapsedTemplate">
+                <ng-container *ngIf="isCollapsedFromParent else collapsedTemplate">
                   <!-- full column -->
                   <tr>
                     <td class="align-items-center col-8">

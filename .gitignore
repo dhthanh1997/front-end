@@ -3,7 +3,7 @@
 # Compiled output
 # /dist
 # dashboard/dist
-task-management/dist
+# task-management/dist
 dashboard/node_modules
 task-management/node_modules
 task-management/.angular

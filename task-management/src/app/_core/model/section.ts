@@ -4,12 +4,14 @@ export class Section extends BaseEntity {
   id: number;
   name: string;
   note: string;
+  isAddRowEvent: boolean;
 
   constructor() {
     super();
     this.id = 0;
     this.name = '';
     this.note = '';
+    this.isAddRowEvent = false;
   }
 }
 
