@@ -16,14 +16,14 @@ export class TaskComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.shareService.isLoading.subscribe({
-      next:(res) => {
-        this.isLoading = res;
-      },
-      error:(err) => {
-        console.log(err);
-      }
-    })
+    // this.shareService.isLoading.subscribe({
+    //   next:(res) => {
+    //     this.isLoading = res;
+    //   },
+    //   error:(err) => {
+    //     console.log(err);
+    //   }
+    // })
   }
 
   

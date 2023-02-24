@@ -59,7 +59,7 @@ export class TaskRowTableComponent implements OnInit {
 
   async ngOnInit() {
     console.log(this.paramSearch);
-    this.isLoadingSpinner();
+    // this.isLoadingSpinner();
     this.watchForChanges();
     this.updateDataForm();
     this.closeDetailTask();
@@ -165,18 +165,6 @@ export class TaskRowTableComponent implements OnInit {
 
 
 
-  }
-
-  isLoadingSpinner() {
-    // debugger;
-    this.shareService.isLoading.subscribe({
-      next: (res) => {
-        this.isLoading = res;
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
   }
 
   closeDetailTask() {
@@ -421,13 +409,13 @@ export class TaskRowTableComponent implements OnInit {
 
   async search() {
     // debugger;
+    this.isLoading = true;
     if (this.paramSearch.filterName !== "") {
       this.filterParam = this.paramSearch.filterName;
     }
     console.log(this.filterParam);
 
     this.taskArray.clear();
-    this.shareService.isLoading.next(true);
     // set state 0 = Chưa hoàn thành; 1= Hoàn thành
     switch (this.filterParam) {
       case EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE):
@@ -444,7 +432,7 @@ export class TaskRowTableComponent implements OnInit {
 
     // với các trường hợp search với điều kiện null
     // => cú pháp field.nu.abs (với abs ghi thế nào cx được: là ký tự tượng trưng nhưng bắt buộc phải có)
-   
+
     console.log(this.paramSearch);
     if (!this.isCollapsedTable) {
       let searchParam = this.paramSearch.filterName + 'parentId.nu.nu' + ',' + `sectionId.eq.${this.sectionParams},`
@@ -457,7 +445,7 @@ export class TaskRowTableComponent implements OnInit {
         this.listOfData = response.pagingData.content;
       }
     }
-    this.shareService.isLoading.next(false);
+    this.isLoading = false;
 
   }
 
