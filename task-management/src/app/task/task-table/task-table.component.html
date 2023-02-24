@@ -95,27 +95,16 @@
           <app-task-row-table
             [paramSearch]="params"
             [sectionParams]="item.get('id')!.value"
+            [isAddRowEvent]="item.get('isAddRowEvent')!.value"
+            [isCollapsedFromParent]="isCollapsed"
             [title]="item.get('name')!.value ? item.get('name')!.value : ''"
           >
           </app-task-row-table>
 
-          <!-- <app-task-row-table
-            [paramSearch]="params"
-            [sectionParams]="item.get('id')!.value"
-            [isLoading]="item.get('isLoading')!.value"
-            (collapEvent)="collapseEventTaskRow($event)"
-            [title]="(item.get('name')!.value) ? item.get('name')!.value : ''"
-          >
-          </app-task-row-table> -->
           <br />
         </div>
 
-        <!-- <app-task-row-table
-            [paramSearch]="params"
-            (collapEvent)="collapseEventTaskRow($event)"
-            [title]="'Kế hoạch tuần sau'"
-          >
-          </app-task-row-table> -->
+       
       </div>
 
       <input

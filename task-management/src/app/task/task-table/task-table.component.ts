@@ -109,8 +109,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.shareService.isCollapseDetailTask.subscribe(res => {
       // console.log(res);
       // if (res) {
-        this.isCollapsed = !this.isCollapsed;
-        console.log(this.isCollapsed);
+      this.isCollapsed = !this.isCollapsed;
+      console.log(this.isCollapsed);
       // }
     })
   }
@@ -151,17 +151,20 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  addTask() { }
-
-  async addSection() {
-    this.addSections = 1;
-    let inputAddSection = this.element.nativeElement.querySelector('#input-add-section');
-    setTimeout(async() => {
-      await inputAddSection.focus();
-    }, 10)
+  addTask() { 
+    // this.sections.at(0).
+    this.sections.at(0).get('isAddRowEvent')?.setValue(true);
   }
 
-  async createSection() {
+  addSection() {
+    this.addSections = 1;
+    let inputAddSection = this.element.nativeElement.querySelector('#input-add-section');
+    setTimeout(() => {
+      inputAddSection.focus();
+    }, 100)
+  }
+
+  createSection() {
     let input = this.element.nativeElement.querySelector('#input-add-section');
     const item: sectionContent = {
       id: 0,
@@ -169,7 +172,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     };
     item.name = input.value;
     // debugger;
-    if(item.name !== '') {
+    if (item.name !== '') {
       this.sectionData.save(item).subscribe({
         next: (res: sectionContent) => {
           console.log(res);

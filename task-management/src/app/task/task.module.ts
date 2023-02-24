@@ -24,7 +24,7 @@ import { TaskUploadFileComponent } from './task-detail/task-upload-file/task-upl
     TaskDetailFrmComponent,
     TaskDetailTableComponent,
     TaskRowTableComponent,
-    TaskUploadFileComponent,
+    TaskUploadFileComponent
   ],
   imports: [
     CommonModule,
