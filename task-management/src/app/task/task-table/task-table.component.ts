@@ -22,6 +22,7 @@ import { EnumType, EnumUtils, initFormObject, setDataInFormArray } from 'src/app
 import { ParamSearch } from 'src/app/_core/model/params-search';
 import { SectionData } from 'src/app/_core/api/section/section-data';
 import { Section, sectionContent } from 'src/app/_core/model/section';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-task-table',
@@ -118,6 +119,23 @@ export class TaskTableComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  onDragDrop = (event: CdkDragDrop<Array<any>>) => {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+  };
 
   // end event
 

@@ -91,6 +91,33 @@
         *ngFor="let item of sections.controls; index as idx"
         class="task-table-left"
       >
+<!-- 
+
+      <ng-template #tmplNode let-node="node">
+        <div class="item" cdkDropList [id]="node.uId" [cdkDropListData]="node.children"
+          (cdkDropListDropped)="onDragDrop($event)" [cdkDropListConnectedTo]="connectedTo">
+          <div class="">
+            {{node.name}}
+          </div>
+          <ng-container *ngFor="let sub of node.children">
+            <div class="sub-item" cdkDrag [cdkDragData]="node.uId">
+              <ng-container *ngTemplateOutlet="tmplNode; context: { node: sub }"></ng-container>
+            </div>
+          </ng-container>
+        </div>
+      
+      </ng-template>
+      
+      
+      <div class="item" cdkDropList [cdkDropListData]="root.children" (cdkDropListDropped)="onDragDrop($event)"
+        [id]="root.uId" [cdkDropListConnectedTo]="connectedTo">
+      
+        <div class="sub-item" *ngFor="let node of root.children" cdkDrag>
+          <ng-container *ngTemplateOutlet="tmplNode; context: { node: node }"></ng-container>
+        </div>
+      
+      </div> -->
+
         <div [formGroupName]="idx">
           <app-task-row-table
             [paramSearch]="params"
