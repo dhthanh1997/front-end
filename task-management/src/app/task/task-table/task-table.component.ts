@@ -14,20 +14,14 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { NotifyService } from 'src/app/_base/notify.service';
-import { TaskData } from 'src/app/_core/api/task/task-data';
 import { ShareService } from 'src/app/_share/share.service';
 import * as _ from 'lodash';
 import { Sort } from 'src/app/_core/enum/sort-enum';
 import { Filter } from 'src/app/_core/enum/filter-enum';
 import { EnumType, EnumUtils, initFormObject, setDataInFormArray } from 'src/app/_base/util';
 import { ParamSearch } from 'src/app/_core/model/params-search';
-import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
-import { Observable } from 'rxjs/internal/Observable';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SectionData } from 'src/app/_core/api/section/section-data';
 import { Section, sectionContent } from 'src/app/_core/model/section';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-table',
@@ -156,6 +150,12 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   addTask() { 
     // this.sections.at(0).
     this.sections.at(0).get('isAddRowEvent')?.setValue(true);
+
+    // set lại giá trị isAddRowEvent để onChange trong task-table-row hoạt động
+    setTimeout(() => {
+      this.sections.at(0).get('isAddRowEvent')?.setValue(false);
+    }, 1000);
+    // console.log(this.sections.at(0));
   }
 
   addSection() {

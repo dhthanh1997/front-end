@@ -56,15 +56,26 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     private activeRoute: ActivatedRoute
   ) {
     this.formValidation = initFormArray("taskArray");
+    this.getQueryParam();
 
   }
 
 
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+  async ngOnChanges(changes: SimpleChanges) {
+    // console.log(changes);
     if (changes['isAddRowEvent'] && changes['isAddRowEvent'].currentValue) {
-      this.addTask();
+      // nếu component chứa row table đóng => mở
+      if (!this.isCollapsedTable) {
+        await this.addTask();
+      } else {
+        this.isCollapsedTable = !this.isCollapsedTable;
+        await this.search();
+        await this.initForm();
+        await this.addTask();
+
+      }
+
     }
     if (changes['isCollapsedFromParent'] && changes['isCollapsedFromParent'].currentValue) {
 
@@ -72,9 +83,9 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
 
   async ngOnInit() {
+    console.log(this.projectId);
     // console.log(this.paramSearch);
     // this.isLoadingSpinner();
-    this.getQueryParam();
     this.watchForChanges();
     this.updateDataForm();
     this.closeDetailTask();
@@ -85,6 +96,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
 
   initForm() {
+    console.log("init form array");
     this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
 
   }
@@ -217,7 +229,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     let projectId = this.activeRoute.snapshot.paramMap.get('id');
     if (projectId) {
       this.projectId = Number(this.activeRoute.snapshot.paramMap.get('id'));
-      console.log(this.projectId);
+      // console.log(this.projectId);
     }
 
   }
@@ -258,23 +270,44 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
 
 
-  saveItem(item: any) {
+  saveItem(item: any, index: number) {
     console.log(item);
-    this.saveTask(item);
+    if (this.projectId) {
+      item.projectId = this.projectId;
+    }
+    const saveItem$ = this.taskData.save(item);
+    const source$ = saveItem$.pipe(concatMap((res) => {
+      if (res.message === ResponseStatusEnum.success) {
+        return of(res.data);
+      }
+      if (res.message === ResponseStatusEnum.error) {
+        this.notifyService.error(res.message);
+        return of(null);
+      }
+      return of(null);
+    }), catchError((err) => throwError(() => new Error(err))));
+
+    source$.subscribe(res => {
+      if (res) {
+        this.updateControl(res, index);
+      }
+    })
+
+    // this.saveTask(item);
   }
 
   checkChangeItem(index: number) {
     this.taskArray.controls[index].valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1000), map(([prev, current]: [any, any]) => {
       let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
       let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-      console.log(prevObject);
-      console.log(currentObject);
+      // console.log(prevObject);
+      // console.log(currentObject);
       // mảng ban đầu phải không rỗng mới check 2 object
       if (prevObject) {
         if (!_.isEqual(prevObject, currentObject)) {
           // console.log(prev.name);
           // console.log(current);
-          console.log("different in control: " + index);
+          console.log("different in control new row: " + index);
           return {
             value: current,
             isAdd: true
@@ -288,7 +321,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     })).subscribe((res) => {
       console.log(res);
       if (res.isAdd) {
-        this.saveItem(res.value);
+        this.saveItem(res.value, index);
       }
     });
   }
@@ -302,6 +335,10 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
       if (lastItem.get('name')?.value) {
         // console.log(lastItem.get('name')?.value)
         this.task.sectionId = this.sectionParams;
+        if (this.projectId) {
+          this.task.projectId = this.projectId;
+          console.log(this.task.projectId);
+        }
         const form: FormGroup = initDataObject(this.task, this.task);
         this.taskArray.controls.push(form);
 
@@ -329,9 +366,25 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   markCompleteTask(item: any) {
     console.log(item);
     let id = item.get('id')?.value;
-    this.taskData.markCompleteTask(id);
-    this.search();
-    this.initForm();
+    const markCompleteTask$ = this.taskData.markCompleteTask(id);
+    const source$ = markCompleteTask$.pipe(concatMap((res) => {
+      if (res.message === ResponseStatusEnum.success) {
+        return of(true);
+      }
+      if (res.message === ResponseStatusEnum.error) {
+        this.notifyService.error(res.message);
+      }
+      return of(null)
+    }), catchError((error) => throwError(() => new (error))));
+
+
+    source$.subscribe(async (res) => {
+      if (res) {
+        await this.search();
+        await this.initForm();
+      }
+    })
+
   }
 
   saveTask(item: any) {
@@ -358,8 +411,8 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
             // so sánh 2 object dùng lodash
             let prevObject: any = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
             let currentObject: any = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate']);
-            console.log(prevObject);
-            console.log(currentObject);
+            // console.log(prevObject);
+            // console.log(currentObject);
 
             // mảng ban đầu phải không rỗng mới check 2 object
             if (prevObject) {
@@ -467,7 +520,6 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     }
     console.log(this.filterParam);
 
-    this.taskArray.clear();
     // set state 0 = Chưa hoàn thành; 1= Hoàn thành
     switch (this.filterParam) {
       case EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE):
@@ -499,7 +551,9 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
       if (response.message === ResponseStatusEnum.success) {
         this.listOfData = response.pagingData.content;
       }
+
     }
+    this.taskArray.clear();
     // this.isLoading = false;
 
   }
