@@ -1,6 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { isThisSecond } from 'date-fns';
 import { is } from 'date-fns/locale';
 import * as _ from 'lodash';
@@ -32,6 +33,8 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   public isCollapsed: boolean = true;
   changesUnsubscribe = new Subject();
   public filterParam: string = "";
+  public projectId!: number;
+
 
   @Input() title: string = "";
   @Input() isCollapsedFromParent: boolean = true;
@@ -49,7 +52,9 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder,
     private notifyService: NotifyService,
     private shareService: ShareService,
-    private taskData: TaskData) {
+    private taskData: TaskData,
+    private activeRoute: ActivatedRoute
+  ) {
     this.formValidation = initFormArray("taskArray");
 
   }
@@ -67,8 +72,9 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
 
   async ngOnInit() {
-    console.log(this.paramSearch);
+    // console.log(this.paramSearch);
     // this.isLoadingSpinner();
+    this.getQueryParam();
     this.watchForChanges();
     this.updateDataForm();
     this.closeDetailTask();
@@ -204,6 +210,15 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
       formGroup.get('isSubTask')!.patchValue(!oldValue);
     }
     formGroup.updateValueAndValidity();
+
+  }
+
+  getQueryParam() {
+    let projectId = this.activeRoute.snapshot.paramMap.get('id');
+    if (projectId) {
+      this.projectId = Number(this.activeRoute.snapshot.paramMap.get('id'));
+      console.log(this.projectId);
+    }
 
   }
 
@@ -474,6 +489,9 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     if (!this.isCollapsedTable) {
       let searchParam = this.paramSearch.filterName + 'parentId.nu.nu' + ',' + `sectionId.eq.${this.sectionParams},`
       let sortName = this.paramSearch.sortName + ',';
+      if (this.projectId) {
+        searchParam += `projectId.eq.${this.projectId}` + ',';
+      }
       let response: ResponseDataObject = await firstValueFrom(this.taskData.search(1, 999, searchParam, sortName));
       console.log(response);
       // console.log(this.paramSearch);

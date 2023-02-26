@@ -5,6 +5,10 @@ import { TaskComponent } from './task.component';
 const routes: Routes = [
   {
     path: '',
+    component: TaskComponent,
+  },
+  {
+    path:'project-task/:id',
     component: TaskComponent
   }
 ];

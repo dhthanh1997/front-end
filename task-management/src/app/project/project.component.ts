@@ -7,7 +7,6 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { projectContent } from '.././_core/model/project';
-import { ProjectService } from '../_core/api/project/project.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { DeleteComponent } from './delete/delete.component';
 import { Router } from '@angular/router';
@@ -31,7 +30,7 @@ export class ProjectComponent implements OnInit {
     private notifyService: NzNotificationService,
     private element: ElementRef,
     private router: Router
-  ) {}
+  ) { }
 
   public listData: any;
   public listId: number[] = [];
@@ -56,6 +55,14 @@ export class ProjectComponent implements OnInit {
     // this.projectData.switchLanguage();
     console.log(this.listId);
   }
+
+
+  // event
+  navigationTask(id: any) {
+    this.router.navigate(['/task/project-task', id]);
+  }
+
+
 
   search() {
     const input = this.element.nativeElement.querySelector('#search');
@@ -141,7 +148,7 @@ export class ProjectComponent implements OnInit {
   onCreate(): void {
     this.modalService
       .create({
-        nzTitle: 'New Project',
+        nzTitle: 'Thêm mới dự án',
         nzClassName: 'modal-custom',
         nzContent: ProjectFormComponent,
         nzWidth: 'modal-custom',
@@ -174,7 +181,7 @@ export class ProjectComponent implements OnInit {
   onUpdate(item: projectContent): void {
     this.modalService
       .create({
-        nzTitle: 'Update Project',
+        nzTitle: 'Chỉnh sửa dự án',
         nzClassName: 'modal-custom',
         nzContent: ProjectFormComponent,
         nzWidth: 'modal-custom',
@@ -206,7 +213,7 @@ export class ProjectComponent implements OnInit {
 
   onView(item: projectContent): void {
     this.modalService.create({
-      nzTitle: 'View Project',
+      nzTitle: 'Xem dự án',
       nzClassName: 'modal-custom',
       nzContent: ProjectFormComponent,
       nzWidth: 'modal-custom',
@@ -224,7 +231,7 @@ export class ProjectComponent implements OnInit {
   onDelete(id: number): void {
     this.modalService
       .create({
-        nzTitle: 'Delete Project',
+        nzTitle: 'Xóa dự án',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -235,7 +242,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.projectData.deleteById(id).subscribe({
+            this.projectData.deleteProject(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -249,7 +256,7 @@ export class ProjectComponent implements OnInit {
               error: (err) => {
                 console.log(err);
               },
-              complete: () => {},
+              complete: () => { },
             });
           }
         },
@@ -262,7 +269,7 @@ export class ProjectComponent implements OnInit {
   onDeleteAll(listId: number[]) {
     this.modalService
       .create({
-        nzTitle: 'Delete Selected Project',
+        nzTitle: 'Xóa nhiều dự án',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -273,7 +280,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.projectData.deleteSelectedId(listId).subscribe({
+            this.projectData.deleteSelectedProject(listId).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -289,7 +296,7 @@ export class ProjectComponent implements OnInit {
                 console.log(listId);
                 console.log(this.listData);
               },
-              complete: () => {},
+              complete: () => { },
             });
           }
         },

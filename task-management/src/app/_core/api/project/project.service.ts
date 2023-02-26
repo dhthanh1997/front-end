@@ -15,7 +15,7 @@ export class ProjectService {
     this.i18n.setLocale(en_US);
   }
 
-  public getProject(
+  public search(
     pageNumber: number,
     pageSize: number,
     txtSearch?: string

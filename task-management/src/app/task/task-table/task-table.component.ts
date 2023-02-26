@@ -27,6 +27,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SectionData } from 'src/app/_core/api/section/section-data';
 import { Section, sectionContent } from 'src/app/_core/model/section';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-table',
@@ -56,10 +57,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private cd: ChangeDetectorRef,
-    private notifyService: NotifyService,
     private shareService: ShareService,
-    private taskData: TaskData,
     private sectionData: SectionData,
     private element: ElementRef,
   ) {
@@ -91,6 +89,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.collapseListenEventFromRow();
     console.log(this.formValidation);
   }
+
+  // event
 
   collapseEventTaskRow(event: any) {
     // console.log(event);
@@ -124,6 +124,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  // end event
 
 
   buildParams() {
