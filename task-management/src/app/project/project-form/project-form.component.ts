@@ -7,7 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { projectContent } from '../../_core/model/project';
-import { ProjectService } from '../../_core/api/project/project.service';
+import { ProjectData } from '../../_core/api/project/project-data';
+
 
 enum ModeModal {
   CREATE = 'create',
@@ -35,7 +36,7 @@ export class ProjectFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: ProjectService,
+    private service: ProjectData,
     private modelRef: NzModalRef<ProjectFormComponent>
   ) {}
 
@@ -132,6 +133,7 @@ export class ProjectFormComponent implements OnInit {
     const item: projectContent = this.formValidation.value;
     item.startDate = this.startDate;
     item.endDate = this.endDate;
+    console.log(item);
     if (this.mode == ModeModal.CREATE) {
       this.service.addProject(item).subscribe({
         next: (res: projectContent) => {

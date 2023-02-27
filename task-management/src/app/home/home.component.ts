@@ -5,6 +5,7 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
+import { ProjectData } from '../_core/api/project/project-data';
 import { ProjectService } from '../_core/api/project/project.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
 
   isHidden = false;
 
-  constructor(private service: ProjectService, private element: ElementRef) {}
+  constructor(private service: ProjectData, private element: ElementRef) {}
 
   ngOnInit(): void {
     this.getProject();
@@ -31,7 +32,7 @@ export class HomeComponent implements OnInit {
 
   public getProject() {
     this.service
-      .getProject(this.pageNumber, this.pageSize, this.txtSearch)
+      .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
           console.log(res);

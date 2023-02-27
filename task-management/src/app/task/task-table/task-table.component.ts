@@ -1,5 +1,5 @@
 import {
-  ChangeDetectorRef,
+
   Component,
   ElementRef,
   OnDestroy,
@@ -14,19 +14,46 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { NotifyService } from 'src/app/_base/notify.service';
-import { TaskData } from 'src/app/_core/api/task/task-data';
 import { ShareService } from 'src/app/_share/share.service';
 import * as _ from 'lodash';
 import { Sort } from 'src/app/_core/enum/sort-enum';
 import { Filter } from 'src/app/_core/enum/filter-enum';
 import { EnumType, EnumUtils, initFormObject, setDataInFormArray } from 'src/app/_base/util';
 import { ParamSearch } from 'src/app/_core/model/params-search';
-import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
-import { Observable } from 'rxjs/internal/Observable';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SectionData } from 'src/app/_core/api/section/section-data';
 import { Section, sectionContent } from 'src/app/_core/model/section';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+
+export const DEMO_DATA: any[] = [
+  {
+    uId: '0',
+    name: 'Group 1',
+    children: [
+      {
+        uId: '1',
+        name: 'Group 1 - 1',
+        children: [
+          {
+            uId: '2',
+            name: 'Group 1 - 1 -1',
+            children: []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    uId: '3',
+    name: 'Group 2',
+    children: []
+  },
+  {
+    uId: '4',
+    name: 'Group 3',
+    children: []
+  }
+];
+
 
 @Component({
   selector: 'app-task-table',
@@ -57,10 +84,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private cd: ChangeDetectorRef,
-    private notifyService: NotifyService,
     private shareService: ShareService,
-    private taskData: TaskData,
     private sectionData: SectionData,
     private element: ElementRef,
   ) {
@@ -74,6 +98,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
     this.formValidation = initFormObject(this.params, this.params);
     this.formValidation.addControl('sections', this.fb.array([]));
+
+    this.root = { uId: '-1', name: 'root', children: DEMO_DATA }
 
   }
 
@@ -92,6 +118,8 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.collapseListenEventFromRow();
     console.log(this.formValidation);
   }
+
+  // event
 
   collapseEventTaskRow(event: any) {
     // console.log(event);
@@ -126,6 +154,37 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDragDropSection = (event: CdkDragDrop<string[]>) => {
+    console.log(event);
+    let data = this.sections.controls;
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+    // if (event.previousContainer === event.container) {
+    // moveItemInArray(
+    //   data,
+    //   event.previousIndex,
+    //   event.currentIndex
+    // );
+    // }
+  };
+
+  // test
+
+  public root: any;
+
+  public get connectedTo(): string[] {
+    return this.getIdsRecursive(this.root).reverse();
+  }
+
+  private getIdsRecursive(item: any): string[] {
+    let ids = [item.uId];
+    item.children.forEach((childItem: any) => {
+      ids = ids.concat(this.getIdsRecursive(childItem));
+    });
+    return ids;
+  }
+
+  // end event
+
 
   buildParams() {
     this.params.filterName = EnumUtils.getKeyByValue(Filter, Filter.NOT_DONE);
@@ -152,9 +211,15 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  addTask() { 
+  addTask() {
     // this.sections.at(0).
     this.sections.at(0).get('isAddRowEvent')?.setValue(true);
+
+    // set lại giá trị isAddRowEvent để onChange trong task-table-row hoạt động
+    setTimeout(() => {
+      this.sections.at(0).get('isAddRowEvent')?.setValue(false);
+    }, 1000);
+    // console.log(this.sections.at(0));
   }
 
   addSection() {

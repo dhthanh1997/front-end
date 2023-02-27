@@ -6,7 +6,6 @@ import { projectContent } from '../../model/project';
 import { en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 import { ProjectApi } from './project.api';
 
-// const url = 'http://10.2.6.142:8092/taskManagement/api/project';
 
 @Injectable()
 export class ProjectService {
@@ -16,7 +15,7 @@ export class ProjectService {
     this.i18n.setLocale(en_US);
   }
 
-  public getProject(
+  public search(
     pageNumber: number,
     pageSize: number,
     txtSearch?: string

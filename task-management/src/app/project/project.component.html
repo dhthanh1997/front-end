@@ -2,14 +2,14 @@
   <div class="container">
     <div class="row">
       <div class="tool" style="width: 100%; margin-top: 1.5em">
-        <button nz-button (click)="onCreate()">Add New Project</button>
+        <button nz-button (click)="onCreate()">Thêm mới dự án</button>
         <button
           nz-button
           nzDanger
           style="margin-left: 10px"
           (click)="onDeleteAll(listId)"
         >
-          Delete Selected
+          Xóa tất cả
         </button>
         <button
           nz-button
@@ -56,7 +56,7 @@
             id="search"
             type="text"
             nz-input
-            placeholder="input search text"
+            placeholder="Nhập từ tìm kiếm"
             (keyup.enter)="search()"
           />
         </nz-input-group>
@@ -80,11 +80,11 @@
                 (ngModelChange)="checkedAll($event)"
               ></label>
             </th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Revenue</th>
-            <th>Created At</th>
-            <th>Action</th>
+            <th>STT</th>
+            <th>Tên</th>
+            <th>Doanh thu</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -97,14 +97,19 @@
               ></label>
             </td>
             <td>
-              {{ item.id }}
+              {{ idx + 1 }}
             </td>
             <td>
-              <span
+              <!-- <span
                 style="cursor: pointer"
-                [routerLink]="['welcome', item.id]"
+                [routerLink]="['project-task', item.id]"
                 >{{ item.name }}</span
-              >
+              > -->
+              <span
+              style="cursor: pointer"
+              (click)="navigationTask(item.id)"
+              >{{ item.name }}</span
+            >
             </td>
             <td>
               {{ item.revenue }}
@@ -161,7 +166,7 @@
         >
         </nz-pagination>
         <ng-template #total let-total
-          >Total Projects: {{ totalElements }}</ng-template
+          >Tổng số: {{ totalElements }}</ng-template
         >
       </div>
     </div>

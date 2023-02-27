@@ -28,9 +28,12 @@ import { SectionService } from './api/section/section.service';
 import { UploadFileService } from './api/upload-file/upload-file.service';
 import { UploadFileData } from './api/upload-file/upload-file-data';
 import { UploadFileApi } from './api/upload-file/upload-file.api';
+import { ProjectData } from './api/project/project-data';
+import { ProjectService } from './api/project/project.service';
+import { ProjectApi } from './api/project/project.api';
 
 const API = [
-  TaskApi, CommentApi, MemberApi, PermissionApi, RoleAppApi, RolePermissionApi, TagApi, SectionApi, UploadFileApi
+  TaskApi, CommentApi, MemberApi, PermissionApi, RoleAppApi, RolePermissionApi, TagApi, SectionApi, UploadFileApi, ProjectApi
 ]
 
 const SERVICES = [
@@ -43,6 +46,7 @@ const SERVICES = [
   {provide: TagData, useClass: TagService},
   {provide: SectionData, useClass: SectionService},
   {provide: UploadFileData, useClass: UploadFileService},
+  {provide: ProjectData, useClass: ProjectService},
 ]
 
 @NgModule({
