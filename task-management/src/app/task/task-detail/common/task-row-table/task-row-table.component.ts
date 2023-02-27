@@ -96,7 +96,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
 
   initForm() {
-    console.log("init form array");
+    // console.log("init form array");
     this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
 
   }
