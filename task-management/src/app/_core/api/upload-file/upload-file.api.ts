@@ -51,7 +51,7 @@ export class UploadFileApi {
   }
 
   downloadFileInTask(item: any): Observable<any> {
-    return this.http.post(`${this.apiController}/getFileById`, item);
+    return this.http.post(`${this.apiController}/getFileById`, item, { responseType: 'blob' });
   }
 
   downloadFileInProject(item: any): Observable<any> {

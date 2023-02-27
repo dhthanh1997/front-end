@@ -175,6 +175,7 @@ export class InputFileComponent implements OnInit, AfterViewInit, OnChanges, Con
           downloadLink.setAttribute('download', file.name);
           document.body.appendChild(downloadLink);
           downloadLink.click();
+        
         },
         error: (err) => {
           console.log(err);
