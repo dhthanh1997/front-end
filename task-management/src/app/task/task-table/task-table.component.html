@@ -107,9 +107,19 @@
             [paramSearch]="params"
             [sectionParams]="item.get('id')!.value" 
             [isAddRowEvent]="item.get('isAddRowEvent')!.value"
-            [isCollapsedFromParent]="isCollapsed" 
-            [title]="item.get('name')!.value ? item.get('name')!.value : ''">
+            [isCollapsedFromParent]="isCollapsed"
+            [title]="item.get('name')!.value ? item.get('name')!.value : ''"
+          >
           </app-task-row-table>
+          <input
+            [hidden]="editIdx !== idx"
+            type="text"
+            nz-input
+            nzAutoFocus
+            [value]="item.get('name')!.value"
+            (keyup.enter)="editSection(item.get('id')!.value, idx)"
+            (blur)="editSection(item.get('id')!.value, idx)"
+          />
 
           <br />
         </div>
