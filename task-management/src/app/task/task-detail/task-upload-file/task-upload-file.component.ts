@@ -22,6 +22,7 @@ export class TaskUploadFileComponent implements OnInit {
   public upLoading: boolean = false; //
   public progress: number = 0;
   public formValidation!: FormGroup;
+  public files: any[] = [];
 
   @Input() title: string = '';
   @Input() taskId: number = 0;
@@ -40,6 +41,7 @@ export class TaskUploadFileComponent implements OnInit {
 
   ngOnInit(): void {
     // this.isLoadingSpinner();
+    this.getFileNameInTask(this.taskId);
   }
 
   //event
@@ -63,6 +65,16 @@ export class TaskUploadFileComponent implements OnInit {
   // end event
 
 
+  getFileNameInTask(id: number) {
+    this.uploadService.getFileInTask(id).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.message === ResponseStatusEnum.success) {
+          this.files = res.data;
+        }
+      }
+    });
+  }
 
 
   save() {
@@ -87,7 +99,7 @@ export class TaskUploadFileComponent implements OnInit {
             if (res.message === ResponseStatusEnum.success) {
               this.notifyService.success("Upload file thành công");
               setTimeout(() => {
-                  this.close();
+                this.close();
               }, 500);
             }
 
@@ -104,7 +116,7 @@ export class TaskUploadFileComponent implements OnInit {
 
 
   getFile() {
-     
+
   }
 
 

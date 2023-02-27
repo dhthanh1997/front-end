@@ -21,7 +21,7 @@ export class UploadFileApi {
     return this.http.post(`${this.apiController}/task`, formData);
   }
 
-  
+
   uploadFileInTaskWithReportProgress(data: UploadFile, files: File[]): Observable<ResponseDataObject> {
     const formData = new FormData();
     files.forEach((file, index) => {
@@ -50,12 +50,23 @@ export class UploadFileApi {
     return this.http.post(`${this.apiController}/project`, formData, { reportProgress: true, observe: 'events' });
   }
 
-  downloadFileInTask(id: number): Observable<any> {
-    return this.http.get(`${this.apiController}/task/` + id);
+  downloadFileInTask(item: any): Observable<any> {
+    return this.http.post(`${this.apiController}/getFileById`, item);
   }
 
-  downloadFileInProject(id: number): Observable<any> {
-    return this.http.get(`${this.apiController}/project/` + id);
+  downloadFileInProject(item: any): Observable<any> {
+    return this.http.post(`${this.apiController}/getFileById`, item);
   }
+
+  getFileInTask(id: number): Observable<any> {
+    return this.http.post(`${this.apiController}/getNameFileInTask`, id);
+
+  }
+
+  getFileInProject(id: number): Observable<any> {
+    return this.http.post(`${this.apiController}/getNameFileInProject`, id);
+
+  }
+
 
 }

@@ -1,9 +1,10 @@
 import { HttpEventType } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, Renderer2, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable } from 'rxjs';
 import { MessageService } from 'src/app/_base/message.service';
+import { UploadFileData } from 'src/app/_core/api/upload-file/upload-file-data';
 
 @Component({
   selector: 'app-input-file',
@@ -23,7 +24,7 @@ import { MessageService } from 'src/app/_base/message.service';
     }
   ]
 })
-export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAccessor, Validator {
+export class InputFileComponent implements OnInit, AfterViewInit, OnChanges, ControlValueAccessor, Validator {
 
   public progress: number = 0;
   public uploading: boolean = false;
@@ -34,6 +35,9 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
     showRemoveIcon: true
   };
 
+
+  @Input() fileListInput: any[] = []
+  @Input() fileName: string[] = [];
   @Input() fileType: string | undefined = '.doc,.docx,.xls,.xlsx,.pdf,.png,.jpg,.txt,.zip,.rar,.csv' // default
   @Input() isShowLoadList: boolean = true;
   @Input() urlBase: string | undefined;
@@ -46,13 +50,39 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
   constructor(
     private elementRef: ElementRef,
     private renderer2: Renderer2,
-    private msg: MessageService
+    private msg: MessageService,
+    private uploadService: UploadFileData
   ) { }
 
-  ngAfterViewInit(): void {
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    if (changes['fileListInput'] && changes['fileListInput'].currentValue) {
+      this.fileList = changes['fileListInput'].currentValue;
+    }
   }
 
-  writeValue(obj: any): void {
+  ngAfterViewInit(): void {
+    if (this.fileListInput.length > 0) {
+      this.fileList = this.fileListInput;
+    }
+  }
+
+  writeValue(obj: any[]): void {
+    if (obj) {
+      this.fileList = obj.map(item => {
+        return {
+          uid: item.id,
+          name: item.name,
+          status: 'done',
+          size: item.size,
+          // url: this.getPathUrl(item.id, item.name, item.endPoint),
+          data: item
+        };
+      });
+    } else {
+      this.fileList = [];
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -120,19 +150,6 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
     if (this.isDialog) {
       this.onChange.emit(this.fileList);
     }
-    // console.log(this.fileList);
-    // this.progessEvent.subscribe({
-    //   next: (res) => {
-    //     if(res.type === HttpEventType.UploadProgress) {
-    //       this.uploading = true;
-    //       this.progress = Math.round(100 * res.loaded / res.total);
-    //     }
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //     this.uploading = false
-    //   }
-    // })
 
     return false;
   }
@@ -145,11 +162,30 @@ export class InputFileComponent implements OnInit, AfterViewInit, ControlValueAc
 
   downloadFile = (file: NzUploadFile): boolean => {
     console.log(file);
+    if (file['taskId']) {
+      // let taskId = file['taskId'];
+      this.uploadService.downloadFileInTask(file).subscribe({
+        next: (res) => {
+          console.log(res);
+          let dataType = res.type;
+          let binaryData = [];
+          binaryData.push(res);
+          let downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+          downloadLink.setAttribute('download', file.name);
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
+    }
     return true;
   }
 
 
-  
+
 
 
 
