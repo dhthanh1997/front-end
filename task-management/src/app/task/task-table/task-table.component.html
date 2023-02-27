@@ -108,7 +108,8 @@
             [sectionParams]="item.get('id')!.value"
             [isAddRowEvent]="item.get('isAddRowEvent')!.value"
             [isCollapsedFromParent]="isCollapsed"
-            [title]="item.get('name')!.value ? item.get('name')!.value : ''">
+            [title]="item.get('name')!.value ? item.get('name')!.value : ''"
+          >
           </app-task-row-table>
           <input
             [hidden]="editIdx !== idx"
