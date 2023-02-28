@@ -14,6 +14,7 @@ import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { TaskDetailTableComponent } from './common/task-detail-table/task-detail-table.component';
 import { InputFileComponent } from 'src/app/_component/input-file/input-file.component';
 import { TaskUploadFileComponent } from './task-upload-file/task-upload-file.component';
+import { TaskTagComponent } from './task-tag/task-tag.component';
 
 @Component({
   selector: 'app-task-detail',
@@ -315,7 +316,20 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   addTag() {
-
+    this.modal.create({
+      nzContent: TaskTagComponent,
+      nzTitle: "Add Tag",
+      nzCentered: true,
+      nzMaskClosable: false,
+      nzDirection: 'ltr',
+      nzClassName: 'modal-custom',
+      nzClosable: true,
+      nzFooter: null,
+      nzComponentParams: {
+        title:"Add Tag",
+        taskId: this.formValidation.get('id')?.value
+      }
+    })
   }
 
 

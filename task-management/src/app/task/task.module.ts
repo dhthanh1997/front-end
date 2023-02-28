@@ -15,6 +15,8 @@ import { TaskRowTableComponent } from './task-detail/common/task-row-table/task-
 import { TaskDetailTableComponent } from './task-detail/common/task-detail-table/task-detail-table.component';
 import { ComponentModule } from '../_component/component.module';
 import { TaskUploadFileComponent } from './task-detail/task-upload-file/task-upload-file.component';
+import { TaskTagComponent } from './task-detail/task-tag/task-tag.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { TaskUploadFileComponent } from './task-detail/task-upload-file/task-upl
     TaskDetailFrmComponent,
     TaskDetailTableComponent,
     TaskRowTableComponent,
-    TaskUploadFileComponent
+    TaskUploadFileComponent,
+    TaskTagComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,8 @@ import { TaskUploadFileComponent } from './task-detail/task-upload-file/task-upl
     ReactiveFormsModule,
     ShareModule,
     ComponentModule,
-    FormsModule
+    FormsModule,
+    ColorPickerModule,
   ]
 })
 export class TaskModule { }

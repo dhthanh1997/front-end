@@ -8,10 +8,10 @@
             <span nz-icon nzType="plus"></span>
             Thêm công việc
           </button>
-          <button class="ml-2" nz-button nzType="primary" (click)="addSection()">
+          <!-- <button class="ml-2" nz-button nzType="primary" (click)="addSection()">
             <span nz-icon nzType="plus"></span>
             Thêm Section
-          </button>
+          </button> -->
         </div>
       </div>
 
@@ -80,38 +80,42 @@
           </div>
         </ng-container>
       </div>
-    
+
     </ng-template>
-    
-    
+
+
     <div class="item" cdkDropList [cdkDropListData]="root.children" (cdkDropListDropped)="onDragDrop($event)"
       [id]="root.uId" [cdkDropListConnectedTo]="connectedTo">
-    
+
       <div class="sub-item" *ngFor="let node of sections.controls" cdkDrag>
         <ng-container *ngTemplateOutlet="tmplNode; context: { node: node }"></ng-container>
       </div>
-    
+
     </div> -->
 
     <!-- table -->
-    <div formArrayName="sections" 
-        cdkDropList 
+    <div formArrayName="sections"
+        cdkDropList
         (cdkDropListDropped)="onDragDropSection($event)"
     >
-      <div *ngFor="let item of sections.controls; index as idx" class="task-table-left" 
+      <div *ngFor="let item of sections.controls; index as idx" class="task-table-left"
         cdkDrag cdkDragLockAxis="y"
         >
         <div [formGroupName]="idx"
         >
-          <app-task-row-table 
+          <app-task-row-table
+            [hidden]="editIdx === idx"
             [paramSearch]="params"
-            [sectionParams]="item.get('id')!.value" 
+            [sectionParams]="item.get('id')!.value"
             [isAddRowEvent]="item.get('isAddRowEvent')!.value"
             [isCollapsedFromParent]="isCollapsed"
             [title]="item.get('name')!.value ? item.get('name')!.value : ''"
+            (dblclick)="startEdit(idx)"
+            style="cursor: pointer;"
           >
           </app-task-row-table>
           <input
+            class="sectionName"
             [hidden]="editIdx !== idx"
             type="text"
             nz-input

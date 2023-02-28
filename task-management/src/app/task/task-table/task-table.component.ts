@@ -231,14 +231,15 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   createSection() {
-    let input = this.element.nativeElement.querySelector('#input-add-section');
-    const item: sectionContent = {
-      id: 0,
-      name: ''
-    };
-    item.name = input.value;
     // debugger;
-    if (item.name !== '') {
+    let input = this.element.nativeElement.querySelector('#input-add-section');
+    if(input.value.length > 0) {
+      const item: sectionContent = {
+        id: 0,
+        name: ''
+      };
+      item.name = input.value;
+      // debugger;
       this.sectionData.save(item).subscribe({
         next: (res: sectionContent) => {
           console.log(res);
@@ -247,7 +248,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
             this.addSections = null;
             this.sections.push(
               this.fb.group({
-                id: new FormControl(item.id!, []),
+                id: new FormControl(item.id, []),
                 name: new FormControl(item.name, []),
               })
             );
@@ -263,11 +264,14 @@ export class TaskTableComponent implements OnInit, OnDestroy {
         },
       });
     }
+
   }
 
   startEdit(index: number): void {
     this.editIdx = index;
     let editElement = this.element.nativeElement.querySelectorAll('.sectionName');
+    console.log(editElement[index]);
+
     setTimeout(async () => {
       await editElement[index].focus();
     }, 50)
