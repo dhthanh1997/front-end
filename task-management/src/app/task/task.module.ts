@@ -17,6 +17,7 @@ import { ComponentModule } from '../_component/component.module';
 import { TaskUploadFileComponent } from './task-detail/task-upload-file/task-upload-file.component';
 import { TaskTagComponent } from './task-detail/task-tag/task-tag.component';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { NgxColorsModule } from 'ngx-colors';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ComponentModule,
     FormsModule,
     ColorPickerModule,
+    NgxColorsModule,
   ]
 })
 export class TaskModule { }

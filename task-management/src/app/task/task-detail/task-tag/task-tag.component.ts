@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { TagData } from 'src/app/_core/api/tag/tag-data';
 import { tagContent } from 'src/app/_core/model/tag';
@@ -7,10 +8,9 @@ import { tagContent } from 'src/app/_core/model/tag';
 @Component({
   selector: 'app-task-tag',
   templateUrl: './task-tag.component.html',
-  styleUrls: ['./task-tag.component.scss']
+  styleUrls: ['./task-tag.component.scss'],
 })
 export class TaskTagComponent implements OnInit {
-
   form!: FormGroup;
 
   @Input() title: string = '';
@@ -18,16 +18,21 @@ export class TaskTagComponent implements OnInit {
 
   isAdd: number | null = 1;
 
-  color: string = "#0070f3";
+  color: string = '#0070f3';
 
   public listTag: any;
 
   gridStyle = {
     width: '25%',
-    textAlign: 'center'
+    textAlign: 'center',
   };
 
-  constructor(private modelRef: NzModalRef<TaskTagComponent>, private element: ElementRef, private tagData: TagData) { }
+  constructor(
+    private modelRef: NzModalRef<TaskTagComponent>,
+    private element: ElementRef,
+    private tagData: TagData,
+    private nzMessageService: NzMessageService,
+  ) {}
 
   ngOnInit(): void {
     this.getTag();
@@ -44,7 +49,7 @@ export class TaskTagComponent implements OnInit {
       error: (err) => {
         console.log(err);
       },
-    })
+    });
   }
 
   startAddTag() {
@@ -54,11 +59,11 @@ export class TaskTagComponent implements OnInit {
   createTag() {
     // debugger;
     let input = this.element.nativeElement.querySelector('#input-add-tag');
-    if(input.value.length > 0) {
+    if (input.value.length > 0) {
       const item: tagContent = {
         id: 0,
         color: '',
-        name: ''
+        name: '',
       };
       item.name = input.value;
       item.color = this.color;
@@ -77,16 +82,26 @@ export class TaskTagComponent implements OnInit {
           console.log(err);
         },
         complete: () => {
-
           console.log('done');
         },
       });
     }
+  }
 
+  deleteTag(id: number) {
+    this.tagData.deleteById(id).subscribe({
+      next: (res) => {
+        this.getTag();
+        // console.log(this.listData);
+        console.log(this.listTag);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   close() {
     this.modelRef.close();
   }
-
 }

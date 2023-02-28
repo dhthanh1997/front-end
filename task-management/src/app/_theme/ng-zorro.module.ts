@@ -27,6 +27,7 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 // NgZorro local english language settings
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
@@ -67,7 +68,8 @@ const NZ_MODULES = [
   NzListModule,
   NzSkeletonModule,
   NzProgressModule,
-  NzSwitchModule 
+  NzSwitchModule,
+  NzPopconfirmModule
 ];
 
 @NgModule({
