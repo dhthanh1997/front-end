@@ -12,15 +12,16 @@ export interface pagingData {
 }
 
 export interface tagContent {
-  createdBy: string;
-  createdDate: string;
+  createdBy?: string;
+  createdDate?: string;
+  color?: string;
   icon?: string;
   id: number;
-  lastModifiedBy: string;
-  lastModifiedDate: string;
+  lastModifiedBy?: string;
+  lastModifiedDate?: string;
   name: string;
-  slug: string;
-  status: string;
+  slug?: string;
+  status?: string;
   isChecked?: Boolean;
 }
 
