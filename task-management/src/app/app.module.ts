@@ -22,7 +22,7 @@ import { ShareModule } from './_share/share.module';
     IconsProviderModule.forRoot(),
     NgZorroModule,
     // ShareModule,
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

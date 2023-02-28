@@ -1,0 +1,38 @@
+::ng-deep {
+  .ant-modal-body {
+    padding: 7px;
+  }
+
+  .progress-bar {
+    z-index: 2;
+    height: 30px;
+    width: 100px;
+    align-items: center;
+    margin-top: 20%;
+    margin-bottom: 20%;
+  }
+}
+
+.modal-header-custom,
+.modal-content,
+.modal-footer-custom {
+  border: none !important;
+}
+
+.modal-header-custom {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.modal-footer-custom {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-custom {
+  //   min-width: 100% !important;
+  // min-height: 120% !important;
+  // width: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
