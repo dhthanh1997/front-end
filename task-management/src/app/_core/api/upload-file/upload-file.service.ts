@@ -11,6 +11,14 @@ export class UploadFileService implements UploadFileData {
 
   constructor(private api: UploadFileApi) { }
 
+  deleteFileInTask(item: UploadFile): Observable<ResponseDataObject> {
+    return this.api.deleteFile(item);
+  }
+
+  deleteFileInProject(item: UploadFile): Observable<ResponseDataObject> {
+    return this.api.deleteFile(item);
+  }
+
   getFileInTask(id: number): Observable<any> {
     return this.api.getFileInTask(id);
   }

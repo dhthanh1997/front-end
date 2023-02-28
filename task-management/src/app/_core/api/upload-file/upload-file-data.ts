@@ -9,4 +9,6 @@ export abstract class UploadFileData {
     abstract downloadFileInProject(id: number): Observable<any>;
     abstract getFileInTask(id: number): Observable<ResponseDataObject>;
     abstract getFileInProject(id: number): Observable<ResponseDataObject>;
+    abstract deleteFileInTask(item: UploadFile): Observable<ResponseDataObject>;
+    abstract deleteFileInProject(item: UploadFile): Observable<ResponseDataObject>;
 }

@@ -5,6 +5,8 @@ import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable } from 'rxjs';
 import { MessageService } from 'src/app/_base/message.service';
 import { UploadFileData } from 'src/app/_core/api/upload-file/upload-file-data';
+import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
+import { UploadFile } from 'src/app/_core/model/upload-file';
 
 @Component({
   selector: 'app-input-file',
@@ -44,12 +46,11 @@ export class InputFileComponent implements OnInit, AfterViewInit, OnChanges, Con
   @Input() isDialog: boolean = false;
   @Input() progessEvent: Observable<any> = new Observable();
   @Input() fileSize: number | undefined = 10; // default is 10
-  @Output() onChange: EventEmitter<any> = new EventEmitter();
 
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+  @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
   constructor(
-    private elementRef: ElementRef,
-    private renderer2: Renderer2,
     private msg: MessageService,
     private uploadService: UploadFileData
   ) { }
@@ -157,6 +158,20 @@ export class InputFileComponent implements OnInit, AfterViewInit, OnChanges, Con
   removeFile = (file: NzUploadFile): boolean => {
     console.log(file);
     this.fileList = this.fileList.filter(x => x.name !== file.name);
+    let upload: UploadFile = {};
+    upload.taskId = file['taskId'];
+    upload.name = file.name;
+    // upload.size = item.size;
+    this.uploadService.deleteFileInTask(upload).subscribe(
+      {
+        next: (res) => {
+            this.onDelete.emit(res);
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      }
+    );
     return true;
   }
 

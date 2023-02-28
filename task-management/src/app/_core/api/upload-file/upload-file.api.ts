@@ -68,5 +68,9 @@ export class UploadFileApi {
 
   }
 
+  deleteFile(item: any): Observable<any> {
+    return this.http.post(`${this.apiController}/deleteFile`, item);
+  }
+
 
 }

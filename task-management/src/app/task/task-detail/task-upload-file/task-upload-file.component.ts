@@ -62,6 +62,15 @@ export class TaskUploadFileComponent implements OnInit {
     this.fileList = event;
   }
 
+  onDeleteEvent(event: any): void {
+    if (event && event.message === ResponseStatusEnum.success) {
+        this.notifyService.success("Xóa thành công");
+    }
+    if (event && event.message === ResponseStatusEnum.error) {
+      this.notifyService.error(event.message);
+  } 
+  }
+
   // end event
 
 
@@ -78,7 +87,7 @@ export class TaskUploadFileComponent implements OnInit {
 
 
   save() {
-    this.upLoading = true;
+    // this.upLoading = true;
     if (this.fileList && this.fileList.length > 0) {
       let uploadFile: UploadFile = {};
       uploadFile.taskId = this.taskId;
@@ -95,12 +104,11 @@ export class TaskUploadFileComponent implements OnInit {
               this.notifyService.error("Có lỗi trong quá trình upload")
               return;
             }
-
             if (res.message === ResponseStatusEnum.success) {
               this.notifyService.success("Upload file thành công");
-              setTimeout(() => {
-                this.close();
-              }, 500);
+              // setTimeout(() => {
+              //   this.close();
+              // }, 500);
             }
 
           },
@@ -110,15 +118,27 @@ export class TaskUploadFileComponent implements OnInit {
         }
       );
     }
-    this.upLoading = false;
+    // this.upLoading = false;
 
   };
 
 
-  getFile() {
-
+  deleteFile(item: any) {
+    let upload: UploadFile = {};
+    upload.taskId = this.taskId;
+    upload.name = item.name;
+    // upload.size = item.size;
+    this.uploadService.deleteFileInTask(upload).subscribe(
+      {
+        next: (res) => {
+          console.log(res);
+          if (res.message === ResponseStatusEnum.success) {
+            this.notifyService.success("Upload file thành công");
+          }
+        }
+      }
+    );
   }
-
 
 
   close() {
