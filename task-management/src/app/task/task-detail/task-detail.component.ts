@@ -147,18 +147,22 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   watchForChange() {
     if (this.formValidation) {
       this.formValidation.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1500), map(([prev, current]: [any, any]) => {
+        console.log(prev);
+        console.log(current);
         let prevValue = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'subTask']);
         let currentValue = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'subTask']);
         // console.log(prevValue);
         // console.log(currentValue);
-        if (!_.isEqual(prevValue, currentValue)) {
-          console.log("different in");
-          return {
-            item: _.omit(current, ['subTask']),
-            // item: current,
-            isUpdate: true,
-            index: this.indexTask
-          };
+        if(prevValue) {
+          if (!_.isEqual(prevValue, currentValue)) {
+            console.log("different in");
+            return {
+              item: _.omit(current, ['subTask']),
+              // item: current,
+              isUpdate: true,
+              index: this.indexTask
+            };
+          }
         }
         return {
           item: _.omit(current, ['subTask']),
@@ -166,6 +170,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
           isUpdate: false,
           index: this.indexTask
         };
+        
       })).subscribe(res => {
         console.log(res);
         if (res.isUpdate) {
@@ -181,8 +186,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.shareService.isCollapseDetailTask.subscribe(res => {
       console.log(res);
       // if (res) {
-        // this.isCollapsed = res;
-        console.log(this.isCollapsed);
+      // this.isCollapsed = res;
+      console.log(this.isCollapsed);
       // }
     })
   }
@@ -210,10 +215,10 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     const formGroup = this.formValidation.get('state') as FormControl;
     // 0: Chưa hoàn thành
     // 1: Hoàn thành
-    if(formGroup.value === 0) {
+    if (formGroup.value === 0) {
       formGroup.setValue(1);
     }
-    if(formGroup.value === 1) {
+    if (formGroup.value === 1) {
       formGroup.setValue(0);
     }
     this.formValidation.updateValueAndValidity();
@@ -230,7 +235,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       nzClosable: false,
       nzFooter: null,
       nzComponentParams: {
-        title:"Upload file",
+        title: "Upload file",
         taskId: this.formValidation.get('id')?.value
       }
     })

@@ -6,11 +6,11 @@
     </button>
 </div>
 <div class="modal-content p-2">
-    <app-input-file [isDialog]="true" (onChange)="onChangeEventUploadFile($event)"></app-input-file>
+    <app-input-file [isDialog]="true" [fileListInput]="files" (onChange)="onChangeEventUploadFile($event)" (onDelete)="onDeleteEvent($event)" ></app-input-file>
 </div>
 <div class="modal-footer-custom p-2">
     <button nz-button class="mr-2" [nzLoading]="upLoading" nzType="primary" (click)="save()">
-        Lưu
+        Tải lên
     </button>
     <button nz-button [nzLoading]="upLoading" nzType="default" (click)="close()">
         Thoát

@@ -3,5 +3,5 @@ export interface UploadFile {
     projectId?: number,
     name?: string,
     // files?: any,
-    note?: any   
+    size?:any,
 }
