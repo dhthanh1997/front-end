@@ -3,7 +3,12 @@
     <button nz-button (click)="startAddTag()">+</button>
 
     <div class="d-flex w-100" [hidden]="isAdd === 1">
-      <ngx-colors class="mr-2 ml-4" ngx-colors-trigger [(ngModel)]="color" [palette]="colorCustom"></ngx-colors>
+      <ngx-colors
+        class="mr-2 ml-4"
+        ngx-colors-trigger
+        [(ngModel)]="color"
+        [palette]="colorCustom"
+      ></ngx-colors>
       <input
         id="input-add-tag"
         style="width: 60%"
@@ -20,10 +25,12 @@
       [ngStyle]="gridStyle"
       nz-tooltip
       [nzTooltipTitle]="item.name"
-      class="grid-item"
+      class="grid-wrapper"
+      (click)="chooseTag(item.id)"
     >
       <i
         nz-popconfirm
+        (click)="$event.stopPropagation()"
         nzPopconfirmTitle="Xóa Tag?"
         nzPopconfirmPlacement="bottom"
         (nzOnConfirm)="deleteTag(item.id)"
@@ -32,16 +39,19 @@
         nzType="close"
         nzTheme="outline"
       ></i>
-      <div
-        [style.background]="item.color"
-        style="width: 20px; height: 20px; border-radius: 50%"
-      ></div>
-      <div class="mt-3">
-        {{
-          item.name.length > 5 ? (item.name | slice : 0 : 5) + "..." : item.name
-        }}
+      <div class="grid-item">
+        <div
+          [style.background]="item.color"
+          class="grid-circle"
+        ></div>
+        <div class="mt-3">
+          {{
+            item.name.length > 5
+              ? (item.name | slice : 0 : 5) + "..."
+              : item.name
+          }}
+        </div>
       </div>
     </div>
   </nz-card>
 </div>
-

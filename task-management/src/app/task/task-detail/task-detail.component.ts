@@ -1,9 +1,37 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { catchError, concatMap, debounceTime, firstValueFrom, from, map, of, pairwise, startWith, Subscription, take, throwError } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  firstValueFrom,
+  from,
+  map,
+  of,
+  pairwise,
+  startWith,
+  Subscription,
+  take,
+  throwError,
+} from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
-import { initDataObject, initFormArray, initFormObject, setDataInFormArray, updateControlInArray } from 'src/app/_base/util';
+import {
+  initDataObject,
+  initFormArray,
+  initFormObject,
+  setDataInFormArray,
+  updateControlInArray,
+} from 'src/app/_base/util';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
 import { Task } from 'src/app/_core/model/task';
@@ -15,15 +43,15 @@ import { TaskDetailTableComponent } from './common/task-detail-table/task-detail
 import { InputFileComponent } from 'src/app/_component/input-file/input-file.component';
 import { TaskUploadFileComponent } from './task-upload-file/task-upload-file.component';
 import { TaskTagComponent } from './task-tag/task-tag.component';
+import { TagData } from 'src/app/_core/api/tag/tag-data';
 
 @Component({
   selector: 'app-task-detail',
   templateUrl: './task-detail.component.html',
-  styleUrls: ['./task-detail.component.scss']
+  styleUrls: ['./task-detail.component.scss'],
 })
 export class TaskDetailComponent implements OnInit, OnDestroy {
-
-  private sub: Subscription = new Subscription()
+  private sub: Subscription = new Subscription();
 
   public isCompleted: boolean = false;
 
@@ -32,6 +60,11 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   private task: Task = new Task();
 
   formValidation!: FormGroup;
+
+  public tagId: number = 0;
+  public tagList: any = {
+    name: ''
+  };
 
   public idTask: number = 0;
   public indexTask: number = 0;
@@ -45,19 +78,19 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() watchChange: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private taskData: TaskData,
+    private tagData: TagData,
     private shareService: ShareService,
     private notifyService: NotifyService,
-    private modal: NzModalService) {
+    private modal: NzModalService
+  ) {
     this.formValidation = initFormObject(this.task, this.task);
-    this.formValidation.addControl("subTask", this.fb.array([]));
-
+    this.formValidation.addControl('subTask', this.fb.array([]));
   }
 
-  ngOnDestroy(): void {
-
-  }
+  ngOnDestroy(): void {}
 
   ngOnInit() {
     console.log(this.isCollapsed);
@@ -67,76 +100,83 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.getSubData();
     // không cần watch change, angular tự check change và update theo hàm watchForChange ở parent component
     this.watchForChange();
+    this.hexToRGB('');
     // this.collapseListenEvent();
     // console.log(this.formValidation);
   }
 
-
   getSubData() {
-    const shareData$ = (this.shareService.taskDataShare);
-    const source$ = shareData$.asObservable().pipe(concatMap(res => {
-      console.log(res);
-      if (res) {
-        this.idTask = res.item.controls.id.value;
-        this.indexTask = res.index;
-        return this.taskData.getByParentId(this.idTask);
-      }
-      return of(null);
-    }),
-      catchError(err => throwError(() => new Error(err))));
+    const shareData$ = this.shareService.taskDataShare;
+    const source$ = shareData$.asObservable().pipe(
+      concatMap((res) => {
+        console.log(res);
+        if (res) {
+          this.idTask = res.item.controls.id.value;
+          this.indexTask = res.index;
+          return this.taskData.getByParentId(this.idTask);
+        }
+        return of(null);
+      }),
+      catchError((err) => throwError(() => new Error(err)))
+    );
 
     // subscribe
     source$.subscribe({
       next: (res) => {
         // console.log(res);
         if (res?.message === ResponseStatusEnum.success) {
-          console.log("--- detail ok");
+          console.log('--- detail ok');
           this.subTask.clear();
-          this.formValidation = setDataInFormArray(res.data, 'subTask', this.formValidation, this.task);
+          this.formValidation = setDataInFormArray(
+            res.data,
+            'subTask',
+            this.formValidation,
+            this.task
+          );
         } else {
-          this.notifyService.error("Có lỗi xảy ra");
+          this.notifyService.error('Có lỗi xảy ra');
         }
       },
       error: (err) => {
         console.log(err);
-      }
-    })
-
+      },
+    });
   }
 
   getData() {
-    const shareData$ = (this.shareService.taskDataShare);
-    const source$ = shareData$.asObservable().pipe(concatMap(res => {
-      // console.log(res);
-      if (res) {
-        this.idTask = res.item.controls.id.value;
-        this.indexTask = res.index;
-        return this.taskData.getById(this.idTask);
-      }
-      return of(null);
-    }),
-      catchError(err => throwError(() => new Error(err))));
+    const shareData$ = this.shareService.taskDataShare;
+    const source$ = shareData$.asObservable().pipe(
+      concatMap((res) => {
+        // console.log(res);
+        if (res) {
+          this.idTask = res.item.controls.id.value;
+          this.indexTask = res.index;
+          return this.taskData.getById(this.idTask);
+        }
+        return of(null);
+      }),
+      catchError((err) => throwError(() => new Error(err)))
+    );
 
     // subscribe
     source$.subscribe({
       next: (res) => {
         // console.log(res);
         if (res?.message === ResponseStatusEnum.success) {
-          console.log("--- detail ok");
+          console.log('--- detail ok');
           this.formValidation.patchValue(res.data);
         } else {
-          this.notifyService.error("Có lỗi xảy ra");
+          this.notifyService.error('Có lỗi xảy ra');
         }
       },
       error: (err) => {
         console.log(err);
-      }
-    })
-
+      },
+    });
   }
 
   get subTask() {
-    return this.formValidation.get("subTask") as FormArray;
+    return this.formValidation.get('subTask') as FormArray;
   }
 
   // get lastItemArray() {
@@ -146,50 +186,75 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   watchForChange() {
     if (this.formValidation) {
-      this.formValidation.valueChanges.pipe(startWith(undefined), pairwise(), debounceTime(1500), map(([prev, current]: [any, any]) => {
-        console.log(prev);
-        console.log(current);
-        let prevValue = _.omit(prev, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'subTask']);
-        let currentValue = _.omit(current, ['isUpdate', 'isShow', 'isInside', 'expand', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'subTask']);
-        // console.log(prevValue);
-        // console.log(currentValue);
-        if(prevValue) {
-          if (!_.isEqual(prevValue, currentValue)) {
-            console.log("different in");
+      this.formValidation.valueChanges
+        .pipe(
+          startWith(undefined),
+          pairwise(),
+          debounceTime(1500),
+          map(([prev, current]: [any, any]) => {
+            console.log(prev);
+            console.log(current);
+            let prevValue = _.omit(prev, [
+              'isUpdate',
+              'isShow',
+              'isInside',
+              'expand',
+              'createdBy',
+              'createdDate',
+              'lastModifiedBy',
+              'lastModifiedDate',
+              'subTask',
+            ]);
+            let currentValue = _.omit(current, [
+              'isUpdate',
+              'isShow',
+              'isInside',
+              'expand',
+              'createdBy',
+              'createdDate',
+              'lastModifiedBy',
+              'lastModifiedDate',
+              'subTask',
+            ]);
+            // console.log(prevValue);
+            // console.log(currentValue);
+            if (prevValue) {
+              if (!_.isEqual(prevValue, currentValue)) {
+                console.log('different in');
+                return {
+                  item: _.omit(current, ['subTask']),
+                  // item: current,
+                  isUpdate: true,
+                  index: this.indexTask,
+                };
+              }
+            }
             return {
               item: _.omit(current, ['subTask']),
               // item: current,
-              isUpdate: true,
-              index: this.indexTask
+              isUpdate: false,
+              index: this.indexTask,
             };
+          })
+        )
+        .subscribe((res) => {
+          console.log(res);
+          if (res.isUpdate) {
+            this.shareService.taskDetailShare.next(res);
           }
-        }
-        return {
-          item: _.omit(current, ['subTask']),
-          // item: current,
-          isUpdate: false,
-          index: this.indexTask
-        };
-
-      })).subscribe(res => {
-        console.log(res);
-        if (res.isUpdate) {
-          this.shareService.taskDetailShare.next(res);
-        }
-
-      })
+        });
     }
   }
 
   // event
   collapseListenEvent() {
-    this.shareService.isCollapseDetailTask.subscribe(res => {
+    this.shareService.isCollapseDetailTask.subscribe((res) => {
       console.log(res);
       // if (res) {
       // this.isCollapsed = res;
       console.log(this.isCollapsed);
       // }
-    })
+    });
   }
 
   mouseOver(event: any) {
@@ -200,15 +265,9 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.isShow = false;
   }
 
-
-
-  onOpenChange(event: any) {
-
-  }
+  onOpenChange(event: any) {}
 
   // end event
-
-
 
   markCompleted() {
     this.isCompleted = !this.isCompleted;
@@ -235,65 +294,73 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       nzClosable: false,
       nzFooter: null,
       nzComponentParams: {
-        title: "Upload file",
-        taskId: this.formValidation.get('id')?.value
-      }
-    })
-
+        title: 'Upload file',
+        taskId: this.formValidation.get('id')?.value,
+      },
+    });
   }
 
   addSubTask() {
     // this.shareService.isAddSub.next(true);
-    this.modal.create({
-      nzContent: TaskDetailTableComponent,
-      nzTitle: "Thêm mới công việc",
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzDirection: 'ltr',
-      nzClassName: 'modal-custom',
-      nzClosable: true,
-      nzComponentParams: {
-        // formValidation: this.formValidation
-        idTask: (this.formValidation.get('id')?.value) ? this.formValidation.get('id')?.value : 0,
-        isDialog: true
-      }
-    }).afterClose.subscribe({
-      next: res => {
-        console.log(res);
-      },
-      error: err => {
-        console.log(err);
-      }
-    })
+    this.modal
+      .create({
+        nzContent: TaskDetailTableComponent,
+        nzTitle: 'Thêm mới công việc',
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzDirection: 'ltr',
+        nzClassName: 'modal-custom',
+        nzClosable: true,
+        nzComponentParams: {
+          // formValidation: this.formValidation
+          idTask: this.formValidation.get('id')?.value
+            ? this.formValidation.get('id')?.value
+            : 0,
+          isDialog: true,
+        },
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
-
   fullScreen() {
-    this.modal.create({
-      // nzTitle: 'AAAA',
-      nzContent: TaskDetailFrmComponent,
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzDirection: 'ltr',
-      nzClassName: 'modal-custom',
-      // nzFooter: null,
-      nzClosable: false,
-      nzComponentParams: {
-        // formValidation: this.formValidation
-        idTask: (this.formValidation.get('id')?.value) ? this.formValidation.get('id')?.value : 0
-      }
-    }).afterClose.subscribe({
-      next: res => {
-        console.log(res);
-      },
-      error: err => {
-        console.log(err);
-      }
-    })
+    this.modal
+      .create({
+        // nzTitle: 'AAAA',
+        nzContent: TaskDetailFrmComponent,
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzDirection: 'ltr',
+        nzClassName: 'modal-custom',
+        // nzFooter: null,
+        nzClosable: false,
+        nzComponentParams: {
+          // formValidation: this.formValidation
+          idTask: this.formValidation.get('id')?.value
+            ? this.formValidation.get('id')?.value
+            : 0,
+        },
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   async updateTask(item: Task) {
-    let response: ResponseDataObject = await firstValueFrom(this.taskData.update(item.id, item));
+    let response: ResponseDataObject = await firstValueFrom(
+      this.taskData.update(item.id, item)
+    );
     return response;
   }
 
@@ -311,27 +378,36 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.log(err);
-      }
+      },
     });
   }
 
   addTag() {
-    this.modal.create({
-      nzContent: TaskTagComponent,
-      nzTitle: "Quản lý tag công việc",
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzDirection: 'ltr',
-      nzClassName: 'modal-custom',
-      nzClosable: true,
-      nzFooter: null,
-      nzComponentParams: {
-        title:"Quản lý tag công việc",
-        taskId: this.formValidation.get('id')?.value
-      }
-    })
+    this.modal
+      .create({
+        nzContent: TaskTagComponent,
+        nzTitle: 'Quản lý tag công việc',
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzDirection: 'ltr',
+        nzClassName: 'modal-custom',
+        nzClosable: true,
+        nzFooter: null,
+        nzComponentParams: {
+          title: 'Quản lý tag công việc',
+          taskId: this.formValidation.get('id')?.value,
+        },
+      })
+      .afterClose.subscribe({
+        next: async (res) => {
+          this.tagId = res;
+          this.getTagById(this.tagId);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
-
 
   saveTask(item: any) {
     this.taskData.save(item).subscribe({
@@ -342,18 +418,46 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.log(err);
-      }
+      },
     });
+  }
+
+  getTagById(id: number) {
+    // debugger;
+    if (id !== 0) {
+      this.tagData.getById(id).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.tagList = res.data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
   }
 
   close() {
     this.sub.unsubscribe();
     this.collapEvent.emit({
       isChange: true,
-      value: true
+      value: true,
     });
     // this.isCollapsed = !this.isCollapsed;
     this.shareService.isCloseDetailTask.next(true);
   }
 
+  hexToRGB(hex: string) {
+    // debugger;
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : {
+      r: 0,
+      g: 0,
+      b: 0
+    };
+  }
 }

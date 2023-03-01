@@ -61,12 +61,22 @@
   cursor: pointer;
 }
 
-.grid-item {
+.grid-wrapper {
   position: relative;
+}
+
+.grid-item {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.grid-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 1px 1px #0003, 0 1px 1px 1px #00000024, 0 1px 1px 1px #0000001f;
 }
 
 .delete-grid-item {
