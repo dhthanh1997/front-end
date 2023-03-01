@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { pipe, take } from 'rxjs';
-import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'internal-app-login',
