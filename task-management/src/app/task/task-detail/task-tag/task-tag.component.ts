@@ -13,6 +13,18 @@ import { tagContent } from 'src/app/_core/model/tag';
 export class TaskTagComponent implements OnInit {
   form!: FormGroup;
 
+  colorCustom: any = [
+    '#ab47bc',
+    '#3f51b5',
+    '#4fc3f7',
+    '#66bb6a',
+    '#ffeb3b',
+    '#ffa726',
+    '#ff5722',
+    '#795548',
+    '#37474f',
+  ];
+
   @Input() title: string = '';
   @Input() taskId: number = 0;
 
@@ -31,7 +43,7 @@ export class TaskTagComponent implements OnInit {
     private modelRef: NzModalRef<TaskTagComponent>,
     private element: ElementRef,
     private tagData: TagData,
-    private nzMessageService: NzMessageService,
+    private nzMessageService: NzMessageService
   ) {}
 
   ngOnInit(): void {
