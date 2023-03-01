@@ -170,7 +170,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
           isUpdate: false,
           index: this.indexTask
         };
-        
+
       })).subscribe(res => {
         console.log(res);
         if (res.isUpdate) {
@@ -318,7 +318,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   addTag() {
     this.modal.create({
       nzContent: TaskTagComponent,
-      nzTitle: "Add Tag",
+      nzTitle: "Quản lý tag công việc",
       nzCentered: true,
       nzMaskClosable: false,
       nzDirection: 'ltr',
@@ -326,7 +326,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       nzClosable: true,
       nzFooter: null,
       nzComponentParams: {
-        title:"Add Tag",
+        title:"Quản lý tag công việc",
         taskId: this.formValidation.get('id')?.value
       }
     })

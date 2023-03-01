@@ -36,3 +36,43 @@
   display: flex;
   flex-direction: column;
 }
+
+.tag-wrapper {
+  padding: 20px;
+}
+
+.test {
+  border: 1px solid #000;
+  height: 300px;
+}
+
+.grid-box-color {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.color-box {
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 2px transparent solid;
+  height: 32px;
+  cursor: pointer;
+}
+
+.grid-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-grid-item {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  right: 15px;
+  top: 10px
+}

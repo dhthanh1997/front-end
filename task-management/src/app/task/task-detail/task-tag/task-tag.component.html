@@ -1,12 +1,47 @@
-<div class="wrapper">
-  <input [(colorPicker)]="color"
-       [style.background]="color"/>
+<div class="tag-wrapper">
+  <div class="d-flex flex-row">
+    <button nz-button (click)="startAddTag()">+</button>
+
+    <div class="d-flex w-100" [hidden]="isAdd === 1">
+      <ngx-colors class="mr-2 ml-4" ngx-colors-trigger [(ngModel)]="color" [palette]="colorCustom"></ngx-colors>
+      <input
+        id="input-add-tag"
+        style="width: 60%"
+        type="text"
+        nz-input
+        (keyup.enter)="createTag()"
+      />
+    </div>
+  </div>
+  <nz-card class="my-4">
+    <div
+      *ngFor="let item of listTag; index as idx"
+      nz-card-grid
+      [ngStyle]="gridStyle"
+      nz-tooltip
+      [nzTooltipTitle]="item.name"
+      class="grid-item"
+    >
+      <i
+        nz-popconfirm
+        nzPopconfirmTitle="Xóa Tag?"
+        nzPopconfirmPlacement="bottom"
+        (nzOnConfirm)="deleteTag(item.id)"
+        class="delete-grid-item"
+        nz-icon
+        nzType="close"
+        nzTheme="outline"
+      ></i>
+      <div
+        [style.background]="item.color"
+        style="width: 20px; height: 20px; border-radius: 50%"
+      ></div>
+      <div class="mt-3">
+        {{
+          item.name.length > 5 ? (item.name | slice : 0 : 5) + "..." : item.name
+        }}
+      </div>
+    </div>
+  </nz-card>
 </div>
-<div class="modal-footer-custom p-2">
-    <button nz-button class="mr-2" nzType="primary">
-        Lưu
-    </button>
-    <button nz-button nzType="default" (click)="close()">
-        Hủy
-    </button>
-</div>
+
