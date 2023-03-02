@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { pipe, take } from 'rxjs';
+import { take } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../authentication.service';
 
 @Component({
@@ -22,10 +23,14 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    // private authService: AuthenticationService,
+    private authService: AuthenticationService,
     private router: Router
   ) {
     // do something here
+  }
+
+  get taskUrl() {
+    return environment.taskUrl;
   }
 
   ngOnInit(): void {
@@ -36,17 +41,21 @@ export class LoginComponent implements OnInit {
 
   login() {
     // do something here
-    //   const formData: any = this.loginForm.value;
-    //   this.authService.login(formData).pipe(take(1)).subscribe({
-    //     next: (res) => {
-    //          console.log(res)
-    //          if(res) {
-    //             this.router.navigate(['/pages/dashboard']);
-    //          }
-    //     },
-    //     error: (err) => {
-    //        console.log(err);
-    //     }
-    //   })
+      const formData: any = this.loginForm.value;
+      this.authService.login(formData).pipe(take(1)).subscribe({
+        next: (res) => {
+             console.log(res)
+             if(res && res.accessToken) {
+                // console.log(this.taskUrl);
+                // this.router.navigateByUrl(this.taskUrl);
+                // redirect sang task
+                window.location.href = this.taskUrl;
+                localStorage.setItem('access_token', res);
+             }
+        },
+        error: (err) => {
+           console.log(err);
+        }
+      });
   }
 }

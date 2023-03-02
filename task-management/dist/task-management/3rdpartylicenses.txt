@@ -192,6 +192,9 @@ terms above.
 ng-zorro-antd
 MIT
 
+ngx-color-picker
+MIT
+
 rxjs
 Apache-2.0
                                Apache License
