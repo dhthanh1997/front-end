@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
@@ -27,6 +27,7 @@ export class TaskTagComponent implements OnInit {
 
   @Input() title: string = '';
   @Input() taskId: number = 0;
+  @Output() id: EventEmitter<number> = new EventEmitter<number>();
 
   isAdd: number | null = 1;
 
@@ -113,7 +114,13 @@ export class TaskTagComponent implements OnInit {
     });
   }
 
-  close() {
-    this.modelRef.close();
+  chooseTag(id: number) {
+    // this.id.emit(id);
+    console.log(this.id);
+    this.modelRef.close(id);
   }
+
+  // close() {
+  //   this.modelRef.close();
+  // }
 }
