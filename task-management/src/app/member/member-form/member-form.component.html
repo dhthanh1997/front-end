@@ -11,12 +11,12 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Name <span style="color: red">*</span>
+              Tên <span style="color: red">*</span>
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Name">
               <input
                 nz-input
-                placeholder="Name"
+                placeholder="Tên"
                 formControlName="name"
                 name="name"
                 [readonly]="mode === 'view'"
@@ -25,10 +25,10 @@
               />
               <ng-template #Name let-control>
                 <ng-container *ngIf="control.hasError('minlength')"
-                  >MinLength is 5</ng-container
+                  >Tên cần tối thiểu 5 ký tự</ng-container
                 >
                 <ng-container *ngIf="control.hasError('required')"
-                  >Input is required</ng-container
+                  >Mục này không được để trống</ng-container
                 >
               </ng-template>
             </nz-form-control>
@@ -55,10 +55,10 @@
               />
               <ng-template #Email let-control>
                 <ng-container *ngIf="control.hasError('email')"
-                  >Email not valid</ng-container
+                  >Email không đúng định dạng</ng-container
                 >
                 <ng-container *ngIf="control.hasError('required')"
-                  >Input is required</ng-container
+                  >Mục này không được để trống</ng-container
                 >
               </ng-template>
             </nz-form-control>
@@ -71,12 +71,12 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Phone <span style="color: red">*</span>
+              Số điện thoại <span style="color: red">*</span>
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Phone">
               <input
                 nz-input
-                placeholder="Phone Number"
+                placeholder="Số điện thoại"
                 formControlName="phone"
                 name="phone"
                 [readonly]="mode === 'view'"
@@ -84,13 +84,13 @@
               />
               <ng-template #Phone let-control>
                 <ng-container *ngIf="control.hasError('pattern')"
-                  >Must be a valid number</ng-container
+                  >Số điện thoại không hợp lệ</ng-container
                 >
                 <ng-container *ngIf="control.hasError('required')"
-                  >Input is required</ng-container
+                  >Mục này không được để trống</ng-container
                 >
                 <ng-container *ngIf="control.hasError('minlength')"
-                  >MinLength is 9</ng-container
+                  >Số điện thoại cần tối thiểu 9 số</ng-container
                 >
               </ng-template>
             </nz-form-control>
@@ -103,12 +103,12 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Username <span style="color: red">*</span>
+              Tên tài khoản <span style="color: red">*</span>
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Username">
               <input
                 nz-input
-                placeholder="Username"
+                placeholder="Tên tài khoản"
                 formControlName="username"
                 name="username"
                 [readonly]="mode === 'view'"
@@ -116,10 +116,10 @@
               />
               <ng-template #Username let-control>
                 <ng-container *ngIf="control.hasError('minlength')"
-                  >Minlength is 8</ng-container
+                  >Tên tài khoản cần tối thiểu 8 ký tự</ng-container
                 >
                 <ng-container *ngIf="control.hasError('required')"
-                  >Input is required</ng-container
+                  >Mục này không được để trống</ng-container
                 >
               </ng-template>
             </nz-form-control>

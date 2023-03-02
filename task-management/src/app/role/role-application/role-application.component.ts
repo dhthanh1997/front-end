@@ -133,7 +133,7 @@ export class RoleApplicationComponent implements OnInit {
   onCreate(): void {
     this.modalService
       .create({
-        nzTitle: 'New Member',
+        nzTitle: 'Thêm mới vai trò',
         nzClassName: 'modal-custom',
         nzContent: RoleAppFormComponent,
         nzWidth: 'modal-custom',
@@ -141,7 +141,7 @@ export class RoleApplicationComponent implements OnInit {
         nzMaskClosable: false,
         nzComponentParams: {
           mode: ModeModal.CREATE,
-          title: 'Thêm yêu cầu',
+          title: 'Thêm mới vai trò',
         },
         nzDirection: 'ltr', // left to right
       })
@@ -167,7 +167,7 @@ export class RoleApplicationComponent implements OnInit {
   onUpdate(item: roleAppContent): void {
     this.modalService
       .create({
-        nzTitle: 'Update Member',
+        nzTitle: 'Chỉnh sửa vai trò',
         nzClassName: 'modal-custom',
         nzContent: RoleAppFormComponent,
         nzWidth: 'modal-custom',
@@ -199,7 +199,7 @@ export class RoleApplicationComponent implements OnInit {
 
   onView(item: roleAppContent): void {
     this.modalService.create({
-      nzTitle: 'View Member',
+      nzTitle: 'Xem vai trò',
       nzClassName: 'modal-custom',
       nzContent: RoleAppFormComponent,
       nzWidth: 'modal-custom',
@@ -217,7 +217,7 @@ export class RoleApplicationComponent implements OnInit {
   onDelete(id: number): void {
     this.modalService
       .create({
-        nzTitle: 'Delete Member',
+        nzTitle: 'Xóa vai trò',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -255,7 +255,7 @@ export class RoleApplicationComponent implements OnInit {
   onDeleteAll(listId: number[]) {
     this.modalService
       .create({
-        nzTitle: 'Delete Selected Member',
+        nzTitle: 'Xóa nhiều vai trò',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,

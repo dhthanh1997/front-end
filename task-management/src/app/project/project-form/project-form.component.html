@@ -11,12 +11,12 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Name <span style="color: red">*</span>
+              Tên <span style="color: red">*</span>
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Name">
               <input
                 nz-input
-                placeholder="Name"
+                placeholder="Tên"
                 formControlName="name"
                 name="name"
                 [readonly]="mode === 'view'"
@@ -25,10 +25,10 @@
               />
               <ng-template #Name let-control>
                 <ng-container *ngIf="control.hasError('minlength')"
-                  >MinLength is 5</ng-container
+                  >Tên cần tối thiểu 5 ký tự</ng-container
                 >
                 <ng-container *ngIf="control.hasError('required')"
-                  >Input is required</ng-container
+                  >Mục này không được để trống</ng-container
                 >
               </ng-template>
             </nz-form-control>
@@ -41,11 +41,11 @@
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label nz-col [nzSpan]="3"> Revenue </nz-form-label>
+            <nz-form-label nz-col [nzSpan]="3"> Doanh thu </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" nzErrorTip="Bắt buộc!">
               <input
                 nz-input
-                placeholder="Revenue"
+                placeholder="Doanh thu"
                 formControlName="revenue"
                 name="revenue"
                 [readonly]="mode === 'view'"
@@ -60,7 +60,7 @@
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label [nzSpan]="3"> Date </nz-form-label>
+            <nz-form-label [nzSpan]="3" style="word-wrap: break-word;"> Ngày </nz-form-label>
             <nz-form-control [nzSpan]="21">
               <nz-range-picker
                 style="width: 100%"
@@ -77,11 +77,11 @@
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="12">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label nz-col [nzSpan]="6"> Total cost </nz-form-label>
+            <nz-form-label nz-col [nzSpan]="6"> Tổng chi phí </nz-form-label>
             <nz-form-control nz-col [nzSpan]="18" nzErrorTip="Bắt buộc!">
               <input
                 nz-input
-                placeholder="Total Cost"
+                placeholder="Tổng chi phí"
                 formControlName="totalCost"
                 name="totalCost"
                 [readonly]="mode === 'view'"
@@ -93,11 +93,11 @@
 
         <div nz-col [nzSpan]="12">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label nz-col [nzSpan]="6"> Total hour </nz-form-label>
+            <nz-form-label nz-col [nzSpan]="6"> Tổng thời gian </nz-form-label>
             <nz-form-control nz-col [nzSpan]="18" nzErrorTip="Bắt buộc!">
               <input
                 nz-input
-                placeholder="Total Hour"
+                placeholder="Tổng thời gian (h)"
                 formControlName="totalHour"
                 name="totalHour"
                 [readonly]="mode === 'view'"

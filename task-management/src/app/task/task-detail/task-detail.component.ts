@@ -100,7 +100,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.getSubData();
     // không cần watch change, angular tự check change và update theo hàm watchForChange ở parent component
     this.watchForChange();
-    this.hexToRGB('');
+    // this.hexToRGB('');
     // this.collapseListenEvent();
     // console.log(this.formValidation);
   }
@@ -151,6 +151,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         if (res) {
           this.idTask = res.item.controls.id.value;
           this.indexTask = res.index;
+          this.getTagById(res.item.controls.tagId.value);
+          this.tagId = res.item.controls.tagId.value;
           return this.taskData.getById(this.idTask);
         }
         return of(null);
@@ -400,13 +402,30 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       })
       .afterClose.subscribe({
         next: async (res) => {
+          debugger;
           this.tagId = res;
           this.getTagById(this.tagId);
+          this.updateTasks(this.idTask);
+          this.getData();
         },
         error: (err) => {
           console.log(err);
         },
       });
+  }
+
+  updateTasks(id: number) {
+    debugger;
+    const item:Task = this.formValidation.value;
+    item.tagId = this.tagId;
+    this.taskData.update(id, item).subscribe({
+      next: (res) => {
+        this.getData();
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   saveTask(item: any) {
@@ -423,8 +442,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   getTagById(id: number) {
-    // debugger;
-    if (id !== 0) {
+    debugger;
+    if (id !== 0 && id !== null) {
       this.tagData.getById(id).subscribe({
         next: (res) => {
           console.log(res);
@@ -447,17 +466,17 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.shareService.isCloseDetailTask.next(true);
   }
 
-  hexToRGB(hex: string) {
-    // debugger;
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : {
-      r: 0,
-      g: 0,
-      b: 0
-    };
-  }
+  // hexToRGB(hex: string) {
+  //   // debugger;
+  //   let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  //   return result ? {
+  //     r: parseInt(result[1], 16),
+  //     g: parseInt(result[2], 16),
+  //     b: parseInt(result[3], 16)
+  //   } : {
+  //     r: 0,
+  //     g: 0,
+  //     b: 0
+  //   };
+  // }
 }

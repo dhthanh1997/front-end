@@ -7,7 +7,7 @@
             id="search"
             type="text"
             nz-input
-            placeholder="Input search text"
+            placeholder="Nhập từ tìm kiếm"
             (keyup.enter)="search()"
           />
         </nz-input-group>
@@ -15,10 +15,10 @@
           <span nz-icon nzType="search"></span>
         </ng-template>
         <button nz-button (click)="onCreate()" class="ml-auto mr-2">
-          Add New Role
+          Thêm mới vai trò
         </button>
         <button nz-button nzDanger class="mr-2" (click)="onDeleteAll(listId)">
-          Delete Selected
+          Xóa tất cả
         </button>
         <button
           nz-button
@@ -26,7 +26,7 @@
           class="d-flex align-items-center mr-2"
         >
           <i nz-icon nzType="filter" nzTheme="outline"></i>
-          <span>Filter</span>
+          <span>Bộ lọc</span>
         </button>
       </div>
       <div class="date-picker-custom mt-3" [hidden]="!isCollapse">
@@ -48,11 +48,10 @@
                 (ngModelChange)="checkedAll($event)"
               ></label>
             </th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Code</th>
-            <th>Description</th>
-            <th>Action</th>
+            <th>STT</th>
+            <th>Tên</th>
+            <th>Mã vai trò</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -65,7 +64,7 @@
               ></label>
             </td>
             <td>
-              {{ item.id }}
+              {{ idx + 1 }}
             </td>
             <td>
               <span
@@ -76,9 +75,6 @@
             </td>
             <td>
               {{ item.code }}
-            </td>
-            <td>
-              {{ item.description }}
             </td>
             <td class="d-flex flex-row">
               <!-- <button
@@ -129,7 +125,7 @@
         >
         </nz-pagination>
         <ng-template #total let-total
-          >Total Roles: {{ totalElements }}</ng-template
+          >Tổng số: {{ totalElements }}</ng-template
         >
       </div>
     </div>

@@ -46,8 +46,9 @@ export class Task extends BaseEntity {
   isUpdate: boolean;
   isInside: boolean;
   isSubTask: boolean;
-  numberOfSubTask: number; 
+  numberOfSubTask: number;
   sectionId: number;
+  tagId: number;
 
   constructor() {
     super();
@@ -79,6 +80,7 @@ export class Task extends BaseEntity {
     this.isSubTask = false;
     this.numberOfSubTask = 0;
     this.sectionId = 0;
+    this.tagId = 0;
   }
 
   setName(name: string) {

@@ -25,6 +25,7 @@
       [ngStyle]="gridStyle"
       nz-tooltip
       [nzTooltipTitle]="item.name"
+      [nzTooltipPlacement]="idx < listTag.length - 4 ? 'top' : 'bottom'"
       class="grid-wrapper"
       (click)="chooseTag(item.id)"
     >

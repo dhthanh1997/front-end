@@ -34,7 +34,7 @@ export class ProjectComponent implements OnInit {
 
   public listData: any;
   public listId: number[] = [];
-  public searchField = ['name', 'revenue'];
+  public searchField = ['Tên', 'Doanh thu'];
 
   public pageNumber = 1;
   public pageSize = 10;

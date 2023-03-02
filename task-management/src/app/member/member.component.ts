@@ -134,7 +134,7 @@ export class MemberComponent implements OnInit {
   onCreate(): void {
     this.modalService
       .create({
-        nzTitle: 'New Member',
+        nzTitle: 'Thêm mới thành viên',
         nzClassName: 'modal-custom',
         nzContent: MemberFormComponent,
         nzWidth: 'modal-custom',
@@ -142,7 +142,7 @@ export class MemberComponent implements OnInit {
         nzMaskClosable: false,
         nzComponentParams: {
           mode: ModeModal.CREATE,
-          title: 'Thêm yêu cầu',
+          title: 'Thêm mới thành viên',
         },
         nzDirection: 'ltr', // left to right
       })
@@ -168,7 +168,7 @@ export class MemberComponent implements OnInit {
   onUpdate(item: memberContent): void {
     this.modalService
       .create({
-        nzTitle: 'Update Member',
+        nzTitle: 'Cập nhật thành viên',
         nzClassName: 'modal-custom',
         nzContent: MemberFormComponent,
         nzWidth: 'modal-custom',
@@ -200,7 +200,7 @@ export class MemberComponent implements OnInit {
 
   onView(item: memberContent): void {
     this.modalService.create({
-      nzTitle: 'View Member',
+      nzTitle: 'Xem thành viên',
       nzClassName: 'modal-custom',
       nzContent: MemberFormComponent,
       nzWidth: 'modal-custom',
@@ -208,7 +208,7 @@ export class MemberComponent implements OnInit {
       nzMaskClosable: false,
       nzComponentParams: {
         mode: ModeModal.VIEW,
-        title: 'View Member',
+        title: 'Xem thành viên',
         id: item.id,
       },
       nzDirection: 'ltr', // left to right
@@ -218,7 +218,7 @@ export class MemberComponent implements OnInit {
   onDelete(id: number): void {
     this.modalService
       .create({
-        nzTitle: 'Delete Member',
+        nzTitle: 'Xóa thành viên',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -256,7 +256,7 @@ export class MemberComponent implements OnInit {
   onDeleteAll(listId: number[]) {
     this.modalService
       .create({
-        nzTitle: 'Delete Selected Member',
+        nzTitle: 'Xóa nhiều thành viên',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,

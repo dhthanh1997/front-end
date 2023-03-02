@@ -7,16 +7,16 @@
         <i nz-icon nzType="plus" nzTheme="outline"></i>
         <span class="ml-1">Create</span>
       </div> -->
-    <button class="projectBtn" #toggleButton (click)="popUp()">Create</button>
+    <button class="projectBtn" #toggleButton (click)="popUp()">Tạo mới</button>
     <div class="popup" #popupContent *ngIf="isHidden">
       <div class="popup-content">
         <div class="popup-content-wrapper" routerLink="project">
           <i nz-icon nzType="project" nzTheme="outline"></i>
-          <span class="popup-content-title">Project</span>
+          <span class="popup-content-title">Dự án</span>
         </div>
         <div class="popup-content-wrapper">
           <i nz-icon nzType="project" nzTheme="outline"></i>
-          <span class="popup-content-title">Task</span>
+          <span class="popup-content-title">Công việc</span>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           ><i nz-icon nzType="home" nzTheme="outline"></i
-          ><span class="ml-2">Home</span></a
+          ><span class="ml-2">Trang chủ</span></a
         >
       </li>
       <li class="nav-item">
@@ -38,7 +38,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           ><i nz-icon nzType="project" nzTheme="outline"></i
-          ><span class="ml-2">Projects</span></a
+          ><span class="ml-2">Dự án</span></a
         >
       </li>
       <li class="nav-item">
@@ -48,7 +48,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           ><i nz-icon nzType="check-circle" nzTheme="outline"></i
-          ><span class="ml-2">My Tasks</span></a
+          ><span class="ml-2">Công việc của tôi</span></a
         >
       </li>
       <li class="nav-item">
@@ -58,7 +58,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           ><i nz-icon nzType="reconciliation" nzTheme="outline"></i
-          ><span class="ml-2">Reports</span></a
+          ><span class="ml-2">Báo cáo</span></a
         >
       </li>
       <!-- <li class="nav-item">
@@ -74,7 +74,7 @@
       <li (click)="subMenu()">
         <a class="nav-link">
           <i nz-icon nzType="setting" nzTheme="outline"></i>
-          <span class="ml-2">Settings</span>
+          <span class="ml-2">Thiết lập</span>
           <i
             nz-icon
             nzType="down"
@@ -103,7 +103,7 @@
               [routerLinkActiveOptions]="{ exact: true }"
             >
               <!-- <i nz-icon nzType="usergroup-add" nzTheme="outline"></i> -->
-              <span class="ml-4">Members</span></a
+              <span class="ml-4">Thành viên</span></a
             >
           </li>
           <li class="sub-nav-item">
@@ -114,7 +114,7 @@
               [routerLinkActiveOptions]="{ exact: true }"
             >
               <!-- <i nz-icon nzType="key" nzTheme="outline"></i> -->
-              <span class="ml-4">Roles</span></a
+              <span class="ml-4">Vai trò</span></a
             >
           </li>
           <li class="sub-nav-item">
@@ -125,7 +125,7 @@
               [routerLinkActiveOptions]="{ exact: true }"
             >
               <!-- <i nz-icon nzType="key" nzTheme="outline"></i> -->
-              <span class="ml-4">Permissions</span></a
+              <span class="ml-4">Phân quyền</span></a
             >
           </li>
         </ul>

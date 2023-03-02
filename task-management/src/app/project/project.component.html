@@ -19,14 +19,14 @@
           class="d-flex align-items-center ml-auto mr-2"
         >
           <i nz-icon nzType="sort-ascending" nzTheme="outline"></i>
+          Sắp xếp
         </button>
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul
             nz-menu
             nzSelectable
-            *ngFor="let item of searchField; let idx = index"
           >
-            <li nz-menu-item (click)="getFilterValue(idx)">
+            <li *ngFor="let item of searchField; let idx = index" nz-menu-item (click)="getFilterValue(idx)">
               {{ item }}
             </li>
           </ul>
@@ -39,6 +39,7 @@
           class="d-flex align-items-center mr-2"
         >
           <i nz-icon nzType="filter" nzTheme="outline"></i>
+          Bộ lọc
         </button>
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul
@@ -83,7 +84,6 @@
             <th>STT</th>
             <th>Tên</th>
             <th>Doanh thu</th>
-            <th>Ngày tạo</th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -114,9 +114,9 @@
             <td>
               {{ item.revenue }}
             </td>
-            <td>
+            <!-- <td>
               {{ item.createdDate | date : "MM/dd/yyyy" }}
-            </td>
+            </td> -->
             <td class="d-flex flex-row">
               <!-- <button
                 nz-button
