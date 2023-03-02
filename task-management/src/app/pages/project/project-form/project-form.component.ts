@@ -6,8 +6,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { projectContent } from '../../_core/model/project';
-import { ProjectData } from '../../_core/api/project/project-data';
+import { projectContent } from '../../../_core/model/project';
+import { ProjectData } from '../../../_core/api/project/project-data';
 
 
 enum ModeModal {

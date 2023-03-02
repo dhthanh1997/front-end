@@ -5,22 +5,16 @@ import { IconsProviderModule } from '../../_theme/iconsProvider.module';
 import { NgZorroModule } from '../../_theme/ng-zorro.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { RoleApplicationRoutingModule } from './role-application-routing.module';
-import { RoleApplicationComponent } from './role-application.component';
+import { PermissionRoutingModule } from './permission-routing.module';
+import { PermissionComponent } from './permission.component';
+import { PermissionFormComponent } from './permission-form/permission-form.component';
 import { DeleteComponent } from './delete/delete.component';
-import { RoleAppFormComponent } from './role-app-form/role-app-form.component';
-import { RoleAppDetailComponent } from './role-app-detail/role-app-detail.component';
 
 @NgModule({
-  declarations: [
-    RoleApplicationComponent,
-    DeleteComponent,
-    RoleAppFormComponent,
-    RoleAppDetailComponent,
-  ],
+  declarations: [PermissionComponent, PermissionFormComponent, DeleteComponent],
   imports: [
     CommonModule,
-    RoleApplicationRoutingModule,
+    PermissionRoutingModule,
     HttpClientModule,
     IconsProviderModule,
     NgZorroModule,
@@ -28,4 +22,4 @@ import { RoleAppDetailComponent } from './role-app-detail/role-app-detail.compon
     ReactiveFormsModule,
   ],
 })
-export class RoleApplicationModule {}
+export class PermissionModule {}

@@ -1,40 +1,30 @@
-/* eslint-disable no-debugger */
-/* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, ElementRef, OnInit } from '@angular/core';
-// import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ProjectFormComponent } from './project-form/project-form.component';
-import { projectContent } from '.././_core/model/project';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { memberContent } from '../../_core/model/member';
+// import { MemberService } from '../_core/api/member/member.service';
 import { DeleteComponent } from './delete/delete.component';
-import { Router } from '@angular/router';
-import { ProjectData } from '../_core/api/project/project-data';
-
-enum ModeModal {
-  CREATE = 'create',
-  UPDATE = 'update',
-  VIEW = 'view',
-}
+import { MemberFormComponent } from './member-form/member-form.component';
+import { ModeModal } from 'src/app/_core/enum/modeModal';
+import { MemberData } from '../../_core/api/member/member-data';
 
 @Component({
-  selector: 'internal-app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss'],
+  selector: 'app-member',
+  templateUrl: './member.component.html',
+  styleUrls: ['./member.component.scss'],
 })
-export class ProjectComponent implements OnInit {
+export class MemberComponent implements OnInit {
   constructor(
-    private projectData: ProjectData,
+    // private service: MemberService,
+    private memberData: MemberData,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
-    private element: ElementRef,
-    private router: Router
-  ) { }
+    private element: ElementRef
+  ) {}
 
   public listData: any;
   public listId: number[] = [];
-  public searchField = ['Tên', 'Doanh thu'];
+  public searchField = ['Name', 'Email', 'Advanced Filter'];
 
   public pageNumber = 1;
   public pageSize = 10;
@@ -42,27 +32,23 @@ export class ProjectComponent implements OnInit {
   public totalElements = 0;
   public totalPages: number | undefined;
 
-  checkedBoxAll: boolean = false;
+  checkedBoxAll = false;
   FilterValue = '';
   disableRoute = false;
+  isCollapse = false;
 
   modalOptions: any = {
     nzDuration: 2000,
   };
 
   ngOnInit(): void {
-    this.getProject();
-    // this.projectData.switchLanguage();
+    this.getMember();
     console.log(this.listId);
   }
 
-
-  // event
-  navigationTask(id: any) {
-    this.router.navigate(['/task/project-task', id]);
+  isCollapsed() {
+    this.isCollapse = !this.isCollapse;
   }
-
-
 
   search() {
     const input = this.element.nativeElement.querySelector('#search');
@@ -74,7 +60,7 @@ export class ProjectComponent implements OnInit {
       this.txtSearch = `${this.FilterValue}.cn.${input.value},`;
       console.log(this.txtSearch);
     }
-    this.getProject();
+    this.getMember();
   }
 
   getFilterValue(index: number) {
@@ -120,16 +106,16 @@ export class ProjectComponent implements OnInit {
 
   changePageSize(event: any) {
     this.pageSize = event;
-    this.getProject();
+    this.getMember();
   }
 
   changePageNumber(event: any) {
     this.pageNumber = event;
-    this.getProject();
+    this.getMember();
   }
 
-  public getProject() {
-    this.projectData
+  public getMember() {
+    this.memberData
       .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
         next: (res) => {
@@ -148,15 +134,15 @@ export class ProjectComponent implements OnInit {
   onCreate(): void {
     this.modalService
       .create({
-        nzTitle: 'Thêm mới dự án',
+        nzTitle: 'Thêm mới thành viên',
         nzClassName: 'modal-custom',
-        nzContent: ProjectFormComponent,
+        nzContent: MemberFormComponent,
         nzWidth: 'modal-custom',
         nzCentered: true,
         nzMaskClosable: false,
         nzComponentParams: {
           mode: ModeModal.CREATE,
-          title: 'Thêm yêu cầu',
+          title: 'Thêm mới thành viên',
         },
         nzDirection: 'ltr', // left to right
       })
@@ -169,7 +155,8 @@ export class ProjectComponent implements OnInit {
               'Thêm mới yêu cầu',
               this.modalOptions
             );
-            this.router.navigate(['/project/welcome/' + res.data.id]);
+            this.getMember();
+            // this.router.navigate(['/project/welcome/' + res.data.id]);
           }
         },
         error: (res) => {
@@ -178,12 +165,12 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  onUpdate(item: projectContent): void {
+  onUpdate(item: memberContent): void {
     this.modalService
       .create({
-        nzTitle: 'Chỉnh sửa dự án',
+        nzTitle: 'Cập nhật thành viên',
         nzClassName: 'modal-custom',
-        nzContent: ProjectFormComponent,
+        nzContent: MemberFormComponent,
         nzWidth: 'modal-custom',
         nzCentered: true,
         nzMaskClosable: false,
@@ -203,7 +190,7 @@ export class ProjectComponent implements OnInit {
               this.modalOptions
             );
           }
-          this.getProject();
+          this.getMember();
         },
         error: (res) => {
           console.log(res);
@@ -211,17 +198,17 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  onView(item: projectContent): void {
+  onView(item: memberContent): void {
     this.modalService.create({
-      nzTitle: 'Xem dự án',
+      nzTitle: 'Xem thành viên',
       nzClassName: 'modal-custom',
-      nzContent: ProjectFormComponent,
+      nzContent: MemberFormComponent,
       nzWidth: 'modal-custom',
       nzCentered: true,
       nzMaskClosable: false,
       nzComponentParams: {
         mode: ModeModal.VIEW,
-        title: 'View Project',
+        title: 'Xem thành viên',
         id: item.id,
       },
       nzDirection: 'ltr', // left to right
@@ -231,7 +218,7 @@ export class ProjectComponent implements OnInit {
   onDelete(id: number): void {
     this.modalService
       .create({
-        nzTitle: 'Xóa dự án',
+        nzTitle: 'Xóa thành viên',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -242,7 +229,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.projectData.deleteProject(id).subscribe({
+            this.memberData.deleteById(id).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -251,12 +238,12 @@ export class ProjectComponent implements OnInit {
                     this.modalOptions
                   );
                 }
-                this.getProject();
+                this.getMember();
               },
               error: (err) => {
                 console.log(err);
               },
-              complete: () => { },
+              complete: () => {},
             });
           }
         },
@@ -269,7 +256,7 @@ export class ProjectComponent implements OnInit {
   onDeleteAll(listId: number[]) {
     this.modalService
       .create({
-        nzTitle: 'Xóa nhiều dự án',
+        nzTitle: 'Xóa nhiều thành viên',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -280,7 +267,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.projectData.deleteSelectedProject(listId).subscribe({
+            this.memberData.deleteSelectedId(listId).subscribe({
               next: (res) => {
                 if (res) {
                   this.notifyService.success(
@@ -289,14 +276,14 @@ export class ProjectComponent implements OnInit {
                     this.modalOptions
                   );
                 }
-                this.getProject();
+                this.getMember();
               },
               error: (err) => {
                 console.log(err);
                 console.log(listId);
                 console.log(this.listData);
               },
-              complete: () => { },
+              complete: () => {},
             });
           }
         },

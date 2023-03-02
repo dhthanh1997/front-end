@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectComponent } from './project.component';
-import { IconsProviderModule } from '../_theme/iconsProvider.module';
-import { NgZorroModule } from '../_theme/ng-zorro.module';
+import { IconsProviderModule } from '../../_theme/iconsProvider.module';
+import { NgZorroModule } from '../../_theme/ng-zorro.module';
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteComponent } from './delete/delete.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CoreModule } from '../_core/core.module';
+import { CoreModule } from '../../_core/core.module';
 
 @NgModule({
   declarations: [ProjectComponent, ProjectFormComponent, DeleteComponent],

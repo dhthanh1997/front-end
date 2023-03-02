@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ShareService } from '../_share/share.service';
+import { ShareService } from '../../_share/share.service';
 
 @Component({
   selector: 'app-task',
@@ -9,7 +9,7 @@ import { ShareService } from '../_share/share.service';
 export class TaskComponent implements OnInit {
 
   public isLoading: boolean = true;
- 
+
 
   constructor(
     private shareService: ShareService
@@ -26,8 +26,8 @@ export class TaskComponent implements OnInit {
     // })
   }
 
-  
 
-  
+
+
 
 }

@@ -8,13 +8,13 @@ import { ShareService } from './_share/share.service';
 })
 export class AppComponent implements OnInit {
   title = 'task-management';
-  
+
   constructor() {
 
   }
 
   ngOnInit(): void {
-  
+
   }
 
 }

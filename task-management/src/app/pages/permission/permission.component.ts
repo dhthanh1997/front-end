@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { permissionContent } from '../_core/model/permission';
+import { permissionContent } from '../../_core/model/permission';
 // import { PermissionService } from '../_core/api/permission/permission.service';
-import { ModeModal } from '../_core/enum/modeModal';
+import { ModeModal } from '../../_core/enum/modeModal';
 import { DeleteComponent } from './delete/delete.component';
 import { PermissionFormComponent } from './permission-form/permission-form.component';
-import { PermissionData } from '../_core/api/permission/permission-data';
+import { PermissionData } from '../../_core/api/permission/permission-data';
 
 @Component({
   selector: 'app-permission',
