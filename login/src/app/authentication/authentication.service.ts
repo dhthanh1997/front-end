@@ -7,12 +7,10 @@ import { environment } from 'src/environments/environment';
 // const urlGateway = "http://localhost:8051/authorization";
 // const url = 'http://10.2.6.142:9200/api';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuthenticationService {
 
-  private readonly apiAuthorization: string = 'authorization';
+  private readonly apiAuthorization: string = 'authentication';
 
   constructor(private http: HttpClient) {
     // do something here
@@ -23,7 +21,7 @@ export class AuthenticationService {
   }
 
   login(formData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${this.apiAuthorization}`, formData);
+    return this.http.post(`${this.apiUrl}/${this.apiAuthorization}/login`, formData);
   }
 
   getUser(id: string): Observable<any> {

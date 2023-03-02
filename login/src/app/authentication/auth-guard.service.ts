@@ -1,13 +1,19 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class AuthGuardService implements HttpInterceptor {
 
-  constructor() { }
-  
+  constructor(private router: Router) { }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    throw new Error('Method not implemented.');
+    return next.handle(req).pipe(catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        this.router.navigate(['/login']);
+      }
+      return throwError(() => new Error(error.message));
+    }));
   }
 }
