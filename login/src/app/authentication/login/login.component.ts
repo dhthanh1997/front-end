@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
                 // this.router.navigateByUrl(this.taskUrl);
                 // redirect sang task
                 window.location.href = this.taskUrl;
+                localStorage.setItem('access_token', res);
              }
         },
         error: (err) => {
