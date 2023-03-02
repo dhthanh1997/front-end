@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 @Injectable()
 export class AuthenticationService {
 
-  private readonly apiAuthorization: string = 'authentication';
+  private readonly apiAuthorization: string = '';
 
   constructor(private http: HttpClient) {
     // do something here
@@ -21,7 +21,7 @@ export class AuthenticationService {
   }
 
   login(formData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${this.apiAuthorization}/login`, formData);
+    return this.http.post(`${this.apiUrl}/login`, formData);
   }
 
   getUser(id: string): Observable<any> {

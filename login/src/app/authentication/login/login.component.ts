@@ -45,8 +45,11 @@ export class LoginComponent implements OnInit {
       this.authService.login(formData).pipe(take(1)).subscribe({
         next: (res) => {
              console.log(res)
-             if(res) {
-                this.router.navigate([this.taskUrl]);
+             if(res && res.accessToken) {
+                // console.log(this.taskUrl);
+                // this.router.navigateByUrl(this.taskUrl);
+                // redirect sang task
+                window.location.href = this.taskUrl;
              }
         },
         error: (err) => {
