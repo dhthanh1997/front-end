@@ -133,7 +133,7 @@ export class PermissionComponent implements OnInit {
   onCreate(): void {
     this.modalService
       .create({
-        nzTitle: 'New Permission',
+        nzTitle: 'Thêm mới role',
         nzClassName: 'modal-custom',
         nzContent: PermissionFormComponent,
         nzWidth: 'modal-custom',
@@ -141,7 +141,7 @@ export class PermissionComponent implements OnInit {
         nzMaskClosable: false,
         nzComponentParams: {
           mode: ModeModal.CREATE,
-          title: 'Thêm yêu cầu',
+          title: 'Thêm mới role',
         },
         nzDirection: 'ltr', // left to right
       })
@@ -151,7 +151,7 @@ export class PermissionComponent implements OnInit {
           if (res) {
             this.notifyService.success(
               'Thành công',
-              'Thêm mới yêu cầu',
+              'Thêm mới role',
               this.modalOptions
             );
             this.getPermission();
@@ -167,7 +167,7 @@ export class PermissionComponent implements OnInit {
   onUpdate(item: permissionContent): void {
     this.modalService
       .create({
-        nzTitle: 'Update Permission',
+        nzTitle: 'Chỉnh sửa role',
         nzClassName: 'modal-custom',
         nzContent: PermissionFormComponent,
         nzWidth: 'modal-custom',
@@ -185,7 +185,7 @@ export class PermissionComponent implements OnInit {
           if (res) {
             this.notifyService.success(
               'Thành công',
-              'Chỉnh sửa yêu cầu',
+              'Chỉnh sửa role',
               this.modalOptions
             );
           }
@@ -199,7 +199,7 @@ export class PermissionComponent implements OnInit {
 
   onView(item: permissionContent): void {
     this.modalService.create({
-      nzTitle: 'View Permission',
+      nzTitle: 'Xem role',
       nzClassName: 'modal-custom',
       nzContent: PermissionFormComponent,
       nzWidth: 'modal-custom',
@@ -207,7 +207,7 @@ export class PermissionComponent implements OnInit {
       nzMaskClosable: false,
       nzComponentParams: {
         mode: ModeModal.VIEW,
-        title: 'View Member',
+        title: 'Xem role',
         id: item.id,
       },
       nzDirection: 'ltr', // left to right
@@ -217,7 +217,7 @@ export class PermissionComponent implements OnInit {
   onDelete(id: number): void {
     this.modalService
       .create({
-        nzTitle: 'Delete Permission',
+        nzTitle: 'Xóa role',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -233,7 +233,7 @@ export class PermissionComponent implements OnInit {
                 if (res) {
                   this.notifyService.success(
                     'Thành công',
-                    'Xóa yêu cầu',
+                    'Xóa role',
                     this.modalOptions
                   );
                 }
@@ -255,7 +255,7 @@ export class PermissionComponent implements OnInit {
   onDeleteAll(listId: number[]) {
     this.modalService
       .create({
-        nzTitle: 'Delete Selected Permissions',
+        nzTitle: 'Xóa nhiều role',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -271,7 +271,7 @@ export class PermissionComponent implements OnInit {
                 if (res) {
                   this.notifyService.success(
                     'Thành công',
-                    'Xóa yêu cầu',
+                    'Xóa role',
                     this.modalOptions
                   );
                 }

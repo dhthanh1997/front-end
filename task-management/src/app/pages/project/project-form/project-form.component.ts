@@ -90,8 +90,8 @@ export class ProjectFormComponent implements OnInit {
       rangeDate: ['', []],
       // realStartDate: ['', []],
       // realEndDate: ['', []],
-      totalCost: ['', []],
-      totalHour: ['', []],
+      totalCost: ['', [Validators.pattern('^[0-9]*$'),]],
+      totalHour: ['', [Validators.pattern('^[0-9]*$'),]],
       // isChecked: [this.checked, []],
     });
 

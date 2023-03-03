@@ -42,7 +42,7 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3"> Doanh thu </nz-form-label>
-            <nz-form-control nz-col [nzSpan]="21" nzErrorTip="Bắt buộc!">
+            <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Revenue">
               <input
                 nz-input
                 placeholder="Doanh thu"
@@ -51,6 +51,11 @@
                 [readonly]="mode === 'view'"
                 [ngClass]="mode === 'view' ? 'ban' : ''"
               />
+              <ng-template #Revenue let-control>
+                <ng-container *ngIf="control.hasError('pattern')"
+                  >Doanh thu không hợp lệ</ng-container
+                >
+              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -78,7 +83,7 @@
         <div nz-col [nzSpan]="12">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="6"> Tổng chi phí </nz-form-label>
-            <nz-form-control nz-col [nzSpan]="18" nzErrorTip="Bắt buộc!">
+            <nz-form-control nz-col [nzSpan]="18" [nzErrorTip]="TotalCost">
               <input
                 nz-input
                 placeholder="Tổng chi phí"
@@ -87,6 +92,11 @@
                 [readonly]="mode === 'view'"
                 [ngClass]="mode === 'view' ? 'ban' : ''"
               />
+              <ng-template #TotalCost let-control>
+                <ng-container *ngIf="control.hasError('pattern')"
+                  >Chi phí không hợp lệ</ng-container
+                >
+              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -94,7 +104,7 @@
         <div nz-col [nzSpan]="12">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="6"> Tổng thời gian </nz-form-label>
-            <nz-form-control nz-col [nzSpan]="18" nzErrorTip="Bắt buộc!">
+            <nz-form-control nz-col [nzSpan]="18" [nzErrorTip]="TotalHour">
               <input
                 nz-input
                 placeholder="Tổng thời gian (h)"
@@ -103,6 +113,11 @@
                 [readonly]="mode === 'view'"
                 [ngClass]="mode === 'view' ? 'ban' : ''"
               />
+              <ng-template #TotalHour let-control>
+                <ng-container *ngIf="control.hasError('pattern')"
+                  >Thời gian không hợp lệ</ng-container
+                >
+              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
