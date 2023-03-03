@@ -10,8 +10,8 @@ const routes: Routes = [
     // canActivate: [AuthGuardService]
   },
   {
-    path: '**',
-    redirectTo: 'pages',
+    path: '',
+    redirectTo: 'pages/home',
     pathMatch: 'full'
   },
 ];
