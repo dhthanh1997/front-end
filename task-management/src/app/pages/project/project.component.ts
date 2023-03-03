@@ -59,7 +59,7 @@ export class ProjectComponent implements OnInit {
 
   // event
   navigationTask(id: any) {
-    this.router.navigate(['/task/project-task', id]);
+    this.router.navigate(['/pages/task/project-task', id]);
   }
 
 

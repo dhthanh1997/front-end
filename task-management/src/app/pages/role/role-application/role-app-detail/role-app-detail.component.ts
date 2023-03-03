@@ -161,14 +161,14 @@ export class RoleAppDetailComponent implements OnInit {
   notify() {
     this.notifyService.success(
       'Success',
-      'Role permission created successfully',
+      'Role permission saved successfully',
       this.modalOptions
     );
   }
 
   getParentCode() {
     for (let i = 0; i < this.listData.length; i++) {
-      if (this.listData[i].parentCode == null)
+      if (this.listData[i].parentCode == null || this.listData[i].parentCode == "")
         this.listParent.push(this.listData[i]);
       // console.log(this.listParent);
     }
@@ -176,7 +176,7 @@ export class RoleAppDetailComponent implements OnInit {
 
   getChildCode() {
     for (let i = 0; i < this.listData.length; i++) {
-      if (this.listData[i].parentCode != null)
+      if (this.listData[i].parentCode != null && this.listData[i].parentCode != "")
         this.listChild.push(this.listData[i]);
       // console.log(this.listChild);
     }

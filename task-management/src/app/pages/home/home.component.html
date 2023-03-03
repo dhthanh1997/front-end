@@ -23,7 +23,7 @@
             <div class="body-content">
               <span style="font-size: 20px; line-height: 28px">Dự án</span>
               <div class="row" style="padding: 12px 24px 8px">
-                <div class="content col-lg-6" id="project-create">
+                <!-- <div class="content col-lg-6" id="project-create">
                   <div
                     class="icon d-flex justify-content-center align-items-center"
                     style="border: 1px dashed black"
@@ -38,14 +38,14 @@
                   <div class="title ml-2">
                     <span>Thêm mới</span>
                   </div>
-                </div>
+                </div> -->
                 <div
                   class="content col-lg-6"
                   *ngFor="let item of listData; let idx = index"
                 >
                   <div
                     class="icon d-flex justify-content-center align-items-center"
-                    [routerLink]="['welcome', item.id]"
+                    [routerLink]="['/pages/task/project-task', item.id]"
                   >
                     <i
                       nz-icon
@@ -54,7 +54,7 @@
                       style="font-size: 24px"
                     ></i>
                   </div>
-                  <div class="title ml-2" [routerLink]="['welcome', item.id]">
+                  <div class="title ml-2" [routerLink]="['/pages/task/project-task', item.id]">
                     <span>{{ item.name }}</span>
                   </div>
                 </div>
@@ -76,7 +76,7 @@
             <div class="body-content">
               <span style="font-size: 20px; line-height: 28px">Thành viên</span>
               <div class="row" style="padding: 12px 24px 8px">
-                <div class="content col-lg-6" id="project-create">
+                <!-- <div class="content col-lg-6" id="project-create">
                   <div
                     class="icon d-flex justify-content-center align-items-center"
                     style="border: 1px dashed black"
@@ -91,10 +91,10 @@
                   <div class="title ml-2">
                     <span>Thêm mới</span>
                   </div>
-                </div>
+                </div> -->
                 <div
                   class="content col-lg-6"
-                  *ngFor="let item of listData; let idx = index"
+                  *ngFor="let item of listMember; let idx = index"
                 >
                   <div
                     class="icon d-flex justify-content-center align-items-center"
@@ -116,7 +116,7 @@
                 <button
                   nz-button
                   class="show-more"
-                  (click)="showAllProject()"
+                  (click)="showAllMember()"
                   [hidden]="isHidden"
                 >
                   Mở rộng
@@ -129,7 +129,7 @@
             <div class="body-content">
               <span style="font-size: 20px; line-height: 28px">Công việc của tôi</span>
               <div class="row" style="padding: 12px 24px 8px">
-                <div class="content col-lg-6" id="project-create">
+                <!-- <div class="content col-lg-6" id="project-create">
                   <div
                     class="icon d-flex justify-content-center align-items-center"
                     style="border: 1px dashed black"
@@ -144,10 +144,10 @@
                   <div class="title ml-2">
                     <span>Thêm mới</span>
                   </div>
-                </div>
+                </div> -->
                 <div
                   class="content col-lg-6"
-                  *ngFor="let item of listData; let idx = index"
+                  *ngFor="let item of listTasks; let idx = index"
                 >
                   <div
                     class="icon d-flex justify-content-center align-items-center"
@@ -169,7 +169,7 @@
                 <button
                   nz-button
                   class="show-more"
-                  (click)="showAllProject()"
+                  (click)="showAllTask()"
                   [hidden]="isHidden"
                 >
                   Mở rộng
@@ -178,7 +178,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6 col-sm-12 body-content-wrapper">
+          <!-- <div class="col-lg-6 col-sm-12 body-content-wrapper">
             <div class="body-content">
               <span style="font-size: 20px; line-height: 28px">Văn bản riêng tư</span>
               <div class="row" style="padding: 12px 24px 8px">
@@ -229,7 +229,7 @@
                 </button>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

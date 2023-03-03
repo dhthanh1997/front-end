@@ -95,8 +95,9 @@ export class PermissionFormComponent implements OnInit {
   }
 
   getParentCode() {
+    debugger;
     for (let i = 0; i < this.listData.length; i++) {
-      if (this.listData[i].parentCode == null)
+      if (this.listData[i].parentCode == null || this.listData[i].parentCode == "")
         this.listParent.push(this.listData[i]);
       console.log(this.listParent);
     }

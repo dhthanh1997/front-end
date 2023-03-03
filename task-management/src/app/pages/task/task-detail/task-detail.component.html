@@ -13,13 +13,15 @@
           <ng-container *ngIf="isCompleted"> Hoàn thành </ng-container>
           <ng-container *ngIf="!isCompleted"> Chưa hoàn thành </ng-container>
         </button>
-        <div
-          [hidden]="tagId === null || tagId === 0"
-          [style.background]="tagList.color"
-          class="tag"
-          nz-tooltip
-          [nzTooltipTitle]="tagList.name"
-        ></div>
+        <nz-form-item>
+          <div
+            [hidden]="tagId === null || tagId === 0"
+            [style.background]="tagList.color"
+            class="tag"
+            nz-tooltip
+            [nzTooltipTitle]="tagList.name"
+          ></div>
+        </nz-form-item>
       </div>
       <div class="col-6 p-2">
         <div class="d-flex flex-row float-right">
