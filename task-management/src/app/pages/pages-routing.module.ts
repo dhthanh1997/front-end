@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 import { PagesComponent } from './pages.component';
 
 const routes: Routes = [
@@ -48,8 +49,18 @@ const routes: Routes = [
         path: 'report',
         loadChildren: () => import('./report/report.module').then((m) => m.ReportModule),
       },
+      {
+        path: '**',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
     ]
   },
+  // {
+  //   path: 'home1',
+  //   component: HomeComponent,
+  //   // pathMatch: 'full'
+  // },
 
 ];
 

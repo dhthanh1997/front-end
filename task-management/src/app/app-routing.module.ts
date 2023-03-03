@@ -9,6 +9,11 @@ const routes: Routes = [
       import('./pages/pages.module').then((m) => m.PagesModule),
     // canActivate: [AuthGuardService]
   },
+  // {
+  //   path: '**',
+  //   redirectTo: 'pages',
+  //   pathMatch: 'full'
+  // },
   {
     path: '**',
     redirectTo: 'pages',

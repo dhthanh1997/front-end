@@ -171,7 +171,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   public root: any;
 
-  public get connectedTo(): string[] {
+  get connectedTo(): string[] {
     return this.getIdsRecursive(this.root).reverse();
   }
 
