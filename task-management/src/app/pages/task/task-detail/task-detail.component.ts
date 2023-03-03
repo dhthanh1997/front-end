@@ -415,7 +415,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   updateTasks(id: number) {
-    debugger;
+    // debugger;
     const item:Task = this.formValidation.value;
     item.tagId = this.tagId;
     this.taskData.update(id, item).subscribe({
@@ -442,7 +442,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   getTagById(id: number) {
-    debugger;
+    // debugger;
     if (id !== 0 && id !== null) {
       this.tagData.getById(id).subscribe({
         next: (res) => {
