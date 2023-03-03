@@ -168,7 +168,7 @@ export class RoleAppDetailComponent implements OnInit {
 
   getParentCode() {
     for (let i = 0; i < this.listData.length; i++) {
-      if (this.listData[i].parentCode == null || this.listData[i].parentCode == "")
+      if (this.listData[i].parentCode == null || this.listData[i].parentCode == "" && this.listData[i].parentCode != undefined)
         this.listParent.push(this.listData[i]);
       // console.log(this.listParent);
     }
@@ -176,7 +176,7 @@ export class RoleAppDetailComponent implements OnInit {
 
   getChildCode() {
     for (let i = 0; i < this.listData.length; i++) {
-      if (this.listData[i].parentCode != null && this.listData[i].parentCode != "")
+      if (this.listData[i].parentCode != null && this.listData[i].parentCode != "" && this.listData[i].parentCode != undefined)
         this.listChild.push(this.listData[i]);
       // console.log(this.listChild);
     }

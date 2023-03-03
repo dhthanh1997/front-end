@@ -15,7 +15,7 @@
         </button>
         <nz-form-item>
           <div
-            [hidden]="tagId === null || tagId === 0"
+            [hidden]="tagId === null || tagId === 0 || tagId === undefined"
             [style.background]="tagList.color"
             class="tag"
             nz-tooltip
