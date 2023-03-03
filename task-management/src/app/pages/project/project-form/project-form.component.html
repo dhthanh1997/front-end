@@ -45,11 +45,15 @@
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Revenue">
               <input
                 nz-input
+                currencyMask
+                [options]="{ thousands: '.', align: 'left', prefix: '' }"
                 placeholder="Doanh thu"
+                [value]="formValidation.get('revenue')!.value | number"
                 formControlName="revenue"
                 name="revenue"
                 [readonly]="mode === 'view'"
                 [ngClass]="mode === 'view' ? 'ban' : ''"
+                ng-maxlength="10"
               />
               <ng-template #Revenue let-control>
                 <ng-container *ngIf="control.hasError('pattern')"

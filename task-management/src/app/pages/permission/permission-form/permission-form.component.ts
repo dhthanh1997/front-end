@@ -95,7 +95,7 @@ export class PermissionFormComponent implements OnInit {
   }
 
   getParentCode() {
-    debugger;
+    // debugger;
     for (let i = 0; i < this.listData.length; i++) {
       if (this.listData[i].parentCode == null || this.listData[i].parentCode == "")
         this.listParent.push(this.listData[i]);
