@@ -44,6 +44,7 @@ import { InputFileComponent } from 'src/app/_component/input-file/input-file.com
 import { TaskUploadFileComponent } from './task-upload-file/task-upload-file.component';
 import { TaskTagComponent } from './task-tag/task-tag.component';
 import { TagData } from 'src/app/_core/api/tag/tag-data';
+import { ProjectData } from 'src/app/_core/api/project/project-data';
 
 @Component({
   selector: 'app-task-detail',
@@ -65,6 +66,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   public tagList: any = {
     name: ''
   };
+  public listProject: any[] = [];
 
   public idTask: number = 0;
   public indexTask: number = 0;
@@ -84,18 +86,20 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     private tagData: TagData,
     private shareService: ShareService,
     private notifyService: NotifyService,
+    private projectData: ProjectData,
     private modal: NzModalService
   ) {
     this.formValidation = initFormObject(this.task, this.task);
     this.formValidation.addControl('subTask', this.fb.array([]));
+    // this.formValidation.addControl('listProject', this.fb.array([]));
+
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   ngOnInit() {
     console.log(this.isCollapsed);
     // this.initData();
-
     this.getData();
     this.getSubData();
     // không cần watch change, angular tự check change và update theo hàm watchForChange ở parent component
@@ -103,6 +107,24 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     // this.hexToRGB('');
     // this.collapseListenEvent();
     // console.log(this.formValidation);
+    this.getProjectData();
+  }
+
+  getProjectData() {
+    this.projectData.search(1, 999).subscribe({
+      next: (res) => {
+        // console.log(res);
+        if (res?.message === ResponseStatusEnum.success) {
+          // this.formValidation.controls['listProject'].patchValue(res.data)
+          this.listProject = res.pagingData.content;
+          console.log("project");
+          console.log(this.listProject);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
   getSubData() {
@@ -267,7 +289,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.isShow = false;
   }
 
-  onOpenChange(event: any) {}
+  onOpenChange(event: any) { }
 
   // end event
 
@@ -402,7 +424,6 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       })
       .afterClose.subscribe({
         next: async (res) => {
-          debugger;
           this.tagId = res;
           this.getTagById(this.tagId);
           this.updateTasks(this.idTask);
@@ -415,8 +436,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   updateTasks(id: number) {
-    debugger;
-    const item:Task = this.formValidation.value;
+    // debugger;
+    const item: Task = this.formValidation.value;
     item.tagId = this.tagId;
     this.taskData.update(id, item).subscribe({
       next: (res) => {
@@ -442,7 +463,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   getTagById(id: number) {
-    debugger;
+    // debugger;
     if (id !== 0 && id !== null) {
       this.tagData.getById(id).subscribe({
         next: (res) => {

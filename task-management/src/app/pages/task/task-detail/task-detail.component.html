@@ -162,9 +162,10 @@
                 formControlName="projectId"
                 nzPlaceHolder="Lựa chọn dự án"
               >
-                <nz-option nzLabel="Dự án A" nzValue="1"></nz-option>
+                <!-- <nz-option nzLabel="Dự án A" nzValue="1"></nz-option>
                 <nz-option nzLabel="Dự án B" nzValue="2"></nz-option>
-                <nz-option nzLabel="Dự án C" nzValue="3"></nz-option>
+                <nz-option nzLabel="Dự án C" nzValue="3"></nz-option> -->
+                <nz-option [nzLabel]="value.name" [nzValue]="value.id" *ngFor="let value of listProject"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>

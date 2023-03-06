@@ -11,6 +11,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { DeleteComponent } from './delete/delete.component';
 import { Router } from '@angular/router';
 import { ProjectData } from '../../_core/api/project/project-data';
+import { timer } from 'rxjs';
 
 enum ModeModal {
   CREATE = 'create',
@@ -59,7 +60,7 @@ export class ProjectComponent implements OnInit {
 
   // event
   navigationTask(id: any) {
-    this.router.navigate(['/task/project-task', id]);
+    this.router.navigate(['pages/task/project-task', id]);
   }
 
 
@@ -169,7 +170,10 @@ export class ProjectComponent implements OnInit {
               'Thêm mới yêu cầu',
               this.modalOptions
             );
-            this.router.navigate(['/project/welcome/' + res.data.id]);
+            timer(500).subscribe(res => {
+              this.search();
+            })
+            // this.router.navigate(['/project/welcome/' + res.data.id]);
           }
         },
         error: (res) => {
