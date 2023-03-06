@@ -152,7 +152,7 @@ export class MemberComponent implements OnInit {
           if (res) {
             this.notifyService.success(
               'Thành công',
-              'Thêm mới yêu cầu',
+              'Thêm mới thành viên',
               this.modalOptions
             );
             this.getMember();
@@ -186,7 +186,7 @@ export class MemberComponent implements OnInit {
           if (res) {
             this.notifyService.success(
               'Thành công',
-              'Chỉnh sửa yêu cầu',
+              'Chỉnh sửa thành viên',
               this.modalOptions
             );
           }
@@ -234,7 +234,7 @@ export class MemberComponent implements OnInit {
                 if (res) {
                   this.notifyService.success(
                     'Thành công',
-                    'Xóa yêu cầu',
+                    'Xóa thành viên',
                     this.modalOptions
                   );
                 }
@@ -272,7 +272,7 @@ export class MemberComponent implements OnInit {
                 if (res) {
                   this.notifyService.success(
                     'Thành công',
-                    'Xóa yêu cầu',
+                    'Xóa thành viên',
                     this.modalOptions
                   );
                 }

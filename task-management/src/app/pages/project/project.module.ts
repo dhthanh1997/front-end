@@ -9,6 +9,7 @@ import { ProjectFormComponent } from './project-form/project-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteComponent } from './delete/delete.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CurrencyMaskModule } from "ng2-currency-mask";
 import { CoreModule } from '../../_core/core.module';
 
 @NgModule({
@@ -20,7 +21,8 @@ import { CoreModule } from '../../_core/core.module';
     NgZorroModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CurrencyMaskModule
   ],
 })
 export class ProjectModule {}

@@ -13,7 +13,7 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Name <span style="color: red">*</span>
+              Tên <span style="color: red">*</span>
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Name">
               <input
@@ -27,10 +27,10 @@
               />
               <ng-template #Name let-control>
                 <ng-container *ngIf="control.hasError('minlength')"
-                  >MinLength is 4</ng-container
+                  >Tên cần tối thiểu 4 ký tự</ng-container
                 >
                 <ng-container *ngIf="control.hasError('required')"
-                  >Input is required</ng-container
+                  >Mục này không được để trống</ng-container
                 >
               </ng-template>
             </nz-form-control>
@@ -44,7 +44,7 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Code <span style="color: red">*</span>
+              Mã quyền <span style="color: red">*</span>
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Code">
               <input
@@ -57,7 +57,7 @@
               />
               <ng-template #Code let-control>
                 <ng-container *ngIf="control.hasError('required')"
-                  >Input is required</ng-container
+                  >Mục này không được để trống</ng-container
                 >
               </ng-template>
             </nz-form-control>
@@ -71,7 +71,7 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Parent Code
+              Mã quyền cha
               <!-- <span style="color: red">*</span> -->
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Code">
@@ -106,7 +106,7 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label [nzSpan]="3">
-              Type <span style="color: red">*</span>
+              Loại <span style="color: red">*</span>
             </nz-form-label>
             <nz-form-control [nzSpan]="21" [nzErrorTip]="Type">
               <nz-radio-group
@@ -120,7 +120,7 @@
               </nz-radio-group>
               <ng-template #Type let-control>
                 <ng-container *ngIf="control.hasError('required')"
-                  >Type is required</ng-container
+                  >Mục này không được để trống</ng-container
                 >
               </ng-template>
             </nz-form-control>
@@ -132,7 +132,7 @@
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label [nzSpan]="3"> Description </nz-form-label>
+            <nz-form-label [nzSpan]="3"> Miêu tả </nz-form-label>
             <nz-form-control [nzSpan]="21">
               <textarea
                 nz-input

@@ -60,7 +60,7 @@ export class ProjectComponent implements OnInit {
 
   // event
   navigationTask(id: any) {
-    this.router.navigate(['pages/task/project-task', id]);
+    this.router.navigate(['/task/project-task', id]);
   }
 
 
@@ -167,13 +167,10 @@ export class ProjectComponent implements OnInit {
           if (res) {
             this.notifyService.success(
               'Thành công',
-              'Thêm mới yêu cầu',
+              'Thêm mới dự án',
               this.modalOptions
             );
-            timer(500).subscribe(res => {
-              this.search();
-            })
-            // this.router.navigate(['/project/welcome/' + res.data.id]);
+            this.router.navigate(['/project/welcome/' + res.data.id]);
           }
         },
         error: (res) => {
@@ -203,7 +200,7 @@ export class ProjectComponent implements OnInit {
           if (res) {
             this.notifyService.success(
               'Thành công',
-              'Chỉnh sửa yêu cầu',
+              'Chỉnh sửa dự án',
               this.modalOptions
             );
           }
@@ -251,7 +248,7 @@ export class ProjectComponent implements OnInit {
                 if (res) {
                   this.notifyService.success(
                     'Thành công',
-                    'Xóa yêu cầu',
+                    'Xóa dự án',
                     this.modalOptions
                   );
                 }
@@ -289,7 +286,7 @@ export class ProjectComponent implements OnInit {
                 if (res) {
                   this.notifyService.success(
                     'Thành công',
-                    'Xóa yêu cầu',
+                    'Xóa dự án',
                     this.modalOptions
                   );
                 }

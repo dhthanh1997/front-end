@@ -173,8 +173,9 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         if (res) {
           this.idTask = res.item.controls.id.value;
           this.indexTask = res.index;
-          this.getTagById(res.item.controls.tagId.value);
-          this.tagId = res.item.controls.tagId.value;
+          // this.getTagById(res.item.controls.tagId.value);
+          // this.tagId = res.item.controls.tagId.value;
+          this.getTaskById(this.idTask);
           return this.taskData.getById(this.idTask);
         }
         return of(null);
@@ -424,7 +425,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       })
       .afterClose.subscribe({
         next: async (res) => {
-          this.tagId = res;
+          // debugger;
+          if(res !== undefined && res !== null) this.tagId = res;
           this.getTagById(this.tagId);
           this.updateTasks(this.idTask);
           this.getData();
@@ -437,7 +439,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   updateTasks(id: number) {
     // debugger;
-    const item: Task = this.formValidation.value;
+    const item:Task = this.formValidation.value;
     item.tagId = this.tagId;
     this.taskData.update(id, item).subscribe({
       next: (res) => {
@@ -455,6 +457,18 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getTaskById(id: number){
+    this.taskData.getById(id).subscribe({
+      next: (res) => {
+        this.getTagById(res.data.tagId);
+        this.tagId = res.data.tagId;
       },
       error: (err) => {
         console.log(err);
