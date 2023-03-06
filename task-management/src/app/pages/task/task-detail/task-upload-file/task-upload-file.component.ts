@@ -106,9 +106,9 @@ export class TaskUploadFileComponent implements OnInit {
             }
             if (res.message === ResponseStatusEnum.success) {
               this.notifyService.success("Upload file thành công");
-              // setTimeout(() => {
-              //   this.close();
-              // }, 500);
+              setTimeout(() => {
+                this.close();
+              }, 1000);
             }
 
           },

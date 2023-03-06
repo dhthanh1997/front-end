@@ -329,6 +329,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
 
   addTask() {
     const array = this.taskArray;
+    this.task.setEndDate(new Date());
     if (array && array.controls.length > 0) {
       let lastItem = this.lastItemArray;
       console.log(lastItem);

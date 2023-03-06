@@ -127,6 +127,28 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     })
   }
 
+  getSubDataWithId() {
+    this.taskData.getByParentId(this.idTask).subscribe({
+      next: (res) => {
+        if (res?.message === ResponseStatusEnum.success) {
+          console.log('--- detail ok');
+          this.subTask.clear();
+          this.formValidation = setDataInFormArray(
+            res.data,
+            'subTask',
+            this.formValidation,
+            this.task
+          );
+        } else {
+          this.notifyService.error('Có lỗi xảy ra');
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
   getSubData() {
     const shareData$ = this.shareService.taskDataShare;
     const source$ = shareData$.asObservable().pipe(
@@ -297,15 +319,19 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   markCompleted() {
     this.isCompleted = !this.isCompleted;
     const formGroup = this.formValidation.get('state') as FormControl;
+    let value = 0;
     // 0: Chưa hoàn thành
     // 1: Hoàn thành
     if (formGroup.value === 0) {
-      formGroup.setValue(1);
+      value = 1;
     }
     if (formGroup.value === 1) {
-      formGroup.setValue(0);
+      value = 0
     }
+    formGroup.setValue(value);
+    this.watchForChange();
     this.formValidation.updateValueAndValidity();
+    console.log(this.formValidation);
   }
 
   uploadFile() {
@@ -347,6 +373,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       .afterClose.subscribe({
         next: (res) => {
           console.log(res);
+          this.getSubDataWithId();
         },
         error: (err) => {
           console.log(err);
@@ -426,7 +453,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       .afterClose.subscribe({
         next: async (res) => {
           // debugger;
-          if(res !== undefined && res !== null) this.tagId = res;
+          if (res !== undefined && res !== null) this.tagId = res;
           this.getTagById(this.tagId);
           this.updateTasks(this.idTask);
           this.getData();
@@ -439,7 +466,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   updateTasks(id: number) {
     // debugger;
-    const item:Task = this.formValidation.value;
+    const item: Task = this.formValidation.value;
     item.tagId = this.tagId;
     this.taskData.update(id, item).subscribe({
       next: (res) => {
@@ -464,7 +491,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  getTaskById(id: number){
+  getTaskById(id: number) {
     this.taskData.getById(id).subscribe({
       next: (res) => {
         this.getTagById(res.data.tagId);
