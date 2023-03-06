@@ -403,7 +403,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       })
       .afterClose.subscribe({
         next: async (res) => {
-          debugger;
+          // debugger;
           if(res !== undefined && res !== null) this.tagId = res;
           this.getTagById(this.tagId);
           this.updateTasks(this.idTask);
@@ -455,7 +455,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   getTagById(id: number) {
-    debugger;
+    // debugger;
     if (id !== 0 && id !== null && id !== undefined) {
       this.tagData.getById(id).subscribe({
         next: (res) => {

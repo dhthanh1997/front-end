@@ -46,19 +46,18 @@
               <input
                 nz-input
                 currencyMask
-                [options]="{ thousands: '.', align: 'left', prefix: '' }"
+                [options]="{ thousands: ',', align: 'left', prefix: '', precision: 0 }"
                 placeholder="Doanh thu"
                 [value]="formValidation.get('revenue')!.value | number"
                 formControlName="revenue"
                 name="revenue"
                 [readonly]="mode === 'view'"
                 [ngClass]="mode === 'view' ? 'ban' : ''"
-                ng-maxlength="10"
               />
               <ng-template #Revenue let-control>
-                <ng-container *ngIf="control.hasError('pattern')"
-                  >Doanh thu không hợp lệ</ng-container
-                >
+                <ng-container *ngIf="control.hasError('max')">
+                  Tối đa 11 ký tự
+                </ng-container>
               </ng-template>
             </nz-form-control>
           </nz-form-item>
@@ -90,15 +89,18 @@
             <nz-form-control nz-col [nzSpan]="18" [nzErrorTip]="TotalCost">
               <input
                 nz-input
+                currencyMask
+                [options]="{ thousands: ',', align: 'left', prefix: '', precision: 0 }"
                 placeholder="Tổng chi phí"
                 formControlName="totalCost"
                 name="totalCost"
                 [readonly]="mode === 'view'"
                 [ngClass]="mode === 'view' ? 'ban' : ''"
+
               />
               <ng-template #TotalCost let-control>
-                <ng-container *ngIf="control.hasError('pattern')"
-                  >Chi phí không hợp lệ</ng-container
+                <ng-container *ngIf="control.hasError('max')"
+                  >Tối đa 11 ký tự</ng-container
                 >
               </ng-template>
             </nz-form-control>
@@ -111,6 +113,8 @@
             <nz-form-control nz-col [nzSpan]="18" [nzErrorTip]="TotalHour">
               <input
                 nz-input
+                currencyMask
+                [options]="{ thousands: ',', align: 'left', prefix: '', precision: 0 }"
                 placeholder="Tổng thời gian (h)"
                 formControlName="totalHour"
                 name="totalHour"
@@ -118,8 +122,8 @@
                 [ngClass]="mode === 'view' ? 'ban' : ''"
               />
               <ng-template #TotalHour let-control>
-                <ng-container *ngIf="control.hasError('pattern')"
-                  >Thời gian không hợp lệ</ng-container
+                <ng-container *ngIf="control.hasError('max')"
+                  >Tối đa 11 ký tự</ng-container
                 >
               </ng-template>
             </nz-form-control>

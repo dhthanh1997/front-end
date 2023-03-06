@@ -65,8 +65,20 @@ export class SidebarComponent implements OnInit {
   }
 
   subMenu() {
-    this.isActive = !this.isActive;
-    this.isOpen = !this.isOpen;
-    console.log(this.isOpen);
+    // debugger;
+    let subMenu = this.elementRef.nativeElement.querySelector('.sub-menu');
+    if (subMenu.classList.contains('d-none')) {
+      subMenu.classList.remove('hide');
+      subMenu.classList.remove('d-none');
+      subMenu.classList.add('show');
+      subMenu.classList.add('d-block');
+    } else if (subMenu.classList.contains('d-block')) {
+      subMenu.classList.remove('show');
+      subMenu.classList.remove('d-block');
+      subMenu.classList.add('hide');
+      setTimeout(() => {
+        return subMenu.classList.add('d-none');
+      }, 1000);
+    }
   }
 }
