@@ -57,6 +57,7 @@ export class MemberFormComponent implements OnInit {
           Validators.required,
           Validators.pattern('^[0-9]*$'),
           Validators.minLength(9),
+          Validators.maxLength(11),
         ],
       ],
       username: ['', [Validators.required, Validators.minLength(8)]],

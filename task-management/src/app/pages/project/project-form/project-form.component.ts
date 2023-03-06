@@ -3,7 +3,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-inferrable-types */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { projectContent } from '../../../_core/model/project';
@@ -35,6 +35,7 @@ export class ProjectFormComponent implements OnInit {
   isVisible = false;
 
   constructor(
+    private element: ElementRef,
     private fb: FormBuilder,
     private service: ProjectData,
     private modelRef: NzModalRef<ProjectFormComponent>
@@ -84,14 +85,14 @@ export class ProjectFormComponent implements OnInit {
     this.formValidation = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       parentId: ['', []],
-      revenue: ['', [Validators.pattern('^[0-9.,]*$')]],
+      revenue: [0 , [Validators.max(100000000000)]],
       startDate: ['', []],
       endDate: ['', []],
       rangeDate: ['', []],
       // realStartDate: ['', []],
       // realEndDate: ['', []],
-      totalCost: ['', [Validators.pattern('^[0-9]*$'),]],
-      totalHour: ['', [Validators.pattern('^[0-9]*$'),]],
+      totalCost: [0 , [Validators.max(100000000000)]],
+      totalHour: [0, [Validators.max(100000000000)]],
       // isChecked: [this.checked, []],
     });
 

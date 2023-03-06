@@ -478,7 +478,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   getTagById(id: number) {
     // debugger;
-    if (id !== 0 && id !== null) {
+    if (id !== 0 && id !== null && id !== undefined) {
       this.tagData.getById(id).subscribe({
         next: (res) => {
           console.log(res);

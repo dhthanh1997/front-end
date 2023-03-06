@@ -84,13 +84,16 @@
               />
               <ng-template #Phone let-control>
                 <ng-container *ngIf="control.hasError('pattern')"
-                  >Số điện thoại không hợp lệ</ng-container
-                > <br>
+                  >Số điện thoại không hợp lệ<br></ng-container
+                >
                 <ng-container *ngIf="control.hasError('required')"
                   >Mục này không được để trống</ng-container
                 >
                 <ng-container *ngIf="control.hasError('minlength')"
                   >Số điện thoại cần tối thiểu 9 số</ng-container
+                >
+                <ng-container *ngIf="control.hasError('maxlength')"
+                  >Số điện thoại tối đa 11 số</ng-container
                 >
               </ng-template>
             </nz-form-control>

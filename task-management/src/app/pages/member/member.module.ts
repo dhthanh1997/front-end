@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteComponent } from './delete/delete.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MemberFormComponent } from './member-form/member-form.component';
+import { CurrencyMaskModule } from "ng2-currency-mask";
 
 @NgModule({
   declarations: [MemberComponent, DeleteComponent, MemberFormComponent],
@@ -20,6 +21,7 @@ import { MemberFormComponent } from './member-form/member-form.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    CurrencyMaskModule,
   ],
 })
 export class MemberModule {}
