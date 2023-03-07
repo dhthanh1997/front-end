@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pairwise, startWith, Subject, Subscription, switchMap, take, throwError, timer } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject, EnumUtils } from 'src/app/_base/util';
+import { ProjectData } from 'src/app/_core/api/project/project-data';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import { Filter } from 'src/app/_core/enum/filter-enum';
 import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
@@ -328,6 +329,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
 
   addTask() {
     const array = this.taskArray;
+    this.task.setEndDate(new Date());
     if (array && array.controls.length > 0) {
       let lastItem = this.lastItemArray;
       console.log(lastItem);
@@ -358,6 +360,9 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     } else {
       const form: FormGroup = initDataObject(this.task, this.task);
       this.taskArray.controls.push(form);
+      setTimeout(() => {
+        this.shareService.isAddRow.next(true);
+      }, 200);
       // this.taskArray.updateValueAndValidity()
     }
 

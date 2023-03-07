@@ -11,6 +11,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { DeleteComponent } from './delete/delete.component';
 import { Router } from '@angular/router';
 import { ProjectData } from '../../_core/api/project/project-data';
+import { timer } from 'rxjs';
 
 enum ModeModal {
   CREATE = 'create',
@@ -35,6 +36,8 @@ export class ProjectComponent implements OnInit {
   public listData: any;
   public listId: number[] = [];
   public searchField = ['Tên', 'Doanh thu'];
+  public sortField = ['Tên', 'Doanh thu'];
+
 
   public pageNumber = 1;
   public pageSize = 10;
@@ -44,6 +47,7 @@ export class ProjectComponent implements OnInit {
 
   checkedBoxAll: boolean = false;
   FilterValue = '';
+  SorterValue = '';
   disableRoute = false;
 
   modalOptions: any = {
@@ -59,7 +63,7 @@ export class ProjectComponent implements OnInit {
 
   // event
   navigationTask(id: any) {
-    this.router.navigate(['/pages/task/project-task', id]);
+    this.router.navigate(['pages/task/project-task', id]);
   }
 
 
@@ -80,6 +84,11 @@ export class ProjectComponent implements OnInit {
   getFilterValue(index: number) {
     console.log(this.searchField[index]);
     this.FilterValue = this.searchField[index];
+  }
+
+  getSorterValue(index: number) {
+    console.log(this.searchField[index]);
+    this.SorterValue = this.searchField[index];
   }
 
   checkedAll(event: any) {
@@ -169,7 +178,7 @@ export class ProjectComponent implements OnInit {
               'Thêm mới dự án',
               this.modalOptions
             );
-            this.router.navigate(['/pages/task/project-task/' + res.data.id]);
+            this.router.navigate(['/project/welcome/' + res.data.id]);
           }
         },
         error: (res) => {

@@ -56,12 +56,6 @@ const routes: Routes = [
       },
     ]
   },
-  // {
-  //   path: 'home1',
-  //   component: HomeComponent,
-  //   // pathMatch: 'full'
-  // },
-
 ];
 
 @NgModule({

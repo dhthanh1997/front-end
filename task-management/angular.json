@@ -57,6 +57,27 @@
               ],
               "outputHashing": "all"
             },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "500kb",
+                  "maximumError": "800kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
