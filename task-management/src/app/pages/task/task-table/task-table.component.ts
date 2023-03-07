@@ -116,7 +116,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     this.getSection();
     // this.closeFromDetailTask();
     this.collapseListenEventFromRow();
-    console.log(this.formValidation);
+    console.log(this.sections);
   }
 
   // event
@@ -231,7 +231,6 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   }
 
   createSection() {
-    // debugger;
     let input = this.element.nativeElement.querySelector('#input-add-section');
     if(input.value.length > 0) {
       const item: sectionContent = {
@@ -241,17 +240,24 @@ export class TaskTableComponent implements OnInit, OnDestroy {
       item.name = input.value;
       // debugger;
       this.sectionData.save(item).subscribe({
-        next: (res: sectionContent) => {
-          console.log(res);
+        next: (res) => {
           if (res) {
             input.value = '';
             this.addSections = null;
             this.sections.push(
               this.fb.group({
-                id: new FormControl(item.id, []),
-                name: new FormControl(item.name, []),
+                createdBy: null,
+                createdDate: null,
+                id: res.data.id,
+                isAddRowEvent: null,
+                lastModifiedBy: "UNKOWNS",
+                lastModifiedDate: "",
+                name: res.data.name,
+                note: null,
               })
             );
+            console.log(this.sections);
+
             // this.modelRef.close(res);
           }
         },

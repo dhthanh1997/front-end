@@ -22,11 +22,12 @@
           Sắp xếp
         </button>
         <nz-dropdown-menu #sort="nzDropdownMenu">
-          <ul
-            nz-menu
-            nzSelectable
-          >
-            <li *ngFor="let item of sortField; let idx = index" nz-menu-item (click)="getSorterValue(idx)">
+          <ul nz-menu nzSelectable>
+            <li
+              *ngFor="let item of sortField; let idx = index"
+              nz-menu-item
+              (click)="getSorterValue(idx)"
+            >
               {{ item }}
             </li>
           </ul>
@@ -42,12 +43,12 @@
           Bộ lọc
         </button>
         <nz-dropdown-menu #filter="nzDropdownMenu">
-          <ul
-            nz-menu
-            nzSelectable
-            *ngFor="let item of filterField; let idx = index"
-          >
-            <li nz-menu-item (click)="getFilterValue(idx)">
+          <ul nz-menu nzSelectable>
+            <li
+              *ngFor="let item of filterField; let idx = index"
+              nz-menu-item
+              (click)="getFilterValue(idx)"
+            >
               {{ item }}
             </li>
           </ul>
@@ -105,11 +106,9 @@
                 [routerLink]="['project-task', item.id]"
                 >{{ item.name }}</span
               > -->
-              <span
-              style="cursor: pointer"
-              (click)="navigationTask(item.id)"
-              >{{ item.name }}</span
-            >
+              <span style="cursor: pointer" (click)="navigationTask(item.id)">{{
+                item.name
+              }}</span>
             </td>
             <td>
               {{ item.revenue }}
@@ -165,9 +164,7 @@
           [nzShowTotal]="total"
         >
         </nz-pagination>
-        <ng-template #total let-total
-          >Tổng số: {{ totalElements }}</ng-template
-        >
+        <ng-template #total let-total>Tổng số: {{ totalElements }}</ng-template>
       </div>
     </div>
   </div>

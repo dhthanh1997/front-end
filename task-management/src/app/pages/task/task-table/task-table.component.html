@@ -132,7 +132,11 @@
       </div>
 
       <input id="input-add-section" nzAutoFocus type="text" nz-input [hidden]="addSections !== 1"
-        (keyup.enter)="createSection()" (blur)="createSection()" />
+        (keyup.enter)="createSection()" (blur)="createSection()"/>
+      <button nz-button (click)="addSection()">
+        <span nz-icon nzType="plus"></span>
+            Thêm Section
+      </button>
     </div>
   </div>
   <!-- end content -->

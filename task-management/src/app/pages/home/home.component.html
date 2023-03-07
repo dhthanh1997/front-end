@@ -31,7 +31,9 @@
         <div class="row">
           <div class="col-lg-6 col-sm-12 body-content-wrapper">
             <div class="body-content">
-              <span style="font-size: 20px; line-height: 28px">Dự án ({{totalProject}})</span>
+              <span style="font-size: 20px; line-height: 28px"
+                >Dự án ({{ totalProject }})</span
+              >
               <div class="row" style="padding: 12px 24px 8px">
                 <!-- <div class="content col-lg-6" id="project-create">
                   <div
@@ -55,6 +57,7 @@
                 >
                   <div
                     class="icon d-flex justify-content-center align-items-center"
+                    style="cursor: pointer"
                     [routerLink]="['/pages/task/project-task', item.id]"
                   >
                     <i
@@ -66,11 +69,13 @@
                   </div>
                   <div
                     class="title ml-2 p-1"
+                    style="cursor: pointer"
                     [routerLink]="['/pages/task/project-task', item.id]"
                   >
                     <span
                       nz-tooltip
                       [nzTooltipTitle]="item.name"
+                      [nzTooltipTrigger]="item.name.length > 5 ? 'hover' : null"
                       >{{
                         item.name.length > 5
                           ? (item.name | slice : 0 : 5) + "..."
@@ -133,7 +138,7 @@
           <div class="col-lg-6 col-sm-12 body-content-wrapper">
             <div class="body-content">
               <span style="font-size: 20px; line-height: 28px"
-                >Công việc của tôi ({{totalTask}})</span
+                >Công việc của tôi ({{ totalTask }})</span
               >
               <div class="row" style="padding: 12px 24px 8px">
                 <div
@@ -155,11 +160,16 @@
                     class="title ml-2 p-1"
                     [routerLink]="['welcome', item.id]"
                   >
-                    <span nz-tooltip [nzTooltipTitle]="item.name">{{
-                      item.name.length > 5
-                        ? (item.name | slice : 0 : 5) + "..."
-                        : item.name
-                    }}</span>
+                    <span
+                      nz-tooltip
+                      [nzTooltipTitle]="item.name"
+                      [nzTooltipTrigger]="item.name.length > 5 ? 'hover' : null"
+                      >{{
+                        item.name.length > 5
+                          ? (item.name | slice : 0 : 5) + "..."
+                          : item.name
+                      }}</span
+                    >
                   </div>
                 </div>
               </div>
