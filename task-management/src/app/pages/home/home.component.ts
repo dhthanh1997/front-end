@@ -25,7 +25,9 @@ export class HomeComponent implements OnInit {
   public pageSize = 7;
   public txtSearch: string | undefined;
 
-  isHidden = false;
+  isProjectHidden = false;
+  isMemberHidden = false;
+  isTaskHidden = false;
 
   constructor(
     private projectData: ProjectData,
@@ -58,13 +60,13 @@ export class HomeComponent implements OnInit {
   showAllProject() {
     this.pageSize = 99999;
     this.getProject();
-    this.isHidden = true;
+    this.isProjectHidden = true;
   }
 
   showLessProject() {
     this.pageSize = 7;
     this.getProject();
-    this.isHidden = false;
+    this.isProjectHidden = false;
   }
 
   public getMember() {
@@ -85,13 +87,13 @@ export class HomeComponent implements OnInit {
   showAllMember() {
     this.pageSize = 99999;
     this.getMember();
-    this.isHidden = true;
+    this.isMemberHidden = true;
   }
 
   showLessMember() {
     this.pageSize = 7;
     this.getMember();
-    this.isHidden = false;
+    this.isMemberHidden = false;
   }
 
   public getTask() {
@@ -112,12 +114,12 @@ export class HomeComponent implements OnInit {
   showAllTask() {
     this.pageSize = 99999;
     this.getMember();
-    this.isHidden = true;
+    this.isTaskHidden = true;
   }
 
   showLessTask() {
     this.pageSize = 7;
     this.getMember();
-    this.isHidden = false;
+    this.isTaskHidden = false;
   }
 }

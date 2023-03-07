@@ -14,18 +14,12 @@
               <div class="col-4 widget-content">
                 <div class="left-content">
                   <i nz-icon nzType="check" nzTheme="outline"></i>
-                  <span>
-                    <strong>0</strong> công việc
-                    hoàn thành</span
-                  >
+                  <span> <strong>0</strong> công việc hoàn thành</span>
                 </div>
                 <div class="divider"></div>
                 <div class="right-content">
-                  <i nz-icon nzType="check" nzTheme="outline"></i>
-                  <span>
-                    <strong>0</strong> công việc
-                    hoàn thành</span
-                  >
+                  <i nz-icon nzType="team" nzTheme="outline"></i>
+                  <span> <strong>0</strong> thành viên</span>
                 </div>
               </div>
               <div class="col-4"></div>
@@ -83,7 +77,7 @@
                   nz-button
                   class="show-more"
                   (click)="showAllProject()"
-                  [hidden]="isHidden"
+                  [hidden]="isProjectHidden"
                 >
                   Mở rộng
                 </button>
@@ -136,7 +130,7 @@
                   nz-button
                   class="show-more"
                   (click)="showAllMember()"
-                  [hidden]="isHidden"
+                  [hidden]="isMemberHidden"
                 >
                   Mở rộng
                 </button>
@@ -191,7 +185,7 @@
                   nz-button
                   class="show-more"
                   (click)="showAllTask()"
-                  [hidden]="isHidden"
+                  [hidden]="isTaskHidden"
                 >
                   Mở rộng
                 </button>
