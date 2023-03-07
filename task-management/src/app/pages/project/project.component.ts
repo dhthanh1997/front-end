@@ -35,8 +35,8 @@ export class ProjectComponent implements OnInit {
 
   public listData: any;
   public listId: number[] = [];
-  public searchField = ['Tên', 'Doanh thu'];
-  public sortField = ['Tên', 'Doanh thu'];
+  public filterField = ['Tên', 'Doanh thu'];
+  public sortField = ['Tăng dần (tên)', 'Giảm dần (tên)'];
 
 
   public pageNumber = 1;
@@ -66,9 +66,8 @@ export class ProjectComponent implements OnInit {
     this.router.navigate(['pages/task/project-task', id]);
   }
 
-
-
   search() {
+    debugger;
     const input = this.element.nativeElement.querySelector('#search');
     if (this.FilterValue === '') {
       console.log(this.FilterValue);
@@ -82,13 +81,25 @@ export class ProjectComponent implements OnInit {
   }
 
   getFilterValue(index: number) {
-    console.log(this.searchField[index]);
-    this.FilterValue = this.searchField[index];
+    console.log(this.filterField[index]);
+    this.FilterValue = this.filterField[index];
+    if(this.FilterValue === 'Tên') {
+      this.FilterValue = 'name';
+    }
+    else if(this.FilterValue === 'Doanh thu') {
+      this.FilterValue = 'revenue';
+    }
   }
 
   getSorterValue(index: number) {
-    console.log(this.searchField[index]);
-    this.SorterValue = this.searchField[index];
+    console.log(this.sortField[index]);
+    this.SorterValue = this.sortField[index];
+    if (this.SorterValue === 'Tăng dần (tên)') {
+      this.SorterValue = 'name_asc,';
+    } else if (this.SorterValue === 'Giảm dần (tên)') {
+      this.SorterValue = 'name_des,';
+    }
+    this.getProject();
   }
 
   checkedAll(event: any) {
@@ -139,7 +150,7 @@ export class ProjectComponent implements OnInit {
 
   public getProject() {
     this.projectData
-      .search(this.pageNumber, this.pageSize, this.txtSearch)
+      .search(this.pageNumber, this.pageSize, this.txtSearch, this.SorterValue)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -178,7 +189,8 @@ export class ProjectComponent implements OnInit {
               'Thêm mới dự án',
               this.modalOptions
             );
-            this.router.navigate(['/project/welcome/' + res.data.id]);
+            this.getProject();
+            // this.router.navigate(['pages/task/project-task' + res.data.id]);
           }
         },
         error: (res) => {

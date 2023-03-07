@@ -11,10 +11,10 @@ export class ProjectApi {
 
   constructor(private http: HttpService) { }
 
-  search(pageNumber: number, pageSize: number, txtSearch?: string): Observable<any> {
+  search(pageNumber: number, pageSize: number, txtSearch?: string, sort?: string): Observable<any> {
     // let params = new HttpParams().set('pageNumber', pageNumber).set('pageSize', pageSize);
     return this.http.get(
-      `${this.apiController}?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${txtSearch}`
+      `${this.apiController}?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${txtSearch}&sort=${sort}`
     );
   }
 

@@ -31,7 +31,7 @@
         <div class="row">
           <div class="col-lg-6 col-sm-12 body-content-wrapper">
             <div class="body-content">
-              <span style="font-size: 20px; line-height: 28px">Dự án</span>
+              <span style="font-size: 20px; line-height: 28px">Dự án ({{totalProject}})</span>
               <div class="row" style="padding: 12px 24px 8px">
                 <!-- <div class="content col-lg-6" id="project-create">
                   <div
@@ -65,10 +65,18 @@
                     ></i>
                   </div>
                   <div
-                    class="title ml-2"
+                    class="title ml-2 p-1"
                     [routerLink]="['/pages/task/project-task', item.id]"
                   >
-                    <span>{{ item.name }}</span>
+                    <span
+                      nz-tooltip
+                      [nzTooltipTitle]="item.name"
+                      >{{
+                        item.name.length > 5
+                          ? (item.name | slice : 0 : 5) + "..."
+                          : item.name
+                      }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -85,26 +93,10 @@
             </div>
           </div>
 
-          <div class="col-lg-6 col-sm-12 body-content-wrapper">
+          <!-- <div class="col-lg-6 col-sm-12 body-content-wrapper">
             <div class="body-content">
               <span style="font-size: 20px; line-height: 28px">Thành viên</span>
               <div class="row" style="padding: 12px 24px 8px">
-                <!-- <div class="content col-lg-6" id="project-create">
-                  <div
-                    class="icon d-flex justify-content-center align-items-center"
-                    style="border: 1px dashed black"
-                  >
-                    <i
-                      nz-icon
-                      nzType="plus"
-                      nzTheme="outline"
-                      style="font-size: 24px"
-                    ></i>
-                  </div>
-                  <div class="title ml-2">
-                    <span>Thêm mới</span>
-                  </div>
-                </div> -->
                 <div
                   class="content col-lg-6"
                   *ngFor="let item of listMember; let idx = index"
@@ -136,30 +128,14 @@
                 </button>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="col-lg-6 col-sm-12 body-content-wrapper">
             <div class="body-content">
               <span style="font-size: 20px; line-height: 28px"
-                >Công việc của tôi</span
+                >Công việc của tôi ({{totalTask}})</span
               >
               <div class="row" style="padding: 12px 24px 8px">
-                <!-- <div class="content col-lg-6" id="project-create">
-                  <div
-                    class="icon d-flex justify-content-center align-items-center"
-                    style="border: 1px dashed black"
-                  >
-                    <i
-                      nz-icon
-                      nzType="plus"
-                      nzTheme="outline"
-                      style="font-size: 24px"
-                    ></i>
-                  </div>
-                  <div class="title ml-2">
-                    <span>Thêm mới</span>
-                  </div>
-                </div> -->
                 <div
                   class="content col-lg-6"
                   *ngFor="let item of listTasks; let idx = index"
@@ -175,8 +151,15 @@
                       style="font-size: 24px"
                     ></i>
                   </div>
-                  <div class="title ml-2" [routerLink]="['welcome', item.id]">
-                    <span>{{ item.name }}</span>
+                  <div
+                    class="title ml-2 p-1"
+                    [routerLink]="['welcome', item.id]"
+                  >
+                    <span nz-tooltip [nzTooltipTitle]="item.name">{{
+                      item.name.length > 5
+                        ? (item.name | slice : 0 : 5) + "..."
+                        : item.name
+                    }}</span>
                   </div>
                 </div>
               </div>

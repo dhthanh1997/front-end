@@ -15,18 +15,18 @@
           nz-button
           nz-dropdown
           nzTrigger="click"
-          [nzDropdownMenu]="menu"
+          [nzDropdownMenu]="sort"
           class="d-flex align-items-center ml-auto mr-2"
         >
           <i nz-icon nzType="sort-ascending" nzTheme="outline"></i>
           Sắp xếp
         </button>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
+        <nz-dropdown-menu #sort="nzDropdownMenu">
           <ul
             nz-menu
             nzSelectable
           >
-            <li *ngFor="let item of searchField; let idx = index" nz-menu-item (click)="getFilterValue(idx)">
+            <li *ngFor="let item of sortField; let idx = index" nz-menu-item (click)="getSorterValue(idx)">
               {{ item }}
             </li>
           </ul>
@@ -35,17 +35,17 @@
           nz-button
           nz-dropdown
           nzTrigger="click"
-          [nzDropdownMenu]="menu"
+          [nzDropdownMenu]="filter"
           class="d-flex align-items-center mr-2"
         >
           <i nz-icon nzType="filter" nzTheme="outline"></i>
           Bộ lọc
         </button>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
+        <nz-dropdown-menu #filter="nzDropdownMenu">
           <ul
             nz-menu
             nzSelectable
-            *ngFor="let item of searchField; let idx = index"
+            *ngFor="let item of filterField; let idx = index"
           >
             <li nz-menu-item (click)="getFilterValue(idx)">
               {{ item }}

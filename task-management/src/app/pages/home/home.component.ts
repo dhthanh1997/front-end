@@ -21,8 +21,11 @@ export class HomeComponent implements OnInit {
   public listMember: any;
   public listTasks: any;
 
+  public totalProject: number = 0;
+  public totalTask: number = 0;
+
   public pageNumber = 1;
-  public pageSize = 7;
+  public pageSize = 8;
   public txtSearch: string | undefined;
 
   isProjectHidden = false;
@@ -49,6 +52,7 @@ export class HomeComponent implements OnInit {
         next: (res) => {
           console.log(res);
           this.listData = res.pagingData.content;
+          this.totalProject = res.pagingData.totalElements;
           // console.log(this.listData);
         },
         error: (err) => {
@@ -64,7 +68,7 @@ export class HomeComponent implements OnInit {
   }
 
   showLessProject() {
-    this.pageSize = 7;
+    this.pageSize = 8;
     this.getProject();
     this.isProjectHidden = false;
   }
@@ -91,7 +95,7 @@ export class HomeComponent implements OnInit {
   }
 
   showLessMember() {
-    this.pageSize = 7;
+    this.pageSize = 8;
     this.getMember();
     this.isMemberHidden = false;
   }
@@ -103,6 +107,7 @@ export class HomeComponent implements OnInit {
         next: (res) => {
           console.log(res);
           this.listTasks = res.pagingData.content;
+          this.totalTask = res.pagingData.totalElements;
           // console.log(this.listData);
         },
         error: (err) => {
@@ -113,13 +118,13 @@ export class HomeComponent implements OnInit {
 
   showAllTask() {
     this.pageSize = 99999;
-    this.getMember();
+    this.getTask();
     this.isTaskHidden = true;
   }
 
   showLessTask() {
-    this.pageSize = 7;
-    this.getMember();
+    this.pageSize = 8;
+    this.getTask();
     this.isTaskHidden = false;
   }
 }

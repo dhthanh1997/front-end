@@ -18,12 +18,13 @@ export class ProjectService {
   public search(
     pageNumber: number,
     pageSize: number,
-    txtSearch?: string
+    txtSearch?: string,
+    sort?: string
   ): Observable<any> {
     // return this.http.get(
     //   `${url}?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${txtSearch}`
     // );
-    return this.api.search(pageNumber, pageSize, txtSearch);
+    return this.api.search(pageNumber, pageSize, txtSearch, sort);
   }
 
   public addProject(project: projectContent): Observable<any> {
