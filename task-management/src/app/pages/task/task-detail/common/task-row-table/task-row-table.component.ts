@@ -393,7 +393,6 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
 
   saveTask(item: any) {
-    debugger;
     this.taskData.save(item).subscribe({
       next: (res) => {
         console.log(res);
