@@ -358,11 +358,15 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
         this.autoFocus(lastItem);
       }
     } else {
+      this.task.sectionId = this.sectionParams;
+      console.log(this.task.sectionId);
       const form: FormGroup = initDataObject(this.task, this.task);
       this.taskArray.controls.push(form);
       setTimeout(() => {
         this.shareService.isAddRow.next(true);
       }, 200);
+
+      this.watchForChanges();
       // this.taskArray.updateValueAndValidity()
     }
 

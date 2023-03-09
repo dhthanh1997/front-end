@@ -113,10 +113,8 @@
                 </ng-template>
 
                 <tr *ngIf="item.get('isSubTask')!.value">
-                  <ng-container *ngIf="
-                      item.get('subTask') &&
-                      item.get('subTask')?.value.length > 0
-                    ">
+                  <ng-container *ngIf="item.get('subTask') &&
+                  item.get('subTask')?.value "> 
                     <td [attr.colspan]="!isCollapsed ? 2 : 5">
                       <nz-card class="table-subTask">
                         <nz-table #basicTable [nzData]="item.get('subTask')?.value" [nzShowPagination]="false">
