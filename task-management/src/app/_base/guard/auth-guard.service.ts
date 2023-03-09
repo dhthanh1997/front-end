@@ -7,10 +7,12 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class AuthGuardService implements CanActivate {
 
-  private loginUrl: string = '';
 
   constructor(private authService: AuthService) { 
-    this.loginUrl = environment.loginUrl;
+  }
+
+  get loginUrl(): string {
+    return environment.loginUrl;
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
