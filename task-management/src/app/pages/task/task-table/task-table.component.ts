@@ -23,6 +23,7 @@ import { ParamSearch } from 'src/app/_core/model/params-search';
 import { SectionData } from 'src/app/_core/api/section/section-data';
 import { Section, sectionContent } from 'src/app/_core/model/section';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
 
 export const DEMO_DATA: any[] = [
   {
@@ -241,23 +242,24 @@ export class TaskTableComponent implements OnInit, OnDestroy {
       // debugger;
       this.sectionData.save(item).subscribe({
         next: (res) => {
-          if (res) {
+          console.log(res);
+          if (res.message === ResponseStatusEnum.success) {
             input.value = '';
             this.addSections = null;
-            this.sections.push(
-              this.fb.group({
-                createdBy: null,
-                createdDate: null,
-                id: res.data.id,
-                isAddRowEvent: null,
+            let form = this.fb.group({
+                createdBy: "UNKOWNS",
+                createdDate:  new Date(),
+                id: 0,
+                isAddRowEvent: false,
                 lastModifiedBy: "UNKOWNS",
-                lastModifiedDate: "",
-                name: res.data.name,
-                note: null,
-              })
-            );
-            console.log(this.sections);
-
+                lastModifiedDate:  new Date(),
+                name: "",
+                note: "",
+            });
+            this.sections.push(form);
+            let index = this.sections.controls.length - 1;
+            this.sections.controls[index].patchValue(res.data);
+            console.log(this.sections.controls[index]);
             // this.modelRef.close(res);
           }
         },
