@@ -7,6 +7,10 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { ProjectFormComponent } from 'src/app/pages/project/project-form/project-form.component';
 
 enum ModeModal {
   CREATE = 'create',
@@ -18,17 +22,6 @@ enum ModeModal {
   selector: 'internal-app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
-  // animations: [
-  //   trigger('panelInOut', [
-  //     transition('void => *', [
-  //       style({ transform: 'translateY(-15%)' }),
-  //       animate(200),
-  //     ]),
-  //     transition('* => void', [
-  //       animate(200, style({ transform: 'translateY(-10%)' })),
-  //     ]),
-  //   ]),
-  // ],
 })
 export class SidebarComponent implements OnInit {
   isCollapsed = false;
@@ -42,7 +35,13 @@ export class SidebarComponent implements OnInit {
   @ViewChild('toggleButton') toggleButton!: ElementRef;
   @ViewChild('popupContent') popupContent!: ElementRef;
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private modalService: NzModalService,
+    private notifyService: NzNotificationService,
+    private router: Router,
+  ) {
     // do something
   }
 
@@ -52,17 +51,17 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  @HostListener('window:click', ['$event'])
-  clickOutsideButton(e: Event) {
-    if (e.target !== this.toggleButton!.nativeElement) {
-      this.isHidden = false;
-    }
-  }
+  // @HostListener('window:click', ['$event'])
+  // clickOutsideButton(e: Event) {
+  //   if (e.target !== this.toggleButton!.nativeElement) {
+  //     this.isHidden = false;
+  //   }
+  // }
 
-  popUp() {
-    this.isHidden = !this.isHidden;
-    console.log(this.isHidden);
-  }
+  // popUp() {
+  //   this.isHidden = !this.isHidden;
+  //   console.log(this.isHidden);
+  // }
 
   subMenu() {
     // debugger;
@@ -78,7 +77,40 @@ export class SidebarComponent implements OnInit {
       subMenu.classList.add('hide');
       setTimeout(() => {
         return subMenu.classList.add('d-none');
-      }, 1000);
+      }, 700);
     }
+  }
+
+  onCreate(): void {
+    this.modalService
+      .create({
+        nzTitle: 'Thêm mới dự án',
+        nzClassName: 'modal-custom',
+        nzContent: ProjectFormComponent,
+        nzWidth: 'modal-custom',
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzComponentParams: {
+          mode: ModeModal.CREATE,
+          title: 'Thêm yêu cầu',
+        },
+        nzDirection: 'ltr', // left to right
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res) {
+            this.notifyService.success(
+              'Thành công',
+              'Thêm mới dự án',
+              this.modalOptions
+            );
+            this.router.navigate(['pages/project']);
+          }
+        },
+        error: (res) => {
+          console.log(res);
+        },
+      });
   }
 }

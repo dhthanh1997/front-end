@@ -24,5 +24,8 @@ import { CoreModule } from '../../_core/core.module';
     FormsModule,
     CurrencyMaskModule
   ],
+  exports: [
+    ProjectFormComponent, DeleteComponent
+  ],
 })
 export class ProjectModule {}
