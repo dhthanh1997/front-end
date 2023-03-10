@@ -20,6 +20,6 @@ export class ShareService {
 
   public logOut() {
     localStorage.clear();
-    this.router.navigate(['/'])
+    this.router.navigate(['auth/login']);
   }
 }
