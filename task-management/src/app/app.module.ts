@@ -19,7 +19,8 @@ import { CoreModule } from './_core/core.module';
     HttpClientModule,
     IconsProviderModule.forRoot(),
     // ShareModule,
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
+    ThemeModule.forRoot(),
 
   ],
   providers: [],

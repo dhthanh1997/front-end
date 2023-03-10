@@ -85,14 +85,14 @@ export class ProjectFormComponent implements OnInit {
     this.formValidation = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       parentId: ['', []],
-      revenue: [0 , [Validators.max(100000000000)]],
+      revenue: [0 , []],
       startDate: ['', []],
       endDate: ['', []],
       rangeDate: ['', []],
       // realStartDate: ['', []],
       // realEndDate: ['', []],
-      totalCost: [0 , [Validators.max(100000000000)]],
-      totalHour: [0, [Validators.max(100000000000)]],
+      totalCost: [0 , []],
+      totalHour: [0, []],
       // isChecked: [this.checked, []],
     });
 

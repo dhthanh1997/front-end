@@ -63,7 +63,7 @@
           />
         </nz-input-group>
         <ng-template #suffixIconSearch>
-          <span nz-icon nzType="search"></span>
+          <i style="cursor: pointer;" (click)="search()" nz-icon nzType="search"></i>
         </ng-template>
       </div>
       <nz-table
@@ -75,48 +75,57 @@
       >
         <thead>
           <tr>
-            <th>
+            <th nzAlign="center">
               <label
                 nz-checkbox
                 [ngModel]="checkedBoxAll"
                 (ngModelChange)="checkedAll($event)"
               ></label>
             </th>
-            <th>STT</th>
-            <th>Tên</th>
-            <th>Doanh thu</th>
-            <th>Hành động</th>
+            <th nzAlign="center">STT</th>
+            <th nzAlign="center">Tên</th>
+            <th nzAlign="center">Doanh thu</th>
+            <th nzAlign="center">Hành động</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of listData; let idx = index">
-            <td>
+            <td nzAlign="center">
               <label
                 nz-checkbox
                 [ngModel]="item.isChecked"
                 (ngModelChange)="isChecked($event, idx)"
               ></label>
             </td>
-            <td>
+            <td nzAlign="center">
               {{ idx + 1 }}
             </td>
-            <td>
+            <td nzAlign="center">
               <!-- <span
                 style="cursor: pointer"
                 [routerLink]="['project-task', item.id]"
                 >{{ item.name }}</span
               > -->
-              <span style="cursor: pointer" (click)="navigationTask(item.id)">{{
-                item.name
-              }}</span>
+              <span
+                style="cursor: pointer"
+                nz-tooltip
+                [nzTooltipTitle]="item.name"
+                [nzTooltipTrigger]="item.name.length > 20 ? 'hover' : null"
+                (click)="navigationTask(item.id)"
+                >{{
+                  item.name.length > 20
+                    ? (item.name | slice : 0 : 20) + "..."
+                    : item.name
+                }}</span
+              >
             </td>
-            <td>
+            <td nzAlign="center">
               {{ item.revenue }}
             </td>
             <!-- <td>
               {{ item.createdDate | date : "MM/dd/yyyy" }}
             </td> -->
-            <td class="d-flex flex-row">
+            <td class="d-flex flex-row justify-content-center">
               <!-- <button
                 nz-button
                 nzShape="circle"

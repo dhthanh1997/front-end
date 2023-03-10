@@ -67,7 +67,7 @@ export class ProjectComponent implements OnInit {
   }
 
   search() {
-    debugger;
+    // debugger;
     const input = this.element.nativeElement.querySelector('#search');
     if (this.FilterValue === '') {
       console.log(this.FilterValue);

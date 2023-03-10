@@ -41,42 +41,42 @@
       >
         <thead>
           <tr>
-            <th>
+            <th nzAlign="center">
               <label
                 nz-checkbox
                 [ngModel]="checkedBoxAll"
                 (ngModelChange)="checkedAll($event)"
               ></label>
             </th>
-            <th>STT</th>
-            <th>Tên</th>
-            <th>Mã role</th>
-            <th>Hành động</th>
+            <th nzAlign="center">STT</th>
+            <th nzAlign="center">Tên</th>
+            <th nzAlign="center">Mã role</th>
+            <th nzAlign="center">Hành động</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of listData; let idx = index">
-            <td>
+            <td nzAlign="center">
               <label
                 nz-checkbox
                 [ngModel]="item.isChecked"
                 (ngModelChange)="isChecked($event, idx)"
               ></label>
             </td>
-            <td>
+            <td nzAlign="center">
               {{ idx + 1 }}
             </td>
-            <td>
+            <td nzAlign="center">
               <span
                 style="cursor: pointer"
                 [routerLink]="['/pages/roles-app/roles-app-detail', item.id]"
                 >{{ item.name }}</span
               >
             </td>
-            <td>
+            <td nzAlign="center">
               {{ item.code }}
             </td>
-            <td class="d-flex flex-row">
+            <td class="d-flex flex-row justify-content-center">
               <!-- <button
                 nz-button
                 nzShape="circle"
