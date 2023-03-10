@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   setIsTokenExpired(token: any) {
-    if (token) {
+    if (token && token.exp) {
       let expTime = new Date(token.exp * 1000);
       let timeout = expTime.getTime() - new Date().getTime();
       if (timeout < 0) return this.isExpiredToken = true;
