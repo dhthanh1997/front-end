@@ -16,8 +16,8 @@ import { NgZorroModule } from '../_theme/ng-zorro.module';
     ReactiveFormsModule,
     AuthenticationRoutingModule,
     HttpClientModule,
-    IconsProviderModule,
-    NgZorroModule,
+    IconsProviderModule.forRoot(),
+    NgZorroModule.forRoot(),
   ],
   declarations: [AuthenticationComponent, LoginComponent],
   providers: [

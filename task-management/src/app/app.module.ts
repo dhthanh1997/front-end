@@ -16,12 +16,9 @@ import { CoreModule } from './_core/core.module';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    ThemeModule,
     HttpClientModule,
-    IconsProviderModule.forRoot(),
-    NgZorroModule,
+    IconsProviderModule.forRoot()
     // ShareModule,
-    CoreModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

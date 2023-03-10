@@ -87,4 +87,11 @@ export class NgZorroModule {
       providers: [],
     };
   }
+
+  static forChild(): ModuleWithProviders<NgZorroModule> {
+    return {
+      ngModule: NgZorroModule,
+      providers: [],
+    };
+  }
 }

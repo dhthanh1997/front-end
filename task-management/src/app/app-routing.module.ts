@@ -7,13 +7,13 @@ const routes: Routes = [
     path: 'pages',
     loadChildren: () =>
       import('./pages/pages.module').then((m) => m.PagesModule),
-    canActivate: [AuthGuardService]
+    // canActivate: [AuthGuardService]
   },
-  {
-    path: '**',
-    redirectTo: 'pages',
-    pathMatch: 'full'
-  },
+  // {
+  //   path: '**',
+  //   redirectTo: 'pages',
+  //   // pathMatch: 'full'
+  // },
   {
     path: 'auth',
     loadChildren: () =>
@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   // {
   //   path: '',
-  //   redirectTo: 'pages/home',
+  //   redirectTo: 'pages',
   //   pathMatch: 'full'
   // },
 ];
@@ -32,4 +32,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

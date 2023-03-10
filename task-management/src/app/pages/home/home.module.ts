@@ -11,8 +11,8 @@ import { IconsProviderModule } from '../../_theme/iconsProvider.module';
   imports: [
     CommonModule,
     HomeRoutingModule,
-    NgZorroModule.forRoot(),
-    IconsProviderModule.forRoot(),
+    NgZorroModule,
+    IconsProviderModule,
   ],
 })
 export class HomeModule {}
