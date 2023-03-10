@@ -12,11 +12,13 @@ import { AuthenticationService } from '../authentication.service';
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
+  Error: boolean = true;
+  passwordVisible: boolean = false;
 
   formBuilder() {
     this.loginForm = this.fb.group({
-      username: [null, [Validators.required]],
-      password: [null, [Validators.required]],
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]],
       rememberMe: [null, []],
     });
   }
@@ -41,6 +43,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     // do something here
+      console.log(this.loginForm.value);
       const formData: any = this.loginForm.value;
       this.authService.login(formData).pipe(take(1)).subscribe({
         next: (res) => {
@@ -52,9 +55,13 @@ export class LoginComponent implements OnInit {
                 window.location.href = this.taskUrl;
                 localStorage.setItem('access_token', res);
              }
+             else {
+              this.Error = false;
+             }
         },
         error: (err) => {
            console.log(err);
+           this.Error = false;
         }
       });
   }

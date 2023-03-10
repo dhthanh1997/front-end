@@ -272,6 +272,9 @@ export class TaskTableComponent implements OnInit, OnDestroy {
         },
       });
     }
+    else {
+      this.addSections = null;
+    }
 
   }
 
