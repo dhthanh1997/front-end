@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8055/authorization',
-  taskUrl: 'http://localhost:9096'
+  apiUrl: 'http://localhost:8055/auth',
+  taskUrl: 'http://localhost:4201'
 };
 
 /*
