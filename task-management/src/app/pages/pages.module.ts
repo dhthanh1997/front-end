@@ -24,7 +24,6 @@ import { CoreModule } from '../_core/core.module';
     ThemeModule,
     // IconsProviderModule,
     // NgZorroModule,
-    CoreModule.forRoot()
   ]
 })
 export class PagesModule { }

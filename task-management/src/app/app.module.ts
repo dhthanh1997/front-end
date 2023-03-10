@@ -17,8 +17,10 @@ import { CoreModule } from './_core/core.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    IconsProviderModule.forRoot()
+    IconsProviderModule.forRoot(),
     // ShareModule,
+    CoreModule.forRoot()
+
   ],
   providers: [],
   bootstrap: [AppComponent],

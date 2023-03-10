@@ -7,13 +7,8 @@ const routes: Routes = [
     path: 'pages',
     loadChildren: () =>
       import('./pages/pages.module').then((m) => m.PagesModule),
-    // canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService]
   },
-  // {
-  //   path: '**',
-  //   redirectTo: 'pages',
-  //   // pathMatch: 'full'
-  // },
   {
     path: 'auth',
     loadChildren: () =>
@@ -21,11 +16,11 @@ const routes: Routes = [
         (m) => m.AuthenticationModule
       ),
   },
-  // {
-  //   path: '',
-  //   redirectTo: 'pages',
-  //   pathMatch: 'full'
-  // },
+  {
+    path: '',
+    redirectTo: 'pages',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({

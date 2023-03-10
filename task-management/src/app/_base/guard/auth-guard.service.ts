@@ -20,7 +20,7 @@ export class AuthGuardService implements CanActivate {
       tap((authenticated) => {
           if(!authenticated) {
             // window.location.href = this.loginUrl;
-            // this.router.navigate(['auth/login']);
+            this.router.navigate(['auth/login']);
           }
       })
     )
