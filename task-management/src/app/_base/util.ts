@@ -98,6 +98,7 @@ export function sliptStringToArray(value: string): string[] {
 }
 
 
+
 // utils enum
 export class EnumUtils {
   static getEnumValues(enumObj: any, enumType: EnumType): any[] {

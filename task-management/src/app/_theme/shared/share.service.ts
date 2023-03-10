@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -9,11 +10,16 @@ export class ShareService {
     true
   );
 
-  constructor() {
+  constructor(private router: Router) {
     //do something
   }
 
   inItMenu() {
     // do something;
+  }
+
+  public logOut() {
+    localStorage.clear();
+    this.router.navigate(['/'])
   }
 }

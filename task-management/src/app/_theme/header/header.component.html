@@ -40,8 +40,8 @@
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
           <li nz-menu-item routerLink="pages/user-profile">Hồ sơ cá nhân</li>
-          <li nz-menu-item>Thiết lập cá nhân</li>
-          <li nz-menu-item nzDanger>Đăng xuất</li>
+          <li nz-menu-item >Thiết lập cá nhân</li>
+          <li nz-menu-item nzDanger (click)="logOut()">Đăng xuất</li>
         </ul>
       </nz-dropdown-menu>
       <!-- <ul class="navbar-nav">

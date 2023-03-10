@@ -24,4 +24,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     // do something
   }
+
+  public logOut() {
+    this.shareService.logOut();
+  }
 }
