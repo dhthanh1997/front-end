@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
 import { HomeComponent } from './home/home.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IconsProviderModule } from '../_theme/iconsProvider.module';
 import { NgZorroModule } from '../_theme/ng-zorro.module';
 import { ThemeModule } from '../_theme/theme.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '../_core/core.module';
+import { BaseModule } from '../_base/base.module';
+import { JwtInterceptorService } from '../_base/interceptor/jwt-interceptor.service';
 
 
 @NgModule({
@@ -22,8 +24,10 @@ import { CoreModule } from '../_core/core.module';
     CommonModule,
     PagesRoutingModule,
     ThemeModule,
-    // IconsProviderModule,
-    // NgZorroModule,
+    IconsProviderModule.forRoot(),
+    NgZorroModule.forRoot(),
+
   ]
+ 
 })
 export class PagesModule { }

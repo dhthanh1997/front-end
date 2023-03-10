@@ -10,9 +10,9 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   constructor(private router: Router) { }
 
-  get loginUrl(): string {
-    return environment.loginUrl;
-  }
+  // get loginUrl(): string {
+  //   return environment.loginUrl;
+  // }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(catchError((error: HttpErrorResponse) => {

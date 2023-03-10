@@ -8,22 +8,22 @@ import { AccessToken } from '../../../../task-management/src/app/_base/access-to
 @Injectable()
 export class AuthenticationService {
 
-  private readonly apiAuthorization: string = 'http://localhost:8055/auth';
+  // private readonly apiAuthorization: string = '/auth';
 
   constructor(private http: HttpClient) {
 
   }
 
-  get apiUrl() {
-    return environment.apiUrl;
+  get loginUrl() {
+    return environment.gatewayUrl;
   }
 
   login(formData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, formData);
+    return this.http.post(`${this.loginUrl}/auth/login`, formData);
   }
 
   getUser(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/user`);
+    return this.http.get(`${this.loginUrl}/user`);
   }
 
 

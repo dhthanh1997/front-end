@@ -11,7 +11,6 @@ import { AuthService } from './auth.service';
 
 const PROVIDERS = [
   HttpService,
-  JwtInterceptorService,
   AuthGuardService,
   AuthService
 ]

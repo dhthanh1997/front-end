@@ -4,11 +4,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ThemeModule } from './_theme/theme.module';
 import { IconsProviderModule } from './_theme/iconsProvider.module';
 import { NgZorroModule } from './_theme/ng-zorro.module';
 import { CoreModule } from './_core/core.module';
+import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import { vi } from 'date-fns/locale';
+import { BaseModule } from './_base/base.module';
+import { JwtInterceptorService } from './_base/interceptor/jwt-interceptor.service';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,11 +24,17 @@ import { CoreModule } from './_core/core.module';
     AppRoutingModule,
     HttpClientModule,
     IconsProviderModule.forRoot(),
+    ThemeModule.forRoot(),
     // ShareModule,
-    CoreModule.forRoot()
-
+    CoreModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

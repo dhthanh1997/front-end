@@ -11,6 +11,7 @@ import { DeleteComponent } from './delete/delete.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { CoreModule } from '../../_core/core.module';
+import { BaseModule } from 'src/app/_base/base.module';
 
 @NgModule({
   declarations: [ProjectComponent, ProjectFormComponent, DeleteComponent],
@@ -22,7 +23,7 @@ import { CoreModule } from '../../_core/core.module';
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
   ],
   exports: [
     ProjectFormComponent, DeleteComponent

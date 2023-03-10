@@ -31,7 +31,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 // NgZorro local english language settings
-import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
+import { NZ_I18N, en_US, vi_VN } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -78,7 +78,7 @@ const NZ_MODULES = [
   imports: [CommonModule, ...NZ_MODULES],
   declarations: [],
   exports: [NZ_MODULES],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: vi_VN }],
 })
 export class NgZorroModule {
   static forRoot(): ModuleWithProviders<NgZorroModule> {
@@ -87,11 +87,5 @@ export class NgZorroModule {
       providers: [],
     };
   }
-
-  static forChild(): ModuleWithProviders<NgZorroModule> {
-    return {
-      ngModule: NgZorroModule,
-      providers: [],
-    };
-  }
+  
 }
