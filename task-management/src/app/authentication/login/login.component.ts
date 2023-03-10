@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
   Error: boolean = true;
   passwordVisible: boolean = false;
+  messageError: string = '';
 
   formBuilder() {
     this.loginForm = this.fb.group({
@@ -57,6 +58,7 @@ export class LoginComponent implements OnInit {
              }
              else {
               this.Error = false;
+              this.messageError = 'Tên đăng nhập hoặc mật khẩu không đúng';
              }
         },
         error: (err) => {

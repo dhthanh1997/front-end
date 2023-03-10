@@ -13,7 +13,7 @@
       </section>
       <section>
         <ng-container *ngIf="!Error">
-          <nz-alert class="my-3" nzType="error" nzMessage="Error Text"></nz-alert>
+          <nz-alert class="my-3" nzType="error" [nzMessage]="messageError"></nz-alert>
         </ng-container>
         <form nz-form [formGroup]="loginForm">
           <nz-form-item>
