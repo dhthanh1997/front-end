@@ -12,10 +12,7 @@ import vi from '@angular/common/locales/vi';
 import { ShareService } from './shared/share.service';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NgZorroModule } from './ng-zorro.module';
-import { DeleteComponent } from '../pages/project/delete/delete.component';
-import { ProjectFormComponent } from '../pages/project/project-form/project-form.component'
 import { ProjectModule } from '../pages/project/project.module';
-import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(vi);
 

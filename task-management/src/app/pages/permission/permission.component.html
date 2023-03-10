@@ -72,49 +72,49 @@
       >
         <thead>
           <tr>
-            <th>
+            <th nzAlign="center">
               <label
                 nz-checkbox
                 [ngModel]="checkedBoxAll"
                 (ngModelChange)="checkedAll($event)"
               ></label>
             </th>
-            <th>STT</th>
-            <th>Tên</th>
-            <th>Mã quyền</th>
-            <th>Mã quyền cha</th>
-            <th>Loại</th>
-            <th>Hành động</th>
+            <th nzAlign="center">STT</th>
+            <th nzAlign="center">Tên</th>
+            <th nzAlign="center">Mã quyền</th>
+            <th nzAlign="center">Mã quyền cha</th>
+            <th nzAlign="center">Loại</th>
+            <th nzAlign="center">Hành động</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of listData; let idx = index">
-            <td>
+            <td nzAlign="center">
               <label
                 nz-checkbox
                 [ngModel]="item.isChecked"
                 (ngModelChange)="isChecked($event, idx)"
               ></label>
             </td>
-            <td>
+            <td nzAlign="center">
               {{ idx + 1 }}
             </td>
-            <td>
+            <td nzAlign="center">
               <span
                 >{{ item.name }}</span
               >
             </td>
-            <td>
+            <td nzAlign="center">
               {{ item.code }}
             </td>
-            <td>
+            <td nzAlign="center">
               {{ item.parentCode }}
             </td>
-            <td>
+            <td nzAlign="center">
               <span *ngIf="item.type === 0">Menu</span>
               <span *ngIf="item.type === 1">Action</span>
             </td>
-            <td class="d-flex flex-row">
+            <td class="d-flex flex-row justify-content-center">
               <!-- <button
                 nz-button
                 nzShape="circle"

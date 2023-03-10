@@ -100,13 +100,13 @@
         </div>
       </div>
     </div>
-    <div class="task-detail-content">
+    <div class="task-detail-content pr-3">
       <!-- row 1 -->
       <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="1">
             <!-- <nz-form-label class="align-items-center" [nzSpan]="24">
-                          <h3 class="pl-2 pt-2">{{formValidation.get('name')!.value}}</h3>
+                          <h4 class="pl-2 pt-2">{{formValidation.get('name')!.value}}</h4>
                       </nz-form-label> -->
             <nz-form-control [nzSpan]="24">
               <input
@@ -127,8 +127,8 @@
       <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="1">
-            <nz-form-label [nzSpan]="3"> Phụ trách </nz-form-label>
-            <nz-form-control [nzSpan]="21">
+            <nz-form-label [nzSpan]="4"> Phụ trách </nz-form-label>
+            <nz-form-control [nzSpan]="20">
               <input nz-input class="input_disabled" name="assignee" disabled />
             </nz-form-control>
           </nz-form-item>
@@ -140,8 +140,8 @@
       <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="1">
-            <nz-form-label [nzSpan]="3"> Thời hạn </nz-form-label>
-            <nz-form-control [nzSpan]="21">
+            <nz-form-label [nzSpan]="4"> Thời hạn </nz-form-label>
+            <nz-form-control [nzSpan]="20">
               <nz-date-picker
                 (nzOnOpenChange)="onOpenChange($event)"
                 formControlName="endDate"
@@ -150,14 +150,14 @@
           </nz-form-item>
         </div>
       </div>
-      <!-- end row 3 -->
+      <!-- end row 4 -->
 
       <!-- row 2 -->
       <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="1">
-            <nz-form-label [nzSpan]="3"> Dự án </nz-form-label>
-            <nz-form-control [nzSpan]="21">
+            <nz-form-label [nzSpan]="4"> Dự án </nz-form-label>
+            <nz-form-control [nzSpan]="20">
               <nz-select
                 nzShowSearch
                 nzAllowClear
@@ -166,7 +166,7 @@
               >
                 <!-- <nz-option nzLabel="Dự án A" nzValue="1"></nz-option>
                 <nz-option nzLabel="Dự án B" nzValue="2"></nz-option>
-                <nz-option nzLabel="Dự án C" nzValue="3"></nz-option> -->
+                <nz-option nzLabel="Dự án C" nzValue="4"></nz-option> -->
                 <nz-option [nzLabel]="value.name" [nzValue]="value.id" *ngFor="let value of listProject"></nz-option>
               </nz-select>
             </nz-form-control>
@@ -179,8 +179,8 @@
       <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="1">
-            <nz-form-label [nzSpan]="3"> Mô tả </nz-form-label>
-            <nz-form-control [nzSpan]="21">
+            <nz-form-label [nzSpan]="4"> Mô tả </nz-form-label>
+            <nz-form-control [nzSpan]="20">
               <textarea
                 nz-input
                 rows="2"
@@ -198,8 +198,8 @@
       <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="1">
-            <nz-form-label [nzSpan]="3"> Ghi chú </nz-form-label>
-            <nz-form-control [nzSpan]="21">
+            <nz-form-label [nzSpan]="4"> Ghi chú </nz-form-label>
+            <nz-form-control [nzSpan]="20">
               <textarea
                 nz-input
                 rows="2"
@@ -217,8 +217,8 @@
       <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="1">
-            <nz-form-label [nzSpan]="3"> Vướng mắc </nz-form-label>
-            <nz-form-control [nzSpan]="21">
+            <nz-form-label [nzSpan]="4"> Vướng mắc </nz-form-label>
+            <nz-form-control [nzSpan]="20">
               <textarea
                 nz-input
                 rows="2"
@@ -236,8 +236,8 @@
       <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="1">
-            <nz-form-label [nzSpan]="3"> Giải pháp </nz-form-label>
-            <nz-form-control [nzSpan]="21">
+            <nz-form-label [nzSpan]="4"> Giải pháp </nz-form-label>
+            <nz-form-control [nzSpan]="20">
               <textarea
                 nz-input
                 rows="2"

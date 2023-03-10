@@ -16,7 +16,7 @@
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Name">
               <input
                 nz-input
-                placeholder="Tên"
+                placeholder="Tên dự án"
                 formControlName="name"
                 name="name"
                 [readonly]="mode === 'view'"
@@ -47,8 +47,7 @@
                 nz-input
                 currencyMask
                 [options]="{ thousands: ',', align: 'left', prefix: '', precision: 0 }"
-                placeholder="Doanh thu"
-                [value]="formValidation.get('revenue')!.value | number"
+                placeholder="Doanh thu dự án"
                 formControlName="revenue"
                 name="revenue"
                 [readonly]="mode === 'view'"
@@ -91,7 +90,7 @@
                 nz-input
                 currencyMask
                 [options]="{ thousands: ',', align: 'left', prefix: '', precision: 0 }"
-                placeholder="Tổng chi phí"
+                placeholder="Tổng chi phí dự án"
                 formControlName="totalCost"
                 name="totalCost"
                 [readonly]="mode === 'view'"
@@ -115,7 +114,7 @@
                 nz-input
                 currencyMask
                 [options]="{ thousands: ',', align: 'left', prefix: '', precision: 0 }"
-                placeholder="Tổng thời gian (h)"
+                placeholder="Tổng thời gian dự án (h)"
                 formControlName="totalHour"
                 name="totalHour"
                 [readonly]="mode === 'view'"

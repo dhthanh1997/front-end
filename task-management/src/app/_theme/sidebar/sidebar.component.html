@@ -71,8 +71,8 @@
           ><span class="ml-2">Permissions</span></a
         >
       </li> -->
-      <li (click)="subMenu()">
-        <a class="nav-link">
+      <li>
+        <a class="nav-link" (click)="subMenu()">
           <i nz-icon nzType="setting" nzTheme="outline"></i>
           <span class="ml-2">Thiết lập</span>
           <i
@@ -92,7 +92,7 @@
         </a>
         <ul
           class="sub-menu d-none"
-          (click)="subMenu()"
+
         >
           <li class="sub-nav-item">
             <a
