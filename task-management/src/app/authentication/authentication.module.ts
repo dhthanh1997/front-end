@@ -6,22 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { AuthenticationService } from './authentication.service';
-import { IconsProviderModule } from '../_core/iconsProvider.module';
-
-// Nz Zorro Modules
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
-
-const NZ_MODULES = [
-  NzFormModule,
-  NzInputModule,
-  NzCheckboxModule,
-  NzAlertModule,
-  NzIconModule,
-]
+import { IconsProviderModule } from '../_theme/iconsProvider.module';
+import { NgZorroModule } from '../_theme/ng-zorro.module';
 
 @NgModule({
   imports: [
@@ -31,7 +17,7 @@ const NZ_MODULES = [
     AuthenticationRoutingModule,
     HttpClientModule,
     IconsProviderModule,
-    ...NZ_MODULES,
+    NgZorroModule,
   ],
   declarations: [AuthenticationComponent, LoginComponent],
   providers: [

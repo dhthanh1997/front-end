@@ -6,10 +6,14 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NotifyService } from './notify.service';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { MessageService } from './message.service';
+import { AuthGuardService } from './guard/auth-guard.service';
+import { AuthService } from './auth.service';
 
 const PROVIDERS = [
   HttpService,
-  JwtInterceptorService
+  JwtInterceptorService,
+  AuthGuardService,
+  AuthService
 ]
 
 const SERVICES = [

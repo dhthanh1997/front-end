@@ -412,7 +412,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
 
   watchForChanges() {
     merge(this.taskArray.controls.map((control: AbstractControl, index: number) => {
-      control.valueChanges.pipe(pairwise(), debounceTime(1000),
+      control.valueChanges.pipe(pairwise(), debounceTime(700),
         map(
           ([prev, current]: [any, any]) => {
             // (value) => {

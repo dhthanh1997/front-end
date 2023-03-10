@@ -7,10 +7,10 @@
         <i nz-icon nzType="plus" nzTheme="outline"></i>
         <span class="ml-1">Create</span>
       </div> -->
-    <button class="projectBtn" #toggleButton (click)="popUp()">Tạo mới</button>
-    <div class="popup" #popupContent *ngIf="isHidden">
+    <button class="projectBtn" (click)="onCreate()">Tạo dự án</button>
+    <!-- <div class="popup" #popupContent *ngIf="isHidden">
       <div class="popup-content">
-        <div class="popup-content-wrapper" routerLink="pages/project">
+        <div class="popup-content-wrapper" (click)="onCreate()">
           <i nz-icon nzType="project" nzTheme="outline"></i>
           <span class="popup-content-title">Dự án</span>
         </div>
@@ -19,7 +19,7 @@
           <span class="popup-content-title">Công việc</span>
         </div>
       </div>
-    </div>
+    </div> -->
     <ul class="nav flex-column" id="navList">
       <li class="nav-item">
         <a

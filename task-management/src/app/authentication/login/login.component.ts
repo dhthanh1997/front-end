@@ -31,9 +31,9 @@ export class LoginComponent implements OnInit {
     // do something here
   }
 
-  get taskUrl() {
-    return environment.taskUrl;
-  }
+  // get taskUrl() {
+  //   return environment.taskUrl;
+  // }
 
   ngOnInit(): void {
     // do something here
@@ -50,9 +50,9 @@ export class LoginComponent implements OnInit {
              console.log(res)
              if(res && res.accessToken) {
                 // console.log(this.taskUrl);
-                // this.router.navigateByUrl(this.taskUrl);
+                this.router.navigate(['pages']);
                 // redirect sang task
-                window.location.href = this.taskUrl;
+                // window.location.href = this.taskUrl;
                 localStorage.setItem('access_token', res.accessToken);
              }
              else {
