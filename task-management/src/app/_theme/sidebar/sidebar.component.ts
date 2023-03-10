@@ -71,10 +71,12 @@ export class SidebarComponent implements OnInit {
       subMenu.classList.remove('d-none');
       subMenu.classList.add('show');
       subMenu.classList.add('d-block');
+      this.isOpen = !this.isOpen;
     } else if (subMenu.classList.contains('d-block')) {
       subMenu.classList.remove('show');
       subMenu.classList.remove('d-block');
       subMenu.classList.add('hide');
+      this.isOpen = !this.isOpen;
       setTimeout(() => {
         return subMenu.classList.add('d-none');
       }, 700);
