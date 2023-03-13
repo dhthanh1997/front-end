@@ -115,30 +115,30 @@
         *ngFor="let item of sections.controls; index as idx"
         class="task-table-left"
         cdkDrag
+        [cdkDragDisabled]="editIdx === idx"
         cdkDragLockAxis="y"
       >
         <div [formGroupName]="idx">
-          <app-task-row-table
-            [hidden]="editIdx === idx"
-            [paramSearch]="params"
-            [sectionParams]="item.get('id')!.value"
-            [isAddRowEvent]="item.get('isAddRowEvent')!.value"
-            [isCollapsedFromParent]="isCollapsed"
-            [title]="item.get('name')!.value ? item.get('name')!.value : ''"
-            (dblclick)="startEdit(idx)"
-            style="cursor: pointer"
-          >
-          </app-task-row-table>
-          <input
-            class="sectionName"
-            [hidden]="editIdx !== idx"
-            type="text"
-            nz-input
-            nzAutoFocus
-            [value]="item.get('name')!.value"
-            (keyup.enter)="editSection(item.get('id')!.value, idx)"
-            (blur)="editSection(item.get('id')!.value, idx)"
-          />
+          <div class="app-task-row-table" style="position: relative;">
+            <app-task-row-table
+              [paramSearch]="params"
+              [sectionParams]="item.get('id')!.value"
+              [sectionId]="item.get('id')!.value"
+              [isAddRowEvent]="item.get('isAddRowEvent')!.value"
+              [isCollapsedFromParent]="isCollapsed"
+              [title]="item.get('name')!.value ? item.get('name')!.value : ''"
+              (sectionName)="addToSectionArr($event, idx)"
+              (isEditSection)="isEdit($event)"
+              style="cursor: pointer;"
+            >
+            </app-task-row-table>
+
+            <!-- <div class="buttons">
+              <button nz-button (click)="startEdit(idx)" [hidden]="editIdx === idx">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+              </button>
+            </div> -->
+          </div>
 
           <br />
         </div>

@@ -72,7 +72,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
   public sortName: string = '';
   public filterName: string = '';
   public sectionList: any = [];
-  addSections: number | null = null;
+  public addSections: number | null = null;
   public params: ParamSearch = {
     sorts: [],
     filters: [],
@@ -278,41 +278,14 @@ export class TaskTableComponent implements OnInit, OnDestroy {
 
   }
 
-  startEdit(index: number): void {
+  isEdit(event: number) {
+    // debugger;
+    let index = this.sections.controls.findIndex(x => x.value.id === event);
     this.editIdx = index;
-    let editElement = this.element.nativeElement.querySelectorAll('.sectionName');
-    console.log(editElement[index]);
-
-    setTimeout(async () => {
-      await editElement[index].focus();
-    }, 50)
   }
 
-  editSection(id: number, index: number) {
-    // debugger;
-    let input = this.element.nativeElement.querySelectorAll('.sectionName');
-    if(input[index].value.length > 0) {
-      const item: sectionContent = { name: '' };
-      item.name = input[index].value;
-      item.id = id;
-      this.sectionData.update(id, item).subscribe({
-        next: (res: sectionContent) => {
-          console.log(res);
-          if (res) {
-            this.editIdx = null;
-            this.sections.at(index).get('name')!.setValue(item.name);
-            // this.modelRef.close(res);
-          }
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-        complete: () => {
-
-          console.log('done');
-        },
-      });
-    }
+  addToSectionArr(value: string, index: number) {
+    this.sections.at(index).get('name')!.setValue(value);
   }
 
   selectedItemFilter(event: any) {

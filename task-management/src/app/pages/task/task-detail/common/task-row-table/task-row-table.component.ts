@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { isThisSecond } from 'date-fns';
@@ -9,10 +9,12 @@ import { catchError, concatMap, debounceTime, firstValueFrom, map, merge, of, pa
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject, EnumUtils } from 'src/app/_base/util';
 import { ProjectData } from 'src/app/_core/api/project/project-data';
+import { SectionData } from 'src/app/_core/api/section/section-data';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import { Filter } from 'src/app/_core/enum/filter-enum';
 import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
 import { ParamSearch } from 'src/app/_core/model/params-search';
+import { sectionContent } from 'src/app/_core/model/section';
 import { Task } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
@@ -35,8 +37,9 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   changesUnsubscribe = new Subject();
   public filterParam: string = "";
   public projectId!: number;
+  public isEdit: boolean = false;
 
-
+  @Input() sectionId: number = 0;
   @Input() title: string = "";
   @Input() isCollapsedFromParent: boolean = true;
   @Input() paramSearch: ParamSearch = {
@@ -48,20 +51,59 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   @Input() isAddRowEvent: boolean = false;
   @Input() sectionParams: any;
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() sectionName: EventEmitter<any> = new EventEmitter<any>();
+  @Output() isEditSection: EventEmitter<number> = new EventEmitter<number>();
 
 
   constructor(private fb: FormBuilder,
     private notifyService: NotifyService,
     private shareService: ShareService,
     private taskData: TaskData,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private element: ElementRef,
+    private sectionData: SectionData,
   ) {
     this.formValidation = initFormArray("taskArray");
     this.getQueryParam();
 
   }
 
+  startEdit() {
+    // debugger;
+    this.isEditSection.emit(this.sectionId);
+    this.isEdit = true;
+    let input = this.element.nativeElement.querySelector('.sectionName');
+    setTimeout(() => {
+      input.focus();
+    }, 100)
+  }
 
+  editSection() {
+    // debugger;
+    let input = this.element.nativeElement.querySelector('.sectionName');
+    if(input.value.length > 0) {
+      const item: sectionContent = { name: '' };
+      item.name = input.value;
+      item.id = this.sectionId;
+      this.sectionData.update(item.id, item).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          if (res) {
+            this.isEdit = false;
+            this.sectionName.emit(res.data.name);
+            // this.modelRef.close(res);
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+        complete: () => {
+
+          console.log('done');
+        },
+      });
+    }
+  }
 
   async ngOnChanges(changes: SimpleChanges) {
     // console.log(changes);
