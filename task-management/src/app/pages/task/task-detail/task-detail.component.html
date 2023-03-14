@@ -1,7 +1,7 @@
 <ng-container *ngIf="!isCollapsed">
   <!-- <div *ngIf="!isCollapsed"> -->
   <div class="wrapper" [formGroup]="formValidation">
-    <div class="task-detail-header">
+    <div class="task-detail-header mt-1 mb-3">
       <div class="col-6 p-2 d-flex">
         <button
           nz-button
@@ -25,28 +25,33 @@
       </div>
       <div class="col-6 p-2">
         <div class="d-flex flex-row float-right">
-          <button
-            nz-button
-            class="mr-2"
-            nzTooltipTitle="Đính kèm file"
-            nzTooltipPlacement="bottom"
-            nz-tooltip
-            nzType="default"
-            (click)="uploadFile()"
-          >
-            <span nz-icon nzType="file-add" nzTheme="outline"></span>
-          </button>
-          <button
-            nz-button
-            class="mr-2"
-            nzTooltipTitle="Thêm subtask"
-            nzTooltipPlacement="bottom"
-            nz-tooltip
-            nzType="default"
-            (click)="addSubTask()"
-          >
-            <span nz-icon nzType="subnode" nzTheme="outline"></span>
-          </button>
+          <nz-badge [nzCount]="files.length" [nzOffset]="[-10, 1]">
+            <button
+              nz-button
+              class="mr-2"
+              nzTooltipTitle="Đính kèm file"
+              nzTooltipPlacement="bottom"
+              nz-tooltip
+              nzType="default"
+              (click)="uploadFile()"
+            >
+              <span nz-icon nzType="file-add" nzTheme="outline"></span>
+            </button>
+          </nz-badge>
+
+          <nz-badge [nzCount]="subTask.controls.length" [nzOffset]="[-10, 1]">
+            <button
+              nz-button
+              class="mr-2"
+              nzTooltipTitle="Thêm subtask"
+              nzTooltipPlacement="bottom"
+              nz-tooltip
+              nzType="default"
+              (click)="addSubTask()"
+            >
+              <span nz-icon nzType="subnode" nzTheme="outline"></span>
+            </button>
+          </nz-badge>
           <button
             nz-button
             class="mr-2"
@@ -167,7 +172,11 @@
                 <!-- <nz-option nzLabel="Dự án A" nzValue="1"></nz-option>
                 <nz-option nzLabel="Dự án B" nzValue="2"></nz-option>
                 <nz-option nzLabel="Dự án C" nzValue="4"></nz-option> -->
-                <nz-option [nzLabel]="value.name" [nzValue]="value.id" *ngFor="let value of listProject"></nz-option>
+                <nz-option
+                  [nzLabel]="value.name"
+                  [nzValue]="value.id"
+                  *ngFor="let value of listProject"
+                ></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -280,16 +289,16 @@
           class="task-detail-subtask"
           *ngIf="subTask && subTask.controls.length > 0"
         >
-          <div class="ml-2" formArrayName="subTask">
+          <div class="ml-2 mt-2" formArrayName="subTask">
             <div class="table-responsive">
               <table class="table">
                 <tbody>
                   <tr *ngFor="let item of subTask.controls; index as idx">
                     <ng-container [formGroupName]="idx">
-                      <td class="align-items-center">
+                      <td class="align-items-center sub-task-items">
                         <!-- <input type="text" class="form-control input_disabled"
                                                   formControlName="name"> -->
-                        {{ item.get("name")!.value }}
+                        <span style="cursor: text;">{{ item.get("name")!.value }}</span>
                       </td>
                     </ng-container>
                   </tr>

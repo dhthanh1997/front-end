@@ -47,7 +47,11 @@ export class ProjectComponent implements OnInit {
 
   checkedBoxAll: boolean = false;
   FilterValue = '';
-  SorterValue = '';
+  SorterValue = 'name_asc,';
+
+  FilterDisplay = 'Tên';
+  SorterDisplay = 'Tăng dần (tên)';
+
   disableRoute = false;
 
   modalOptions: any = {
@@ -85,9 +89,11 @@ export class ProjectComponent implements OnInit {
     this.FilterValue = this.filterField[index];
     if(this.FilterValue === 'Tên') {
       this.FilterValue = 'name';
+      this.FilterDisplay = 'Tên'
     }
     else if(this.FilterValue === 'Doanh thu') {
       this.FilterValue = 'revenue';
+      this.FilterDisplay = 'Doanh thu';
     }
   }
 
@@ -96,8 +102,10 @@ export class ProjectComponent implements OnInit {
     this.SorterValue = this.sortField[index];
     if (this.SorterValue === 'Tăng dần (tên)') {
       this.SorterValue = 'name_asc,';
+      this.SorterDisplay = 'Tăng dần (tên)';
     } else if (this.SorterValue === 'Giảm dần (tên)') {
       this.SorterValue = 'name_des,';
+      this.SorterDisplay = 'Giảm dần (tên)';
     }
     this.getProject();
   }
@@ -155,7 +163,7 @@ export class ProjectComponent implements OnInit {
         next: (res) => {
           console.log(res);
           this.listData = res.pagingData.content;
-          // console.log(this.listData);
+          console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
         },

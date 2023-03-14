@@ -29,6 +29,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 // NgZorro local english language settings
 import { NZ_I18N, en_US, vi_VN } from 'ng-zorro-antd/i18n';
@@ -72,6 +73,7 @@ const NZ_MODULES = [
   NzSwitchModule,
   NzPopconfirmModule,
   NzAlertModule,
+  NzBadgeModule,
 ];
 
 @NgModule({
@@ -87,5 +89,5 @@ export class NgZorroModule {
       providers: [],
     };
   }
-  
+
 }

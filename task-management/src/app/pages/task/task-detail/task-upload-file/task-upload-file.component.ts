@@ -1,5 +1,5 @@
 import { HttpEventType } from '@angular/common/http';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { firstValueFrom, Subject, timer } from 'rxjs';
@@ -68,7 +68,7 @@ export class TaskUploadFileComponent implements OnInit {
     }
     if (event && event.message === ResponseStatusEnum.error) {
       this.notifyService.error(event.message);
-  } 
+  }
   }
 
   // end event

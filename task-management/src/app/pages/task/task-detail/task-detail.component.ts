@@ -45,6 +45,7 @@ import { TaskUploadFileComponent } from './task-upload-file/task-upload-file.com
 import { TaskTagComponent } from './task-tag/task-tag.component';
 import { TagData } from 'src/app/_core/api/tag/tag-data';
 import { ProjectData } from 'src/app/_core/api/project/project-data';
+import { UploadFileData } from 'src/app/_core/api/upload-file/upload-file-data';
 
 @Component({
   selector: 'app-task-detail',
@@ -75,6 +76,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   public isNotAddRow: boolean = false;
 
   public isCollapsedTaskDetail: boolean = true;
+  public files: any[] = [];
 
   @Input() isCollapsed: boolean = true;
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
@@ -87,7 +89,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     private shareService: ShareService,
     private notifyService: NotifyService,
     private projectData: ProjectData,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private uploadService: UploadFileData,
   ) {
     this.formValidation = initFormObject(this.task, this.task);
     this.formValidation.addControl('subTask', this.fb.array([]));
@@ -108,6 +111,17 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     // this.collapseListenEvent();
     // console.log(this.formValidation);
     this.getProjectData();
+  }
+
+  getFileNameInTask(id: number) {
+    this.uploadService.getFileInTask(id).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.message === ResponseStatusEnum.success) {
+          this.files = res.data;
+        }
+      }
+    });
   }
 
   getProjectData() {
@@ -198,6 +212,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
           // this.getTagById(res.item.controls.tagId.value);
           // this.tagId = res.item.controls.tagId.value;
           this.getTaskById(this.idTask);
+          this.getFileNameInTask(this.idTask);
           return this.taskData.getById(this.idTask);
         }
         return of(null);
@@ -347,6 +362,15 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       nzComponentParams: {
         title: 'Upload file',
         taskId: this.formValidation.get('id')?.value,
+      },
+    })
+    .afterClose.subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getFileNameInTask(this.idTask);
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
   }

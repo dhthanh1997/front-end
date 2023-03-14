@@ -1,6 +1,14 @@
+
 .task-detail-header {
   display: flex;
   flex-direction: row;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  background: white;
+  box-shadow: 0 4px 6px -6px #222;
 }
 
 ::ng-deep {
@@ -45,4 +53,12 @@
   align-self: center;
   cursor: pointer;
   box-shadow: 0 1px 1px #0003, 0 1px 1px 1px #00000024, 0 1px 1px 1px #0000001f;
+}
+
+nz-badge {
+  margin-right: 2px;
+}
+
+.sub-task-items:hover {
+  background-color: #f9f8f8;
 }

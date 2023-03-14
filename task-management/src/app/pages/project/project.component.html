@@ -19,7 +19,7 @@
           class="d-flex align-items-center ml-auto mr-2"
         >
           <i nz-icon nzType="sort-ascending" nzTheme="outline"></i>
-          Sắp xếp
+          {{SorterDisplay}}
         </button>
         <nz-dropdown-menu #sort="nzDropdownMenu">
           <ul nz-menu nzSelectable>
@@ -40,7 +40,7 @@
           class="d-flex align-items-center mr-2"
         >
           <i nz-icon nzType="filter" nzTheme="outline"></i>
-          Bộ lọc
+          {{FilterDisplay}}
         </button>
         <nz-dropdown-menu #filter="nzDropdownMenu">
           <ul nz-menu nzSelectable>
@@ -85,6 +85,7 @@
             <th nzAlign="center">STT</th>
             <th nzAlign="center">Tên</th>
             <th nzAlign="center">Doanh thu</th>
+            <!-- <th nzAlign="center">Sub-Project</th> -->
             <th nzAlign="center">Hành động</th>
           </tr>
         </thead>
@@ -122,8 +123,8 @@
             <td nzAlign="center">
               {{ item.revenue }}
             </td>
-            <!-- <td>
-              {{ item.createdDate | date : "MM/dd/yyyy" }}
+            <!-- <td nzAlign="center">
+
             </td> -->
             <td class="d-flex flex-row justify-content-center">
               <!-- <button

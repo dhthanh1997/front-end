@@ -4,108 +4,86 @@
   [formGroup]="formValidation"
   [ngClass]="!isCollapsed ? 'task-header-toggle' : ''"
 >
-  <div class="p-1">
-    <div class="d-flex flex-row">
-      <div class="col-md-6">
-        <div class="float-left d-flex flex-row">
-          <button nz-button nzType="primary" (click)="addTask()">
-            <span nz-icon nzType="plus"></span>
-            Thêm công việc
-          </button>
-          <!-- <button class="ml-2" nz-button nzType="primary" (click)="addSection()">
-            <span nz-icon nzType="plus"></span>
-            Thêm Section
-          </button> -->
+  <div class="d-flex flex-column header-test-fixed">
+    <div class="p-1 ">
+      <div class="d-flex flex-row">
+        <div class="col-md-6">
+          <div class="float-left d-flex flex-row">
+            <button nz-button nzType="primary" (click)="addTask()">
+              <span nz-icon nzType="plus"></span>
+              Thêm công việc
+            </button>
+            <!-- <button class="ml-2" nz-button nzType="primary" (click)="addSection()">
+              <span nz-icon nzType="plus"></span>
+              Thêm Section
+            </button> -->
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="float-right d-flex flex-row">
+            <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuTask">
+              <button nz-button nzType="default">
+                <span nz-icon nzType="check-circle" nzTheme="outline"> </span>
+                {{ filterName }}
+              </button>
+              <nz-dropdown-menu #menuTask="nzDropdownMenu">
+                <ul class="dropdown_menu" nz-menu>
+                  <li
+                    nz-menu-item
+                    (click)="selectedItemFilter(item)"
+                    *ngFor="let item of params.filters"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </a>
+
+            <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuSort">
+              <button nz-button nzType="default">
+                <span nz-icon nzType="sort-ascending" nzTheme="outline"></span
+                >{{ sortName }}
+              </button>
+              <nz-dropdown-menu #menuSort="nzDropdownMenu">
+                <ul class="dropdown_menu" nz-menu>
+                  <li
+                    nz-menu-item
+                    (click)="selectedItemSort(item)"
+                    *ngFor="let item of params.sorts"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </a>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="col-md-6">
-        <div class="float-right d-flex flex-row">
-          <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuTask">
-            <button nz-button nzType="default">
-              <span nz-icon nzType="check-circle" nzTheme="outline"> </span>
-              {{ filterName }}
-            </button>
-            <nz-dropdown-menu #menuTask="nzDropdownMenu">
-              <ul class="dropdown_menu" nz-menu>
-                <li
-                  nz-menu-item
-                  (click)="selectedItemFilter(item)"
-                  *ngFor="let item of params.filters"
-                >
-                  {{ item }}
-                </li>
-              </ul>
-            </nz-dropdown-menu>
-          </a>
-
-          <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menuSort">
-            <button nz-button nzType="default">
-              <span nz-icon nzType="sort-ascending" nzTheme="outline"></span
-              >{{ sortName }}
-            </button>
-            <nz-dropdown-menu #menuSort="nzDropdownMenu">
-              <ul class="dropdown_menu" nz-menu>
-                <li
-                  nz-menu-item
-                  (click)="selectedItemSort(item)"
-                  *ngFor="let item of params.sorts"
-                >
-                  {{ item }}
-                </li>
-              </ul>
-            </nz-dropdown-menu>
-          </a>
-        </div>
+    <div class="p-1">
+      <div class="table-responsive-custom-header">
+        <table class="table">
+          <thead>
+            <th class="text-center col-8">Tên</th>
+            <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
+              <th class="text-center col-5">Ngày kết thúc</th>
+            </ng-template>
+            <ng-template #collapsedTemplate>
+              <th class="text-center col-5">Ngày bắt đầu</th>
+              <th class="text-center col-5">Ngày kết thúc</th>
+              <th class="text-center col-5">Trạng thái</th>
+            </ng-template>
+          </thead>
+        </table>
       </div>
     </div>
   </div>
 
-  <div class="p-1">
-    <div class="table-responsive-custom-header">
-      <table class="table">
-        <thead>
-          <th class="text-center col-8">Tên</th>
-          <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
-            <th class="text-center col-5">Ngày kết thúc</th>
-          </ng-template>
-          <ng-template #collapsedTemplate>
-            <th class="text-center col-5">Ngày bắt đầu</th>
-            <th class="text-center col-5">Ngày kết thúc</th>
-            <th class="text-center col-5">Trạng thái</th>
-          </ng-template>
-        </thead>
-      </table>
-    </div>
-  </div>
   <!-- content -->
   <div class="p-2">
-    <!-- <ng-template #tmplNode let-node="node">
-      <div class="item" cdkDropList [id]="node.uId" [cdkDropListData]="node.children"
-        (cdkDropListDropped)="onDragDrop($event)" [cdkDropListConnectedTo]="connectedTo">
-        <div class="">
-          {{node.name}}
-        </div>
-        <ng-container *ngFor="let sub of node.get('taskArray')">
-          <div class="sub-item" cdkDrag [cdkDragData]="node.uId">
-            <ng-container *ngTemplateOutlet="tmplNode; context: { node: sub }"></ng-container>
-          </div>
-        </ng-container>
-      </div>
 
-    </ng-template>
-
-
-    <div class="item" cdkDropList [cdkDropListData]="root.children" (cdkDropListDropped)="onDragDrop($event)"
-      [id]="root.uId" [cdkDropListConnectedTo]="connectedTo">
-
-      <div class="sub-item" *ngFor="let node of sections.controls" cdkDrag>
-        <ng-container *ngTemplateOutlet="tmplNode; context: { node: node }"></ng-container>
-      </div>
-
-    </div> -->
-
-    <!-- table -->
     <div
       formArrayName="sections"
       cdkDropList
@@ -133,11 +111,7 @@
             >
             </app-task-row-table>
 
-            <!-- <div class="buttons">
-              <button nz-button (click)="startEdit(idx)" [hidden]="editIdx === idx">
-                <i nz-icon nzType="edit" nzTheme="outline"></i>
-              </button>
-            </div> -->
+
           </div>
 
           <br />

@@ -3,7 +3,7 @@ $task_detail_height: 500px !default;
 
 :host {
   font-size: 12px;
-  overflow-y: hidden;
+  // overflow-y: hidden;
 }
 
 .table td,
@@ -41,6 +41,9 @@ $task_detail_height: 500px !default;
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 620px;
+    overflow-y: auto;
+    overflow-x: hidden;
     // position: -webkit-sticky;
     // position: sticky;
     // align-self: flex-start; /* <-- this is the fix */
@@ -61,25 +64,35 @@ $task_detail_height: 500px !default;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+  }
 
-    .table-responsive-custom-header {
-      // width: 100%;
-      // height: 0;
+  .header-test-fixed {
+    position: -webkit-sticky;
+    width: 100%;
+    position: sticky;
+    align-self: flex-start; /* <-- this is the fix */
+    top: 0;
+    z-index: 1; // any positive value, layer order is global
+    background-color: white;
+  }
 
-      position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
-      position: sticky;
-      top: 48;
-      z-index: 0; // any positive value, layer order is global
-      background: #fff; // any bg-color to overlap
+  .table-responsive-custom-header {
+    // width: 100%;
+    // height: 0;
 
-      // table > thead > th {
-      //   position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
-      //   position: sticky;
-      //   top: 0;
-      //   z-index: 1; // any positive value, layer order is global
-      //   background: #fff; // any bg-color to overlap
-      // }
-    }
+    position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
+    position: sticky;
+    top: 48px;
+    z-index: 1; // any positive value, layer order is global
+    background: #fff; // any bg-color to overlap
+
+    // table > thead > th {
+    //   position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
+    //   position: sticky;
+    //   top: 0;
+    //   z-index: 1; // any positive value, layer order is global
+    //   background: #fff; // any bg-color to overlap
+    // }
   }
 
   .task-table-left-toggle {
@@ -135,9 +148,6 @@ $task_detail_height: 500px !default;
   }
 }
 
-
-
-
 .item {
   cursor: move;
   border: 2px solid lightgrey;
@@ -159,7 +169,8 @@ $task_detail_height: 500px !default;
 
 .cdk-drag-preview {
   box-sizing: border-box;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   border-radius: 10px;
 
   .item {
@@ -184,27 +195,27 @@ $task_detail_height: 500px !default;
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.buttons {
-  display: none;
-}
+// .buttons {
+//   display: none;
+// }
 
-.app-task-row-table:hover .buttons {
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  top: 20px;
-  right: 0;
-  width: 100px;
-  height: fit-content;
+// .app-task-row-table:hover .buttons {
+//   display: flex;
+//   justify-content: center;
+//   position: absolute;
+//   top: 20px;
+//   right: 0;
+//   width: 100px;
+//   height: fit-content;
 
-  i {
-    font-size: 16px;
-  }
-}
+//   i {
+//     font-size: 16px;
+//   }
+// }
 
-::ng-deep .anticon-edit svg {
-  margin-bottom: 5px;
-}
+// ::ng-deep .ant-tag svg {
+//   margin-bottom: 5px;
+// }
 
 .sectionName {
   width: 80%;
