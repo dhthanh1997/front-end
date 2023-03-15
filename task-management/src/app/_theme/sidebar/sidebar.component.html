@@ -108,6 +108,17 @@
           <li class="sub-nav-item">
             <a
               class="nav-link"
+              routerLink="team"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <!-- <i nz-icon nzType="usergroup-add" nzTheme="outline"></i> -->
+              <span class="ml-4">Nhóm</span></a
+            >
+          </li>
+          <li class="sub-nav-item">
+            <a
+              class="nav-link"
               routerLink="roles-app"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"

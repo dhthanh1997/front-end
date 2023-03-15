@@ -1,0 +1,26 @@
+.ban {
+  cursor: no-drop;
+}
+
+.wrapper {
+  width: 800px;
+  height: calc(100% - 144px);
+  border-radius: 3px;
+}
+
+.ant-modal-title {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.modal-content {
+  display: grid;
+  grid-template-rows: none;
+  border: none;
+}
+
+.invalid-data {
+  border: 1px solid red;
+}

@@ -39,7 +39,9 @@ export class ProjectFormComponent implements OnInit {
     private fb: FormBuilder,
     private service: ProjectData,
     private modelRef: NzModalRef<ProjectFormComponent>
-  ) {}
+  ) {
+    // this.formValidation.addControl('subProject', this.fb.array([]));
+  }
 
   get name() {
     return this.formValidation.get('name');
@@ -64,6 +66,10 @@ export class ProjectFormComponent implements OnInit {
   get rangeDate(): FormArray {
     return this.formValidation.get('rangeDate') as FormArray;
   }
+
+  // get subProject(): FormArray {
+  //   return this.formValidation.get('subProject') as FormArray;
+  // }
 
   // get realStartDate() {
   //   return this.formValidation.get('realStartDate');

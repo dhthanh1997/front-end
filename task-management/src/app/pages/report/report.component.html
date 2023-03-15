@@ -1,1 +1,38 @@
-<p>report works!</p>
+<div class="report-wrapper">
+  <div class="report-header my-4">
+    <button nz-button>Tạo mới biểu đồ</button>
+  </div>
+  <div class="report-detail">
+    <div class="card-detail">
+      <nz-card nzHoverable class="card-item">
+        <h4>Tổng số Task</h4>
+        <span>{{taskList.length}}</span>
+      </nz-card>
+      <nz-card nzHoverable class="card-item">
+        <h4>Task đã hoàn thành</h4>
+        <span>{{taskList.length - inCompleteTask.length}}</span>
+      </nz-card>
+      <nz-card nzHoverable class="card-item">
+        <h4>Task chưa hoàn thành</h4>
+        <span>{{inCompleteTask.length}}</span>
+      </nz-card>
+    </div>
+    <div class="chart-detail">
+      <nz-card nzHoverable class="chart-item">
+        <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="pieChartOptions"
+            class="highchart"
+          ></highcharts-chart>
+      </nz-card>
+      <nz-card class="chart-item">
+        <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="barChartOptions"
+            class="highchart"
+          ></highcharts-chart>
+      </nz-card>
+    </div>
+
+  </div>
+</div>
