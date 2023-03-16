@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import * as Highcharts from 'highcharts';
 import { ProjectData } from 'src/app/_core/api/project/project-data';
+import { getISOWeek } from 'date-fns';
+import { TeamData } from 'src/app/_core/api/team/team-data';
+import { MemberData } from 'src/app/_core/api/member/member-data';
 
 @Component({
   selector: 'app-report',
@@ -9,35 +12,61 @@ import { ProjectData } from 'src/app/_core/api/project/project-data';
   styleUrls: ['./report.component.scss'],
 })
 export class ReportComponent implements OnInit {
+  date = null;
+  isAdvanced: boolean = false;
+
   public taskList: any[] = [];
-  public inCompleteTask: any[] = [];
+  public inCplTask: any[] = [];
+  public taskNumberInProject: number = 0;
+  public inCplTaskNumberInProject: number = 0;
 
   public projectList: any[] = [];
 
+  public teamList: any[] = [];
+
+  public memberList: any[] = [];
+
   pageNumber: number = 1;
   pageSize: number = 999;
-  txtSearch: string = '';
-  sort: string = '';
+  txtProjectSearch: string = '';
+  txtTaskSearch: string = '';
+  txtTeamSearch: string = '';
+  txtMemberSearch: string = '';
+  sortProject: string = '';
+  sortTask: string = '';
 
   pieChartOptions: any;
   barChartOptions: any;
   Highcharts: typeof Highcharts = Highcharts;
 
-  constructor(private taskData: TaskData, private projectData: ProjectData) {}
+  constructor(
+    private taskData: TaskData,
+    private projectData: ProjectData,
+    private teamData: TeamData,
+    private memberData: MemberData,
+  ) {}
 
   ngOnInit(): void {
     this.getTask();
     this.pieChartOption();
     this.barChartOption();
+    this.getTeam();
+    this.getProject();
+    this.getMember();
+  }
+
+  getWeek(result: Date[]): void {
+    console.log('week: ', result.map(getISOWeek));
   }
 
   getTask() {
     this.taskData
-      .search(this.pageNumber, this.pageSize, this.txtSearch, this.sort)
+      .search(this.pageNumber, this.pageSize, this.txtTaskSearch, this.sortTask)
       .subscribe({
         next: (res) => {
           console.log(res);
           this.taskList = res.pagingData.content;
+          this.taskNumberInProject = this.taskList.length;
           this.InCompleteTask();
         },
         error: (err) => {
@@ -48,7 +77,7 @@ export class ReportComponent implements OnInit {
 
   getProject() {
     this.projectData
-      .search(this.pageNumber, this.pageSize, this.txtSearch, this.sort)
+      .search(this.pageNumber, this.pageSize, this.txtProjectSearch, this.sortProject)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -60,11 +89,50 @@ export class ReportComponent implements OnInit {
       });
   }
 
+  getTeam() {
+    this.teamData
+      .search(this.pageNumber, this.pageSize, this.txtTeamSearch)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          this.teamList = res.pagingData.content;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  getMember() {
+    this.memberData
+      .search(this.pageNumber, this.pageSize, this.txtMemberSearch)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          this.memberList = res.pagingData.content;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  search() {
+    this.getTask();
+    this.txtTaskSearch = '';
+  }
+
+  getProjectValue(value: any) {
+    this.txtTaskSearch += `projectId.eq.${value},`
+  }
+
   InCompleteTask() {
+    this.inCplTask = [];
     for (let i = 0; i < this.taskList.length; i++) {
       if (this.taskList[i].state == 0)
-        this.inCompleteTask.push(this.taskList[i]);
+        this.inCplTask.push(this.taskList[i]);
     }
+    this.inCplTaskNumberInProject = this.inCplTask.length;
   }
 
   pieChartOption() {
@@ -101,39 +169,39 @@ export class ReportComponent implements OnInit {
       },
       series: [
         {
-          name: 'Brands',
+          name: 'Số task hoàn thành',
           colorByPoint: true,
           data: [
             {
-              name: 'Chrome',
+              name: 'Dự án 1',
               y: 70.67,
             },
             {
-              name: 'Edge',
+              name: 'Dự án 2',
               y: 14.77,
             },
             {
-              name: 'Firefox',
+              name: 'Dự án 3',
               y: 4.86,
             },
             {
-              name: 'Safari',
+              name: 'Dự án 4',
               y: 2.63,
             },
             {
-              name: 'Internet Explorer',
+              name: 'Dự án 5',
               y: 1.53,
             },
             {
-              name: 'Opera',
+              name: 'Dự án 6',
               y: 1.4,
             },
             {
-              name: 'Sogou Explorer',
+              name: 'Dự án 7',
               y: 0.84,
             },
             {
-              name: 'QQ',
+              name: 'Dự án 8',
               y: 0.51,
             },
             {
@@ -154,32 +222,20 @@ export class ReportComponent implements OnInit {
         type: 'column',
       },
       title: {
-        text: 'Monthly Average Rainfall',
-      },
-      subtitle: {
-        text: 'Source: WorldClimate.com',
+        text: 'Tình trạng dự án',
       },
       xAxis: {
         categories: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
+          'Dự án 1',
+          'Dự án 2',
+          'Dự án 3',
         ],
         crosshair: true,
       },
       yAxis: {
         min: 0,
         title: {
-          text: 'Rainfall (mm)',
+          text: 'Số Task',
         },
       },
       tooltip: {
@@ -199,31 +255,21 @@ export class ReportComponent implements OnInit {
       },
       series: [
         {
-          name: 'Tokyo',
+          name: 'Tổng Task',
           data: [
-            49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1,
-            95.6, 54.4,
+            10, 20, 15
           ],
         },
         {
-          name: 'New York',
+          name: 'Task hoàn thành',
           data: [
-            83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5,
-            106.6, 92.3,
+            3, 8, 5
           ],
         },
         {
-          name: 'London',
+          name: 'Task chưa hoàn thành',
           data: [
-            48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3,
-            51.2,
-          ],
-        },
-        {
-          name: 'Berlin',
-          data: [
-            42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8,
-            51.1,
+            7, 12, 10
           ],
         },
       ],

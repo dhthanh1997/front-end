@@ -1,38 +1,76 @@
 <div class="report-wrapper">
-  <div class="report-header my-4">
-    <button nz-button>Tạo mới biểu đồ</button>
+  <div class="report-header mt-4 mb-2">
+    <nz-select nzPlaceHolder="Nhân viên">
+      <nz-option nzValue=" " nzLabel="Tất cả"></nz-option>
+      <nz-option
+        *ngFor="let item of memberList; let idx = index"
+        [nzValue]="item.id"
+        [nzLabel]="item.name"
+      ></nz-option>
+    </nz-select>
+    <nz-select nzPlaceHolder="Dự án" ngModel (ngModelChange)="getProjectValue($event)">
+      <nz-option nzValue=" " nzLabel="Tất cả"></nz-option>
+      <nz-option
+        *ngFor="let item of projectList; let idx = index"
+        [nzValue]="item.id"
+        [nzLabel]="item.name"
+      ></nz-option>
+    </nz-select>
+    <nz-select nzPlaceHolder="Nhóm">
+      <nz-option nzValue=" " nzLabel="Tất cả"></nz-option>
+      <nz-option
+        *ngFor="let item of teamList; let idx = index"
+        [nzValue]="item.id"
+        [nzLabel]="item.teamName"
+      ></nz-option>
+    </nz-select>
+    <button nz-button class="ml-2" (click)="search()">Search</button>
+    <button nzShape="circle"
+      class="filter float-right"
+      nz-button
+      (click)="isAdvanced = !isAdvanced"
+    >
+      <i [hidden]="isAdvanced" nz-icon nzType="down" nzTheme="outline"></i>
+      <i [hidden]="!isAdvanced" nz-icon nzType="up" nzTheme="outline"></i>
+    </button>
+  </div>
+  <div class="report-advanced-filter mb-4" [hidden]="!isAdvanced">
+    <nz-range-picker
+      nzMode="week"
+      [(ngModel)]="date"
+      (ngModelChange)="getWeek($event)"
+    ></nz-range-picker>
   </div>
   <div class="report-detail">
-    <div class="card-detail">
+    <div class="card-detail mt-3">
       <nz-card nzHoverable class="card-item">
         <h4>Tổng số Task</h4>
-        <span>{{taskList.length}}</span>
+        <span>{{ taskNumberInProject }}</span>
       </nz-card>
       <nz-card nzHoverable class="card-item">
         <h4>Task đã hoàn thành</h4>
-        <span>{{taskList.length - inCompleteTask.length}}</span>
+        <span>{{ taskNumberInProject - inCplTaskNumberInProject }}</span>
       </nz-card>
       <nz-card nzHoverable class="card-item">
         <h4>Task chưa hoàn thành</h4>
-        <span>{{inCompleteTask.length}}</span>
+        <span>{{ inCplTaskNumberInProject }}</span>
       </nz-card>
     </div>
     <div class="chart-detail">
       <nz-card nzHoverable class="chart-item">
         <highcharts-chart
-            [Highcharts]="Highcharts"
-            [options]="pieChartOptions"
-            class="highchart"
-          ></highcharts-chart>
+          [Highcharts]="Highcharts"
+          [options]="pieChartOptions"
+          class="highchart"
+        ></highcharts-chart>
       </nz-card>
-      <nz-card class="chart-item">
+      <nz-card nzHoverable class="chart-item">
         <highcharts-chart
-            [Highcharts]="Highcharts"
-            [options]="barChartOptions"
-            class="highchart"
-          ></highcharts-chart>
+          [Highcharts]="Highcharts"
+          [options]="barChartOptions"
+          class="highchart"
+        ></highcharts-chart>
       </nz-card>
     </div>
-
   </div>
 </div>

@@ -134,7 +134,7 @@ export class MemberComponent implements OnInit {
   onCreate(): void {
     this.modalService
       .create({
-        nzTitle: 'Thêm mới thành viên',
+        nzTitle: 'Thêm mới nhân viên',
         nzClassName: 'modal-custom',
         nzContent: MemberFormComponent,
         nzWidth: 'modal-custom',
@@ -142,7 +142,7 @@ export class MemberComponent implements OnInit {
         nzMaskClosable: false,
         nzComponentParams: {
           mode: ModeModal.CREATE,
-          title: 'Thêm mới thành viên',
+          title: 'Thêm mới nhân viên',
         },
         nzDirection: 'ltr', // left to right
       })
@@ -152,7 +152,7 @@ export class MemberComponent implements OnInit {
           if (res) {
             this.notifyService.success(
               'Thành công',
-              'Thêm mới thành viên',
+              'Thêm mới nhân viên',
               this.modalOptions
             );
             this.getMember();
@@ -168,7 +168,7 @@ export class MemberComponent implements OnInit {
   onUpdate(item: memberContent): void {
     this.modalService
       .create({
-        nzTitle: 'Cập nhật thành viên',
+        nzTitle: 'Cập nhật nhân viên',
         nzClassName: 'modal-custom',
         nzContent: MemberFormComponent,
         nzWidth: 'modal-custom',
@@ -186,7 +186,7 @@ export class MemberComponent implements OnInit {
           if (res) {
             this.notifyService.success(
               'Thành công',
-              'Chỉnh sửa thành viên',
+              'Chỉnh sửa nhân viên',
               this.modalOptions
             );
           }
@@ -200,7 +200,7 @@ export class MemberComponent implements OnInit {
 
   onView(item: memberContent): void {
     this.modalService.create({
-      nzTitle: 'Xem thành viên',
+      nzTitle: 'Xem nhân viên',
       nzClassName: 'modal-custom',
       nzContent: MemberFormComponent,
       nzWidth: 'modal-custom',
@@ -208,7 +208,7 @@ export class MemberComponent implements OnInit {
       nzMaskClosable: false,
       nzComponentParams: {
         mode: ModeModal.VIEW,
-        title: 'Xem thành viên',
+        title: 'Xem nhân viên',
         id: item.id,
       },
       nzDirection: 'ltr', // left to right
@@ -218,7 +218,7 @@ export class MemberComponent implements OnInit {
   onDelete(id: number): void {
     this.modalService
       .create({
-        nzTitle: 'Xóa thành viên',
+        nzTitle: 'Xóa nhân viên',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -234,7 +234,7 @@ export class MemberComponent implements OnInit {
                 if (res) {
                   this.notifyService.success(
                     'Thành công',
-                    'Xóa thành viên',
+                    'Xóa nhân viên',
                     this.modalOptions
                   );
                 }
@@ -256,7 +256,7 @@ export class MemberComponent implements OnInit {
   onDeleteAll(listId: number[]) {
     this.modalService
       .create({
-        nzTitle: 'Xóa nhiều thành viên',
+        nzTitle: 'Xóa nhiều nhân viên',
         nzClassName: 'modal-custom',
         nzContent: DeleteComponent,
         nzCentered: true,
@@ -272,7 +272,7 @@ export class MemberComponent implements OnInit {
                 if (res) {
                   this.notifyService.success(
                     'Thành công',
-                    'Xóa thành viên',
+                    'Xóa nhân viên',
                     this.modalOptions
                   );
                 }

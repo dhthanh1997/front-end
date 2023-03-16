@@ -5,6 +5,23 @@
 
   .report-header {
 
+    nz-select {
+      margin: 0 8px 10px 0;
+      width: 25%;
+    }
+
+    .filter {
+      ::ng-deep .anticon svg {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .report-advanced-filter {
+
+    nz-range-picker {
+      width: 50.6%;
+    }
   }
 
   .report-detail {
