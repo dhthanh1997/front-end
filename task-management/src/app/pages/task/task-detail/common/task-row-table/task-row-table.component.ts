@@ -10,6 +10,7 @@ import { NotifyService } from 'src/app/_base/notify.service';
 import { initFormArray, setDataInFormArray, initDataObject, setDataInFormObject, EnumUtils } from 'src/app/_base/util';
 import { ProjectData } from 'src/app/_core/api/project/project-data';
 import { SectionData } from 'src/app/_core/api/section/section-data';
+import { TagData } from 'src/app/_core/api/tag/tag-data';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import { Filter } from 'src/app/_core/enum/filter-enum';
 import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
@@ -38,6 +39,8 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   public filterParam: string = "";
   public projectId!: number;
   public isEdit: boolean = false;
+  public tagList: any;
+  public color: any;
 
   @Input() sectionId: number = 0;
   @Input() title: string = "";
@@ -62,10 +65,25 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     private activeRoute: ActivatedRoute,
     private element: ElementRef,
     private sectionData: SectionData,
+    private tagData: TagData,
   ) {
     this.formValidation = initFormArray("taskArray");
     this.getQueryParam();
 
+  }
+
+  getTag() {
+    this.tagData.search(1, 999).subscribe({
+      next: (res) => {
+        if(res) {
+          this.tagList = res.pagingData.content;
+          console.log(this.tagList);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
   startEdit() {
@@ -127,6 +145,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
 
   async ngOnInit() {
     console.log(this.projectId);
+
     // console.log(this.paramSearch);
     // this.isLoadingSpinner();
     this.watchForChanges();
@@ -136,12 +155,12 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     this.isSortTask();
     // await this.search();
     this.initForm();
+    this.getTag();
   }
 
   initForm() {
     // console.log("init form array");
     this.formValidation = setDataInFormArray(this.listOfData, "taskArray", this.formValidation, this.task);
-
   }
 
 

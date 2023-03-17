@@ -89,7 +89,7 @@
                         </div>
 
                         <div
-                          class="col-7"
+                          class="col-6"
                           (mouseover)="mouseOver(item, idx)"
                           (mouseleave)="mouseLeave(item, idx)"
                         >
@@ -124,6 +124,28 @@
                             ></span>
                             {{ item.get("numberOfSubTask")!.value }}
                           </button>
+                        </div>
+                        <div
+                          class="col-1 mt-2"
+                          *ngFor="let color of tagList; let idx = index"
+                          [ngClass]="
+                            item.get('tagId')!.value != color.id ? 'd-none' : ''
+                          "
+                        >
+                          <div
+                            [style.background-color]="
+                              color.color != null &&
+                              color.color != '' &&
+                              color.color != undefined
+                                ? color.color
+                                : 'white'
+                            "
+                            style="
+                              width: 20px;
+                              height: 20px;
+                              border-radius: 50%;
+                            "
+                          ></div>
                         </div>
                         <div class="col-2">
                           <button
