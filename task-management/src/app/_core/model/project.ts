@@ -1,6 +1,32 @@
-/* eslint-disable @typescript-eslint/ban-types */
+import { BaseEntity } from "./base";
 
-export interface Project {
+export class Project extends BaseEntity {
+  attachFile?: string;
+  customerId?: number;
+  endDate?: string;
+  id: number;
+  name: string;
+  parentId?: number;
+  revenue?: number;
+  startDate?: string;
+  totalCost?: number;
+  totalHour?: number;
+  isChecked?: Boolean;
+
+  constructor() {
+    super();
+    this.id = 0;
+    this.name = '';
+    this.startDate = '';
+    this.endDate = '';
+    this.revenue = 0;
+    this.totalCost = 0;
+    this.totalHour = 0;
+    this.isChecked = false;
+  }
+}
+
+export interface project {
   pagingData: test;
 }
 

@@ -5,10 +5,17 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { projectContent } from '../../../_core/model/project';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { Project, projectContent } from '../../../_core/model/project';
 import { ProjectData } from '../../../_core/api/project/project-data';
-
+import {
+  initDataObject,
+  initFormArray,
+  initFormObject,
+  setDataInFormArray,
+  updateControlInArray,
+} from 'src/app/_base/util';
+import { SubProjectComponent } from '../sub-project/sub-project.component';
 
 enum ModeModal {
   CREATE = 'create',
@@ -26,6 +33,8 @@ export class ProjectFormComponent implements OnInit {
   isConfirmLoading = false;
   checked = false;
 
+  private project: Project = new Project();
+
   @Input() mode!: string;
 
   @Input() title: string = '';
@@ -38,9 +47,11 @@ export class ProjectFormComponent implements OnInit {
     private element: ElementRef,
     private fb: FormBuilder,
     private service: ProjectData,
+    private modal: NzModalService,
     private modelRef: NzModalRef<ProjectFormComponent>
   ) {
-    // this.formValidation.addControl('subProject', this.fb.array([]));
+    this.formValidation = initFormObject(this.project, this.project);
+    this.formValidation.addControl('subProject', this.fb.array([]));
   }
 
   get name() {
@@ -67,9 +78,9 @@ export class ProjectFormComponent implements OnInit {
     return this.formValidation.get('rangeDate') as FormArray;
   }
 
-  // get subProject(): FormArray {
-  //   return this.formValidation.get('subProject') as FormArray;
-  // }
+  get subProject() {
+    return this.formValidation.get('subProject') as FormArray;
+  }
 
   // get realStartDate() {
   //   return this.formValidation.get('realStartDate');
@@ -88,6 +99,8 @@ export class ProjectFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.formValidation);
+
     this.formValidation = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       parentId: ['', []],
@@ -107,6 +120,34 @@ export class ProjectFormComponent implements OnInit {
         this.getById(this.id);
       }
     }
+  }
+
+  addSubProject() {
+    this.modal
+      .create({
+        nzContent: SubProjectComponent,
+        nzTitle: 'Thêm mới dự án con',
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzDirection: 'ltr',
+        nzClassName: 'modal-custom',
+        nzClosable: true,
+        nzComponentParams: {
+          // formValidation: this.formValidation
+          projectId: this.formValidation.get('id')?.value
+            ? this.formValidation.get('id')?.value
+            : 0,
+          // isDialog: true,
+        },
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      })
   }
 
   changeChecked() {
@@ -133,6 +174,10 @@ export class ProjectFormComponent implements OnInit {
         });
       },
     });
+  }
+
+  getProject() {
+
   }
 
   handleOk(): void {

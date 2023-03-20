@@ -126,27 +126,26 @@
                           </button>
                         </div>
                         <div class="col-1">
-                          <div class="mt-2"
-                          *ngFor="let color of tagList; let idx = index"
-                          [ngClass]="
-                            item.get('tagId')!.value != color.id ? 'd-none' : ''
-                          "
-                        >
                           <div
-                            [style.background-color]="
-                              color.color != null &&
-                              color.color != '' &&
-                              color.color != undefined
-                                ? color.color
-                                : 'white'
+                            class="mt-2"
+                            *ngFor="let color of tagList; let idx = index"
+                            [ngClass]="
+                              item.get('tagId')!.value != color.id
+                                ? 'd-none'
+                                : ''
                             "
-                            style="
-                              width: 20px;
-                              height: 20px;
-                              border-radius: 50%;
-                            "
-                          ></div>
-                        </div>
+                          >
+                            <div
+                              class="tag"
+                              [style.background-color]="
+                                color.color != null &&
+                                color.color != '' &&
+                                color.color != undefined
+                                  ? color.color
+                                  : 'white'
+                              "
+                            ></div>
+                          </div>
                         </div>
 
                         <div class="col-2">

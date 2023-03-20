@@ -14,6 +14,7 @@ export class MemberFormComponent implements OnInit {
   formValidation!: FormGroup;
   isConfirmLoading = false;
   checked = false;
+  teamList: any[] = [];
 
   @Input() mode!: string;
 
@@ -45,6 +46,10 @@ export class MemberFormComponent implements OnInit {
     return this.formValidation.get('username');
   }
 
+  get team() {
+    return this.formValidation.get('team');
+  }
+
   ngOnInit(): void {
     console.log(this.id);
 
@@ -61,6 +66,7 @@ export class MemberFormComponent implements OnInit {
         ],
       ],
       username: ['', [Validators.required, Validators.minLength(8)]],
+      team: ['', []],
     });
 
     if (this.mode != ModeModal.CREATE) {

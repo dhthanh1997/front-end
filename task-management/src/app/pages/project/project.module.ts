@@ -12,9 +12,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { CoreModule } from '../../_core/core.module';
 import { BaseModule } from 'src/app/_base/base.module';
+import { SubProjectComponent } from './sub-project/sub-project.component';
 
 @NgModule({
-  declarations: [ProjectComponent, ProjectFormComponent, DeleteComponent],
+  declarations: [ProjectComponent, ProjectFormComponent, DeleteComponent, SubProjectComponent],
   imports: [
     CommonModule,
     ProjectRoutingModule,
