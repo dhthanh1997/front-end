@@ -33,7 +33,7 @@ export class ProjectFormComponent implements OnInit {
   isConfirmLoading = false;
   checked = false;
 
-  private project: Project = new Project();
+  subProjectList: any[] = [];
 
   @Input() mode!: string;
 
@@ -49,10 +49,7 @@ export class ProjectFormComponent implements OnInit {
     private service: ProjectData,
     private modal: NzModalService,
     private modelRef: NzModalRef<ProjectFormComponent>
-  ) {
-    this.formValidation = initFormObject(this.project, this.project);
-    this.formValidation.addControl('subProject', this.fb.array([]));
-  }
+  ) {}
 
   get name() {
     return this.formValidation.get('name');
@@ -78,10 +75,6 @@ export class ProjectFormComponent implements OnInit {
     return this.formValidation.get('rangeDate') as FormArray;
   }
 
-  get subProject() {
-    return this.formValidation.get('subProject') as FormArray;
-  }
-
   // get realStartDate() {
   //   return this.formValidation.get('realStartDate');
   // }
@@ -103,7 +96,7 @@ export class ProjectFormComponent implements OnInit {
 
     this.formValidation = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
-      parentId: ['', []],
+      parentId: [0, []],
       revenue: [0 , []],
       startDate: ['', []],
       endDate: ['', []],
@@ -114,6 +107,8 @@ export class ProjectFormComponent implements OnInit {
       totalHour: [0, []],
       // isChecked: [this.checked, []],
     });
+
+    this.getSubProject();
 
     if (this.mode != ModeModal.CREATE) {
       if (this.id) {
@@ -134,15 +129,14 @@ export class ProjectFormComponent implements OnInit {
         nzClosable: true,
         nzComponentParams: {
           // formValidation: this.formValidation
-          projectId: this.formValidation.get('id')?.value
-            ? this.formValidation.get('id')?.value
-            : 0,
+          projectId: this.id,
           // isDialog: true,
         },
       })
       .afterClose.subscribe({
         next: (res) => {
           console.log(res);
+          this.getSubProject();
         },
         error: (err) => {
           console.log(err);
@@ -176,8 +170,18 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  getProject() {
-
+  getSubProject() {
+    this.service.search(1, 999, `parentId.eq.${this.id},`).subscribe({
+      next: (res) => {
+        if (res) {
+          console.log(res);
+          this.subProjectList = res.pagingData.content;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
   handleOk(): void {

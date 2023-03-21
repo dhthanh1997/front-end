@@ -41,7 +41,7 @@ export class ProjectComponent implements OnInit {
 
   public pageNumber = 1;
   public pageSize = 10;
-  public txtSearch: string | undefined;
+  public txtSearch: string | undefined = 'parentId.eq.0,';
   public totalElements = 0;
   public totalPages: number | undefined;
 
@@ -75,13 +75,14 @@ export class ProjectComponent implements OnInit {
     const input = this.element.nativeElement.querySelector('#search');
     if (this.FilterValue === '') {
       console.log(this.FilterValue);
-      this.txtSearch = `name.cn.${input.value},`;
+      this.txtSearch += `name.cn.${input.value},`;
     } else {
       console.log(this.FilterValue);
-      this.txtSearch = `${this.FilterValue}.cn.${input.value},`;
+      this.txtSearch += `${this.FilterValue}.cn.${input.value},`;
       console.log(this.txtSearch);
     }
     this.getProject();
+    this.txtSearch = 'parentId.eq.0,';
   }
 
   getFilterValue(index: number) {
@@ -161,6 +162,7 @@ export class ProjectComponent implements OnInit {
       .search(this.pageNumber, this.pageSize, this.txtSearch, this.SorterValue)
       .subscribe({
         next: (res) => {
+          // debugger;
           console.log(res);
           this.listData = res.pagingData.content;
           console.log(this.listData);

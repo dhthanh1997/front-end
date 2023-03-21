@@ -75,52 +75,6 @@
         </div>
       </div>
 
-      <!-- row 4 -->
-      <div nz-row class="d-flex flex-row" [nzGutter]="8">
-        <div nz-col [nzSpan]="12">
-          <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label nz-col [nzSpan]="6"> Tổng chi phí </nz-form-label>
-            <nz-form-control nz-col [nzSpan]="18" [nzErrorTip]="TotalCost">
-              <input
-                nz-input
-                currencyMask
-                [options]="{ thousands: ',', align: 'left', prefix: '', precision: 0 }"
-                placeholder="Tổng chi phí dự án"
-                formControlName="totalCost"
-                name="totalCost"
-
-              />
-              <ng-template #TotalCost let-control>
-                <ng-container *ngIf="control.hasError('max')"
-                  >Tối đa 11 ký tự</ng-container
-                >
-              </ng-template>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-
-        <div nz-col [nzSpan]="12">
-          <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label nz-col [nzSpan]="6"> Tổng thời gian </nz-form-label>
-            <nz-form-control nz-col [nzSpan]="18" [nzErrorTip]="TotalHour">
-              <input
-                nz-input
-                currencyMask
-                [options]="{ thousands: ',', align: 'left', prefix: '', precision: 0 }"
-                placeholder="Tổng thời gian dự án (h)"
-                formControlName="totalHour"
-                name="totalHour"
-              />
-              <ng-template #TotalHour let-control>
-                <ng-container *ngIf="control.hasError('max')"
-                  >Tối đa 11 ký tự</ng-container
-                >
-              </ng-template>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-      </div>
-
     </form>
   </div>
 </div>
@@ -130,6 +84,7 @@
     nz-button
     nzType="primary"
     [disabled]="!formValidation.valid"
+    (click)="handleOk()"
   >
     Lưu
   </button>

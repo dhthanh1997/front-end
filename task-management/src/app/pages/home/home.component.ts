@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
 
   public getProject() {
     this.projectData
-      .search(this.pageNumber, this.pageSize, this.txtSearch)
+      .search(this.pageNumber, this.pageSize, 'parentId.eq.0,')
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit {
 
   public getTask() {
     this.taskData
-      .search(this.pageNumber, this.pageSize, this.txtSearch)
+      .search(this.pageNumber, this.pageSize, 'parentId.nu.nu,')
       .subscribe({
         next: (res) => {
           console.log(res);
