@@ -263,6 +263,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
         this.isCollapsed = !this.isCollapsed;
         await this.search();
         await this.initForm();
+        await this.getTag();
       }
     });
   }
