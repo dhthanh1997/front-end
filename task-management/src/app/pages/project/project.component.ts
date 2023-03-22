@@ -12,6 +12,7 @@ import { DeleteComponent } from './delete/delete.component';
 import { Router } from '@angular/router';
 import { ProjectData } from '../../_core/api/project/project-data';
 import { timer } from 'rxjs';
+import { TaskData } from 'src/app/_core/api/task/task-data';
 
 enum ModeModal {
   CREATE = 'create',
@@ -27,6 +28,7 @@ enum ModeModal {
 export class ProjectComponent implements OnInit {
   constructor(
     private projectData: ProjectData,
+    private taskData: TaskData,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
     private element: ElementRef,
@@ -38,6 +40,8 @@ export class ProjectComponent implements OnInit {
   public filterField = ['Tên', 'Doanh thu'];
   public sortField = ['Tăng dần (tên)', 'Giảm dần (tên)'];
 
+  public taskList: any[] = [];
+  public idTaskList: any[] = [];
 
   public pageNumber = 1;
   public pageSize = 10;
@@ -62,13 +66,14 @@ export class ProjectComponent implements OnInit {
     this.getProject();
     // this.projectData.switchLanguage();
     console.log(this.listId);
+    this.getTask();
   }
 
 
   // event
-  navigationTask(id: any) {
-    this.router.navigate(['pages/task/project-task', id]);
-  }
+  // navigationTask(id: any) {
+  //   this.router.navigate(['pages/task/project-task', id]);
+  // }
 
   search() {
     // debugger;
@@ -281,6 +286,7 @@ export class ProjectComponent implements OnInit {
                     'Xóa dự án',
                     this.modalOptions
                   );
+                  this.deleteTaskList(id);
                 }
                 this.getProject();
               },
@@ -335,5 +341,38 @@ export class ProjectComponent implements OnInit {
           console.log(res);
         },
       });
+  }
+
+  public getTask() {
+    this.taskData.search(1, 999).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res) {
+          this.taskList = res.pagingData.content;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  deleteTaskList(id: number) {
+    for(let item of this.taskList) {
+      if(item.projectId === id) {
+        this.idTaskList.push(item.id);
+      }
+    }
+    this.taskData.deleteSelectedId(this.idTaskList).subscribe({
+      next: (res) => {
+        console.log(res);
+        if(res) {
+          // do sth
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 }
