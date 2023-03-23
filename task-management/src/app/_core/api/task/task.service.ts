@@ -44,6 +44,10 @@ export class TaskService implements TaskData {
 
   }
 
+  deleteSelectedId(data: number[]): Observable<ResponseDataObject> {
+    return this.api.deleteSelectedId(data);
+  }
+
   markCompleteTask(id: number): Observable<ResponseDataObject> {
     return this.api.markCompleteTask(id);
   }

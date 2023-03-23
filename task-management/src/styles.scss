@@ -3,6 +3,17 @@
 // @import "~ng-zorro-antd/ng-zorro-antd.min.css";
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.min.css";
 
+// highcharts
+@import "../node_modules/highcharts/css/highcharts.scss";
+
+.highcharts-credits {
+  display: none;
+}
+
+// .highcharts-root {
+//   height: 350px;
+// }
+
 .container::before,
 .container::after,
 .row::before,

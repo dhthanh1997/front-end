@@ -27,7 +27,7 @@ export class TaskApi {
     return this.http.get(this.apiController, { params });
   }
 
-  
+
   save(data: Task): Observable<ResponseDataObject> {
     return this.http.post(this.apiController, data);
   }
@@ -54,6 +54,10 @@ export class TaskApi {
 
   deleteById(id: number): Observable<ResponseDataObject> {
     return this.http.delete(`${this.apiController}` + "/" + id);
+  }
+
+  deleteSelectedId(data: number[]): Observable<ResponseDataObject> {
+    return this.http.post(`${this.apiController}` + "/deleteByListId", data);
   }
 
   markCompleteTask(id: number): Observable<ResponseDataObject> {

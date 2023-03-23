@@ -33,6 +33,11 @@ const routes: Routes = [
           import('./member/member.module').then((m) => m.MemberModule),
       },
       {
+        path: 'team',
+        loadChildren: () =>
+          import('./team/team.module').then((m) => m.TeamModule),
+      },
+      {
         path: 'roles-app',
         loadChildren: () =>
           import('./role/role-application/role-application.module').then(
@@ -44,6 +49,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./user/profile/profile.module').then(
             (m) => m.ProfileModule
+          ),
+      },
+      {
+        path: 'user-setting',
+        loadChildren: () =>
+          import('./user/setting/setting.module').then(
+            (m) => m.SettingModule
           ),
       },
       {

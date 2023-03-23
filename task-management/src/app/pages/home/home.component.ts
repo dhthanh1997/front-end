@@ -5,6 +5,7 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { MemberData } from 'src/app/_core/api/member/member-data';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import { ProjectData } from '../../_core/api/project/project-data';
@@ -36,7 +37,8 @@ export class HomeComponent implements OnInit {
     private projectData: ProjectData,
     private memberData: MemberData,
     private taskData: TaskData,
-    private element: ElementRef
+    private element: ElementRef,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +49,7 @@ export class HomeComponent implements OnInit {
 
   public getProject() {
     this.projectData
-      .search(this.pageNumber, this.pageSize, this.txtSearch)
+      .search(this.pageNumber, this.pageSize, 'parentId.eq.0,')
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -102,7 +104,7 @@ export class HomeComponent implements OnInit {
 
   public getTask() {
     this.taskData
-      .search(this.pageNumber, this.pageSize, this.txtSearch)
+      .search(this.pageNumber, this.pageSize, 'parentId.nu.nu,')
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -126,5 +128,9 @@ export class HomeComponent implements OnInit {
     this.pageSize = 8;
     this.getTask();
     this.isTaskHidden = false;
+  }
+
+  projectNav(id: any) {
+    this.router.navigate(['pages/task/project-task', id]);
   }
 }

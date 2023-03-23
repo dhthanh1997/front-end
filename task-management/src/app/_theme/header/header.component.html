@@ -13,14 +13,13 @@
         ></i>
       </span>
       <div
-        routerLink="pages/home"
         class="logo w-100 h-100 d-flex align-items-end ml-3"
-        style="max-height: 100%; max-width: 100%; cursor: pointer;"
+        style="max-height: 100%; max-width: 100%;"
       >
-        <img
+        <img routerLink="pages/home"
           src="assets/img/Logo-ANSV.png"
           alt=""
-          style="width: 100px; height: auto"
+          style="width: 100px; height: auto; cursor: pointer;"
         />
       </div>
     </div>
@@ -40,7 +39,7 @@
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
           <li nz-menu-item routerLink="user-profile">Hồ sơ cá nhân</li>
-          <li nz-menu-item >Thiết lập cá nhân</li>
+          <li nz-menu-item nzDisabled routerLink="user-setting">Thiết lập cá nhân</li>
           <li nz-menu-item nzDanger (click)="logOut()">Đăng xuất</li>
         </ul>
       </nz-dropdown-menu>

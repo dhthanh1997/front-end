@@ -107,21 +107,21 @@
                 [routerLink]="['project-task', item.id]"
                 >{{ item.name }}</span
               > -->
-              <span
+              <a
                 style="cursor: pointer"
                 nz-tooltip
                 [nzTooltipTitle]="item.name"
                 [nzTooltipTrigger]="item.name.length > 20 ? 'hover' : null"
-                (click)="navigationTask(item.id)"
+                [routerLink]="['/pages/task/project-task', item.id]"
                 >{{
                   item.name.length > 20
                     ? (item.name | slice : 0 : 20) + "..."
                     : item.name
-                }}</span
+                }}</a
               >
             </td>
             <td nzAlign="center">
-              {{ item.revenue }}
+              {{ item.revenue | currency:'VND':'đ':'':'vi' }}
             </td>
             <!-- <td nzAlign="center">
 

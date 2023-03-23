@@ -160,8 +160,8 @@ export class RoleAppDetailComponent implements OnInit {
 
   notify() {
     this.notifyService.success(
-      'Success',
-      'Role permission saved successfully',
+      'Thành công',
+      'Phân quyền',
       this.modalOptions
     );
   }

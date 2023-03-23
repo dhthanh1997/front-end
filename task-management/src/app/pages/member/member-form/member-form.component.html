@@ -102,6 +102,34 @@
       </div>
 
       <!-- row 4 -->
+
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Nhóm
+              <!-- <span style="color: red">*</span> -->
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21">
+              <nz-select
+                formControlName="team"
+                name="team"
+                [nzDisabled]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
+              >
+                <nz-option
+                  *ngFor="let item of teamList"
+                  nzValue="{{ item.code }}"
+                  nzLabel="{{ item.name }}"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- row 5 -->
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">

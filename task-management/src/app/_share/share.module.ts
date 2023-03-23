@@ -4,6 +4,7 @@ import { ShareService } from './share.service';
 import { AutoFocusDirective } from './directive/auto-focus.directive';
 import { ClickOutsideAndUpdateDirective } from './directive/click-outside-and-update.directive';
 import { StateTaskPipe } from './pipe/state-task.pipe';
+import { TestDirective } from './directive/test.directive';
 
 
 
@@ -12,6 +13,7 @@ import { StateTaskPipe } from './pipe/state-task.pipe';
     AutoFocusDirective,
     ClickOutsideAndUpdateDirective,
     StateTaskPipe,
+    TestDirective,
   ],
   imports: [
     CommonModule
@@ -19,6 +21,7 @@ import { StateTaskPipe } from './pipe/state-task.pipe';
   exports: [
     AutoFocusDirective,
     ClickOutsideAndUpdateDirective,
+    TestDirective,
     StateTaskPipe
   ],
   providers: [

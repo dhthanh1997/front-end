@@ -31,40 +31,48 @@ import { UploadFileApi } from './api/upload-file/upload-file.api';
 import { ProjectData } from './api/project/project-data';
 import { ProjectService } from './api/project/project.service';
 import { ProjectApi } from './api/project/project.api';
+import { TeamApi } from './api/team/team.api';
+import { TeamData } from './api/team/team-data';
+import { TeamService } from './api/team/team.service';
 
 const API = [
-  TaskApi, CommentApi, MemberApi, PermissionApi, RoleAppApi, RolePermissionApi, TagApi, SectionApi, UploadFileApi, ProjectApi
-]
+  TaskApi,
+  CommentApi,
+  MemberApi,
+  PermissionApi,
+  RoleAppApi,
+  RolePermissionApi,
+  TagApi,
+  SectionApi,
+  UploadFileApi,
+  ProjectApi,
+  TeamApi
+];
 
 const SERVICES = [
-  {provide: TaskData, useClass: TaskService},
-  {provide: CommentData, useClass: CommentService},
-  {provide: MemberData, useClass: MemberService},
-  {provide: PermissionData, useClass: PermissionService},
-  {provide: RoleAppData, useClass: RoleAppService},
-  {provide: RolePermissionData, useClass: RolePermissionService},
-  {provide: TagData, useClass: TagService},
-  {provide: SectionData, useClass: SectionService},
-  {provide: UploadFileData, useClass: UploadFileService},
-  {provide: ProjectData, useClass: ProjectService},
-]
+  { provide: TaskData, useClass: TaskService },
+  { provide: CommentData, useClass: CommentService },
+  { provide: MemberData, useClass: MemberService },
+  { provide: PermissionData, useClass: PermissionService },
+  { provide: RoleAppData, useClass: RoleAppService },
+  { provide: RolePermissionData, useClass: RolePermissionService },
+  { provide: TagData, useClass: TagService },
+  { provide: SectionData, useClass: SectionService },
+  { provide: UploadFileData, useClass: UploadFileService },
+  { provide: ProjectData, useClass: ProjectService },
+  { provide: TeamData, useClass: TeamService },
+];
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    BaseModule.forRoot()
-  ],
-  exports: []
+  imports: [CommonModule, BaseModule.forRoot()],
+  exports: [],
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
-      providers: [
-        ...API,
-        ...SERVICES,
-      ]
-    }
+      providers: [...API, ...SERVICES],
+    };
   }
 }

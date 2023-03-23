@@ -11,6 +11,7 @@ export abstract class TaskData {
     abstract getById(id: number): Observable<ResponseDataObject>;
     abstract getByParentId(id: number): Observable<ResponseDataObject>;
     abstract deleteById(id: number): Observable<ResponseDataObject>;
+    abstract deleteSelectedId(data: number[]): Observable<ResponseDataObject>;
     abstract markCompleteTask(id: number): Observable<ResponseDataObject>;
 
 }
