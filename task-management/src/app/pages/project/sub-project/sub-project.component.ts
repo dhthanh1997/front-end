@@ -7,10 +7,9 @@ import { projectContent } from 'src/app/_core/model/project';
 @Component({
   selector: 'app-sub-project',
   templateUrl: './sub-project.component.html',
-  styleUrls: ['./sub-project.component.scss']
+  styleUrls: ['./sub-project.component.scss'],
 })
 export class SubProjectComponent implements OnInit {
-
   formValidation!: FormGroup;
   isConfirmLoading = false;
   checked = false;
@@ -18,6 +17,8 @@ export class SubProjectComponent implements OnInit {
   subProjectList: any[] = [];
 
   @Input() projectId!: number;
+  @Input() startDateValidate: string = '';
+  @Input() endDateValidate: string = '';
 
   isVisible = false;
 
@@ -59,12 +60,19 @@ export class SubProjectComponent implements OnInit {
     this.formValidation = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       parentId: ['', []],
-      revenue: [0 , []],
+      revenue: [0, []],
       startDate: ['', []],
       endDate: ['', []],
       rangeDate: ['', []],
     });
   }
+
+  disabledDate = (current: Date) => {
+    let prev = new Date(this.startDateValidate);
+    let next = new Date(this.endDateValidate);
+    prev.setDate(prev.getDate() - 1);
+    return current <= prev || current > next;
+  };
 
   changeChecked() {
     this.checked = !this.checked;
@@ -121,5 +129,4 @@ export class SubProjectComponent implements OnInit {
     this.isVisible = false;
     this.modelRef.close();
   }
-
 }

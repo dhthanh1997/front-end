@@ -474,6 +474,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         nzMaskClosable: false,
         nzDirection: 'ltr',
         nzClassName: 'modal-custom',
+        nzWidth: '600px',
         nzClosable: false,
         nzFooter: null,
         nzComponentParams: {

@@ -3,6 +3,6 @@
   height: 100%;
 }
 
-::ng-deep .ant-tabs-content {
+:host ::ng-deep .ant-tabs-content {
   height: 100% !important;
 }

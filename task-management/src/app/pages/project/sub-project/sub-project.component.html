@@ -64,12 +64,18 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label [nzSpan]="3" style="word-wrap: break-word;"> Ngày </nz-form-label>
-            <nz-form-control [nzSpan]="21">
+            <nz-form-control [nzSpan]="21" [nzErrorTip]="Date">
               <nz-range-picker
+                [nzDisabledDate]="disabledDate"
                 style="width: 100%"
                 name="rangeDate"
                 formControlName="rangeDate"
               ></nz-range-picker>
+              <ng-template #Date let-control>
+                <ng-container *ngIf="control.hasError('validateDate')">
+                  Test
+                </ng-container>
+              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>

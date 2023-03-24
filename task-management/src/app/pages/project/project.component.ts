@@ -45,7 +45,7 @@ export class ProjectComponent implements OnInit {
 
   public pageNumber = 1;
   public pageSize = 10;
-  public txtSearch: string | undefined = 'parentId.eq.0,';
+  public txtSearch: string | undefined = 'parentId.nu.nu,';
   public totalElements = 0;
   public totalPages: number | undefined;
 
@@ -87,7 +87,7 @@ export class ProjectComponent implements OnInit {
       console.log(this.txtSearch);
     }
     this.getProject();
-    this.txtSearch = 'parentId.eq.0,';
+    this.txtSearch = 'parentId.nu.nu,';
   }
 
   getFilterValue(index: number) {

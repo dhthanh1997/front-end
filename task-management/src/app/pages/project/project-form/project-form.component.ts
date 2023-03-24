@@ -92,11 +92,9 @@ export class ProjectFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.formValidation);
-
     this.formValidation = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
-      parentId: [0, []],
+      parentId: ['', []],
       revenue: [0 , []],
       startDate: ['', []],
       endDate: ['', []],
@@ -126,11 +124,13 @@ export class ProjectFormComponent implements OnInit {
         nzMaskClosable: false,
         nzDirection: 'ltr',
         nzClassName: 'modal-custom',
+        nzWidth: '700px',
         nzClosable: true,
         nzComponentParams: {
           // formValidation: this.formValidation
           projectId: this.id,
-          // isDialog: true,
+          startDateValidate: this.formValidation.get('startDate')!.value,
+          endDateValidate: this.formValidation.get('endDate')!.value,
         },
       })
       .afterClose.subscribe({
