@@ -171,17 +171,19 @@ export class ProjectFormComponent implements OnInit {
   }
 
   getSubProject() {
-    this.service.search(1, 999, `parentId.eq.${this.id},`).subscribe({
-      next: (res) => {
-        if (res) {
-          console.log(res);
-          this.subProjectList = res.pagingData.content;
+    if (this.mode == ModeModal.UPDATE || this.mode == ModeModal.VIEW) {
+      this.service.search(1, 999, `parentId.eq.${this.id},`).subscribe({
+        next: (res) => {
+          if (res) {
+            console.log(res);
+            this.subProjectList = res.pagingData.content;
+          }
+        },
+        error: (err) => {
+          console.log(err);
         }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+      })
+    }
   }
 
   handleOk(): void {

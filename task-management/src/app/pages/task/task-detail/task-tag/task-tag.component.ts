@@ -110,7 +110,7 @@ export class TaskTagComponent implements OnInit {
   deleteTag(id: number) {
     this.tagData.deleteById(id).subscribe({
       next: (res) => {
-        debugger;
+        // debugger;
         this.getTask(id);
         this.getTag();
         console.log(this.listTag);

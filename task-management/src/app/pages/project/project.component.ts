@@ -37,15 +37,15 @@ export class ProjectComponent implements OnInit {
 
   public listData: any;
   public listId: number[] = [];
+  public projectList: any[] = [];
   public filterField = ['Tên', 'Doanh thu'];
   public sortField = ['Tăng dần (tên)', 'Giảm dần (tên)'];
 
   public taskList: any[] = [];
-  public idTaskList: any[] = [];
 
   public pageNumber = 1;
   public pageSize = 10;
-  public txtSearch: string | undefined = 'parentId.nu.nu,';
+  public txtSearch: string | undefined = '';
   public totalElements = 0;
   public totalPages: number | undefined;
 
@@ -64,6 +64,7 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProject();
+    this.getAllProject();
     // this.projectData.switchLanguage();
     console.log(this.listId);
     this.getTask();
@@ -87,7 +88,7 @@ export class ProjectComponent implements OnInit {
       console.log(this.txtSearch);
     }
     this.getProject();
-    this.txtSearch = 'parentId.nu.nu,';
+    this.txtSearch = '';
   }
 
   getFilterValue(index: number) {
@@ -164,7 +165,7 @@ export class ProjectComponent implements OnInit {
 
   public getProject() {
     this.projectData
-      .search(this.pageNumber, this.pageSize, this.txtSearch, this.SorterValue)
+      .search(this.pageNumber, this.pageSize, this.txtSearch + 'parentId.nu.nu,', this.SorterValue)
       .subscribe({
         next: (res) => {
           // debugger;
@@ -205,6 +206,7 @@ export class ProjectComponent implements OnInit {
               this.modalOptions
             );
             this.getProject();
+            this.getAllProject();
             // this.router.navigate(['pages/task/project-task' + res.data.id]);
           }
         },
@@ -240,6 +242,7 @@ export class ProjectComponent implements OnInit {
             );
           }
           this.getProject();
+          this.getAllProject();
         },
         error: (res) => {
           console.log(res);
@@ -286,9 +289,13 @@ export class ProjectComponent implements OnInit {
                     'Xóa dự án',
                     this.modalOptions
                   );
-                  this.deleteTaskList(id);
+                  let listId = [];
+                  listId.push(id);
+                  this.deleteTaskList(listId);
+                  this.deleteSubProject(listId);
                 }
                 this.getProject();
+                this.getAllProject();
               },
               error: (err) => {
                 console.log(err);
@@ -325,8 +332,11 @@ export class ProjectComponent implements OnInit {
                     'Xóa dự án',
                     this.modalOptions
                   );
+                  this.deleteTaskList(listId);
+                  this.deleteSubProject(listId);
                 }
                 this.getProject();
+                this.getAllProject();
               },
               error: (err) => {
                 console.log(err);
@@ -343,6 +353,20 @@ export class ProjectComponent implements OnInit {
       });
   }
 
+  public getAllProject(){
+    this.projectData.search(1, 999).subscribe({
+      next: (res) => {
+        if(res) {
+          console.log(res);
+          this.projectList = res.pagingData.content;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
   public getTask() {
     this.taskData.search(1, 999).subscribe({
       next: (res) => {
@@ -357,13 +381,42 @@ export class ProjectComponent implements OnInit {
     })
   }
 
-  deleteTaskList(id: number) {
-    for(let item of this.taskList) {
-      if(item.projectId === id) {
-        this.idTaskList.push(item.id);
+  deleteTaskList(listId: number[]) {
+    debugger;
+    let idTaskList: any[] = [];
+    for(let i of listId) {
+      for(let item of this.taskList) {
+        if(item.projectId === i) {
+          idTaskList.push(item.id);
+        }
       }
     }
-    this.taskData.deleteSelectedId(this.idTaskList).subscribe({
+
+    this.taskData.deleteSelectedId(idTaskList).subscribe({
+      next: (res) => {
+        console.log(res);
+        if(res) {
+          // do sth
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  deleteSubProject(listId: number[]) {
+    debugger;
+    let idSubProjectList = [];
+    for(let i of listId) {
+      for(let item of this.projectList) {
+        if(item.parentId === i) {
+          idSubProjectList.push(item.id);
+        }
+      }
+    }
+
+    this.projectData.deleteSelectedProject(idSubProjectList).subscribe({
       next: (res) => {
         console.log(res);
         if(res) {

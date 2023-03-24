@@ -31,6 +31,7 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
 
   @Input() public isDialog: boolean = false;
   @Input() public idTask: number = 0;
+  @Input() public idProject: number = 0;
 
 
   constructor(private fb: FormBuilder,
@@ -243,8 +244,11 @@ export class TaskDetailTableComponent implements OnInit, AfterViewInit, DoCheck 
   }
 
   saveListTask() {
-    // debugger;
     const item = this.formValidation.get('subTask')?.value;
+    item.map((x: any) => {
+      x.projectId = this.idProject;
+      return x;
+    })
     this.taskData.saveListTask(item).subscribe({
       next: (res) => {
         if (res.message === ResponseStatusEnum.error) {
