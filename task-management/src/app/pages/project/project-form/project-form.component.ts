@@ -16,6 +16,8 @@ import {
   updateControlInArray,
 } from 'src/app/_base/util';
 import { SubProjectComponent } from '../sub-project/sub-project.component';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { DeleteComponent } from '../delete/delete.component';
 
 enum ModeModal {
   CREATE = 'create',
@@ -43,11 +45,16 @@ export class ProjectFormComponent implements OnInit {
 
   isVisible = false;
 
+  modalOptions: any = {
+    nzDuration: 2000,
+  };
+
   constructor(
     private element: ElementRef,
     private fb: FormBuilder,
-    private service: ProjectData,
+    private projectData: ProjectData,
     private modal: NzModalService,
+    private notifyService: NzNotificationService,
     private modelRef: NzModalRef<ProjectFormComponent>
   ) {}
 
@@ -128,9 +135,9 @@ export class ProjectFormComponent implements OnInit {
         nzClosable: true,
         nzComponentParams: {
           // formValidation: this.formValidation
+          mode: ModeModal.CREATE,
           projectId: this.id,
-          startDateValidate: this.formValidation.get('startDate')!.value,
-          endDateValidate: this.formValidation.get('endDate')!.value,
+          rangeDateValue: this.formValidation.get('rangeDate')!.value,
         },
       })
       .afterClose.subscribe({
@@ -149,7 +156,7 @@ export class ProjectFormComponent implements OnInit {
   }
 
   getById(id: number) {
-    this.service.getProjectById(id).subscribe({
+    this.projectData.getProjectById(id).subscribe({
       next: (res) => {
         console.log(res);
         this.formValidation.setValue({
@@ -172,7 +179,7 @@ export class ProjectFormComponent implements OnInit {
 
   getSubProject() {
     if (this.mode == ModeModal.UPDATE || this.mode == ModeModal.VIEW) {
-      this.service.search(1, 999, `parentId.eq.${this.id},`).subscribe({
+      this.projectData.search(1, 999, `parentId.eq.${this.id},`).subscribe({
         next: (res) => {
           if (res) {
             console.log(res);
@@ -186,6 +193,109 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
+  onView(item: projectContent): void {
+    this.modal.create({
+      nzTitle: 'Xem dự án con',
+      nzClassName: 'modal-custom',
+      nzContent: SubProjectComponent,
+      nzWidth: '700px',
+      nzCentered: true,
+      nzMaskClosable: false,
+      nzComponentParams: {
+        title: 'Chi tiết dự án con',
+        id: item.id,
+        mode: ModeModal.VIEW,
+      },
+      nzDirection: 'ltr', // left to right
+    });
+  }
+
+  getSubById(id: number) {
+    this.projectData.getProjectById(id).subscribe({
+      next: (res) => {
+        if(res) {
+          console.log(res);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  onUpdate(item: projectContent) {
+    this.modal
+      .create({
+        nzTitle: 'Chỉnh sửa dự án',
+        nzClassName: 'modal-custom',
+        nzContent: SubProjectComponent,
+        nzWidth: '700px',
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzComponentParams: {
+          mode: ModeModal.UPDATE,
+          id: item.id,
+          projectId: this.id,
+          rangeDateValue: this.formValidation.get('rangeDate')!.value,
+        },
+        nzDirection: 'ltr', // left to right
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res) {
+            this.notifyService.success(
+              'Thành công',
+              'Chỉnh sửa dự án',
+              this.modalOptions
+            );
+          }
+          this.getSubProject();
+        },
+        error: (res) => {
+          console.log(res);
+        },
+      });
+  }
+
+  onDelete(id: number): void {
+    this.modal
+      .create({
+        nzTitle: 'Xóa dự án con',
+        nzClassName: 'modal-custom',
+        nzContent: DeleteComponent,
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzDirection: 'ltr', // left to right
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res) {
+            this.projectData.deleteProject(id).subscribe({
+              next: (res) => {
+                if (res) {
+                  this.notifyService.success(
+                    'Thành công',
+                    'Xóa dự án con',
+                    this.modalOptions
+                  );
+                }
+                this.getSubProject();
+              },
+              error: (err) => {
+                console.log(err);
+              },
+              complete: () => { },
+            });
+          }
+        },
+        error: (res) => {
+          console.log(res);
+        },
+      });
+  }
+
   handleOk(): void {
     this.isConfirmLoading = true;
     const item: projectContent = this.formValidation.value;
@@ -193,7 +303,7 @@ export class ProjectFormComponent implements OnInit {
     item.endDate = this.endDate;
     console.log(item);
     if (this.mode == ModeModal.CREATE) {
-      this.service.addProject(item).subscribe({
+      this.projectData.addProject(item).subscribe({
         next: (res: projectContent) => {
           console.log(res);
           if (res) {
@@ -210,7 +320,7 @@ export class ProjectFormComponent implements OnInit {
         },
       });
     } else if (this.mode == ModeModal.UPDATE) {
-      this.service.updateProject(this.id, item).subscribe({
+      this.projectData.updateProject(this.id, item).subscribe({
         next: (res: projectContent) => {
           console.log(res);
           if (res) {

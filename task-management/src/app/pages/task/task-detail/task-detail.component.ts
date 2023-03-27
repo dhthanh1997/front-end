@@ -444,15 +444,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   deleteTask() {
-    let listId = [];
-    listId.push(this.formValidation.get('id')?.value);
-    // let id = this.formValidation.get('id')?.value;
-    // console.log(this.subTask);
-    for (let i = 0; i < this.subTask.controls.length; i++) {
-      listId.push(this.subTask.controls[i].value.id);
-    }
-    console.log(listId);
-    this.taskData.deleteSelectedId(listId).subscribe({
+    let id = this.formValidation.get('id')?.value;
+    this.taskData.deleteById(id).subscribe({
       next: (res) => {
         console.log(res);
         if (res.message === ResponseStatusEnum.error) {

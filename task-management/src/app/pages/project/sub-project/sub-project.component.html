@@ -19,7 +19,8 @@
                 placeholder="Tên dự án"
                 formControlName="name"
                 name="name"
-                required
+                [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
               />
               <ng-template #Name let-control>
                 <ng-container *ngIf="control.hasError('minlength')"
@@ -48,6 +49,8 @@
                 placeholder="Doanh thu dự án"
                 formControlName="revenue"
                 name="revenue"
+                [readonly]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
               />
               <ng-template #Revenue let-control>
                 <ng-container *ngIf="control.hasError('max')">
@@ -64,18 +67,14 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label [nzSpan]="3" style="word-wrap: break-word;"> Ngày </nz-form-label>
-            <nz-form-control [nzSpan]="21" [nzErrorTip]="Date">
+            <nz-form-control [nzSpan]="21">
               <nz-range-picker
                 [nzDisabledDate]="disabledDate"
                 style="width: 100%"
                 name="rangeDate"
                 formControlName="rangeDate"
+                [nzDisabled]="mode === 'view'"
               ></nz-range-picker>
-              <ng-template #Date let-control>
-                <ng-container *ngIf="control.hasError('validateDate')">
-                  Test
-                </ng-container>
-              </ng-template>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -89,8 +88,10 @@
   <button
     nz-button
     nzType="primary"
+    [hidden]="mode === 'view'"
     [disabled]="!formValidation.valid"
     (click)="handleOk()"
+    [nzLoading]="isConfirmLoading"
   >
     Lưu
   </button>

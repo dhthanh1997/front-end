@@ -11,7 +11,6 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { DeleteComponent } from './delete/delete.component';
 import { Router } from '@angular/router';
 import { ProjectData } from '../../_core/api/project/project-data';
-import { timer } from 'rxjs';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 
 enum ModeModal {
@@ -35,6 +34,7 @@ export class ProjectComponent implements OnInit {
     private router: Router
   ) { }
 
+  mapOfExpandData: { [key: string]: boolean } = {};
   public listData: any;
   public listId: number[] = [];
   public projectList: any[] = [];
@@ -64,10 +64,8 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProject();
-    this.getAllProject();
     // this.projectData.switchLanguage();
     console.log(this.listId);
-    this.getTask();
   }
 
 
@@ -206,7 +204,6 @@ export class ProjectComponent implements OnInit {
               this.modalOptions
             );
             this.getProject();
-            this.getAllProject();
             // this.router.navigate(['pages/task/project-task' + res.data.id]);
           }
         },
@@ -242,7 +239,6 @@ export class ProjectComponent implements OnInit {
             );
           }
           this.getProject();
-          this.getAllProject();
         },
         error: (res) => {
           console.log(res);
@@ -289,13 +285,8 @@ export class ProjectComponent implements OnInit {
                     'Xóa dự án',
                     this.modalOptions
                   );
-                  let listId = [];
-                  listId.push(id);
-                  this.deleteTaskList(listId);
-                  this.deleteSubProject(listId);
                 }
                 this.getProject();
-                this.getAllProject();
               },
               error: (err) => {
                 console.log(err);
@@ -332,11 +323,8 @@ export class ProjectComponent implements OnInit {
                     'Xóa dự án',
                     this.modalOptions
                   );
-                  this.deleteTaskList(listId);
-                  this.deleteSubProject(listId);
                 }
                 this.getProject();
-                this.getAllProject();
               },
               error: (err) => {
                 console.log(err);
@@ -353,79 +341,4 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  public getAllProject(){
-    this.projectData.search(1, 999).subscribe({
-      next: (res) => {
-        if(res) {
-          console.log(res);
-          this.projectList = res.pagingData.content;
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
-  }
-
-  public getTask() {
-    this.taskData.search(1, 999).subscribe({
-      next: (res) => {
-        console.log(res);
-        if (res) {
-          this.taskList = res.pagingData.content;
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
-  }
-
-  deleteTaskList(listId: number[]) {
-    debugger;
-    let idTaskList: any[] = [];
-    for(let i of listId) {
-      for(let item of this.taskList) {
-        if(item.projectId === i) {
-          idTaskList.push(item.id);
-        }
-      }
-    }
-
-    this.taskData.deleteSelectedId(idTaskList).subscribe({
-      next: (res) => {
-        console.log(res);
-        if(res) {
-          // do sth
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
-  }
-
-  deleteSubProject(listId: number[]) {
-    debugger;
-    let idSubProjectList = [];
-    for(let i of listId) {
-      for(let item of this.projectList) {
-        if(item.parentId === i) {
-          idSubProjectList.push(item.id);
-        }
-      }
-    }
-
-    this.projectData.deleteSelectedProject(idSubProjectList).subscribe({
-      next: (res) => {
-        console.log(res);
-        if(res) {
-          // do sth
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
-  }
 }
