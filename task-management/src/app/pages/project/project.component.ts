@@ -45,7 +45,7 @@ export class ProjectComponent implements OnInit {
 
   public pageNumber = 1;
   public pageSize = 10;
-  public txtSearch: string | undefined = 'parentId.eq.0,';
+  public txtSearch: string | undefined = '';
   public totalElements = 0;
   public totalPages: number | undefined;
 
@@ -87,17 +87,17 @@ export class ProjectComponent implements OnInit {
       console.log(this.txtSearch);
     }
     this.getProject();
-    this.txtSearch = 'parentId.eq.0,';
+    this.txtSearch = 'parentId.nu.null,';
   }
 
   getFilterValue(index: number) {
     console.log(this.filterField[index]);
     this.FilterValue = this.filterField[index];
-    if(this.FilterValue === 'Tên') {
+    if (this.FilterValue === 'Tên') {
       this.FilterValue = 'name';
       this.FilterDisplay = 'Tên'
     }
-    else if(this.FilterValue === 'Doanh thu') {
+    else if (this.FilterValue === 'Doanh thu') {
       this.FilterValue = 'revenue';
       this.FilterDisplay = 'Doanh thu';
     }
@@ -358,15 +358,15 @@ export class ProjectComponent implements OnInit {
   }
 
   deleteTaskList(id: number) {
-    for(let item of this.taskList) {
-      if(item.projectId === id) {
+    for (let item of this.taskList) {
+      if (item.projectId === id) {
         this.idTaskList.push(item.id);
       }
     }
     this.taskData.deleteSelectedId(this.idTaskList).subscribe({
       next: (res) => {
         console.log(res);
-        if(res) {
+        if (res) {
           // do sth
         }
       },

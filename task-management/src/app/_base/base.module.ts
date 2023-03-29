@@ -8,11 +8,13 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { MessageService } from './message.service';
 import { AuthGuardService } from './guard/auth-guard.service';
 import { AuthService } from './auth.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 const PROVIDERS = [
   HttpService,
   AuthGuardService,
-  AuthService
+  AuthService,
+  AuthenticationService
 ]
 
 const SERVICES = [
