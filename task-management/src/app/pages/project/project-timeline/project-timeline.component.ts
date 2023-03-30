@@ -47,6 +47,7 @@ export class ProjectTimelineComponent implements OnInit {
     this.projectData.search(1, 999, `parentId.eq.${this.getIdProject()},`).subscribe({
       next: (res) => {
         if (res) {
+          // debugger;
           console.log(res);
           this.subProjectList = res.pagingData.content;
 
@@ -80,8 +81,6 @@ export class ProjectTimelineComponent implements OnInit {
                 },
               },
             },
-
-            accessibility: {},
 
             plotOptions: {
               series: {
