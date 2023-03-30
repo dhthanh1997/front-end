@@ -12,6 +12,7 @@ export class Project extends BaseEntity {
   totalCost?: number;
   totalHour?: number;
   isChecked?: Boolean;
+  isShow: Boolean;
 
   constructor() {
     super();
@@ -23,6 +24,7 @@ export class Project extends BaseEntity {
     this.totalCost = 0;
     this.totalHour = 0;
     this.isChecked = false;
+    this.isShow = false;
   }
 }
 

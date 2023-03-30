@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
 
   public getProject() {
     this.projectData
-      .search(this.pageNumber, this.pageSize, 'parentId.eq.0,')
+      .search(this.pageNumber, this.pageSize, 'parentId.nu.nu,')
       .subscribe({
         next: (res) => {
           console.log(res);

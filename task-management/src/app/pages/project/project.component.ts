@@ -12,6 +12,7 @@ import { DeleteComponent } from './delete/delete.component';
 import { Router } from '@angular/router';
 import { ProjectData } from '../../_core/api/project/project-data';
 import { TaskData } from 'src/app/_core/api/task/task-data';
+import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
 
 enum ModeModal {
   CREATE = 'create',
@@ -36,6 +37,7 @@ export class ProjectComponent implements OnInit {
 
   mapOfExpandData: { [key: string]: boolean } = {};
   public listData: any;
+  public subProjectList: any[] = [];
   public listId: number[] = [];
   public projectList: any[] = [];
   public filterField = ['Tên', 'Doanh thu'];
@@ -49,6 +51,9 @@ export class ProjectComponent implements OnInit {
   public totalElements = 0;
   public totalPages: number | undefined;
 
+  isShow: boolean = false;
+  isSubProject: number = 0.1;
+
   checkedBoxAll: boolean = false;
   FilterValue = '';
   SorterValue = 'name_asc,';
@@ -57,6 +62,7 @@ export class ProjectComponent implements OnInit {
   SorterDisplay = 'Tăng dần (tên)';
 
   disableRoute = false;
+  hiddenTimeline: boolean = true;
 
   modalOptions: any = {
     nzDuration: 2000,
@@ -64,15 +70,13 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProject();
-    // this.projectData.switchLanguage();
+    this.getSubProject();
     console.log(this.listId);
   }
 
-
-  // event
-  // navigationTask(id: any) {
-  //   this.router.navigate(['pages/task/project-task', id]);
-  // }
+  showSubProject(index: number) {
+    this.listData[index].isShow = !this.listData[index].isShow;
+  }
 
   search() {
     // debugger;
@@ -113,6 +117,7 @@ export class ProjectComponent implements OnInit {
       this.SorterDisplay = 'Giảm dần (tên)';
     }
     this.getProject();
+    this.getSubProject();
   }
 
   checkedAll(event: any) {
@@ -154,11 +159,13 @@ export class ProjectComponent implements OnInit {
   changePageSize(event: any) {
     this.pageSize = event;
     this.getProject();
+    this.getSubProject();
   }
 
   changePageNumber(event: any) {
     this.pageNumber = event;
     this.getProject();
+    this.getSubProject();
   }
 
   public getProject() {
@@ -172,6 +179,28 @@ export class ProjectComponent implements OnInit {
           console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  public getSubProject() {
+    this.projectData
+      .search(this.pageNumber, this.pageSize, this.txtSearch, this.SorterValue)
+      .subscribe({
+        next: (res) => {
+          // debugger;
+          console.log(res);
+          this.subProjectList = [];
+          let a = res.pagingData.content;
+          for (let i = 0; i < a.length; i++) {
+            if(a[i].parentId != null && a[i].parentId != undefined && a[i].parentId != 0) {
+              this.subProjectList.push(a[i]);
+            }
+          }
+          console.log(this.subProjectList);
         },
         error: (err) => {
           console.log(err);
@@ -204,6 +233,7 @@ export class ProjectComponent implements OnInit {
               this.modalOptions
             );
             this.getProject();
+            this.getSubProject();
             // this.router.navigate(['pages/task/project-task' + res.data.id]);
           }
         },
@@ -239,6 +269,7 @@ export class ProjectComponent implements OnInit {
             );
           }
           this.getProject();
+          this.getSubProject();
         },
         error: (res) => {
           console.log(res);
@@ -287,6 +318,7 @@ export class ProjectComponent implements OnInit {
                   );
                 }
                 this.getProject();
+                this.getSubProject();
               },
               error: (err) => {
                 console.log(err);
@@ -325,6 +357,7 @@ export class ProjectComponent implements OnInit {
                   );
                 }
                 this.getProject();
+                this.getSubProject();
               },
               error: (err) => {
                 console.log(err);
@@ -340,5 +373,22 @@ export class ProjectComponent implements OnInit {
         },
       });
   }
+
+  // onViewTimeline(item: projectContent) {
+  //   this.modalService.create({
+  //     nzTitle: 'Xem timeline dự án',
+  //     nzClassName: 'modal-custom',
+  //     nzContent: ProjectTimelineComponent,
+  //     nzWidth: '1000px',
+  //     nzCentered: true,
+  //     nzMaskClosable: false,
+  //     nzComponentParams: {
+  //       // mode: ModeModal.VIEW,
+  //       parentName: item.name,
+  //       id: item.id,
+  //     },
+  //     nzDirection: 'ltr', // left to right
+  //   });
+  // }
 
 }

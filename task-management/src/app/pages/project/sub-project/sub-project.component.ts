@@ -80,7 +80,7 @@ export class SubProjectComponent implements OnInit {
     let prev = new Date(this.rangeDateValue[0]);
     let next = new Date(this.rangeDateValue[1]);
     prev.setDate(prev.getDate() - 1);
-    return current <= prev || current > next;
+    return current <= prev || current >= next;
   };
 
   changeChecked() {

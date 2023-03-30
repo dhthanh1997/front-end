@@ -1,4 +1,4 @@
-<div class="project-wrapper">
+<div class="project-wrapper" *ngIf="outlet.isActivated == false">
   <div class="container">
     <div class="row">
       <div class="tool" style="width: 100%; margin-top: 1.5em">
@@ -19,7 +19,7 @@
           class="d-flex align-items-center ml-auto mr-2"
         >
           <i nz-icon nzType="sort-ascending" nzTheme="outline"></i>
-          {{SorterDisplay}}
+          {{ SorterDisplay }}
         </button>
         <nz-dropdown-menu #sort="nzDropdownMenu">
           <ul nz-menu nzSelectable>
@@ -40,7 +40,7 @@
           class="d-flex align-items-center mr-2"
         >
           <i nz-icon nzType="filter" nzTheme="outline"></i>
-          {{FilterDisplay}}
+          {{ FilterDisplay }}
         </button>
         <nz-dropdown-menu #filter="nzDropdownMenu">
           <ul nz-menu nzSelectable>
@@ -63,7 +63,12 @@
           />
         </nz-input-group>
         <ng-template #suffixIconSearch>
-          <i style="cursor: pointer;" (click)="search()" nz-icon nzType="search"></i>
+          <i
+            style="cursor: pointer"
+            (click)="search()"
+            nz-icon
+            nzType="search"
+          ></i>
         </ng-template>
       </div>
       <nz-table
@@ -90,84 +95,144 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of listData; let idx = index">
-            <td nzAlign="center">
-              <label
-                nz-checkbox
-                [ngModel]="item.isChecked"
-                (ngModelChange)="isChecked($event, idx)"
-              ></label>
-            </td>
-            <td nzAlign="center">
-              {{ idx + 1 }}
-            </td>
-            <td nzAlign="center">
-              <!-- <span
-                style="cursor: pointer"
-                [routerLink]="['project-task', item.id]"
-                >{{ item.name }}</span
-              > -->
-              <a
-                style="cursor: pointer"
-                nz-tooltip
-                [nzTooltipTitle]="item.name"
-                [nzTooltipTrigger]="item.name.length > 20 ? 'hover' : null"
-                [routerLink]="['/pages/task/project-task', item.id]"
-                >{{
-                  item.name.length > 20
-                    ? (item.name | slice : 0 : 20) + "..."
-                    : item.name
-                }}</a
-              >
-            </td>
-            <td nzAlign="center">
-              {{ item.revenue | currency:'VND':'đ':'':'vi' }}
-            </td>
-            <!-- <td nzAlign="center">
+          <ng-container *ngFor="let item of listData; let idx = index">
+            <tr>
+              <td nzAlign="center">
+                <label
+                  nz-checkbox
+                  [ngModel]="item.isChecked"
+                  (ngModelChange)="isChecked($event, idx)"
+                ></label>
+              </td>
+              <td nzAlign="center">
+                {{ idx + 1 }}
+              </td>
+              <td nzAlign="center">
+                <!-- <span
+                  style="cursor: pointer"
+                  [routerLink]="['project-task', item.id]"
+                  >{{ item.name }}</span
+                > -->
+                <a
+                  style="cursor: pointer"
+                  nz-tooltip
+                  [nzTooltipTitle]="item.name"
+                  [nzTooltipTrigger]="item.name.length > 20 ? 'hover' : null"
+                  [routerLink]="['/pages/task/project-task', item.id]"
+                  >{{
+                    item.name.length > 20
+                      ? (item.name | slice : 0 : 20) + "..."
+                      : item.name
+                  }}</a
+                >
+              </td>
+              <td nzAlign="center">
+                {{ item.revenue | currency : "VND" : "đ" : "" : "vi" }}
+              </td>
+              <!-- <td nzAlign="center">
 
-            </td> -->
-            <td class="d-flex flex-row justify-content-center">
-              <!-- <button
-                nz-button
-                nzShape="circle"
-                class="d-flex align-items-center justify-content-center mr-1"
-                [routerLink]="['welcome', item.id]"
-              >
-                <i nz-icon nzType="link" nzTheme="outline"></i>
-              </button> -->
-              <button
-                nz-button
-                nzShape="circle"
-                class="d-flex align-items-center justify-content-center mr-1"
-                (click)="onView(item)"
-              >
-                <i nz-icon nzType="eye" nzTheme="outline"></i>
-              </button>
-              <button
-                nz-button
-                nzShape="circle"
-                class="d-flex align-items-center justify-content-center mr-1"
-                (click)="onUpdate(item)"
-              >
-                <i nz-icon nzType="edit" nzTheme="outline"></i>
-              </button>
-              <button
-                nz-button
-                nzShape="circle"
-                class="d-flex align-items-center justify-content-center mr-1"
-                (click)="onDelete(item.id)"
-              >
-                <i nz-icon nzType="delete" nzTheme="outline"></i>
-              </button>
-              <button
-                nz-button
-                nzShape="circle"
-                class="d-flex align-items-center justify-content-center mr-1"
-              >
-                <i nz-icon nzType="sisternode" nzTheme="outline"></i>
-              </button>
-            </td>
-          </tr>
+              </td> -->
+              <td class="d-flex flex-row justify-content-center">
+                <!-- <button
+                  nz-button
+                  nzShape="circle"
+                  class="d-flex align-items-center justify-content-center mr-1"
+                  [routerLink]="['welcome', item.id]"
+                >
+                  <i nz-icon nzType="link" nzTheme="outline"></i>
+                </button> -->
+                <button
+                  nz-button
+                  nzShape="circle"
+                  nz-tooltip
+                  nzTooltipTitle="Xem dự án"
+                  class="d-flex align-items-center justify-content-center mr-1"
+                  (click)="onView(item)"
+                >
+                  <i nz-icon nzType="eye" nzTheme="outline"></i>
+                </button>
+                <button
+                  nz-button
+                  nzShape="circle"
+                  nz-tooltip
+                  nzTooltipTitle="Chỉnh sửa dự án"
+                  class="d-flex align-items-center justify-content-center mr-1"
+                  (click)="onUpdate(item)"
+                >
+                  <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </button>
+                <button
+                  nz-button
+                  nzShape="circle"
+                  nz-tooltip
+                  nzTooltipTitle="Xem dự án con"
+                  class="d-flex align-items-center justify-content-center mr-1"
+                  (click)="showSubProject(idx)"
+                >
+                  <i nz-icon nzType="sisternode" nzTheme="outline"></i>
+                </button>
+                <button
+                  nz-button
+                  nzShape="circle"
+                  nz-tooltip
+                  nzTooltipTitle="Xem timeline"
+                  class="d-flex align-items-center justify-content-center mr-1"
+                  [routerLink]="['/pages/project/timeline', {id: item.id, name: item.name}]"
+                >
+                  <i nz-icon nzType="field-time" nzTheme="outline"></i>
+                </button>
+                <button
+                  nz-button
+                  nzShape="circle"
+                  nz-tooltip
+                  nzTooltipTitle="Xóa dự án"
+                  class="d-flex align-items-center justify-content-center mr-1"
+                  (click)="onDelete(item.id)"
+                >
+                  <i nz-icon nzType="delete" nzTheme="outline"></i>
+                </button>
+              </td>
+            </tr>
+            <tr [hidden]="!this.listData[idx].isShow">
+              <td class="p-1" colspan="5">
+                <nz-card class="subProject">
+                  <nz-table
+                    #basicTable
+                    [nzData]="subProjectList"
+                    [nzShowPagination]="false"
+                  >
+                    <thead>
+                      <tr>
+                        <thead>
+                          <th class="text-center">Tên</th>
+                          <th class="text-center">Ngày bắt đầu</th>
+                          <th class="text-center">Ngày kết thúc</th>
+                        </thead>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let sub of subProjectList; index as idxSub"
+                        [hidden]="sub.parentId != listData[idx].id"
+                      >
+                        <td class="text-center">{{ sub.name }}</td>
+                        <td class="text-center">
+                          {{ sub.startDate | date : "dd/MM/yyyy" }}
+                        </td>
+                        <td class="text-center">
+                          {{ sub.endDate | date : "dd/MM/yyyy" }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+                </nz-card>
+              </td>
+            </tr>
+          </ng-container>
+
+          <!-- <tr *ngIf="" *ngFor="let sub of ">
+
+          </tr> -->
         </tbody>
       </nz-table>
       <div class="paging">
@@ -186,3 +251,5 @@
     </div>
   </div>
 </div>
+
+<router-outlet #outlet="outlet"></router-outlet>

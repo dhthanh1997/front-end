@@ -53,6 +53,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
   @Input() isAddRowEvent: boolean = false;
   @Input() sectionParams: any;
+  @Input() sectionIdx: number = 0;
   @Output() collapEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() sectionName: EventEmitter<any> = new EventEmitter<any>();
   @Output() isEditSection: EventEmitter<number> = new EventEmitter<number>();

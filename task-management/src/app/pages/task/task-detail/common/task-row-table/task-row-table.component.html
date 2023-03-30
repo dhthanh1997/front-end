@@ -33,6 +33,7 @@
             <p [hidden]="isEdit" (click)="startEdit()">{{ title }}</p>
 
             <input
+              class="sectionName"
               [hidden]="!isEdit"
               nz-input
               (keyup.enter)="editSection()"
