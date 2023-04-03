@@ -8,6 +8,7 @@ export class AuthService {
 
   private tokenDecode: any = {};
   private isExpiredToken: boolean = false;
+  private isExpiredRefreshToken: boolean = false;
 
   constructor() {
     let helper = new JwtHelperService();
@@ -32,6 +33,10 @@ export class AuthService {
 
   getIsExpiredToken() {
     return this.isExpiredToken;
+  }
+
+  getUUID() {
+    return this.tokenDecode.uuid;
   }
 
   setIsTokenExpired(token: any) {

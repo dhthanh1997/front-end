@@ -96,11 +96,11 @@ export class ProjectComponent implements OnInit {
   getFilterValue(index: number) {
     console.log(this.filterField[index]);
     this.FilterValue = this.filterField[index];
-    if(this.FilterValue === 'Tên') {
+    if (this.FilterValue === 'Tên') {
       this.FilterValue = 'name';
       this.FilterDisplay = 'Tên'
     }
-    else if(this.FilterValue === 'Doanh thu') {
+    else if (this.FilterValue === 'Doanh thu') {
       this.FilterValue = 'revenue';
       this.FilterDisplay = 'Doanh thu';
     }
