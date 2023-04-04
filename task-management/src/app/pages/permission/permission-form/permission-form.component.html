@@ -106,9 +106,11 @@
                 name="type"
                 [nzDisabled]="mode === 'view'"
                 [ngClass]="mode === 'view' ? 'ban' : ''"
+                [ngModel]="radioValue"
+                id="test"
               >
-                <label nz-radio nzValue="0"> Menu </label>
-                <label nz-radio nzValue="1"> Action </label>
+                <label class="radio" nz-radio nzValue="0"> Menu </label>
+                <label class="radio" nz-radio nzValue="1"> Action </label>
               </nz-radio-group>
               <ng-template #Type let-control>
                 <ng-container *ngIf="control.hasError('required')"

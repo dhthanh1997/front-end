@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { permissionContent } from 'src/app/_core/model/permission';
@@ -15,6 +15,7 @@ export class PermissionFormComponent implements OnInit {
   formValidation!: FormGroup;
   isConfirmLoading = false;
   checked = false;
+  radioValue = ''
 
   public listData: any;
   public listParent: any = [];
@@ -30,7 +31,8 @@ export class PermissionFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private permissionData: PermissionData,
-    private modelRef: NzModalRef<PermissionFormComponent>
+    private modelRef: NzModalRef<PermissionFormComponent>,
+    private element: ElementRef,
   ) {}
 
   get name() {
@@ -46,7 +48,7 @@ export class PermissionFormComponent implements OnInit {
   }
 
   get type() {
-    return this.formValidation.get('type');
+    return this.formValidation.get('type')?.value;
   }
 
   get description() {
@@ -61,7 +63,7 @@ export class PermissionFormComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(4)]],
       code: ['', [Validators.required]],
       parentCode: ['', []],
-      type: ['', [Validators.required]],
+      type: ['', []],
       description: ['', []],
     });
 
@@ -115,8 +117,22 @@ export class PermissionFormComponent implements OnInit {
           parentCode: res.data.parentCode,
           description: res.data.description,
         });
+        this.isChecked(this.formValidation.get('type')?.value);
+        console.log(this.formValidation);
       },
     });
+  }
+
+  isChecked(type: number) {
+    debugger;
+    let a = this.element.nativeElement.querySelector('#test');
+
+    let radioValue = this.element.nativeElement.querySelectorAll('.radio');
+    for (let i = 0; i < radioValue.length; i++) {
+      if (radioValue[i].attributes['nzvalue'].value == type) {
+        this.radioValue = type.toString();
+      }
+    }
   }
 
   handleOk(): void {
