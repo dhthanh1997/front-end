@@ -297,11 +297,12 @@ export class ProjectFormComponent implements OnInit {
   }
 
   handleOk(): void {
+    // debugger;
     this.isConfirmLoading = true;
     const item: projectContent = this.formValidation.value;
     item.startDate = this.startDate;
     item.endDate = this.endDate;
-    console.log(item);
+    console.log(item.startDate);
     if (this.mode == ModeModal.CREATE) {
       this.projectData.addProject(item).subscribe({
         next: (res: projectContent) => {

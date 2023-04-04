@@ -22,27 +22,34 @@ Highcharts.setOptions({
       'Tháng 12',
     ],
     shortMonths: [
-      'T1',
-      'T2',
-      'T3',
-      'T4',
-      'T5',
-      'T6',
-      'T7',
-      'T8',
-      'T9',
-      'T10',
-      'T11',
-      'T12',
+      '01',
+      '02',
+      '03',
+      '04',
+      '05',
+      '06',
+      '07',
+      '08',
+      '09',
+      '10',
+      '11',
+      '12',
     ],
     weekdays: [
-      'Thứ 2 ', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'
+      'Thứ 2 ',
+      'Thứ 3',
+      'Thứ 4',
+      'Thứ 5',
+      'Thứ 6',
+      'Thứ 7',
+      'Chủ nhật',
     ],
-    accessibility: {
-      series: {
+    shortWeekdays: ['2', '3', '4', '5', '6', '7', 'CN'],
+  },
 
-      }
-    }
+  time: {
+    useUTC: true,
+    timezone: 'Asia/Ho_Chi_Minh',
   },
 });
 
@@ -53,7 +60,7 @@ Highcharts.setOptions({
 })
 export class ProjectTimelineComponent implements OnInit {
   Highcharts: typeof Highcharts = Highcharts;
-  chartOptions: any;
+  chartOptions: Highcharts.Options = {};
   loading = true;
 
   today = new Date();
@@ -101,8 +108,9 @@ export class ProjectTimelineComponent implements OnInit {
               this.data.push({
                 id: i,
                 name: this.subProjectList[i].name,
-                start: new Date(this.subProjectList[i].startDate).getTime(),
-                end: new Date(this.subProjectList[i].endDate).getTime(),
+                // start: new Date(this.subProjectList[i].startDate).getTime(),
+                start: Date.parse(this.subProjectList[i].startDate),
+                end: Date.parse(this.subProjectList[i].endDate),
                 y: i,
               });
               dataName.push(this.subProjectList[i].name);
@@ -119,17 +127,31 @@ export class ProjectTimelineComponent implements OnInit {
                 text: 'Dự án: ' + this.getNameProject(),
               },
 
-              global: {
-                timezoneOffset: timezone,
+              time: {
+                useUTC: true,
+                timezone: 'Asia/Ho_Chi_Minh',
               },
 
               tooltip: {
+                xDateFormat: '%A, %b %e, %Y',
                 formatter: function () {
-                  for(let i = 0; i < dataName.length; i++) {
-                    return 'Tên: ' + dataName[i].name;
-                  }
-                  return 0;
-                }
+                  return (
+                    'Tên project: ' +
+                    this.point.name +
+                    '</br>' +
+                    'Ngày bắt đầu: ' +
+                    Highcharts.dateFormat(
+                      '%A, %d/%b/%Y',
+                      Number(this.series.data[this.point.index].x)
+                    ) +
+                    '</br>' +
+                    'Ngày kết thúc: ' +
+                    Highcharts.dateFormat(
+                      '%A, %d/%b/%Y',
+                      Number(this.series.data[this.point.index].x2)
+                    )
+                  );
+                },
               },
 
               plotOptions: {
@@ -154,10 +176,17 @@ export class ProjectTimelineComponent implements OnInit {
                 },
               },
 
-              xAxis: {
-                minPadding: 0.2,
-                maxPadding: 0.2,
-              },
+              xAxis: [
+                {
+                  minPadding: 0.2,
+                  maxPadding: 0.2,
+                },
+                {
+                  dateTimeLabelFormats: {
+                    week: 'Tuần %W',
+                  },
+                },
+              ],
 
               yAxis: {
                 type: 'category',
@@ -166,6 +195,7 @@ export class ProjectTimelineComponent implements OnInit {
 
               series: [
                 {
+                  type: 'gantt',
                   data: this.data,
                 },
               ],
