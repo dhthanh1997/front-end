@@ -205,7 +205,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     const shareData$ = this.shareService.taskDataShare;
     const source$ = shareData$.asObservable().pipe(
       concatMap((res) => {
-        // console.log(res);
+        console.log(res);
         if (res) {
           this.idTask = res.item.controls.id.value;
           this.indexTask = res.index;
