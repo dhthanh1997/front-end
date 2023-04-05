@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { memberContent } from 'src/app/_core/model/member';
 import { MemberData } from 'src/app/_core/api/member/member-data';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
+import { TeamData } from 'src/app/_core/api/team/team-data';
 
 @Component({
   selector: 'app-member-form',
@@ -15,6 +16,12 @@ export class MemberFormComponent implements OnInit {
   isConfirmLoading = false;
   checked = false;
   teamList: any[] = [];
+  listOfSelectedValue: any[] = [];
+
+
+  compareFn(c1: any, c2: any): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
 
   @Input() mode!: string;
 
@@ -27,7 +34,8 @@ export class MemberFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private memberData: MemberData,
-    private modelRef: NzModalRef<MemberFormComponent>
+    private modelRef: NzModalRef<MemberFormComponent>,
+    private teamData: TeamData,
   ) {}
 
   get name() {
@@ -46,8 +54,8 @@ export class MemberFormComponent implements OnInit {
     return this.formValidation.get('username');
   }
 
-  get team() {
-    return this.formValidation.get('team');
+  get teams() {
+    return this.formValidation.get('teams');
   }
 
   ngOnInit(): void {
@@ -66,7 +74,7 @@ export class MemberFormComponent implements OnInit {
         ],
       ],
       username: ['', [Validators.required, Validators.minLength(8)]],
-      team: ['', []],
+      teams: [[], []],
     });
 
     if (this.mode != ModeModal.CREATE) {
@@ -74,6 +82,8 @@ export class MemberFormComponent implements OnInit {
         this.getById(this.id);
       }
     }
+
+    this.getTeam();
   }
 
   changeChecked() {
@@ -90,15 +100,33 @@ export class MemberFormComponent implements OnInit {
           email: res.data.email,
           phone: res.data.phone,
           username: res.data.username,
+          teams: res.data.teams
         });
+        console.log(this.formValidation);
       },
     });
   }
 
+  public getTeam() {
+    this.teamData.search(1, 999).subscribe({
+      next: (res) => {
+        if(res) {
+          console.log(res);
+          this.teamList = res.pagingData.content;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
   handleOk(): void {
+    // debugger;
     this.isConfirmLoading = true;
     const item: memberContent = this.formValidation.value;
     if (this.mode === ModeModal.CREATE) {
+      item.id = 0;
       this.memberData.save(item).subscribe({
         next: (res: memberContent) => {
           console.log(res);

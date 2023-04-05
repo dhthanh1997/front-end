@@ -21,6 +21,7 @@ export interface teamContent {
   teamName: string;
   status?: string;
   isChecked?: Boolean;
+  label? : string;
 }
 
 export interface pageable {

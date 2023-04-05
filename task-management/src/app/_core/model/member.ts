@@ -23,6 +23,7 @@ export interface memberContent {
   roleId?: number;
   status?: string;
   username: string;
+  teams: [];
   isChecked?: Boolean;
 }
 

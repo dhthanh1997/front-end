@@ -124,7 +124,7 @@ export class PermissionFormComponent implements OnInit {
   }
 
   isChecked(type: number) {
-    debugger;
+    // debugger;
     let a = this.element.nativeElement.querySelector('#test');
 
     let radioValue = this.element.nativeElement.querySelectorAll('.radio');

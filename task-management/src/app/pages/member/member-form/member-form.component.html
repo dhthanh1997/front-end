@@ -112,15 +112,18 @@
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21">
               <nz-select
-                formControlName="team"
-                name="team"
+                nzMode="tags"
+                [nzShowArrow]="true"
+                formControlName="teams"
+                name="teams"
+                [compareWith]="compareFn"
                 [nzDisabled]="mode === 'view'"
                 [ngClass]="mode === 'view' ? 'ban' : ''"
               >
                 <nz-option
                   *ngFor="let item of teamList"
-                  nzValue="{{ item.code }}"
-                  nzLabel="{{ item.name }}"
+                  [nzValue]="item"
+                  [nzLabel]="item.teamName"
                 >
                 </nz-option>
               </nz-select>

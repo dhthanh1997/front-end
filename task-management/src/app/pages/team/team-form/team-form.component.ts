@@ -91,6 +91,7 @@ export class TeamFormComponent implements OnInit {
         },
       });
     } else if (this.mode === ModeModal.UPDATE) {
+      item.id = this.id;
       this.teamData.update(this.id, item).subscribe({
         next: (res: teamContent) => {
           console.log(res);

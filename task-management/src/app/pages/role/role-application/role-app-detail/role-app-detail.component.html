@@ -4,16 +4,8 @@
     *ngFor="let item of listParent; let idx = index"
   >
     <nz-collapse>
-      <nz-collapse-panel nzHeader="{{ item.code }}" nzActive="true">
-        <div class="checkUncheck">
-          <label
-            nz-checkbox
-            [ngModel]="checkedBoxAll"
-            (ngModelChange)="checkedAll(idx, $event)"
-          >
-            Tích / Bỏ Tích</label
-          >
-        </div>
+      <nz-collapse-panel [nzExtra]="extraTpl" nzHeader="{{ item.code }}" nzActive="true">
+
         <!-- <div class="checkbox">
           <label *ngFor="let item of listData; let idx = index" nz-checkbox>{{
             item.name
@@ -37,6 +29,16 @@
           </div>
         </div>
       </nz-collapse-panel>
+      <ng-template class="checkUncheck" #extraTpl>
+        <label
+          nz-checkbox
+          [ngModel]="checkedBoxAll"
+          (ngModelChange)="checkedAll(idx, $event)"
+          (click)="$event.stopPropagation()"
+        >
+          Tích / Bỏ Tích</label
+        >
+      </ng-template>
     </nz-collapse>
   </div>
 

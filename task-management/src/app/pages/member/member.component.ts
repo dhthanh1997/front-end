@@ -7,6 +7,7 @@ import { DeleteComponent } from './delete/delete.component';
 import { MemberFormComponent } from './member-form/member-form.component';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
 import { MemberData } from '../../_core/api/member/member-data';
+import { TeamData } from 'src/app/_core/api/team/team-data';
 
 @Component({
   selector: 'app-member',
@@ -19,7 +20,7 @@ export class MemberComponent implements OnInit {
     private memberData: MemberData,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
-    private element: ElementRef
+    private element: ElementRef,
   ) {}
 
   public listData: any;

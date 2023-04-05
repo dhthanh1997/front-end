@@ -50,13 +50,13 @@ export class RoleAppDetailComponent implements OnInit {
     return parseInt(id!);
   }
 
-  async getPermission() {
+  getPermission() {
     // debugger;
     this.getRolePer();
     this.permissionData
       .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
-        next: async (res) => {
+        next: (res) => {
           console.log(res);
           this.listData = res.pagingData.content;
           this.getParentCode();
@@ -64,7 +64,7 @@ export class RoleAppDetailComponent implements OnInit {
           console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
-          await this.rolePerChecked();
+          this.rolePerChecked();
         },
         error: (err) => {
           console.log(err);
@@ -204,7 +204,6 @@ export class RoleAppDetailComponent implements OnInit {
   }
 
   rolePerChecked() {
-    // debugger;
     setTimeout(() => {
       for (let i = 0; i < this.listRolePer.length; i++) {
         for (let j = 0; j < this.listData.length; j++) {
@@ -222,6 +221,22 @@ export class RoleAppDetailComponent implements OnInit {
     this.checkIntoArr(index);
     console.log(this.listId);
   }
+
+  // isCheckedAll() {
+  //   for(let i = 0; i < this.listParent.length; i++) {
+  //     for(let j = 0; j < this.listChild.length; j++) {
+  //       let a = []
+  //       if(this.listChild[j].parentCode === this.listParent[i].code)
+  //         a.push(this.listChild[j]);
+  //       if(j == this.listChild.length - 1) {
+  //         const check = this.listChild.every((element: rolePermissionContent) => element.isChecked == true);
+  //         if(check) {
+  //           this.checkedBoxAll = true;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   checkIntoArr(index: number) {
     let a = this.listChild[index];
