@@ -19,6 +19,8 @@ import { sectionContent } from 'src/app/_core/model/section';
 import { Task } from 'src/app/_core/model/task';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { ShareService } from 'src/app/_share/share.service';
+import { TaskDetailFrmComponent } from '../../task-detail-frm/task-detail-frm.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-task-row-table',
@@ -67,6 +69,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     private element: ElementRef,
     private sectionData: SectionData,
     private tagData: TagData,
+    private modal: NzModalService,
   ) {
     this.formValidation = initFormArray("taskArray");
     this.getQueryParam();
@@ -76,7 +79,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   getTag() {
     this.tagData.search(1, 999).subscribe({
       next: (res) => {
-        if(res) {
+        if (res) {
           this.tagList = res.pagingData.content;
           console.log(this.tagList);
         }
@@ -100,7 +103,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   editSection() {
     // debugger;
     let input = this.element.nativeElement.querySelector('.sectionName');
-    if(input.value.length > 0) {
+    if (input.value.length > 0) {
       const item: sectionContent = { name: '' };
       item.name = input.value;
       item.id = this.sectionId;
@@ -332,6 +335,44 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
     });
 
   }
+
+
+  // click từ table sub task
+  subTaskInfo(index: number, indexSubTask: number) {
+
+    let subTask = this.taskArray.controls[index].get('subTask') as FormArray;
+
+    let item = subTask.controls[indexSubTask] as FormGroup;
+
+    this.modal
+      .create({
+        // nzTitle: 'AAAA',
+        nzContent: TaskDetailFrmComponent,
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzDirection: 'ltr',
+        nzClassName: 'modal-custom',
+        // nzFooter: null,
+        nzClosable: false,
+        nzComponentParams: {
+          // formValidation: this.formValidation
+          idTask: item.get('id')?.value
+            ? item.get('id')?.value
+            : 0,
+        },
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  
+  // end 
 
 
   saveItem(item: any, index: number) {

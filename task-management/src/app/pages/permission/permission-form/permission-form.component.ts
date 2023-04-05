@@ -5,6 +5,7 @@ import { permissionContent } from 'src/app/_core/model/permission';
 // import { PermissionService } from 'src/app/_core/api/permission/permission.service';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
 import { PermissionData } from 'src/app/_core/api/permission/permission-data';
+import { catchError, firstValueFrom, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-permission-form',
@@ -80,20 +81,30 @@ export class PermissionFormComponent implements OnInit {
     this.checked = !this.checked;
   }
 
-  getPermission() {
-    this.permissionData.search(1, 999, '').subscribe({
-      next: (res) => {
-        console.log(res);
-        this.listData = res.pagingData.content;
-        // console.log(this.listData);
-        this.getParentCode();
-        // this.totalElements = res.pagingData.totalElements;
-        // this.totalPages = res.pagingData.totalPages;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+  async getPermission() {
+    let txtSearch = "type.eq.0,"
+    let res: any = await firstValueFrom(this.permissionData.search(1, 999, txtSearch));
+    console.log(res);
+    if (res && res.pagingData) {
+      this.listParent = res.pagingData.content;
+      // this.totalElements = res.pagingData.totalElements;
+      // this.totalPages = res.pagingData.totalPages;
+    }
+    // this.permissionData.search(1, 999, txtSearch).subscribe({
+    //   next: (res) => {
+    //     console.log(res);
+    //     this.listParent = res.pagingData.content;
+    //     // console.log(this.listData);
+    //     // this.getParentCode();
+    //     // this.totalElements = res.pagingData.totalElements;
+    //     // this.totalPages = res.pagingData.totalPages;
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //     console.log(err.status);
+
+    //   },
+    // });
   }
 
   getParentCode() {

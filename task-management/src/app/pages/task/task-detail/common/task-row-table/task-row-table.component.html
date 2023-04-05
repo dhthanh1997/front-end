@@ -254,7 +254,7 @@
                       <nz-card class="table-subTask">
                         <nz-table
                           #basicTable
-                          [nzData]="item.get('subTask')?.value"
+                          [nzData]="item.get('subTask')!.value"
                           [nzShowPagination]="false"
                         >
                           <thead>
@@ -263,6 +263,7 @@
                                 <th class="text-center">Tên</th>
                                 <th class="text-center">Ngày bắt đầu</th>
                                 <th class="text-center">Ngày kết thúc</th>
+                                <th class="text-center">Trạng thái</th>
                               </thead>
                             </tr>
                           </thead>
@@ -273,12 +274,19 @@
                                 index as idxSub
                               "
                             >
-                              <td class="text-center">{{ sub.name }}</td>
+                              <td class="text-center">
+                                <a (click)="subTaskInfo(idx, idxSub)">
+                                  {{ sub.name }}
+                                </a>
+                              </td>
                               <td class="text-center">
                                 {{ sub.startDate | date : "dd/MM/yyyy" }}
                               </td>
                               <td class="text-center">
                                 {{ sub.endDate | date : "dd/MM/yyyy" }}
+                              </td>
+                              <td class="text-center">
+                                {{ sub.state | stateTask }}
                               </td>
                             </tr>
                           </tbody>

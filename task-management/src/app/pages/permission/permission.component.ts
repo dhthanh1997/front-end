@@ -7,6 +7,7 @@ import { ModeModal } from '../../_core/enum/modeModal';
 import { DeleteComponent } from './delete/delete.component';
 import { PermissionFormComponent } from './permission-form/permission-form.component';
 import { PermissionData } from '../../_core/api/permission/permission-data';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-permission',
@@ -113,21 +114,29 @@ export class PermissionComponent implements OnInit {
     this.getPermission();
   }
 
-  public getPermission() {
-    this.permissionData
-      .search(this.pageNumber, this.pageSize, this.txtSearch)
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          this.listData = res.pagingData.content;
-          // console.log(this.listData);
-          this.totalElements = res.pagingData.totalElements;
-          this.totalPages = res.pagingData.totalPages;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+  public async getPermission() {
+    // this.permissionData
+    //   .search(this.pageNumber, this.pageSize, this.txtSearch)
+    //   .subscribe({
+    //     next: (res) => {
+    //       console.log(res);
+    //       this.listData = res.pagingData.content;
+    //       // console.log(this.listData);
+    //       this.totalElements = res.pagingData.totalElements;
+    //       this.totalPages = res.pagingData.totalPages;
+    //     },
+    //     error: (err) => {
+    //       console.log(err);
+    //     },
+    //   });
+    let txtSearch = "type.eq.0,"
+    let res: any = await firstValueFrom(this.permissionData.search(1, 999, txtSearch));
+    console.log(res);
+    if (res && res.pagingData) {
+      this.listData = res.pagingData.content;
+      this.totalElements = res.pagingData.totalElements;
+      this.totalPages = res.pagingData.totalPages;
+    }
   }
 
   onCreate(): void {

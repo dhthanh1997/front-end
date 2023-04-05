@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { catchError, concatMap, Observable, of, throwError } from 'rxjs';
 import { NotifyService } from 'src/app/_base/notify.service';
 import { initDataObject, initFormArray, initFormObject, setDataInFormArray, setDataInFormObject, updateFormData } from 'src/app/_base/util';
@@ -9,6 +9,8 @@ import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
 import { Task } from 'src/app/_core/model/task';
 import { ShareService } from 'src/app/_share/share.service';
 import { TaskDetailTableComponent } from '../common/task-detail-table/task-detail-table.component';
+import { UploadFileData } from 'src/app/_core/api/upload-file/upload-file-data';
+import { TaskUploadFileComponent } from '../task-upload-file/task-upload-file.component';
 
 @Component({
   selector: 'app-task-detail-frm',
@@ -22,6 +24,7 @@ export class TaskDetailFrmComponent implements OnInit, AfterViewInit {
   public idTask: number = 0;
   public task: Task = new Task();
   public observableTaskDetail$ = new Observable<any>();
+  public files: any[] = [];
 
   @ViewChild('taskDetailTable') taskDetailTable!: TaskDetailTableComponent;
   @Input() isCompleted: boolean = false;
@@ -31,8 +34,9 @@ export class TaskDetailFrmComponent implements OnInit, AfterViewInit {
     private shareService: ShareService,
     private taskData: TaskData,
     private notifyService: NotifyService,
-    // private taskDetailTable: TaskDetailTableComponent,
-    private modelRef: NzModalRef<TaskDetailFrmComponent>) {
+    private modal: NzModalService,
+    private modelRef: NzModalRef<TaskDetailFrmComponent>,
+    private uploadService: UploadFileData) {
     this.formValidation = initFormObject(this.task, new Task());
     this.formValidation.addControl('subTask', this.fb.array([]));
   }
@@ -73,8 +77,42 @@ export class TaskDetailFrmComponent implements OnInit, AfterViewInit {
     this.taskData.markCompleteTask(this.idTask);
   }
 
-  uploadFile() {
 
+  getFileNameInTask(id: number) {
+    this.uploadService.getFileInTask(id).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.message === ResponseStatusEnum.success) {
+          this.files = res.data;
+        }
+      }
+    });
+  }
+
+  uploadFile() {
+    this.modal.create({
+      nzContent: TaskUploadFileComponent,
+      // nzTitle: "Upload file",
+      nzCentered: true,
+      nzMaskClosable: false,
+      nzDirection: 'ltr',
+      // nzClassName: 'modal-custom',
+      nzClosable: false,
+      nzFooter: null,
+      nzComponentParams: {
+        title: 'Upload file',
+        taskId: this.formValidation.get('id')?.value,
+      },
+    })
+    .afterClose.subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getFileNameInTask(this.idTask);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   addSubTask() {
