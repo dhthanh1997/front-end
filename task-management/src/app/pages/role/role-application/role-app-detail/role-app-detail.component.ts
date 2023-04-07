@@ -4,6 +4,8 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { PermissionData } from 'src/app/_core/api/permission/permission-data';
 import { RolePermissionData } from 'src/app/_core/api/role-permission/role-permission-data';
 import { rolePermissionContent } from 'src/app/_core/model/role-permission';
+import { permissionContent } from 'src/app/_core/model/permission';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-role-app-detail',
@@ -36,6 +38,7 @@ export class RoleAppDetailComponent implements OnInit {
     private rolePerData: RolePermissionData,
     private route: ActivatedRoute,
     private notifyService: NzNotificationService,
+    private _location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -60,11 +63,9 @@ export class RoleAppDetailComponent implements OnInit {
           console.log(res);
           this.listData = res.pagingData.content;
           this.getParentCode();
-          this.getChildCode();
           console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
-          this.rolePerChecked();
         },
         error: (err) => {
           console.log(err);
@@ -172,6 +173,7 @@ export class RoleAppDetailComponent implements OnInit {
         this.listParent.push(this.listData[i]);
       // console.log(this.listParent);
     }
+    this.getChildCode();
   }
 
   getChildCode() {
@@ -180,6 +182,7 @@ export class RoleAppDetailComponent implements OnInit {
         this.listChild.push(this.listData[i]);
       // console.log(this.listChild);
     }
+    this.rolePerChecked();
   }
 
   checkedAll(index: number, event: any) {
@@ -212,6 +215,7 @@ export class RoleAppDetailComponent implements OnInit {
           }
         }
       }
+      this.isCheckedAll();
     }, 100);
   }
 
@@ -222,21 +226,20 @@ export class RoleAppDetailComponent implements OnInit {
     console.log(this.listId);
   }
 
-  // isCheckedAll() {
-  //   for(let i = 0; i < this.listParent.length; i++) {
-  //     for(let j = 0; j < this.listChild.length; j++) {
-  //       let a = []
-  //       if(this.listChild[j].parentCode === this.listParent[i].code)
-  //         a.push(this.listChild[j]);
-  //       if(j == this.listChild.length - 1) {
-  //         const check = this.listChild.every((element: rolePermissionContent) => element.isChecked == true);
-  //         if(check) {
-  //           this.checkedBoxAll = true;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+  isCheckedAll() {
+    let allowCheckAll = false;
+    this.listParent;
+    for (let i = 0; i < this.listParent.length; i++) {
+      for (let j = 0; j < this.listChild.length; j++) {
+        if (this.listChild[j].parentCode == this.listParent[i].code) {
+          if (this.listChild[j].isChecked == false) {
+            break;
+          }
+
+        }
+      }
+    }
+  }
 
   checkIntoArr(index: number) {
     let a = this.listChild[index];
@@ -251,5 +254,9 @@ export class RoleAppDetailComponent implements OnInit {
         this.listId.splice(b, 1);
       }
     }
+  }
+
+  goBack() {
+    this._location.back();
   }
 }

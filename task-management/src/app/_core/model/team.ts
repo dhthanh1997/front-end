@@ -1,3 +1,5 @@
+import { BaseEntity } from "./base";
+
 /* eslint-disable @typescript-eslint/ban-types */
 export interface Team {
   pagingData: pagingData;
@@ -11,17 +13,23 @@ export interface pagingData {
   size?: number;
 }
 
-export interface teamContent {
-  createdBy?: string;
-  createdDate?: string;
+export class teamContent extends BaseEntity {
   description?: string;
-  id?: number;
-  lastModifiedBy?: string;
-  lastModifiedDate?: string;
+  id: number;
   teamName: string;
   status?: string;
   isChecked?: Boolean;
-  label? : string;
+  label?: string;
+
+  constructor() {
+    super();
+    this.id = 0;
+    this.teamName = '';
+    this.status = '';
+    this.label = '';
+    this.description = '';
+    this.isChecked = false;
+  }
 }
 
 export interface pageable {

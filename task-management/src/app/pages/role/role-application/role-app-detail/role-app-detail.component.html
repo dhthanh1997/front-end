@@ -36,11 +36,18 @@
           (ngModelChange)="checkedAll(idx, $event)"
           (click)="$event.stopPropagation()"
         >
-          Tích / Bỏ Tích</label
+          Tích All</label
         >
       </ng-template>
     </nz-collapse>
   </div>
 
+  <a routerLink="/pages/roles-app" class="mr-3">
+    <button nz-button>
+      <span>Trở lại Roles</span>
+    </button>
+  </a>
+
   <button nz-button (click)="onCreate()">Lưu</button>
+
 </div>

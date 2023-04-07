@@ -5,6 +5,7 @@ import { memberContent } from 'src/app/_core/model/member';
 import { MemberData } from 'src/app/_core/api/member/member-data';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
 import { TeamData } from 'src/app/_core/api/team/team-data';
+import { RoleAppData } from 'src/app/_core/api/role-application/role-app-data';
 
 @Component({
   selector: 'app-member-form',
@@ -15,13 +16,20 @@ export class MemberFormComponent implements OnInit {
   formValidation!: FormGroup;
   isConfirmLoading = false;
   checked = false;
-  teamList: any[] = [];
-  listOfSelectedValue: any[] = [];
 
+  teamList: any[] = [];
+  roleAppList: any[] = [];
+  roleAppValue: number = 0;
 
   compareFn(c1: any, c2: any): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
+
+  byId(item1: any, item2: any) {
+    return item2 == item1;
+  }
+
+  selectedItem: any;
 
   @Input() mode!: string;
 
@@ -36,6 +44,7 @@ export class MemberFormComponent implements OnInit {
     private memberData: MemberData,
     private modelRef: NzModalRef<MemberFormComponent>,
     private teamData: TeamData,
+    private roleAppData: RoleAppData,
   ) {}
 
   get name() {
@@ -58,6 +67,10 @@ export class MemberFormComponent implements OnInit {
     return this.formValidation.get('teams');
   }
 
+  get roleId() {
+    return this.formValidation.get('roleId');
+  }
+
   ngOnInit(): void {
     console.log(this.id);
 
@@ -75,6 +88,7 @@ export class MemberFormComponent implements OnInit {
       ],
       username: ['', [Validators.required, Validators.minLength(8)]],
       teams: [[], []],
+      roleId: [0, []],
     });
 
     if (this.mode != ModeModal.CREATE) {
@@ -84,6 +98,7 @@ export class MemberFormComponent implements OnInit {
     }
 
     this.getTeam();
+    this.getParentRole();
   }
 
   changeChecked() {
@@ -100,14 +115,15 @@ export class MemberFormComponent implements OnInit {
           email: res.data.email,
           phone: res.data.phone,
           username: res.data.username,
-          teams: res.data.teams
+          teams: res.data.teams,
+          roleId: res.data.roleId,
         });
-        console.log(this.formValidation);
+        console.log(this.formValidation.value.roleId);
       },
     });
   }
 
-  public getTeam() {
+  getTeam() {
     this.teamData.search(1, 999).subscribe({
       next: (res) => {
         if(res) {
@@ -120,6 +136,26 @@ export class MemberFormComponent implements OnInit {
       }
     })
   }
+
+  getParentRole() {
+    this.roleAppData.search(1, 999).subscribe({
+      next: (res) => {
+        if(res) {
+          console.log(res);
+          this.roleAppList = res.pagingData.content;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  // findNameById() {
+  //   let index = this.roleAppList.findIndex(item => item.id === this.roleId?.value);
+  //   if (index !== -1)
+  //     return this.roleAppValue = this.roleAppList[index].id;
+  // }
 
   handleOk(): void {
     // debugger;

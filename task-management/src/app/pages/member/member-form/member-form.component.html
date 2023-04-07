@@ -133,6 +133,36 @@
       </div>
 
       <!-- row 5 -->
+
+      <div nz-row class="d-flex flex-row" [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label nz-col [nzSpan]="3">
+              Quyền
+              <!-- <span style="color: red">*</span> -->
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="21">
+              <nz-select
+                formControlName="roleId"
+                name="roleId"
+                [(ngModel)]="selectedItem"
+                [compareWith]="byId"
+                [nzDisabled]="mode === 'view'"
+                [ngClass]="mode === 'view' ? 'ban' : ''"
+              >
+                <nz-option
+                  *ngFor="let item of roleAppList"
+                  nzValue="{{ item.id }}"
+                  nzLabel="{{ item.name }}"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- row 6 -->
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
