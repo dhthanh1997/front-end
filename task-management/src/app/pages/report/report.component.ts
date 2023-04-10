@@ -43,7 +43,7 @@ export class ReportComponent implements OnInit {
     private taskData: TaskData,
     private projectData: ProjectData,
     private teamData: TeamData,
-    private memberData: MemberData,
+    private memberData: MemberData
   ) {}
 
   ngOnInit(): void {
@@ -77,7 +77,12 @@ export class ReportComponent implements OnInit {
 
   getProject() {
     this.projectData
-      .search(this.pageNumber, this.pageSize, this.txtProjectSearch, this.sortProject)
+      .search(
+        this.pageNumber,
+        this.pageSize,
+        this.txtProjectSearch,
+        this.sortProject
+      )
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -123,14 +128,17 @@ export class ReportComponent implements OnInit {
   }
 
   getProjectValue(value: any) {
-    this.txtTaskSearch += `projectId.eq.${value},`
+    this.txtTaskSearch += `projectId.eq.${value},`;
+  }
+
+  getMemberValue(value: any) {
+    // this.txtTaskSearch += `memberId.eq.${value},`
   }
 
   InCompleteTask() {
     this.inCplTask = [];
     for (let i = 0; i < this.taskList.length; i++) {
-      if (this.taskList[i].state == 0)
-        this.inCplTask.push(this.taskList[i]);
+      if (this.taskList[i].state == 0) this.inCplTask.push(this.taskList[i]);
     }
     this.inCplTaskNumberInProject = this.inCplTask.length;
   }
@@ -218,59 +226,70 @@ export class ReportComponent implements OnInit {
     this.barChartOptions = {
       chart: {
         width: 450,
-        height: 350,
+        height: 450,
         type: 'column',
       },
       title: {
         text: 'Tình trạng dự án',
+        align: 'left',
       },
       xAxis: {
-        categories: [
-          'Dự án 1',
-          'Dự án 2',
-          'Dự án 3',
-        ],
-        crosshair: true,
+        categories: ['Dự án 1', 'Dự án 2', 'Dự án 3', 'Dự án 4'],
       },
       yAxis: {
         min: 0,
         title: {
           text: 'Số Task',
         },
+        stackLabels: {
+          enabled: true,
+          style: {
+            fontWeight: 'bold',
+            // color:
+            //   // theme
+            //   (Highcharts.defaultOptions.title.style &&
+            //     Highcharts.defaultOptions.title.style.color) ||
+            //   'gray',
+            textOutline: 'none',
+          },
+        },
+      },
+      legend: {
+        align: 'left',
+        x: 70,
+        verticalAlign: 'top',
+        y: 70,
+        floating: true,
+        // backgroundColor:
+        //   Highcharts.defaultOptions.legend.backgroundColor || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false,
       },
       tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat:
-          '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true,
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
       },
       plotOptions: {
         column: {
-          pointPadding: 0.2,
-          borderWidth: 0,
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+          },
         },
       },
       series: [
         {
-          name: 'Tổng Task',
-          data: [
-            10, 20, 15
-          ],
+          name: 'Done',
+          data: [3, 5, 1, 13],
         },
         {
-          name: 'Task hoàn thành',
-          data: [
-            3, 8, 5
-          ],
+          name: 'Doing',
+          data: [14, 8, 8, 12],
         },
         {
-          name: 'Task chưa hoàn thành',
-          data: [
-            7, 12, 10
-          ],
+          name: 'To do',
+          data: [0, 2, 6, 3],
         },
       ],
     };

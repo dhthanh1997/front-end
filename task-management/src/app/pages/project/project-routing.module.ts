@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TaskComponent } from '../task/task.component';
+import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
 import { ProjectComponent } from './project.component';
 
 const routes: Routes = [
@@ -12,6 +12,10 @@ const routes: Routes = [
       {
         path: 'project-task/:id',
         loadChildren:() => import('../task/task.module').then((m) => m.TaskModule)
+      },
+      {
+        path: 'timeline',
+        component: ProjectTimelineComponent
       }
     ]
   },

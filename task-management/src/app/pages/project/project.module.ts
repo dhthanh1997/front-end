@@ -9,13 +9,19 @@ import { ProjectFormComponent } from './project-form/project-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteComponent } from './delete/delete.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CurrencyMaskModule } from "ng2-currency-mask";
-import { CoreModule } from '../../_core/core.module';
-import { BaseModule } from 'src/app/_base/base.module';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { HighchartsChartModule } from 'highcharts-angular';
 import { SubProjectComponent } from './sub-project/sub-project.component';
+import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
 
 @NgModule({
-  declarations: [ProjectComponent, ProjectFormComponent, DeleteComponent, SubProjectComponent],
+  declarations: [
+    ProjectComponent,
+    ProjectFormComponent,
+    DeleteComponent,
+    SubProjectComponent,
+    ProjectTimelineComponent,
+  ],
   imports: [
     CommonModule,
     ProjectRoutingModule,
@@ -25,9 +31,8 @@ import { SubProjectComponent } from './sub-project/sub-project.component';
     HttpClientModule,
     FormsModule,
     CurrencyMaskModule,
+    HighchartsChartModule,
   ],
-  exports: [
-    ProjectFormComponent, DeleteComponent
-  ],
+  exports: [ProjectFormComponent, DeleteComponent],
 })
 export class ProjectModule {}

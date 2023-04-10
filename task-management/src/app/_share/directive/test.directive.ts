@@ -1,15 +1,15 @@
-import { Directive, ElementRef, Input, AfterViewChecked } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit } from '@angular/core';
 import { ShareService } from '../share.service';
 
 @Directive({
   selector: '[appTest]'
 })
-export class TestDirective implements AfterViewChecked {
+export class TestDirective implements AfterViewInit {
 
   constructor(private element: ElementRef, private shareService: ShareService) { }
 
-  ngAfterViewChecked(): void {
-    // this.shareService.isTest.subscribe({
+  ngAfterViewInit(): void {
+    // this.shareService.isGetColor.subscribe({
     //   next: (res) => {
     //     if (res) {
     //       this.Color(res);
@@ -22,7 +22,8 @@ export class TestDirective implements AfterViewChecked {
   }
 
   private Color(value: string) {
-    this.element.nativeElement.style.background = value;
+    // debugger;
+    this.element.nativeElement.style.backgroundColor = value;
   }
 
 }

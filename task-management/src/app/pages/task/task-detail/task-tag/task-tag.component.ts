@@ -79,14 +79,9 @@ export class TaskTagComponent implements OnInit {
     // debugger;
     let input = this.element.nativeElement.querySelector('#input-add-tag');
     if (input.value.length > 0) {
-      const item: tagContent = {
-        id: 0,
-        color: '',
-        name: '',
-      };
+      const item: any = {};
       item.name = input.value;
       item.color = this.color;
-      // debugger;
       this.tagData.save(item).subscribe({
         next: (res: tagContent) => {
           console.log(res);
@@ -94,7 +89,6 @@ export class TaskTagComponent implements OnInit {
             input.value = '';
             this.isAdd = 1;
             this.getTag();
-            // this.modelRef.close(res);
           }
         },
         error: (err: any) => {
@@ -110,7 +104,7 @@ export class TaskTagComponent implements OnInit {
   deleteTag(id: number) {
     this.tagData.deleteById(id).subscribe({
       next: (res) => {
-        debugger;
+        // debugger;
         this.getTask(id);
         this.getTag();
         console.log(this.listTag);

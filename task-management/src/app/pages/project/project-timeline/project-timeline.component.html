@@ -1,0 +1,17 @@
+<div class="wrapper">
+  <div class="container">
+    <a routerLink="/pages/project" class="mr-3">
+      <button nz-button>
+        <span>Trở lại dự án</span>
+      </button>
+    </a>
+    <div class="row justify-content-center flex-column" *ngIf="!loading && chartOptions">
+      <highcharts-chart
+        [Highcharts]="Highcharts"
+        [constructorType]="'ganttChart'"
+        [options]="chartOptions"
+      >
+      </highcharts-chart>
+    </div>
+  </div>
+</div>

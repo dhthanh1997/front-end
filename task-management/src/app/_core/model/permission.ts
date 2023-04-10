@@ -1,3 +1,5 @@
+import { BaseEntity } from "./base";
+
 /* eslint-disable @typescript-eslint/ban-types */
 export interface Member {
   pagingData: pagingData;
@@ -11,19 +13,26 @@ export interface pagingData {
   size?: number;
 }
 
-export interface permissionContent {
+export class permissionContent extends BaseEntity {
   code: string;
-  createdBy?: string;
-  createdDate?: string;
   description: string;
   id: number;
-  lastModifiedBy?: string;
-  lastModifiedDate?: string;
   name: string;
   parentCode?: string;
   status?: string;
-  type?: String;
+  type?: string;
   isChecked?: Boolean;
+
+  constructor() {
+    super();
+    this.id = 0;
+    this.name = '';
+    this.code = '';
+    this.description = '';
+    this.parentCode = '';
+    this.status = '';
+    this.type = '';
+  }
 }
 
 export interface pageable {

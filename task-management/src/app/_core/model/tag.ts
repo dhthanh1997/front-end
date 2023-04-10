@@ -1,3 +1,5 @@
+import { BaseEntity } from "./base";
+
 /* eslint-disable @typescript-eslint/ban-types */
 export interface Tag {
   pagingData: pagingData;
@@ -11,18 +13,24 @@ export interface pagingData {
   size?: number;
 }
 
-export interface tagContent {
-  createdBy?: string;
-  createdDate?: string;
-  color?: string;
+export class tagContent extends BaseEntity {
+  color: string;
   icon?: string;
   id: number;
-  lastModifiedBy?: string;
-  lastModifiedDate?: string;
   name: string;
   slug?: string;
   status?: string;
-  isChecked?: Boolean;
+
+  constructor() {
+    super();
+    this.id = 0;
+    this.name = '';
+    this.color = '';
+    this.icon = '';
+    this.slug = '';
+    this.status = '';
+  }
+
 }
 
 export interface pageable {

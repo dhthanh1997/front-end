@@ -1,9 +1,9 @@
-::ng-deep .ant-modal-body {
+:host ::ng-deep .ant-modal-body {
   height: 500px;
   overflow-y: scroll;
 }
 
-::ng-deep .ant-tag svg {
+:host ::ng-deep .ant-tag svg {
   margin-bottom: 5px;
 }
 

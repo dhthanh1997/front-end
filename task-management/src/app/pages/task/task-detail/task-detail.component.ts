@@ -65,7 +65,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
 
   public tagId: number = 0;
   public tagList: any = {
-    name: ''
+    name: '',
   };
   public listProject: any[] = [];
 
@@ -90,15 +90,14 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     private notifyService: NotifyService,
     private projectData: ProjectData,
     private modal: NzModalService,
-    private uploadService: UploadFileData,
+    private uploadService: UploadFileData
   ) {
     this.formValidation = initFormObject(this.task, this.task);
     this.formValidation.addControl('subTask', this.fb.array([]));
     // this.formValidation.addControl('listProject', this.fb.array([]));
-
   }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {}
 
   ngOnInit() {
     console.log(this.isCollapsed);
@@ -120,7 +119,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         if (res.message === ResponseStatusEnum.success) {
           this.files = res.data;
         }
-      }
+      },
     });
   }
 
@@ -131,14 +130,14 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         if (res?.message === ResponseStatusEnum.success) {
           // this.formValidation.controls['listProject'].patchValue(res.data)
           this.listProject = res.pagingData.content;
-          console.log("project");
+          console.log('project');
           console.log(this.listProject);
         }
       },
       error: (err) => {
         console.log(err);
-      }
-    })
+      },
+    });
   }
 
   getSubDataWithId() {
@@ -159,8 +158,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.log(err);
-      }
-    })
+      },
+    });
   }
 
   getSubData() {
@@ -327,7 +326,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.isShow = false;
   }
 
-  onOpenChange(event: any) { }
+  onOpenChange(event: any) {}
 
   // end event
 
@@ -341,7 +340,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       value = 1;
     }
     if (formGroup.value === 1) {
-      value = 0
+      value = 0;
     }
     formGroup.setValue(value);
     this.watchForChange();
@@ -350,29 +349,30 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   uploadFile() {
-    this.modal.create({
-      nzContent: TaskUploadFileComponent,
-      // nzTitle: "Upload file",
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzDirection: 'ltr',
-      nzClassName: 'modal-custom',
-      nzClosable: false,
-      nzFooter: null,
-      nzComponentParams: {
-        title: 'Upload file',
-        taskId: this.formValidation.get('id')?.value,
-      },
-    })
-    .afterClose.subscribe({
-      next: (res) => {
-        console.log(res);
-        this.getFileNameInTask(this.idTask);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    this.modal
+      .create({
+        nzContent: TaskUploadFileComponent,
+        // nzTitle: "Upload file",
+        nzCentered: true,
+        nzMaskClosable: false,
+        nzDirection: 'ltr',
+        nzClassName: 'modal-custom',
+        nzClosable: false,
+        nzFooter: null,
+        nzComponentParams: {
+          title: 'Upload file',
+          taskId: this.formValidation.get('id')?.value,
+        },
+      })
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+          this.getFileNameInTask(this.idTask);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   addSubTask() {
@@ -390,6 +390,9 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
           // formValidation: this.formValidation
           idTask: this.formValidation.get('id')?.value
             ? this.formValidation.get('id')?.value
+            : 0,
+          idProject: this.formValidation.get('projectId')?.value
+            ? this.formValidation.get('projectId')?.value
             : 0,
           isDialog: true,
         },
@@ -441,15 +444,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   }
 
   deleteTask() {
-    let listId = [];
-    listId.push(this.formValidation.get('id')?.value);
-    // let id = this.formValidation.get('id')?.value;
-    // console.log(this.subTask);
-    for(let i = 0; i < this.subTask.controls.length; i++) {
-      listId.push(this.subTask.controls[i].value.id);
-    }
-    console.log(listId);
-    this.taskData.deleteSelectedId(listId).subscribe({
+    let id = this.formValidation.get('id')?.value;
+    this.taskData.deleteById(id).subscribe({
       next: (res) => {
         console.log(res);
         if (res.message === ResponseStatusEnum.error) {
@@ -474,6 +470,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         nzMaskClosable: false,
         nzDirection: 'ltr',
         nzClassName: 'modal-custom',
+        nzWidth: '600px',
         nzClosable: false,
         nzFooter: null,
         nzComponentParams: {
@@ -483,7 +480,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
       })
       .afterClose.subscribe({
         next: async (res) => {
-          debugger;
+          // debugger;
           if (res !== undefined && res !== null) this.tagId = res;
           // else this.tagId = 0;
           this.getTagById(this.tagId);

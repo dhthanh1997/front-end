@@ -38,18 +38,19 @@ export class HomeComponent implements OnInit {
     private memberData: MemberData,
     private taskData: TaskData,
     private element: ElementRef,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getProject();
     this.getMember();
     this.getTask();
+    this.refresh();
   }
 
   public getProject() {
     this.projectData
-      .search(this.pageNumber, this.pageSize, 'parentId.eq.0,')
+      .search(this.pageNumber, this.pageSize, 'parentId.nu.nu,')
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -132,5 +133,20 @@ export class HomeComponent implements OnInit {
 
   projectNav(id: any) {
     this.router.navigate(['pages/task/project-task', id]);
+  }
+
+  realTime() {
+    setTimeout(() => {
+      this.refresh();
+    }, 1000);
+  }
+
+  refresh() {
+    let a = new Date();
+    let b = a.getHours( ) >= 12 ? ' PM' : ' AM';
+    this.element.nativeElement.querySelector(
+      '.date-time'
+    ).innerHTML = `Ngày ${a.getDate()} tháng ${a.getMonth()+1} năm ${a.getFullYear()} - ${a.getHours()}:${a.getMinutes()} ${b}`;
+    this.realTime();
   }
 }

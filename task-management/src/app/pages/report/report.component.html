@@ -1,6 +1,6 @@
 <div class="report-wrapper">
   <div class="report-header mt-4 mb-2">
-    <nz-select nzPlaceHolder="Nhân viên">
+    <nz-select nzPlaceHolder="Nhân viên" ngModel (ngModelChange)="getMemberValue($event)">
       <nz-option nzValue=" " nzLabel="Tất cả"></nz-option>
       <nz-option
         *ngFor="let item of memberList; let idx = index"

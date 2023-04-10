@@ -215,15 +215,15 @@ export class BoardTaskFormComponent implements OnInit {
   }
 
   public createTag() {
-    const item: tagContent = {
-      createdBy: '',
-      createdDate: '',
-      id: 0,
-      lastModifiedBy: '',
-      lastModifiedDate: '',
-      name: '',
-      slug: '',
-      status: '',
+    const item: any = {
+      // createdBy: '',
+      // createdDate: '',
+      // id: 0,
+      // lastModifiedBy: '',
+      // lastModifiedDate: '',
+      // name: '',
+      // slug: '',
+      // status: '',
     };
     const tagName = this.element.nativeElement.querySelector('#addTag').value;
     item.name = tagName;

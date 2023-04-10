@@ -15,6 +15,7 @@ export interface rolePermissionContent {
   permissionId?: number;
   roleId?: number;
   isChecked?: Boolean;
+  isAllChecked?: Boolean;
 }
 
 export interface pageable {

@@ -4,6 +4,8 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { PermissionData } from 'src/app/_core/api/permission/permission-data';
 import { RolePermissionData } from 'src/app/_core/api/role-permission/role-permission-data';
 import { rolePermissionContent } from 'src/app/_core/model/role-permission';
+import { permissionContent } from 'src/app/_core/model/permission';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-role-app-detail',
@@ -36,6 +38,7 @@ export class RoleAppDetailComponent implements OnInit {
     private rolePerData: RolePermissionData,
     private route: ActivatedRoute,
     private notifyService: NzNotificationService,
+    private _location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -50,21 +53,19 @@ export class RoleAppDetailComponent implements OnInit {
     return parseInt(id!);
   }
 
-  async getPermission() {
+  getPermission() {
     // debugger;
     this.getRolePer();
     this.permissionData
       .search(this.pageNumber, this.pageSize, this.txtSearch)
       .subscribe({
-        next: async (res) => {
+        next: (res) => {
           console.log(res);
           this.listData = res.pagingData.content;
           this.getParentCode();
-          this.getChildCode();
           console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
-          await this.rolePerChecked();
         },
         error: (err) => {
           console.log(err);
@@ -172,6 +173,7 @@ export class RoleAppDetailComponent implements OnInit {
         this.listParent.push(this.listData[i]);
       // console.log(this.listParent);
     }
+    this.getChildCode();
   }
 
   getChildCode() {
@@ -180,6 +182,7 @@ export class RoleAppDetailComponent implements OnInit {
         this.listChild.push(this.listData[i]);
       // console.log(this.listChild);
     }
+    this.rolePerChecked();
   }
 
   checkedAll(index: number, event: any) {
@@ -204,7 +207,6 @@ export class RoleAppDetailComponent implements OnInit {
   }
 
   rolePerChecked() {
-    // debugger;
     setTimeout(() => {
       for (let i = 0; i < this.listRolePer.length; i++) {
         for (let j = 0; j < this.listData.length; j++) {
@@ -213,6 +215,7 @@ export class RoleAppDetailComponent implements OnInit {
           }
         }
       }
+      this.isCheckedAll();
     }, 100);
   }
 
@@ -221,6 +224,21 @@ export class RoleAppDetailComponent implements OnInit {
     this.listChild[index].isChecked = event;
     this.checkIntoArr(index);
     console.log(this.listId);
+  }
+
+  isCheckedAll() {
+    let allowCheckAll = false;
+    this.listParent;
+    for (let i = 0; i < this.listParent.length; i++) {
+      for (let j = 0; j < this.listChild.length; j++) {
+        if (this.listChild[j].parentCode == this.listParent[i].code) {
+          if (this.listChild[j].isChecked == false) {
+            break;
+          }
+
+        }
+      }
+    }
   }
 
   checkIntoArr(index: number) {
@@ -236,5 +254,9 @@ export class RoleAppDetailComponent implements OnInit {
         this.listId.splice(b, 1);
       }
     }
+  }
+
+  goBack() {
+    this._location.back();
   }
 }

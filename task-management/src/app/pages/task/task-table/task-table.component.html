@@ -107,6 +107,7 @@
               [title]="item.get('name')!.value ? item.get('name')!.value : ''"
               (sectionName)="addToSectionArr($event, idx)"
               (isEditSection)="isEdit($event)"
+              [sectionIdx]="idx"
               style="cursor: pointer;"
             >
             </app-task-row-table>
