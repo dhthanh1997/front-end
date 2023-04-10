@@ -6,7 +6,7 @@ import { environment } from "src/environments/environment";
 
 @Injectable()
 export class HttpService {
-   
+
     get apiUrl(): string {
         return environment.apiUrl;
     }

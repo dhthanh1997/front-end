@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable, Subscription, debounceTime, firstValueFrom, take, tap, timer } from 'rxjs';
+import { Observable, Subscription, debounceTime, firstValueFrom, from, map, of, take, tap, timer } from 'rxjs';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth.service';
@@ -14,72 +14,93 @@ export class AuthGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return this.authService.isAuthenticated().pipe(debounceTime(1000), take(1),
-      tap(async (authenticated) => {
-        if (!authenticated) {
-          console.log(authenticated);
-          // window.location.href = this.loginUrl;
-          if (this.authService.getIsExpiredToken()) {
-            console.log("--get token");
+    // return this.authService.isAuthenticated().pipe(take(1),tap((authenticated) => {
+    //   if (!authenticated) {
+    //     this.router.navigate(['auth/login']);
+    //     let reAuthenticated = false;
+    //     // if (this.authService.getIsExpiredToken()) {
+    //     //   let uuid = this.authService.getUUID();
+    //     //   if (uuid) {
+    //     //     // const $refreshToken = this.authenticationService.refreshToken(uuid);
 
-            let uuid = this.authService.getUUID();
-            if (uuid) {
+    //     //     this.authenticationService.refreshToken(uuid).pipe(take(1)).subscribe({
+    //     //       next: (res) => {
+    //     //         if (res && res.accessToken) {
+    //     //           console.log(res);
+    //     //           localStorage.setItem('access_token', res.accessToken);
+    //     //           // this.router.navigate(['pages']);
+    //     //           reAuthenticated = true;
+    //     //         }
+    //     //         //  else {
+    //     //         //   if (res && res.status === 401) {
+    //     //         //     this.router.navigate(['auth/login']);
+    //     //         //   }
+    //     //         // }
+    //     //       },
+    //     //       error: (error) => {
+    //     //         console.log(error);
+    //     //         // nếu trả về 401 từ refreshToken => refreshToken hết hạn => redirect sang login
+    //     //         if (error.status === 401) {
+    //     //           this.router.navigate(['auth/login']);
+    //     //         }
+    //     //       }
+    //     //     });
+    //     //     // return of(reAuthenticated);
+    //     //   }
+    //     //   else {
+    //     //     this.router.navigate(['auth/login']);
+    //     //   }
+    //     // }
+    //   }
+    // }))
 
-              let res: any = await firstValueFrom(this.authenticationService.refreshToken(uuid));
-
-              if (res && res.accessToken) {
-                console.log(this.router.url);
-                localStorage.setItem('access_token', res.accessToken);
-
-                setTimeout(() => {
-
-                 this.router.navigate(['pages']);
-                }, 300);
-
-                // this.$unSub.unsubscribe();
-
-              } else {
-                console.log(res)
-                if (res && res.status === 401) {
-                  this.router.navigate(['auth/login']);
+    return this.authService.isAuthenticated().pipe(map(authenticated => {
+      let item: any = {
+        reAuthenticated: true,
+        isRefresh: true
+      };
+      if (!authenticated) {
+        if (this.authService.getIsExpiredToken()) {
+          let uuid = this.authService.getUUID();
+          if (uuid) {
+            this.authenticationService.refreshToken(uuid).pipe(take(1)).subscribe({
+              next: (res) => {
+                if (res && res.accessToken) {
+                  console.log(res);
+                  localStorage.setItem('access_token', res.accessToken);
+                  item.reAuthenticated = true;
+                  item.isRefresh = true;
                 }
+              },
+              error: (error) => {
+                console.log(error);
+                // nếu trả về 401 từ refreshToken => refreshToken hết hạn => redirect sang login
+                item.reAuthenticated = false;
+                item.isRefresh = true;
               }
-
-              // this.authenticationService.refreshToken(uuid).pipe(take(1)).subscribe({
-              //   next: (res) => {
-              //     if (res && res.accessToken) {
-              //       console.log(res);
-              //       localStorage.setItem('access_token', res.accessToken);
-
-              //       setTimeout(() => {
-              //         this.router.navigate(['pages']);
-              //       }, 300);
-              //       // timer(300).pipe(take(1)).subscribe(res => {
-              //       //   // console.log(this.activateRoute.snapshot);
-
-              //       // });
-              //       // redirect sang task
-              //       // window.location.href = this.taskUrl;
-
-              //     } else {
-              //       if (res && res.status === 401) {
-              //         this.router.navigate(['auth/login']);
-              //       }
-              //     }
-              //   },
-              // })
-            }
-            else {
-              this.router.navigate(['auth/login']);
-            }
-
+            });
+            // return of(reAuthenticated);
           }
-          // else {
-          //   this.router.navigate(['auth/login']);
-
-          // }
+          else {
+            item.reAuthenticated = false;
+            item.isRefresh = false;
+          }
         }
-      })
-    )
+      }
+      return item;
+    }), tap((value: any) => {
+      if (value.isRefresh) {
+          // refresh token hết hạn => redirect sang login
+          if(!value.reAuthenticated) {
+              this.router.navigate(['auth/login']);
+              return;
+          } else {
+            console.log(this.router.url);
+          }
+      } else {
+        this.router.navigate(['auth/login']);
+        return;
+      }
+    }));
   }
 }
