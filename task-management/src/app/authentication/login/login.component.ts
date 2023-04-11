@@ -44,29 +44,33 @@ export class LoginComponent implements OnInit {
 
   login() {
     // do something here
-      console.log(this.loginForm.value);
-      const formData: any = this.loginForm.value;
-      this.authService.login(formData).pipe(take(1)).subscribe({
-        next: (res) => {
-             console.log(res)
-             if(res && res.accessToken) {
-                // console.log(this.taskUrl);
-                this.router.navigate(['pages']);
-                // redirect sang task
-                // window.location.href = this.taskUrl;
-                localStorage.setItem('access_token', res.accessToken);
-             }
-             else {
-              this.Error = false;
-              this.messageError = 'Tên đăng nhập hoặc mật khẩu không đúng';
-             }
-        },
-        error: (err) => {
-           console.log(err);
-           this.Error = false;
-           this.messageError = 'Tên đăng nhập hoặc mật khẩu không đúng';
+    console.log(this.loginForm.value);
+    const formData: any = this.loginForm.value;
+    this.authService.login(formData).pipe(take(1)).subscribe({
+      next: (res) => {
+        console.log(res)
+        if (res && res.accessToken) {
+          // console.log(this.taskUrl);
+          localStorage.setItem('access_token', res.accessToken);
 
+          setTimeout(() => {
+            this.router.navigate(['pages']);
+
+          }, 300);
+          // redirect sang task
+          // window.location.href = this.taskUrl;
         }
-      });
+        else {
+          this.Error = false;
+          this.messageError = 'Tên đăng nhập hoặc mật khẩu không đúng';
+        }
+      },
+      error: (err) => {
+        console.log(err);
+        this.Error = false;
+        this.messageError = 'Tên đăng nhập hoặc mật khẩu không đúng';
+
+      }
+    });
   }
 }

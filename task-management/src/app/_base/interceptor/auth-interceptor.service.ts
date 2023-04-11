@@ -11,16 +11,16 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   constructor(private router: Router, private authService: AuthService) { }
 
-  // get loginUrl(): string {
-  //   return environment.loginUrl;
-  // }
-
+ 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req).pipe(catchError((error: HttpErrorResponse) => {
+    return next.handle(req).pipe(catchError((error: any) => {
+      console.log(error)
       if(error.status === 401) {
-      
+        
+        if(this.authService.getIsExpiredToken()){
+           
+        } 
         this.router.navigate(['auth/login']);
-
       }
       return throwError(() => new Error(error.message));
     }));

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { AccessToken } from './access-token';
 
 @Injectable()
@@ -25,10 +25,10 @@ export class AuthService {
   isAuthenticated(): Observable<boolean> {
     // debugger;
     if (this.tokenDecode) {
-      if (this.getIsExpiredToken()) return of(false);
-      return of(true);
+      if (this.getIsExpiredToken()) return from([false]);
+      return from([true]);
     }
-    return of(false);
+    return from([false]);
   }
 
   getIsExpiredToken() {
@@ -48,6 +48,10 @@ export class AuthService {
     } else {
       return this.isExpiredToken = true;
     }
+  }
+
+  saveToken(token: string) {
+    localStorage.setItem('access_token', token);
   }
 
 }
