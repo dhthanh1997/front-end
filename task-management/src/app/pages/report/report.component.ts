@@ -147,7 +147,7 @@ export class ReportComponent implements OnInit {
     this.pieChartOptions = {
       chart: {
         width: 450,
-        height: 350,
+        height: 400,
         plotBackgroundColor: null,
         plotBorderWidth: null,
         plotShadow: false,
@@ -177,7 +177,7 @@ export class ReportComponent implements OnInit {
       },
       series: [
         {
-          name: 'Số task hoàn thành',
+          name: 'Tổng số Task',
           colorByPoint: true,
           data: [
             {
@@ -226,7 +226,7 @@ export class ReportComponent implements OnInit {
     this.barChartOptions = {
       chart: {
         width: 450,
-        height: 450,
+        height: 400,
         type: 'column',
       },
       title: {
@@ -254,18 +254,18 @@ export class ReportComponent implements OnInit {
           },
         },
       },
-      legend: {
-        align: 'left',
-        x: 70,
-        verticalAlign: 'top',
-        y: 70,
-        floating: true,
-        // backgroundColor:
-        //   Highcharts.defaultOptions.legend.backgroundColor || 'white',
-        borderColor: '#CCC',
-        borderWidth: 1,
-        shadow: false,
-      },
+      // legend: {
+      //   align: 'bottom',
+      //   x: 30,
+      //   verticalAlign: 'bottom',
+      //   y: 30,
+      //   // floating: true,
+      //   // backgroundColor:
+      //   //   Highcharts.defaultOptions.legend.backgroundColor || 'white',
+      //   borderColor: '#CCC',
+      //   borderWidth: 1,
+      //   shadow: false,
+      // },
       tooltip: {
         headerFormat: '<b>{point.x}</b><br/>',
         pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
