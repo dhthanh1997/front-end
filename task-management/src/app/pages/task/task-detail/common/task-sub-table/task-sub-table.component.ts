@@ -6,7 +6,7 @@ import { Task } from 'src/app/_core/model/task';
 import { TaskDetailFrmComponent } from '../../task-detail-frm/task-detail-frm.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import { binarySearchTree, initFormArray, initFormObject, setDataInFormArray } from 'src/app/_base/util';
+import { BinarySearch, initFormArray, initFormObject, setDataInFormArray } from 'src/app/_base/util';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { isThisHour } from 'date-fns';
 import { forEach } from 'lodash';
@@ -41,7 +41,8 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   constructor(
     private modal: NzModalService,
     private taskData: TaskData,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private binarySearch: BinarySearch
   ) {
     this.formValidation = initFormArray("taskArray");
   }
@@ -127,9 +128,14 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   // click từ table sub task
   subTaskInfo(item: any, indexSubTask: number) {
     // let task = this.taskArray.controls[indexSubTask] as FormGroup;
-   
-    let task = binarySearchTree(this.formValidation, item.id, 'taskArray', 'id');
 
+    let test = this.formValidation.controls['taskArray'] as FormArray;
+    // console.log(test.controls.some());
+    console.log(this.formValidation);
+
+
+    this.binarySearch.binarySearchTree(this.formValidation, item.id, 'taskArray', 'id');
+    let task = this.binarySearch.result;
     console.log(task);
 
     this.modal
@@ -168,9 +174,6 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
       await this.openSubTask(id, index)
     } else {
       this.expandSet.delete(id);
-      // let formGroup = this.taskArray.controls[index] as FormGroup;
-      // let array = formGroup.get('taskArray') as FormArray;
-      // array.clear();
     }
   }
 
