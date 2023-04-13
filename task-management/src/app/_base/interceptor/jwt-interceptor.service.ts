@@ -26,11 +26,18 @@ export class JwtInterceptorService implements HttpInterceptor {
     };
     return next.handle(req)
       .pipe(map((res: any) => {
-        console.log(res);
+        // console.log(res);
         return res;
-      }), catchError((error: any) => {
-        console.log(error.error);
-        return throwError(() => new Error(error));
+      }), catchError((error: HttpErrorResponse) => {
+        console.log(error);
+        
+        if (error.error instanceof ErrorEvent) {
+            console.log(error.error.message);
+            console.log(error.error);
+
+        }
+        // console.log(error.error);
+        return throwError(() => new Error(error.error));
       }))
       ;
   }

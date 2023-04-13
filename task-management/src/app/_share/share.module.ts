@@ -5,6 +5,7 @@ import { AutoFocusDirective } from './directive/auto-focus.directive';
 import { ClickOutsideAndUpdateDirective } from './directive/click-outside-and-update.directive';
 import { StateTaskPipe } from './pipe/state-task.pipe';
 import { TestDirective } from './directive/test.directive';
+import { ValueArrayPipe } from './pipe/value-array.pipe';
 
 
 
@@ -14,6 +15,7 @@ import { TestDirective } from './directive/test.directive';
     ClickOutsideAndUpdateDirective,
     StateTaskPipe,
     TestDirective,
+    ValueArrayPipe,
   ],
   imports: [
     CommonModule
@@ -22,7 +24,8 @@ import { TestDirective } from './directive/test.directive';
     AutoFocusDirective,
     ClickOutsideAndUpdateDirective,
     TestDirective,
-    StateTaskPipe
+    StateTaskPipe,
+    ValueArrayPipe
   ],
   providers: [
     ShareService

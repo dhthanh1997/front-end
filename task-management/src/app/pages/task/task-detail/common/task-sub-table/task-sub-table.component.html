@@ -1,67 +1,52 @@
 <nz-card class="table-subTask">
-  <table class="table">
-    <thead>
-      <tr>
-        <thead>
+  <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ data:   taskArray.value}">
+  </ng-container>
+
+  <ng-template #treeNode let-data="data">
+    <nz-table class="table" nzTemplateMode>
+      <thead>
+        <tr>
           <th class="text-center"></th>
           <th class="text-center">Tên</th>
           <th class="text-center">Ngày bắt đầu</th>
           <th class="text-center">Ngày kết thúc</th>
           <th class="text-center">Trạng thái</th>
-        </thead>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let node of taskArray.value; index as idx" [ngTemplateOutlet]="treeNode"
-        [ngTemplateOutletContext]="{ $implicit: node }">
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let node of data; index as idxSub">
 
-      </ng-container>
-      <ng-template #treeNode let-data>
-        <ng-container *ngFor="let sub of data; index as idxSub">
           <tr>
-            <td [nzExpand]="expandSet.has(sub.id)" (nzExpandChange)="onExpandChange(sub.id, $event, idxSub, sub)"></td>
+            <td [nzExpand]="expandSet.has(node.id)" (nzExpandChange)="onExpandChange(node.id, $event, idxSub, node)">
+            </td>
             <td class="text-center">
-              <a (click)="subTaskInfo(sub, idxSub)">
-                {{ sub.name }}
+              <a (click)="subTaskInfo(node, idxSub)">
+                {{node.name}}
               </a>
             </td>
             <td class="text-center">
-              {{ sub.startDate | date : "dd/MM/yyyy" }}
+              {{node.startDate | date : "dd/MM/yyyy" }}
+
             </td>
             <td class="text-center">
-              {{ sub.endDate | date : "dd/MM/yyyy" }}
+              {{node.endDate | date : "dd/MM/yyyy" }}
+
             </td>
             <td class="text-center">
-              {{ sub.state | stateTask }}
+              {{node.state | stateTask }}
+
             </td>
           </tr>
-          <tr [nzExpand]="expandSet.has(sub.id)">
-            <ng-container *ngIf="data.subTask && data.subTask.length > 0">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <thead>
-                      <th class="text-center"></th>
-                      <th class="text-center">Tên</th>
-                      <th class="text-center">Ngày bắt đầu</th>
-                      <th class="text-center">Ngày kết thúc</th>
-                      <th class="text-center">Trạng thái</th>
-                    </thead>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <ng-container *ngFor="let child of data.subTask" [ngTemplateOutlet]="treeNode"
-                      [ngTemplateOutletContext]="{ $implicit: child }">
-                    </ng-container>
-                  </tr>
-                </tbody>
-              </table>
-            </ng-container>
+
+          <tr [nzExpand]="expandSet.has(node.id)">
+            <ng-container *ngIf="node.taskArray && node.taskArray.length > 0">
+              <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ data:  node.taskArray }">
+              </ng-container>
+           </ng-container>
           </tr>
         </ng-container>
-      </ng-template>
+      </tbody>
+    </nz-table>
+  </ng-template>
 
-    </tbody>
-  </table>
 </nz-card>
