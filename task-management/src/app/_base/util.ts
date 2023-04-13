@@ -60,7 +60,7 @@ export function setDataInFormObject(data: any, form: FormGroup, _object: any): F
   // check properties of object
   const properties = Object.getOwnPropertyNames(_object);
   properties.forEach(prop => {
-    if(data[prop]) {
+    if (data[prop]) {
       form.get(prop)?.patchValue(data[prop]);
     }
   });
@@ -86,8 +86,8 @@ export function updateControl(value: any, formGroup: FormGroup): FormGroup {
 export function updateFormData(value: any, formGroup: FormGroup, _object: any): FormGroup {
   const properties = Object.getOwnPropertyNames(_object);
   properties.forEach(prop => {
-   let form =  formGroup.controls[prop] as FormGroup;
-   form.patchValue(value.prop)
+    let form = formGroup.controls[prop] as FormGroup;
+    form.patchValue(value.prop)
   });
   return formGroup;
 }
@@ -113,7 +113,7 @@ export class EnumUtils {
 
   static getKeyByValue(enumObj: any, value: any): any {
     // console.log(Object.keys);
-    return Object.keys(enumObj)[Object.values(enumObj ).indexOf(value)];
+    return Object.keys(enumObj)[Object.values(enumObj).indexOf(value)];
   }
 }
 
@@ -123,3 +123,10 @@ export enum EnumType {
 }
 
 // end utils enum
+
+
+// binary search tree recursive function
+export const binarySearchTree = (arrays: any, id: any, property: string, key: string) => {
+  let temp;
+  return (arrays.get(key) && arrays.get(key)!.value === id) ? arrays : (arrays.get(property)!.controls || []).some((value: any) => temp = binarySearchTree(value, id, property, key)) && temp;
+}

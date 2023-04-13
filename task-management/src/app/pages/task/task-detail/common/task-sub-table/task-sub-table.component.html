@@ -1,8 +1,8 @@
 <nz-card class="table-subTask">
-  <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ data:   taskArray.value}">
+  <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ data: taskArray.value }">
   </ng-container>
 
-  <ng-template #treeNode let-data="data">
+  <ng-template #treeNode let-data="data" let-index="index">
     <nz-table class="table" nzTemplateMode>
       <thead>
         <tr>
@@ -40,7 +40,7 @@
 
           <tr [nzExpand]="expandSet.has(node.id)">
             <ng-container *ngIf="node.taskArray && node.taskArray.length > 0">
-              <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ data:  node.taskArray }">
+              <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ data: node.taskArray }">
               </ng-container>
            </ng-container>
           </tr>
