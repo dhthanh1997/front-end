@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validator } from "@angular/forms";
 
 
@@ -126,7 +127,26 @@ export enum EnumType {
 
 
 // binary search tree recursive function
-export const binarySearchTree = (arrays: any, id: any, property: string, key: string) => {
-  let temp;
-  return (arrays.get(key) && arrays.get(key)!.value === id) ? arrays : (arrays.get(property)!.controls || []).some((value: any) => temp = binarySearchTree(value, id, property, key)) && temp;
+@Injectable({
+  providedIn: 'root'
+})
+export class BinarySearch {
+
+ public result: any;
+
+ public binarySearchTree(form: FormGroup, id: any, property: string, key: string): any {
+    let temp;
+    if (form.get(key) && form.get(key)!.value === id) {
+      return this.result = form;
+    } else {
+      if (form.get(property) && form.get(property)!.value.length > 0) {
+        let arrays = form.get(property) as FormArray;
+        arrays.controls.some((value: any) => {
+          temp = this.binarySearchTree(value, id, property, key);
+        })
+      }
+    }
+    // return (form.get(key) && form.get(key)!.value === id) ? form : ((form.get(property) && form.get(property)!.value.length > 0) ? form.get(property) : []).some((value: any) => temp = binarySearchTree(value, id, property, key)) && temp;
+  }
 }
+
