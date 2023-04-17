@@ -104,15 +104,15 @@ export class TaskDetailFrmComponent implements OnInit, AfterViewInit {
         taskId: this.formValidation.get('id')?.value,
       },
     })
-    .afterClose.subscribe({
-      next: (res) => {
-        console.log(res);
-        this.getFileNameInTask(this.idTask);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+      .afterClose.subscribe({
+        next: (res) => {
+          console.log(res);
+          this.getFileNameInTask(this.idTask);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   addSubTask() {
@@ -171,6 +171,7 @@ export class TaskDetailFrmComponent implements OnInit, AfterViewInit {
     const source$ = task$.pipe(concatMap(res => {
       console.log(res);
       if (res.message === ResponseStatusEnum.success) {
+        this.formValidation.patchValue(res.data);
         return subTask$;
       }
       return of(res);
@@ -178,11 +179,15 @@ export class TaskDetailFrmComponent implements OnInit, AfterViewInit {
 
     source$.subscribe({
       next: (res) => {
+        // debugger;
         console.log(res);
-        if (res) {
+        if (res.message === ResponseStatusEnum.success) {
+          this.subTask.patchValue(res.data);
           this.notifyService.success("Thành công");
-          // this.shareService.isDialogSave.next(true);
-          this.closeWithData();
+          
+          setTimeout(() => {
+            this.closeWithData();
+          }, 500);
         }
 
       },
@@ -191,21 +196,6 @@ export class TaskDetailFrmComponent implements OnInit, AfterViewInit {
       }
     })
 
-    // this.taskData.save(item).subscribe({
-    //   next: (res) => {
-    //     console.log(res);
-    //     if (res.message === ResponseStatusEnum.error) {
-    //       this.notifyService.error(res.error);
-    //     }
-    //     if (res.message === ResponseStatusEnum.success) {
-    //       // this.notifyService.success("Thành công");
-    //       this.shareService.isDialogSave.next(true);
-    //     }
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   }
-    // });
   }
 
 
