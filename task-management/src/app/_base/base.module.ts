@@ -9,6 +9,7 @@ import { MessageService } from './message.service';
 import { AuthGuardService } from './guard/auth-guard.service';
 import { AuthService } from './auth.service';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { BinarySearch } from './util';
 
 const PROVIDERS = [
   HttpService,
@@ -19,7 +20,8 @@ const PROVIDERS = [
 
 const SERVICES = [
   NotifyService,
-  MessageService
+  MessageService,
+  BinarySearch
 ]
 
 @NgModule({

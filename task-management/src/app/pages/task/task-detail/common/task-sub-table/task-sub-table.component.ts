@@ -6,9 +6,10 @@ import { Task } from 'src/app/_core/model/task';
 import { TaskDetailFrmComponent } from '../../task-detail-frm/task-detail-frm.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import { initFormArray, setDataInFormArray } from 'src/app/_base/util';
+import { BinarySearch, initFormArray, initFormObject, setDataInFormArray } from 'src/app/_base/util';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { isThisHour } from 'date-fns';
+import { forEach } from 'lodash';
 
 @Component({
   selector: 'app-task-sub-table',
@@ -27,6 +28,9 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   public color: any;
   public expandSet = new Set<number>();
 
+  // set default = -1 trong mảng với trường hợp 1 cấp, nhiều cấp hơn thì add tiếp vào mảng
+  public index: number[] = [-1];
+
   @Input() sectionId: number = 0;
   @Input() title: string = "";
   @Input() sectionParams: any;
@@ -37,7 +41,8 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   constructor(
     private modal: NzModalService,
     private taskData: TaskData,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private binarySearch: BinarySearch
   ) {
     this.formValidation = initFormArray("taskArray");
   }
@@ -47,10 +52,19 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
     return this.formValidation.get("taskArray") as FormArray;
   }
 
+  getSubTaskArray(id: number) {
+    debugger;
+    const formArray = this.taskArray.controls[id].get("taskArray") as FormArray;
+    console.log(formArray);
+    return formArray;
+  }
+
   async ngOnInit() {
     await this.getTasksById(this.taskId);
     await this.initForm();
-    console.log(this.taskArray.value)
+    console.log(this.taskArray.value);
+    console.log(this.taskArray);
+
   }
 
 
@@ -66,7 +80,7 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   }
 
   async getTasksById(id: number) {
-    debugger;
+    // debugger;
     let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
     if (res.data.length > 0) {
       this.listOfData = res.data;
@@ -78,50 +92,61 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   //   let formGroup = this.taskArray.controls[index] as FormGroup;
   //   let array = formGroup.get('subTask') as FormArray;
   //   if (res.data.length > 0) {
-     
+
   //   }
   // }
 
-  async openSubTask(item: any, index: number) {
-    debugger;
+  async openSubTask(id: number, index: number) {
     let formGroup = this.taskArray.controls[index] as FormGroup;
-    let array = formGroup.get('subTask') as FormArray;
-    let oldValue = formGroup.get('isSubTask')!.value
+    let array = formGroup.get('taskArray') as FormArray;
+
     if (!array) {
-      formGroup.addControl('subTask', this.fb.array([]));
-      let id = item.id;
       let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
+      formGroup.addControl('taskArray', this.fb.array([]));
       console.log(res.data);
       if (res.data.length > 0) {
-        formGroup = setDataInFormArray(res.data, 'subTask', formGroup, new Task());
-        
-      }
-      formGroup.get('isSubTask')!.patchValue(!oldValue);
-      console.log(this.taskArray.value);
-    } else {
-      formGroup.get('isSubTask')!.patchValue(!oldValue);
-    }
-    formGroup.updateValueAndValidity();
+        formGroup = setDataInFormArray(res.data, 'taskArray', formGroup, new Task());
 
+      }
+      formGroup.updateValueAndValidity();
+      console.log(formGroup);
+      console.log(this.taskArray.value);
+    }
+    if (array && array.length === 0) {
+      let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
+      if (res.data.length > 0) {
+        formGroup = setDataInFormArray(res.data, 'taskArray', formGroup, new Task());
+
+      }
+      formGroup.updateValueAndValidity();
+    }
+    this.taskArray.updateValueAndValidity();
+    console.log(this.taskArray);
   }
 
 
   // click từ table sub task
   subTaskInfo(item: any, indexSubTask: number) {
-    // let task = this.formValidation.controls[indexSubTask] as FormGroup;
+    // let task = this.taskArray.controls[indexSubTask] as FormGroup;
+
+    let test = this.formValidation.controls['taskArray'] as FormArray;
+    // console.log(test.controls.some());
+    console.log(this.formValidation);
+
+
+    this.binarySearch.binarySearchTree(this.formValidation, item.id, 'taskArray', 'id');
+    let task = this.binarySearch.result;
+    console.log(task);
 
     this.modal
       .create({
-        // nzTitle: 'AAAA',
         nzContent: TaskDetailFrmComponent,
         nzCentered: true,
         nzMaskClosable: false,
         nzDirection: 'ltr',
         nzClassName: 'modal-custom',
-        // nzFooter: null,
         nzClosable: false,
         nzComponentParams: {
-          // formValidation: this.formValidation
           idTask: item.id
             ? item.id
             : 0,
@@ -130,6 +155,9 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
       .afterClose.subscribe({
         next: (res) => {
           console.log(res);
+          if (res) {
+            task.patchValue(res);
+          }
         },
         error: (err) => {
           console.log(err);
@@ -143,13 +171,11 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   async onExpandChange(id: number, checked: boolean, index: number, item: any) {
     if (checked) {
       await this.expandSet.add(id);
-      await this.openSubTask(item, index)
+      await this.openSubTask(id, index)
     } else {
       this.expandSet.delete(id);
-      let formGroup = this.taskArray.controls[index] as FormGroup;
-      let array = formGroup.get('subTask') as FormArray;
-      array.clear();
     }
   }
 
 }
+

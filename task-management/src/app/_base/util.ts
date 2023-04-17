@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validator } from "@angular/forms";
 
 
@@ -60,7 +61,7 @@ export function setDataInFormObject(data: any, form: FormGroup, _object: any): F
   // check properties of object
   const properties = Object.getOwnPropertyNames(_object);
   properties.forEach(prop => {
-    if(data[prop]) {
+    if (data[prop]) {
       form.get(prop)?.patchValue(data[prop]);
     }
   });
@@ -86,8 +87,8 @@ export function updateControl(value: any, formGroup: FormGroup): FormGroup {
 export function updateFormData(value: any, formGroup: FormGroup, _object: any): FormGroup {
   const properties = Object.getOwnPropertyNames(_object);
   properties.forEach(prop => {
-   let form =  formGroup.controls[prop] as FormGroup;
-   form.patchValue(value.prop)
+    let form = formGroup.controls[prop] as FormGroup;
+    form.patchValue(value.prop)
   });
   return formGroup;
 }
@@ -113,7 +114,7 @@ export class EnumUtils {
 
   static getKeyByValue(enumObj: any, value: any): any {
     // console.log(Object.keys);
-    return Object.keys(enumObj)[Object.values(enumObj ).indexOf(value)];
+    return Object.keys(enumObj)[Object.values(enumObj).indexOf(value)];
   }
 }
 
@@ -123,3 +124,29 @@ export enum EnumType {
 }
 
 // end utils enum
+
+
+// binary search tree recursive function
+@Injectable({
+  providedIn: 'root'
+})
+export class BinarySearch {
+
+ public result: any;
+
+ public binarySearchTree(form: FormGroup, id: any, property: string, key: string): any {
+    let temp;
+    if (form.get(key) && form.get(key)!.value === id) {
+      return this.result = form;
+    } else {
+      if (form.get(property) && form.get(property)!.value.length > 0) {
+        let arrays = form.get(property) as FormArray;
+        arrays.controls.some((value: any) => {
+          temp = this.binarySearchTree(value, id, property, key);
+        })
+      }
+    }
+    // return (form.get(key) && form.get(key)!.value === id) ? form : ((form.get(property) && form.get(property)!.value.length > 0) ? form.get(property) : []).some((value: any) => temp = binarySearchTree(value, id, property, key)) && temp;
+  }
+}
+
