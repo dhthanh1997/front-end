@@ -6,6 +6,8 @@ import { ClickOutsideAndUpdateDirective } from './directive/click-outside-and-up
 import { StateTaskPipe } from './pipe/state-task.pipe';
 import { TestDirective } from './directive/test.directive';
 import { ValueArrayPipe } from './pipe/value-array.pipe';
+import { HasPermissionDirective } from './directive/has-permission.directive';
+import { StoreDataService } from './store-data.service';
 
 
 
@@ -16,6 +18,7 @@ import { ValueArrayPipe } from './pipe/value-array.pipe';
     StateTaskPipe,
     TestDirective,
     ValueArrayPipe,
+    HasPermissionDirective,
   ],
   imports: [
     CommonModule
@@ -28,7 +31,8 @@ import { ValueArrayPipe } from './pipe/value-array.pipe';
     ValueArrayPipe
   ],
   providers: [
-    ShareService
+    ShareService,
+    StoreDataService
   ]
 })
 export class ShareModule { }

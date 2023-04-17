@@ -82,7 +82,7 @@ export class PermissionFormComponent implements OnInit {
   }
 
   async getPermission() {
-    let txtSearch = "type.eq.0,"
+    let txtSearch = "type.eq.0,";
     let res: any = await firstValueFrom(this.permissionData.search(1, 999, txtSearch));
     console.log(res);
     if (res && res.pagingData) {

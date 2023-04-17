@@ -24,9 +24,9 @@
                 required
               />
               <ng-template #Name let-control>
-                <ng-container *ngIf="control.hasError('minlength')"
+                <!-- <ng-container *ngIf="control.hasError('minlength')"
                   >Tên cần tối thiểu 5 ký tự</ng-container
-                >
+                > -->
                 <ng-container *ngIf="control.hasError('required')"
                   >Mục này không được để trống</ng-container
                 >
@@ -42,7 +42,7 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Email <span style="color: red">*</span>
+              Email 
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Email">
               <input
@@ -54,12 +54,12 @@
                 [ngClass]="mode === 'view' ? 'ban' : ''"
               />
               <ng-template #Email let-control>
-                <ng-container *ngIf="control.hasError('email')"
+                <!-- <ng-container *ngIf="control.hasError('email')"
                   >Email không đúng định dạng</ng-container
-                >
-                <ng-container *ngIf="control.hasError('required')"
+                > -->
+                <!-- <ng-container *ngIf="control.hasError('required')"
                   >Mục này không được để trống</ng-container
-                >
+                > -->
               </ng-template>
             </nz-form-control>
           </nz-form-item>
@@ -71,7 +71,8 @@
         <div nz-col [nzSpan]="24">
           <nz-form-item nz-row [nzGutter]="2">
             <nz-form-label nz-col [nzSpan]="3">
-              Số điện thoại <span style="color: red">*</span>
+              Số điện thoại 
+              
             </nz-form-label>
             <nz-form-control nz-col [nzSpan]="21" [nzErrorTip]="Phone">
               <input
@@ -85,9 +86,6 @@
               <ng-template #Phone let-control>
                 <ng-container *ngIf="control.hasError('pattern')"
                   >Số điện thoại không hợp lệ<br></ng-container
-                >
-                <ng-container *ngIf="control.hasError('required')"
-                  >Mục này không được để trống</ng-container
                 >
                 <ng-container *ngIf="control.hasError('minlength')"
                   >Số điện thoại cần tối thiểu 9 số</ng-container
@@ -179,9 +177,9 @@
                 [ngClass]="mode === 'view' ? 'ban' : ''"
               />
               <ng-template #Username let-control>
-                <ng-container *ngIf="control.hasError('minlength')"
+                <!-- <ng-container *ngIf="control.hasError('minlength')"
                   >Tên tài khoản cần tối thiểu 8 ký tự</ng-container
-                >
+                > -->
                 <ng-container *ngIf="control.hasError('required')"
                   >Mục này không được để trống</ng-container
                 >

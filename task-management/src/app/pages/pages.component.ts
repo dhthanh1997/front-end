@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UserData } from '../_core/api/user/user-data';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { firstValueFrom } from 'rxjs';
+import { ResponseStatusEnum } from '../_core/enum/response-status-enum';
 
 @Component({
   selector: 'app-pages',
@@ -13,9 +17,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PagesComponent implements OnInit {
 
-  constructor() { }
+  private userInfo: any;
+  private menuInfo: any;
+  private username: any;
 
-  ngOnInit(): void {
+  get getUserInfo() {
+    return this.userInfo;
+  }
+
+  get getMenuInfo() {
+    return this.menuInfo;
+  }
+
+  constructor(private userService: UserData) {
+    let helper = new JwtHelperService();
+    let token: any = localStorage.getItem('access_token');
+    this.username = (helper.decodeToken(token)) ? helper.decodeToken(token) : '';
+  }
+
+  async ngOnInit() {
+    let res = await firstValueFrom(this.userService.getUserInfo(this.username));
+    if(res.message && res.message === ResponseStatusEnum.success) {
+        this.userInfo = res.data.userInfo;
+        this.menuInfo = res.data.menuInfo;
+    }
   }
 
 }

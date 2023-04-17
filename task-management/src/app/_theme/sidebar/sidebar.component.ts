@@ -3,8 +3,11 @@ import {
   Component,
   ElementRef,
   HostListener,
+  Input,
+  OnChanges,
   OnInit,
   Renderer2,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -23,7 +26,7 @@ enum ModeModal {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnChanges {
   isCollapsed = false;
 
   isActive = false;
@@ -32,6 +35,8 @@ export class SidebarComponent implements OnInit {
 
   isOpen = false;
 
+
+  @Input() menuInfo: any;
   @ViewChild('toggleButton') toggleButton!: ElementRef;
   @ViewChild('popupContent') popupContent!: ElementRef;
 
@@ -43,6 +48,12 @@ export class SidebarComponent implements OnInit {
     private router: Router,
   ) {
     // do something
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+     if(changes['menuInfo'] && changes['menuInfo'].currentValue) {
+          this.menuInfo = changes['menuInfo'].currentValue;
+     }
   }
 
   modalOptions: any = {

@@ -34,6 +34,9 @@ import { ProjectApi } from './api/project/project.api';
 import { TeamApi } from './api/team/team.api';
 import { TeamData } from './api/team/team-data';
 import { TeamService } from './api/team/team.service';
+import { UserApi } from './api/user/user.api';
+import { UserData } from './api/user/user-data';
+import { UserService } from './api/user/user.service';
 
 const API = [
   TaskApi,
@@ -46,7 +49,8 @@ const API = [
   SectionApi,
   UploadFileApi,
   ProjectApi,
-  TeamApi
+  TeamApi,
+  UserApi
 ];
 
 const SERVICES = [
@@ -61,6 +65,7 @@ const SERVICES = [
   { provide: UploadFileData, useClass: UploadFileService },
   { provide: ProjectData, useClass: ProjectService },
   { provide: TeamData, useClass: TeamService },
+  { provide: UserData, useClass: UserService },
 ];
 
 @NgModule({
