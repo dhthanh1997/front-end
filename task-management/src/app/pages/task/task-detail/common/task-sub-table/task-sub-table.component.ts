@@ -53,7 +53,7 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   }
 
   getSubTaskArray(id: number) {
-    debugger;
+    // debugger;
     const formArray = this.taskArray.controls[id].get("taskArray") as FormArray;
     console.log(formArray);
     return formArray;
@@ -97,29 +97,25 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   // }
 
   async openSubTask(id: number, index: number) {
-    let formGroup = this.taskArray.controls[index] as FormGroup;
+    this.binarySearch.binarySearchTree(this.formValidation, id, 'taskArray', 'id');
+    let formGroup = this.binarySearch.result as FormGroup;
+    // let formGroup = this.taskArray.controls[index] as FormGroup;
     let array = formGroup.get('taskArray') as FormArray;
-
+    let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
     if (!array) {
-      let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
       formGroup.addControl('taskArray', this.fb.array([]));
-      console.log(res.data);
-      if (res.data.length > 0) {
-        formGroup = setDataInFormArray(res.data, 'taskArray', formGroup, new Task());
-
-      }
-      formGroup.updateValueAndValidity();
-      console.log(formGroup);
-      console.log(this.taskArray.value);
+    } else {
+      array.clear();
     }
-    if (array && array.length === 0) {
-      let res: ResponseDataObject = await firstValueFrom(this.taskData.getByParentId(id));
-      if (res.data.length > 0) {
-        formGroup = setDataInFormArray(res.data, 'taskArray', formGroup, new Task());
 
-      }
-      formGroup.updateValueAndValidity();
+    if (res.data && res.data.length > 0) {
+      formGroup = setDataInFormArray(res.data, 'taskArray', formGroup, new Task());
+
     }
+    formGroup.updateValueAndValidity();
+    // if (array && array.length === 0) {
+    //     formGroup = setDataInFormArray(res.data, 'taskArray', formGroup, new Task());
+    // }
     this.taskArray.updateValueAndValidity();
     console.log(this.taskArray);
   }
@@ -129,10 +125,9 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
   subTaskInfo(item: any, indexSubTask: number) {
     // let task = this.taskArray.controls[indexSubTask] as FormGroup;
 
-    let test = this.formValidation.controls['taskArray'] as FormArray;
+    // let test = this.formValidation.controls['taskArray'] as FormArray;
     // console.log(test.controls.some());
-    console.log(this.formValidation);
-
+    // console.log(this.formValidation);
 
     this.binarySearch.binarySearchTree(this.formValidation, item.id, 'taskArray', 'id');
     let task = this.binarySearch.result;
@@ -156,6 +151,7 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
         next: (res) => {
           console.log(res);
           if (res) {
+            res.taskArray = res.subTask;
             task.patchValue(res);
           }
         },
