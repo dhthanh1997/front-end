@@ -115,28 +115,20 @@ export class PermissionComponent implements OnInit {
   }
 
   public async getPermission() {
-    // this.permissionData
-    //   .search(this.pageNumber, this.pageSize, this.txtSearch)
-    //   .subscribe({
-    //     next: (res) => {
-    //       console.log(res);
-    //       this.listData = res.pagingData.content;
-    //       // console.log(this.listData);
-    //       this.totalElements = res.pagingData.totalElements;
-    //       this.totalPages = res.pagingData.totalPages;
-    //     },
-    //     error: (err) => {
-    //       console.log(err);
-    //     },
-    //   });
-    let txtSearch = "type.eq.0,"
-    let res: any = await firstValueFrom(this.permissionData.search(1, 999, txtSearch));
-    console.log(res);
-    if (res && res.pagingData) {
-      this.listData = res.pagingData.content;
-      this.totalElements = res.pagingData.totalElements;
-      this.totalPages = res.pagingData.totalPages;
-    }
+    this.permissionData
+      .search(this.pageNumber, this.pageSize, this.txtSearch)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          this.listData = res.pagingData.content;
+          this.totalElements = res.pagingData.totalElements;
+          this.totalPages = res.pagingData.totalPages;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+   
   }
 
   onCreate(): void {

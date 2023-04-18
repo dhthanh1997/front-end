@@ -34,9 +34,6 @@ export class AutoFocusDirective implements AfterViewInit {
         block: 'center',
         inline: 'nearest',
       });
-      // setTimeout(() => {
-       
-      // }, 100);
     }
   }
 }

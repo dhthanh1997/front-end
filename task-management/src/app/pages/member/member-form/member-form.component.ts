@@ -72,21 +72,20 @@ export class MemberFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.id);
+    // console.log(this.id);
 
     this.formValidation = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [Validators.required, Validators.email]],
+      name: ['', [Validators.required]],
+      email: ['', []],
       phone: [
         '',
         [
-          Validators.required,
           Validators.pattern('^[0-9]*$'),
           Validators.minLength(9),
           Validators.maxLength(11),
         ],
       ],
-      username: ['', [Validators.required, Validators.minLength(8)]],
+      username: ['', [Validators.required]],
       teams: [[], []],
       roleId: [0, []],
     });
