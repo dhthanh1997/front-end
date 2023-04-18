@@ -8,7 +8,7 @@ export class UserService implements UserData {
 
   constructor(private api: UserApi) { }
   
-  getUserInfo(username: any): Observable<any> {
+  getUserInfo(username: string): Observable<any> {
       return this.api.getUserInfo(username);
   }
 

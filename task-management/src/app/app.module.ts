@@ -14,6 +14,7 @@ import { registerLocaleData } from '@angular/common';
 import { vi } from 'date-fns/locale';
 import { BaseModule } from './_base/base.module';
 import { JwtInterceptorService } from './_base/interceptor/jwt-interceptor.service';
+import { PageMenuService } from './pages/page-menu.service';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { JwtInterceptorService } from './_base/interceptor/jwt-interceptor.servi
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptorService,
       multi: true
-    }
+    },
+    PageMenuService
   ],
   bootstrap: [AppComponent],
 })
