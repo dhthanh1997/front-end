@@ -32,6 +32,7 @@ export class permissionContent extends BaseEntity {
     this.parentCode = '';
     this.status = '';
     this.type = '';
+    this.isChecked = false;
   }
 }
 

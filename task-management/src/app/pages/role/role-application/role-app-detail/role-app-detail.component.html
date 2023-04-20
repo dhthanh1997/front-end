@@ -1,35 +1,54 @@
 <div class="role-detail-wrapper">
-  <div
-    class="collapse-wrapper"
-    *ngFor="let item of listParent; let idx = index"
-  >
+  <div class="collapse-wrapper" *ngFor="let item of listData; let idx = index">
     <nz-collapse>
-      <nz-collapse-panel [nzExtra]="extraTpl" nzHeader="{{ item.code }}" nzActive="true">
-
-        <!-- <div class="checkbox">
-          <label *ngFor="let item of listData; let idx = index" nz-checkbox>{{
-            item.name
-          }}</label>
-        </div> -->
-        <div nz-row>
-          <div
-            class="my-2"
-            style="width: 50%"
-            *ngFor="let child of listChild; let cursor = index"
-            [hidden]="child.parentCode !== listParent[idx].code"
-          >
-            <label
-              *ngIf="child.parentCode === listParent[idx].code"
-              nz-checkbox
-              [(ngModel)]="child.isChecked"
-              (ngModelChange)="isChecked($event, cursor)"
-              style="line-height: 1.5"
-              >{{ child.name }}</label
-            >
+      <nz-collapse-panel nzHeader="{{ item.name }}" nzActive="true">
+        <div *ngFor="let subItem of listData[idx].children; index as idxSub">
+          <div *ngIf="!subItem.hasOwnProperty('children')" nz-row>
+            <div class="my-2" style="max-width: 45%">
+              <label
+                nz-checkbox
+                [(ngModel)]="subItem.isChecked"
+                (ngModelChange)="isChecked($event, idx, idxSub, -1)"
+                style="line-height: 1.5"
+                >{{ subItem.name }}</label
+              >
+            </div>
           </div>
+
+          <ng-container
+            *ngIf="subItem.hasOwnProperty('children')"
+            [ngTemplateOutlet]="treeNode"
+            [ngTemplateOutletContext]="{ data: listData }"
+          >
+          </ng-container>
+
+          <ng-template #treeNode let-data="data" let-index="index">
+            <nz-collapse class="my-4"
+            >
+              <nz-collapse-panel nzHeader="{{ subItem.name }}" nzActive="true">
+                <div nz-row>
+                  <div
+                    style="width: 50%"
+                    *ngFor="
+                      let child of listData[idx].children[idxSub].children;
+                      let cursor = index
+                    "
+                  >
+                    <label
+                      nz-checkbox
+                      [(ngModel)]="child.isChecked"
+                      (ngModelChange)="isChecked($event, idx, idxSub, cursor)"
+                      style="line-height: 1.5"
+                      >{{ child.name }}</label
+                    >
+                  </div>
+                </div>
+              </nz-collapse-panel>
+            </nz-collapse>
+          </ng-template>
         </div>
       </nz-collapse-panel>
-      <ng-template class="checkUncheck" #extraTpl>
+      <!-- <ng-template class="checkUncheck" #extraTpl>
         <label
           nz-checkbox
           [ngModel]="checkedBoxAll"
@@ -38,16 +57,15 @@
         >
           Tích All</label
         >
-      </ng-template>
+      </ng-template> -->
     </nz-collapse>
   </div>
 
   <a routerLink="/pages/roles-app" class="mr-3">
     <button nz-button>
-      <span>Trở lại Roles</span>
+      <span>Trở lại</span>
     </button>
   </a>
 
   <button nz-button (click)="onCreate()">Lưu</button>
-
 </div>

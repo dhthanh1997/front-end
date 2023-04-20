@@ -15,8 +15,9 @@ import { Location } from '@angular/common';
 export class RoleAppDetailComponent implements OnInit {
   public listData: any;
   public listRolePer: any;
-  public listParent: any = [];
-  public listChild: any = [];
+  public listParent: any[] = [];
+  public listChild: any[] = [];
+  public listSubChild: any[] = [];
   public listId: number[] = [];
 
   public pageNumber = 1;
@@ -26,8 +27,8 @@ export class RoleAppDetailComponent implements OnInit {
   public totalElements = 0;
   public totalPages: number | undefined;
 
-  checkedBoxAll = false;
-  isClicked = false;
+  public checkedBoxAll = false;
+  public isClicked = false;
 
   modalOptions: any = {
     nzDuration: 2000,
@@ -38,7 +39,7 @@ export class RoleAppDetailComponent implements OnInit {
     private rolePerData: RolePermissionData,
     private route: ActivatedRoute,
     private notifyService: NzNotificationService,
-    private _location: Location,
+    private _location: Location
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +62,7 @@ export class RoleAppDetailComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.listData = res.pagingData.content;
+          this.listData = this.sortArray(res.pagingData.content);
           this.getParentCode();
           console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
@@ -71,6 +72,18 @@ export class RoleAppDetailComponent implements OnInit {
           console.log(err);
         },
       });
+  }
+
+  sortArray(array: any[]) {
+    array.sort((a, b) => a.code.localeCompare(b.code));
+    array.forEach((item) => {
+      const children = array.filter((child) => child.parentCode === item.code);
+      if (children.length > 0) {
+        this.sortArray(children);
+        item.children = children;
+      }
+    });
+    return array.filter((item) => !item.parentCode);
   }
 
   getRolePer() {
@@ -107,8 +120,8 @@ export class RoleAppDetailComponent implements OnInit {
       };
       item.roleId = this.getIdRole();
       item.permissionId = this.listId[i];
-      for(let j = 0; j < this.listRolePer.length; j++) {
-        if(this.listRolePer[j].permissionId === item.permissionId) {
+      for (let j = 0; j < this.listRolePer.length; j++) {
+        if (this.listRolePer[j].permissionId === item.permissionId) {
           item.id = this.listRolePer[j].id;
         }
       }
@@ -116,14 +129,12 @@ export class RoleAppDetailComponent implements OnInit {
     }
     function getDifference(array1: any[], array2: any[]) {
       return array1.filter(
-        object1 => !array2.some(
-          object2 => object1.id === object2.id
-        ),
+        (object1) => !array2.some((object2) => object1.id === object2.id)
       );
     }
     deleteItems = [
       ...getDifference(items, this.listRolePer),
-      ...getDifference(this.listRolePer, items)
+      ...getDifference(this.listRolePer, items),
     ];
 
     for (let i = 0; i < deleteItems.length; i++) {
@@ -156,20 +167,20 @@ export class RoleAppDetailComponent implements OnInit {
       complete: () => {
         console.log('done');
       },
-    })
+    });
   }
 
   notify() {
-    this.notifyService.success(
-      'Thành công',
-      'Phân quyền',
-      this.modalOptions
-    );
+    this.notifyService.success('Thành công', 'Phân quyền', this.modalOptions);
   }
 
   getParentCode() {
     for (let i = 0; i < this.listData.length; i++) {
-      if (this.listData[i].parentCode == null || this.listData[i].parentCode == "" && this.listData[i].parentCode != undefined)
+      if (
+        this.listData[i].parentCode == null ||
+        (this.listData[i].parentCode == '' &&
+          this.listData[i].parentCode != undefined)
+      )
         this.listParent.push(this.listData[i]);
       // console.log(this.listParent);
     }
@@ -178,7 +189,11 @@ export class RoleAppDetailComponent implements OnInit {
 
   getChildCode() {
     for (let i = 0; i < this.listData.length; i++) {
-      if (this.listData[i].parentCode != null && this.listData[i].parentCode != "" && this.listData[i].parentCode != undefined)
+      if (
+        this.listData[i].parentCode != null &&
+        this.listData[i].parentCode != '' &&
+        this.listData[i].parentCode != undefined
+      )
         this.listChild.push(this.listData[i]);
       // console.log(this.listChild);
     }
@@ -210,48 +225,65 @@ export class RoleAppDetailComponent implements OnInit {
     setTimeout(() => {
       for (let i = 0; i < this.listRolePer.length; i++) {
         for (let j = 0; j < this.listData.length; j++) {
-          if (this.listRolePer[i].permissionId === this.listData[j].id) {
-            this.listData[j].isChecked = true;
+          for (let k = 0; k < this.listData[j].children.length; k++) {
+            if(!this.listData[j].children[k].hasOwnProperty('children')) {
+              if (this.listRolePer[i].permissionId === this.listData[j].children[k].id) {
+                this.listData[j].children[k].isChecked = true;
+              }
+            }
+            if(this.listData[j].children[k].hasOwnProperty('children')) {
+              for (let t = 0; t < this.listData[j].children[k].children.length; t++) {
+                if (this.listRolePer[i].permissionId === this.listData[j].children[k].children[t].id) {
+                  this.listData[j].children[k].children[t].isChecked = true;
+                }
+              }
+            }
           }
         }
       }
-      this.isCheckedAll();
     }, 100);
   }
 
-  isChecked(event: any, index: number) {
-    // debugger;
-    this.listChild[index].isChecked = event;
-    this.checkIntoArr(index);
-    console.log(this.listId);
-  }
-
-  isCheckedAll() {
-    let allowCheckAll = false;
-    this.listParent;
-    for (let i = 0; i < this.listParent.length; i++) {
-      for (let j = 0; j < this.listChild.length; j++) {
-        if (this.listChild[j].parentCode == this.listParent[i].code) {
-          if (this.listChild[j].isChecked == false) {
-            break;
-          }
-
-        }
-      }
+  isChecked(event: any, index: number, subIndex: number, subsubindex: number) {
+    if (subsubindex < 0) {
+      this.listData[index].children[subIndex].isChecked = event;
+      this.checkIntoArr(index, subIndex, subsubindex);
+      console.log(this.listId);
+    }
+    if(subsubindex >= 0) {
+      this.listData[index].children[subIndex].children[subsubindex].isChecked = event;
+      this.checkIntoArr(index, subIndex, subsubindex);
+      console.log(this.listId);
     }
   }
 
-  checkIntoArr(index: number) {
-    let a = this.listChild[index];
-    // debugger;
-    if (a.isChecked === true && this.listId.indexOf(a.id) === -1) {
-      this.listId.push(a.id);
-    } else {
-      let b = this.listId.indexOf(a.id);
-      console.log(b);
+  checkIntoArr(index: number, subIndex: number, subsubindex: number) {
+    if (subsubindex < 0) {
+      let a = this.listData[index].children[subIndex];
       // debugger;
-      if (b > -1) {
-        this.listId.splice(b, 1);
+      if (a.isChecked === true && this.listId.indexOf(a.id) === -1) {
+        this.listId.push(a.id);
+      } else {
+        let b = this.listId.indexOf(a.id);
+        console.log(b);
+        // debugger;
+        if (b > -1) {
+          this.listId.splice(b, 1);
+        }
+      }
+    }
+    if(subsubindex >=0) {
+      let a = this.listData[index].children[subIndex].children[subsubindex];
+      // debugger;
+      if (a.isChecked === true && this.listId.indexOf(a.id) === -1) {
+        this.listId.push(a.id);
+      } else {
+        let b = this.listId.indexOf(a.id);
+        console.log(b);
+        // debugger;
+        if (b > -1) {
+          this.listId.splice(b, 1);
+        }
       }
     }
   }
