@@ -48,19 +48,21 @@ export class SidebarComponent implements OnInit, OnChanges {
     private router: Router,
   ) {
     // do something
+    this.menuInfo = [];
   }
 
   ngOnChanges(changes: SimpleChanges) {
-     if(changes['menuInfo'] && changes['menuInfo'].currentValue) {
-          this.menuInfo = changes['menuInfo'].currentValue;
-     }
+    console.log(changes);
+    if (changes['menuInfo'] && changes['menuInfo'].currentValue) {
+      this.menuInfo = changes['menuInfo'].currentValue;
+    }
   }
 
   modalOptions: any = {
     nzDuration: 2000,
   };
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   // @HostListener('window:click', ['$event'])
   // clickOutsideButton(e: Event) {

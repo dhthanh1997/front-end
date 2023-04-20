@@ -10,7 +10,7 @@ export class UserApi {
 
   constructor(private http: HttpService) { }
 
-  getUserInfo(username: any): Observable<any> {
+  getUserInfo(username: string): Observable<any> {
     return this.http.get(`${this.apiController}/${username}`);
   }
 
