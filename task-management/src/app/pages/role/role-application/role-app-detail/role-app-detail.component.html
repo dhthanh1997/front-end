@@ -3,7 +3,7 @@
     <nz-collapse>
       <nz-collapse-panel nzHeader="{{ item.name }}" nzActive="true">
         <div *ngFor="let subItem of listData[idx].children; index as idxSub">
-          <div *ngIf="!subItem.hasOwnProperty('children')" nz-row>
+          <div *ngIf="subItem.type == 1" nz-row>
             <div class="my-2" style="max-width: 45%">
               <label
                 nz-checkbox
@@ -16,7 +16,7 @@
           </div>
 
           <ng-container
-            *ngIf="subItem.hasOwnProperty('children')"
+            *ngIf="subItem.type == 0"
             [ngTemplateOutlet]="treeNode"
             [ngTemplateOutletContext]="{ data: listData }"
           >

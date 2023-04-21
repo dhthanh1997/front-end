@@ -63,7 +63,7 @@ export class RoleAppDetailComponent implements OnInit {
         next: (res) => {
           console.log(res);
           this.listData = this.sortArray(res.pagingData.content);
-          this.getParentCode();
+          this.rolePerChecked();
           console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
@@ -172,32 +172,6 @@ export class RoleAppDetailComponent implements OnInit {
 
   notify() {
     this.notifyService.success('Thành công', 'Phân quyền', this.modalOptions);
-  }
-
-  getParentCode() {
-    for (let i = 0; i < this.listData.length; i++) {
-      if (
-        this.listData[i].parentCode == null ||
-        (this.listData[i].parentCode == '' &&
-          this.listData[i].parentCode != undefined)
-      )
-        this.listParent.push(this.listData[i]);
-      // console.log(this.listParent);
-    }
-    this.getChildCode();
-  }
-
-  getChildCode() {
-    for (let i = 0; i < this.listData.length; i++) {
-      if (
-        this.listData[i].parentCode != null &&
-        this.listData[i].parentCode != '' &&
-        this.listData[i].parentCode != undefined
-      )
-        this.listChild.push(this.listData[i]);
-      // console.log(this.listChild);
-    }
-    this.rolePerChecked();
   }
 
   checkedAll(index: number, event: any) {
