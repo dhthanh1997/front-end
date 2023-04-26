@@ -8,4 +8,5 @@ export abstract class RolePermissionData {
   abstract getById(id: number): Observable<any>;
   abstract deleteById(id: number): Observable<any>;
   abstract deleteSelectedId(data: number[]): Observable<any>;
+  abstract saveList(data: [rolePermissionContent]): Observable<any>;
 }

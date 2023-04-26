@@ -6,6 +6,11 @@
   margin-bottom: 5px;
 }
 
+:host ::ng-deep .ant-collapse-content-box:has(>.test) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .role-detail-wrapper {
   padding: 40px;
 

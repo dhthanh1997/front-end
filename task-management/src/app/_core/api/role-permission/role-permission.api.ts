@@ -38,4 +38,8 @@ export class RolePermissionApi {
     return this.http.post(`${this.apiController}/deleteByListId`, data);
   }
 
+  saveList(data: [rolePermissionContent]): Observable<any> {
+    return this.http.post(`${this.apiController}/rolePermission`, data);
+  }
+
 }
