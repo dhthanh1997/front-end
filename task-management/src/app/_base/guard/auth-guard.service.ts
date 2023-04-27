@@ -14,46 +14,6 @@ export class AuthGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    // return this.authService.isAuthenticated().pipe(take(1),tap((authenticated) => {
-    //   if (!authenticated) {
-    //     this.router.navigate(['auth/login']);
-    //     let reAuthenticated = false;
-    //     // if (this.authService.getIsExpiredToken()) {
-    //     //   let uuid = this.authService.getUUID();
-    //     //   if (uuid) {
-    //     //     // const $refreshToken = this.authenticationService.refreshToken(uuid);
-
-    //     //     this.authenticationService.refreshToken(uuid).pipe(take(1)).subscribe({
-    //     //       next: (res) => {
-    //     //         if (res && res.accessToken) {
-    //     //           console.log(res);
-    //     //           localStorage.setItem('access_token', res.accessToken);
-    //     //           // this.router.navigate(['pages']);
-    //     //           reAuthenticated = true;
-    //     //         }
-    //     //         //  else {
-    //     //         //   if (res && res.status === 401) {
-    //     //         //     this.router.navigate(['auth/login']);
-    //     //         //   }
-    //     //         // }
-    //     //       },
-    //     //       error: (error) => {
-    //     //         console.log(error);
-    //     //         // nếu trả về 401 từ refreshToken => refreshToken hết hạn => redirect sang login
-    //     //         if (error.status === 401) {
-    //     //           this.router.navigate(['auth/login']);
-    //     //         }
-    //     //       }
-    //     //     });
-    //     //     // return of(reAuthenticated);
-    //     //   }
-    //     //   else {
-    //     //     this.router.navigate(['auth/login']);
-    //     //   }
-    //     // }
-    //   }
-    // }))
-
     return this.authService.isAuthenticated().pipe(map(authenticated => {
       let item: any = {
         reAuthenticated: true,

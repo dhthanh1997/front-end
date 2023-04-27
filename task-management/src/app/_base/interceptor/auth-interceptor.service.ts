@@ -21,6 +21,7 @@ export class AuthInterceptorService implements HttpInterceptor {
            
         } 
         this.router.navigate(['auth/login']);
+       
       }
       return throwError(() => new Error(error.message));
     }));

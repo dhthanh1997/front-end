@@ -7,7 +7,7 @@ import { StateTaskPipe } from './pipe/state-task.pipe';
 import { TestDirective } from './directive/test.directive';
 import { ValueArrayPipe } from './pipe/value-array.pipe';
 import { HasPermissionDirective } from './directive/has-permission.directive';
-import { StoreDataService } from './store-data.service';
+import { StoreDataService } from '../_base/store-data.service';
 
 
 
@@ -32,7 +32,6 @@ import { StoreDataService } from './store-data.service';
   ],
   providers: [
     ShareService,
-    StoreDataService
   ]
 })
 export class ShareModule { }

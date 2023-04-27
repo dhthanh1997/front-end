@@ -9,19 +9,23 @@ import { MessageService } from './message.service';
 import { AuthGuardService } from './guard/auth-guard.service';
 import { AuthService } from './auth.service';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { BinarySearch } from './util';
+import { BinarySearchService } from './util';
+import { StoreDataService } from './store-data.service';
+import { PermissionGuardService } from './guard/permission-guard.service';
 
 const PROVIDERS = [
   HttpService,
   AuthGuardService,
   AuthService,
-  AuthenticationService
+  AuthenticationService,
+  StoreDataService,
+  PermissionGuardService
 ]
 
 const SERVICES = [
   NotifyService,
   MessageService,
-  BinarySearch
+  BinarySearchService
 ]
 
 @NgModule({
