@@ -63,7 +63,11 @@ export class RoleAppDetailComponent implements OnInit {
         next: (res) => {
           console.log(res);
           this.listData = this.sortArray(res.pagingData.content);
-          this.rolePerChecked();
+          for (let i = 0; i < this.listData.length; i++) {
+            if (this.listData[i].children) {
+              this.rolePerChecked(this.listData[i].children);
+            }
+          }
           console.log(this.listData);
           this.totalElements = res.pagingData.totalElements;
           this.totalPages = res.pagingData.totalPages;
@@ -72,6 +76,26 @@ export class RoleAppDetailComponent implements OnInit {
           console.log(err);
         },
       });
+  }
+
+  rolePerChecked(arr: any[]) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].children) {
+        this.rolePerChecked(arr[i].children);
+      } else {
+        this.listRolePer.map(
+          (listRolePerMap: {
+            id: number;
+            permissionId: number;
+            roleId: number;
+          }) => {
+            if (listRolePerMap.permissionId == arr[i].id) {
+              arr[i].isChecked = true;
+            }
+          }
+        );
+      }
+    }
   }
 
   sortArray(array: any[]) {
@@ -168,115 +192,26 @@ export class RoleAppDetailComponent implements OnInit {
         console.log('done');
       },
     });
-    // this.rolePerData.saveList(this.listData).subscribe({
-    //   next: (res) => {
-    //     if(res) {
-    //       console.log(res);
-    //     }
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   }
-    // })
   }
 
   notify() {
     this.notifyService.success('Thành công', 'Phân quyền', this.modalOptions);
   }
 
-  checkedAll(arr: any, event: any, id: number) {
-    // item.children.forEach(
-    //   (item1: { isChecked: any; id: number;}) => {
-    //       item1.isChecked = event;
-    //       if (item1.isChecked === true && this.listId.indexOf(item1.id) === -1)
-    //         this.listId.push(item1.id);
-    //       else if (
-    //         item1.isChecked === true &&
-    //         this.listId.indexOf(item1.id) !== -1
-    //       ) {
-    //         return;
-    //       } else {
-    //         const index = this.listId.indexOf(item1.id);
-    //         this.listId.splice(index, 1);
-    //       }
-    //       // console.log(item.isChecked);
-    //       console.log(this.listId);
-    //   }
-    // );
-
-    return arr.reduce((a: any, item: any) => {
-      if (a) return a;
-      if (item.id === id) {
-        item.isCheckedAll = event;
-        if (item.children) {
-          item.children.map((x: { id: number; isCheckedAll: boolean; isChecked: boolean; type: number; children: any[] }) => {
-            if(x.type == 0) {
-              x.isCheckedAll = event;
-              x.children.map((y: { id: number; isCheckedAll: boolean; isChecked: boolean; type: number; children: any[] }) => {
-                y.isChecked = event;
-                if (y.isChecked === true && this.listId.indexOf(y.id) === -1)
-                  this.listId.push(y.id);
-                else if (
-                  x.isChecked === true &&
-                  this.listId.indexOf(y.id) !== -1
-                ) {
-                  return;
-                } else {
-                  const index = this.listId.indexOf(y.id);
-                  this.listId.splice(index, 1);
-                }
-                return y;
-              });
-              return x;
-            }
-            else {
-              x.isChecked = event;
-              if (x.isChecked === true && this.listId.indexOf(x.id) === -1)
-                this.listId.push(x.id);
-              else if (
-                x.isChecked === true &&
-                this.listId.indexOf(x.id) !== -1
-              ) {
-                return;
-              } else {
-                const index = this.listId.indexOf(x.id);
-                this.listId.splice(index, 1);
-              }
-              return x;
-            }
-          });
-          return;
+  checkedAll(arr: any[], event: any) {
+      // this.listData[position]
+      // this.listRolePer;
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].children) {
+          arr[i].isCheckedAll = event;
+          this.checkedAll(arr[i].children, event);
+        } else {
+          arr[i].isChecked = event;
         }
       }
-      if (item.children) {
-        return this.checkedAll(item.children, event, id);
-      }
-    }, null);
-
   }
 
-  rolePerChecked() {
-    setTimeout(() => {
-      for (let i = 0; i < this.listRolePer.length; i++) {
-        for (let j = 0; j < this.listData.length; j++) {
-          for (let k = 0; k < this.listData[j].children.length; k++) {
-            if(!this.listData[j].children[k].hasOwnProperty('children')) {
-              if (this.listRolePer[i].permissionId === this.listData[j].children[k].id) {
-                this.listData[j].children[k].isChecked = true;
-              }
-            }
-            if(this.listData[j].children[k].hasOwnProperty('children')) {
-              for (let t = 0; t < this.listData[j].children[k].children.length; t++) {
-                if (this.listRolePer[i].permissionId === this.listData[j].children[k].children[t].id) {
-                  this.listData[j].children[k].children[t].isChecked = true;
-                }
-              }
-            }
-          }
-        }
-      }
-    }, 100);
-  }
+  // vị trí hàm cũ
 
   isChecked(arr: any, event: any, id: number) {
     return arr.reduce((a: any, item: any) => {
@@ -294,7 +229,6 @@ export class RoleAppDetailComponent implements OnInit {
     if (a.isChecked === true && this.listId.indexOf(a.id) === -1) {
       this.listId.push(a.id);
       console.log(this.listData);
-
     } else {
       let b = this.listId.indexOf(a.id);
       console.log(b);

@@ -5,6 +5,7 @@ import { ProjectData } from 'src/app/_core/api/project/project-data';
 import { getISOWeek } from 'date-fns';
 import { TeamData } from 'src/app/_core/api/team/team-data';
 import { MemberData } from 'src/app/_core/api/member/member-data';
+import { ReportData } from 'src/app/_core/api/report/report-data';
 
 @Component({
   selector: 'app-report',
@@ -17,8 +18,8 @@ export class ReportComponent implements OnInit {
 
   public taskList: any[] = [];
   public inCplTask: any[] = [];
-  public taskNumberInProject: number = 0;
-  public inCplTaskNumberInProject: number = 0;
+  public taskNumber: number = 0;
+  public inCplTaskNumber: number = 0;
 
   public projectList: any[] = [];
 
@@ -26,12 +27,16 @@ export class ReportComponent implements OnInit {
 
   public memberList: any[] = [];
 
+  public reportList: any[] = [];
+
   pageNumber: number = 1;
   pageSize: number = 999;
   txtProjectSearch: string = '';
   txtTaskSearch: string = '';
   txtTeamSearch: string = '';
   txtMemberSearch: string = '';
+  txtReportSearch: string = '';
+  txtReportSort: string = '';
   sortProject: string = '';
   sortTask: string = '';
 
@@ -43,10 +48,12 @@ export class ReportComponent implements OnInit {
     private taskData: TaskData,
     private projectData: ProjectData,
     private teamData: TeamData,
-    private memberData: MemberData
+    private memberData: MemberData,
+    private reportData: ReportData,
   ) {}
 
   ngOnInit(): void {
+    this.getReport();
     this.getTask();
     this.pieChartOption();
     this.barChartOption();
@@ -66,7 +73,6 @@ export class ReportComponent implements OnInit {
         next: (res) => {
           console.log(res);
           this.taskList = res.pagingData.content;
-          this.taskNumberInProject = this.taskList.length;
           this.InCompleteTask();
         },
         error: (err) => {
@@ -122,6 +128,20 @@ export class ReportComponent implements OnInit {
       });
   }
 
+  getReport() {
+    this.reportData.search(this.txtReportSearch, this.txtReportSort).subscribe({
+      next: (res) => {
+        if(res) {
+          this.reportList = res.listData;
+          this.taskNumber = res.listData.length;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
   search() {
     this.getTask();
     this.txtTaskSearch = '';
@@ -140,7 +160,7 @@ export class ReportComponent implements OnInit {
     for (let i = 0; i < this.taskList.length; i++) {
       if (this.taskList[i].state == 0) this.inCplTask.push(this.taskList[i]);
     }
-    this.inCplTaskNumberInProject = this.inCplTask.length;
+    this.inCplTaskNumber = this.inCplTask.length;
   }
 
   pieChartOption() {

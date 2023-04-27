@@ -1,19 +1,21 @@
-export interface rolePermission {
+export interface Report {
   pagingData: pagingData;
 }
 
 export interface pagingData {
-  content: [rolePermissionContent];
+  content: [reportContent];
   pageable: pageable;
   totalElements: number;
   totalPages?: number;
   size?: number;
 }
 
-export interface rolePermissionContent {
+export interface reportContent {
   id: number;
-  permissionId: number;
-  roleId: number;
+  projectId: number;
+  taskId: number;
+  teamId: number;
+  username: string;
 }
 
 export interface pageable {

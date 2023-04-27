@@ -45,15 +45,15 @@
     <div class="card-detail mt-3">
       <nz-card nzHoverable class="card-item">
         <h4>Tổng số Task</h4>
-        <span>{{ taskNumberInProject }}</span>
+        <span>{{ taskNumber }}</span>
       </nz-card>
       <nz-card nzHoverable class="card-item">
         <h4>Task đã hoàn thành</h4>
-        <span>{{ taskNumberInProject - inCplTaskNumberInProject }}</span>
+        <span>{{ taskNumber - inCplTaskNumber }}</span>
       </nz-card>
       <nz-card nzHoverable class="card-item">
         <h4>Task chưa hoàn thành</h4>
-        <span>{{ inCplTaskNumberInProject }}</span>
+        <span>{{ inCplTaskNumber }}</span>
       </nz-card>
     </div>
     <div class="chart-detail">

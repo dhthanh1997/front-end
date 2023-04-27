@@ -128,7 +128,7 @@
       <label
         nz-checkbox
         [ngModel]="data.isCheckedAll"
-        (ngModelChange)="checkedAll(listData, $event, data.id)"
+        (ngModelChange)="checkedAll(data.children, $event)"
         (click)="$event.stopPropagation()"
       >
         Tích All</label
