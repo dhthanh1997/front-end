@@ -130,7 +130,7 @@ export enum EnumType {
 @Injectable({
   providedIn: 'root'
 })
-export class BinarySearch {
+export class BinarySearchService {
 
  public result: any;
 
@@ -147,6 +147,19 @@ export class BinarySearch {
       }
     }
     // return (form.get(key) && form.get(key)!.value === id) ? form : ((form.get(property) && form.get(property)!.value.length > 0) ? form.get(property) : []).some((value: any) => temp = binarySearchTree(value, id, property, key)) && temp;
+  }
+
+  public binaryCheckItemInTree(arrays: any[], property: string, key: string ): any {
+    arrays.forEach(value => {
+      if(value[property].length === 0) {
+        return value.path.includes(key);
+      } else {
+         value[property].forEach((v: any) => {
+          this.binaryCheckItemInTree(v, property, key);
+         });
+      }
+    });
+   
   }
 }
 

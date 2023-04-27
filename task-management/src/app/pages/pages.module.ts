@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '../_core/core.module';
 import { BaseModule } from '../_base/base.module';
 import { JwtInterceptorService } from '../_base/interceptor/jwt-interceptor.service';
+import { ShareModule } from '../_share/share.module';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { JwtInterceptorService } from '../_base/interceptor/jwt-interceptor.serv
     CommonModule,
     PagesRoutingModule,
     ThemeModule,
+    ShareModule,
     IconsProviderModule.forRoot(),
     NgZorroModule.forRoot(),
 

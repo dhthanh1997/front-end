@@ -26,7 +26,6 @@ import { PageMenuService } from './pages/page-menu.service';
     HttpClientModule,
     IconsProviderModule.forRoot(),
     ThemeModule.forRoot(),
-    // ShareModule,
     CoreModule.forRoot(),
   ],
   providers: [

@@ -6,7 +6,7 @@ import { Task } from 'src/app/_core/model/task';
 import { TaskDetailFrmComponent } from '../../task-detail-frm/task-detail-frm.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { TaskData } from 'src/app/_core/api/task/task-data';
-import { BinarySearch, initFormArray, initFormObject, setDataInFormArray } from 'src/app/_base/util';
+import { BinarySearchService, initFormArray, initFormObject, setDataInFormArray } from 'src/app/_base/util';
 import { ResponseDataObject } from 'src/app/_core/other/responseDataObject';
 import { isThisHour } from 'date-fns';
 import { forEach } from 'lodash';
@@ -42,7 +42,7 @@ export class TaskSubTableComponent implements OnInit, OnChanges {
     private modal: NzModalService,
     private taskData: TaskData,
     private fb: FormBuilder,
-    private binarySearch: BinarySearch
+    private binarySearch: BinarySearchService
   ) {
     this.formValidation = initFormArray("taskArray");
   }

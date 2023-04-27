@@ -17,7 +17,7 @@ export class AuthService {
       this.tokenDecode = helper.decodeToken(token);
     }
     console.log(this.tokenDecode);
-    this.setIsTokenExpired(this.tokenDecode);
+    this.setIsExpiredToken(this.tokenDecode);
 
   }
   //
@@ -25,7 +25,7 @@ export class AuthService {
   isAuthenticated(): Observable<boolean> {
     // debugger;
     if (this.tokenDecode) {
-      if (this.getIsExpiredToken()) return from([false]);
+      if (this.checkTokenExpired(this.tokenDecode)) return from([false]);
       return from([true]);
     }
     return from([false]);
@@ -39,7 +39,18 @@ export class AuthService {
     return this.tokenDecode.uuid;
   }
 
-  setIsTokenExpired(token: any) {
+  checkTokenExpired(token: any) {
+    if (token && token.exp) {
+      let expTime = new Date(token.exp * 1000);
+      let timeout = expTime.getTime() - new Date().getTime();
+      if (timeout < 0) return this.isExpiredToken = true;
+      return this.isExpiredToken = false;
+    } else {
+      return this.isExpiredToken = true;
+    }
+  }
+
+  setIsExpiredToken(token: any) {
     if (token && token.exp) {
       let expTime = new Date(token.exp * 1000);
       let timeout = expTime.getTime() - new Date().getTime();

@@ -16,7 +16,7 @@
           </div>
 
           <ng-container
-            *ngIf="subItem.hasOwnProperty('children')"
+          
             [ngTemplateOutlet]="treeNode"
             [ngTemplateOutletContext]="{ data: listData }"
           >
