@@ -22,6 +22,7 @@ export class permissionContent extends BaseEntity {
   status?: string;
   type?: string;
   isChecked?: Boolean;
+  isCheckedAll?: Boolean;
 
   constructor() {
     super();

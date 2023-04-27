@@ -1,9 +1,9 @@
-<div class="role-detail-wrapper">
+<!-- <div class="role-detail-wrapper">
   <div class="collapse-wrapper" *ngFor="let item of listData; let idx = index">
     <nz-collapse>
-      <nz-collapse-panel nzHeader="{{ item.name }}" nzActive="true">
+      <nz-collapse-panel [nzExtra]="extraTpl1" nzHeader="{{ item.name }}" nzActive="true">
         <div *ngFor="let subItem of listData[idx].children; index as idxSub">
-          <div *ngIf="!subItem.hasOwnProperty('children')" nz-row>
+          <div *ngIf="subItem.type == 1" nz-row>
             <div class="my-2" style="max-width: 45%">
               <label
                 nz-checkbox
@@ -16,7 +16,7 @@
           </div>
 
           <ng-container
-          
+            *ngIf="subItem.type == 0"
             [ngTemplateOutlet]="treeNode"
             [ngTemplateOutletContext]="{ data: listData }"
           >
@@ -25,7 +25,7 @@
           <ng-template #treeNode let-data="data" let-index="index">
             <nz-collapse class="my-4"
             >
-              <nz-collapse-panel nzHeader="{{ subItem.name }}" nzActive="true">
+              <nz-collapse-panel [nzExtra]="extraTpl2" nzHeader="{{ subItem.name }}" nzActive="true">
                 <div nz-row>
                   <div
                     style="width: 50%"
@@ -44,22 +44,97 @@
                   </div>
                 </div>
               </nz-collapse-panel>
+              <ng-template class="checkUncheck" #extraTpl2>
+                <label *ngIf="subItem.type == 0 && subItem.hasOwnProperty('children')"
+                  nz-checkbox
+                  [ngModel]="checkedBoxAll"
+                  (ngModelChange)="checkedAll(subItem, $event)"
+                  (click)="$event.stopPropagation()"
+                >
+                  Tích All</label
+                >
+              </ng-template>
             </nz-collapse>
           </ng-template>
         </div>
       </nz-collapse-panel>
-      <!-- <ng-template class="checkUncheck" #extraTpl>
+      <ng-template class="checkUncheck" #extraTpl1>
         <label
           nz-checkbox
           [ngModel]="checkedBoxAll"
-          (ngModelChange)="checkedAll(idx, $event)"
+          (ngModelChange)="checkedAll(item, $event)"
           (click)="$event.stopPropagation()"
         >
           Tích All</label
         >
-      </ng-template> -->
+      </ng-template>
     </nz-collapse>
   </div>
+
+  <a routerLink="/pages/roles-app" class="mr-3">
+    <button nz-button>
+      <span>Trở lại</span>
+    </button>
+  </a>
+
+  <button nz-button (click)="onCreate()">Lưu</button>
+</div> -->
+
+<div class="role-detail-wrapper">
+  <ng-container
+    [ngTemplateOutlet]="treeNode"
+    [ngTemplateOutletContext]="{ data: item }"
+    class="collapse-wrapper"
+    *ngFor="let item of listData"
+  >
+  </ng-container>
+
+  <ng-template #treeNode let-data="data" let-index="index">
+    <nz-collapse class="mb-4">
+      <nz-collapse-panel
+        [nzExtra]="extraTpl"
+        nzHeader="{{ data.name }}"
+        nzActive="true"
+      >
+        <ng-container *ngFor="let sub of data.children">
+          <ng-container *ngIf="sub.type == 0">
+            <ng-container
+              [ngTemplateOutlet]="treeNode"
+              [ngTemplateOutletContext]="{ data: sub }"
+              class="collapse-wrapper"
+              *ngFor="let child of sub.children"
+            >
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="sub.type == 1">
+            <div class="test" style="width: 50%;">
+              <div class="my-2">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="sub.isChecked"
+                  (ngModelChange)="isChecked(listData, $event, sub.id)"
+                  style="line-height: 1.5"
+                  >{{ sub.name }}</label
+                >
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <ng-template class="checkUncheck" #extraTpl>
+      <label
+        nz-checkbox
+        [ngModel]="data.isCheckedAll"
+        (ngModelChange)="checkedAll(listData, $event, data.id)"
+        (click)="$event.stopPropagation()"
+      >
+        Tích All</label
+      >
+    </ng-template>
+  </ng-template>
 
   <a routerLink="/pages/roles-app" class="mr-3">
     <button nz-button>

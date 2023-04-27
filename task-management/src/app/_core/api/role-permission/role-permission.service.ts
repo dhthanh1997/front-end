@@ -32,4 +32,8 @@ export class RolePermissionService implements RolePermissionData {
   deleteSelectedId(data: number[]): Observable<any> {
     return this.api.deleteSelectedId(data);
   }
+
+  saveList(data: [rolePermissionContent]): Observable<any> {
+    return this.api.saveList(data);
+  }
 }
