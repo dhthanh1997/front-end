@@ -1,14 +1,14 @@
 <div class="report-wrapper">
   <div class="report-header mt-4 mb-2">
-    <nz-select nzPlaceHolder="Nhân viên" ngModel (ngModelChange)="getMemberValue($event)">
+    <nz-select nzPlaceHolder="Nhân viên" [(ngModel)]="memberValue" (ngModelChange)="getMemberValue($event)">
       <nz-option nzValue=" " nzLabel="Tất cả"></nz-option>
       <nz-option
         *ngFor="let item of memberList; let idx = index"
-        [nzValue]="item.id"
+        [nzValue]="item.name"
         [nzLabel]="item.name"
       ></nz-option>
     </nz-select>
-    <nz-select nzPlaceHolder="Dự án" ngModel (ngModelChange)="getProjectValue($event)">
+    <nz-select nzPlaceHolder="Dự án" [(ngModel)]="projectValue" (ngModelChange)="getProjectValue($event)">
       <nz-option nzValue=" " nzLabel="Tất cả"></nz-option>
       <nz-option
         *ngFor="let item of projectList; let idx = index"
@@ -16,7 +16,7 @@
         [nzLabel]="item.name"
       ></nz-option>
     </nz-select>
-    <nz-select nzPlaceHolder="Nhóm">
+    <nz-select nzPlaceHolder="Nhóm" [(ngModel)]="teamValue" (ngModelChange)="getTeamValue($event)">
       <nz-option nzValue=" " nzLabel="Tất cả"></nz-option>
       <nz-option
         *ngFor="let item of teamList; let idx = index"
@@ -64,7 +64,7 @@
           class="highchart"
         ></highcharts-chart>
       </nz-card>
-      <nz-card nzHoverable class="chart-item">
+      <nz-card nzHoverable class="chart-item" *ngIf="!loading && barChartOptions">
         <highcharts-chart
           [Highcharts]="Highcharts"
           [options]="barChartOptions"

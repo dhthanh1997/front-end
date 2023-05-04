@@ -15,6 +15,11 @@ import { ReportData } from 'src/app/_core/api/report/report-data';
 export class ReportComponent implements OnInit {
   date = null;
   isAdvanced: boolean = false;
+  loading = true;
+
+  memberValue = '';
+  projectValue = '';
+  teamValue = '';
 
   public taskList: any[] = [];
   public inCplTask: any[] = [];
@@ -56,7 +61,6 @@ export class ReportComponent implements OnInit {
     this.getReport();
     this.getTask();
     this.pieChartOption();
-    this.barChartOption();
     this.getTeam();
     this.getProject();
     this.getMember();
@@ -73,7 +77,6 @@ export class ReportComponent implements OnInit {
         next: (res) => {
           console.log(res);
           this.taskList = res.pagingData.content;
-          this.InCompleteTask();
         },
         error: (err) => {
           console.log(err);
@@ -132,8 +135,11 @@ export class ReportComponent implements OnInit {
     this.reportData.search(this.txtReportSearch, this.txtReportSort).subscribe({
       next: (res) => {
         if(res) {
+          // debugger
           this.reportList = res.listData;
           this.taskNumber = res.listData.length;
+          this.InCompleteTask();
+          this.barChartOption();
         }
       },
       error: (err) => {
@@ -143,24 +149,32 @@ export class ReportComponent implements OnInit {
   }
 
   search() {
-    this.getTask();
-    this.txtTaskSearch = '';
+    this.getReport();
+    this.txtReportSearch = '';
+    this.memberValue = "";
+    this.projectValue = "";
+    this.teamValue = "";
   }
 
   getProjectValue(value: any) {
-    this.txtTaskSearch += `projectId.eq.${value},`;
+    this.txtReportSearch += `projectId.eq.${value},`;
   }
 
   getMemberValue(value: any) {
-    // this.txtTaskSearch += `memberId.eq.${value},`
+    this.txtReportSearch += `username.eq.${value},`
+  }
+
+  getTeamValue(value: any) {
+    this.txtReportSearch += `teamId.eq.${value},`
   }
 
   InCompleteTask() {
     this.inCplTask = [];
-    for (let i = 0; i < this.taskList.length; i++) {
-      if (this.taskList[i].state == 0) this.inCplTask.push(this.taskList[i]);
+    for (let i = 0; i < this.reportList.length; i++) {
+      if (this.reportList[i].state == 0) this.inCplTask.push(this.reportList[i]);
     }
     this.inCplTaskNumber = this.inCplTask.length;
+    this.pieChartOption();
   }
 
   pieChartOption() {
@@ -201,40 +215,12 @@ export class ReportComponent implements OnInit {
           colorByPoint: true,
           data: [
             {
-              name: 'Dự án 1',
-              y: 70.67,
+              name: 'Task hoàn thành',
+              y: this.taskNumber - this.inCplTaskNumber,
             },
             {
-              name: 'Dự án 2',
-              y: 14.77,
-            },
-            {
-              name: 'Dự án 3',
-              y: 4.86,
-            },
-            {
-              name: 'Dự án 4',
-              y: 2.63,
-            },
-            {
-              name: 'Dự án 5',
-              y: 1.53,
-            },
-            {
-              name: 'Dự án 6',
-              y: 1.4,
-            },
-            {
-              name: 'Dự án 7',
-              y: 0.84,
-            },
-            {
-              name: 'Dự án 8',
-              y: 0.51,
-            },
-            {
-              name: 'Other',
-              y: 2.6,
+              name: 'Task chưa hoàn thành',
+              y: this.inCplTaskNumber,
             },
           ],
         },
@@ -243,6 +229,44 @@ export class ReportComponent implements OnInit {
   }
 
   barChartOption() {
+    let data: any[] = [];
+    let listProject: any[] = [];
+    let listTaskDone: any[] = [];
+    let listTaskNotDone: any[] = [];
+    let TaskDone:number = 0;
+    let TaskNotDone:number = 0;
+    for(let i = 0; i < this.reportList.length; i++) {
+      let obj = data.find(element => element.projectId == this.reportList[i].projectId)
+      if(obj == undefined) {
+        if(this.reportList[i].state == 0) {
+          data.push({
+            projectId: this.reportList[i].projectId,
+            taskDone: TaskDone,
+            taskNotDone: ++TaskNotDone,
+          });
+          TaskNotDone = 0;
+        }
+        else {
+          data.push({
+            projectId: this.reportList[i].projectId,
+            taskDone: ++TaskDone,
+            taskNotDone: TaskNotDone,
+          });
+          TaskDone = 0;
+        }
+      }
+      else {
+        if(this.reportList[i].state == 0) {
+          obj.taskNotDone++;
+        }
+        else obj.taskDone++;
+      }
+    }
+    for(let i = 0; i < data.length; i++) {
+      listProject.push(data[i].projectId);
+      listTaskDone.push(data[i].taskDone);
+      listTaskNotDone.push(data[i].taskNotDone);
+    }
     this.barChartOptions = {
       chart: {
         width: 450,
@@ -254,12 +278,12 @@ export class ReportComponent implements OnInit {
         align: 'left',
       },
       xAxis: {
-        categories: ['Dự án 1', 'Dự án 2', 'Dự án 3', 'Dự án 4'],
+        categories: listProject,
       },
       yAxis: {
         min: 0,
         title: {
-          text: 'Số Task',
+          text: 'Task',
         },
         stackLabels: {
           enabled: true,
@@ -288,7 +312,7 @@ export class ReportComponent implements OnInit {
       // },
       tooltip: {
         headerFormat: '<b>{point.x}</b><br/>',
-        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+        pointFormat: '{series.name}: {point.y}<br/>Tổng số task: {point.stackTotal}',
       },
       plotOptions: {
         column: {
@@ -300,18 +324,15 @@ export class ReportComponent implements OnInit {
       },
       series: [
         {
-          name: 'Done',
-          data: [3, 5, 1, 13],
+          name: 'Task hoàn thành',
+          data: listTaskDone,
         },
         {
-          name: 'Doing',
-          data: [14, 8, 8, 12],
-        },
-        {
-          name: 'To do',
-          data: [0, 2, 6, 3],
+          name: 'Task chưa hoàn thành',
+          data: listTaskNotDone,
         },
       ],
     };
+    this.loading = false;
   }
 }
