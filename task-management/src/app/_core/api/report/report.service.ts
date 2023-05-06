@@ -7,9 +7,14 @@ import { ReportApi } from './report.api';
 export class ReportService implements ReportData {
 
   constructor(private api: ReportApi) { }
+ 
 
   search(txtSearch?: string, txtSort?: string): Observable<any> {
     return this.api.search(txtSearch, txtSort);
+  }
+
+  exportExcel(projectId: number): Observable<Blob> {
+    return this.api.exportExcel(projectId);
   }
 
 }

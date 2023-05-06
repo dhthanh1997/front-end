@@ -55,7 +55,7 @@ export class ReportComponent implements OnInit {
     private teamData: TeamData,
     private memberData: MemberData,
     private reportData: ReportData,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getReport();
@@ -134,7 +134,7 @@ export class ReportComponent implements OnInit {
   getReport() {
     this.reportData.search(this.txtReportSearch, this.txtReportSort).subscribe({
       next: (res) => {
-        if(res) {
+        if (res) {
           // debugger
           this.reportList = res.listData;
           this.taskNumber = res.listData.length;
@@ -175,6 +175,41 @@ export class ReportComponent implements OnInit {
     }
     this.inCplTaskNumber = this.inCplTask.length;
     this.pieChartOption();
+  }
+
+  exportExcel() {
+    debugger;
+    let projectId = Number(this.projectValue);
+    this.reportData.exportExcel(projectId).subscribe({
+      next: (res: any) => {
+
+        // const byteCharacters = atob (res);
+        // const byteNumbers = new Array (byteCharacters.length);
+        // for (let i = 0; i <byteCharacters.length; i ++) {
+        //   byteNumbers [i] = byteCharacters.charCodeAt (i);
+        // }
+        // const byteArray = new Uint8Array (byteNumbers);
+        // let blob = new Blob ([byteArray], {type: 'application / vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        // const url = window.URL.createObjectURL (blob);
+        // const anchor = document.createElement ('a');
+        // anchor.download = `test.xlsx`;
+        // anchor.href = url;
+        // anchor.click ();
+
+        console.log(res);
+        const dataType = res.type;
+        const binaryData = [];
+        binaryData.push(res);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+        downloadLink.setAttribute('download', "test.xlsx");
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
   pieChartOption() {
@@ -233,12 +268,12 @@ export class ReportComponent implements OnInit {
     let listProject: any[] = [];
     let listTaskDone: any[] = [];
     let listTaskNotDone: any[] = [];
-    let TaskDone:number = 0;
-    let TaskNotDone:number = 0;
-    for(let i = 0; i < this.reportList.length; i++) {
+    let TaskDone: number = 0;
+    let TaskNotDone: number = 0;
+    for (let i = 0; i < this.reportList.length; i++) {
       let obj = data.find(element => element.projectId == this.reportList[i].projectId)
-      if(obj == undefined) {
-        if(this.reportList[i].state == 0) {
+      if (obj == undefined) {
+        if (this.reportList[i].state == 0) {
           data.push({
             projectId: this.reportList[i].projectId,
             taskDone: TaskDone,
@@ -256,13 +291,13 @@ export class ReportComponent implements OnInit {
         }
       }
       else {
-        if(this.reportList[i].state == 0) {
+        if (this.reportList[i].state == 0) {
           obj.taskNotDone++;
         }
         else obj.taskDone++;
       }
     }
-    for(let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       listProject.push(data[i].projectId);
       listTaskDone.push(data[i].taskDone);
       listTaskNotDone.push(data[i].taskNotDone);

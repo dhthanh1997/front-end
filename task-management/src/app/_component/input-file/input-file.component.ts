@@ -140,7 +140,7 @@ export class InputFileComponent implements OnInit, AfterViewInit, OnChanges, Con
     if (this.fileSize) {
       // bytes to MB: 1048576
       // bytes to KB: 1024
-      let size = (file.size) ? (file.size / 1048576).toFixed(2) : 0;
+      let size = (file.size) ? Number((file.size / 1048576).toFixed(2)) : 0;
       console.log(size);
       if (size > this.fileSize) {
         this.msg.error('Kích thước file vượt quá ' + this.fileSize + ' Mb');
