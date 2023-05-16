@@ -24,6 +24,8 @@ import { SectionData } from 'src/app/_core/api/section/section-data';
 import { Section, sectionContent } from 'src/app/_core/model/section';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ResponseStatusEnum } from 'src/app/_core/enum/response-status-enum';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { TaskExportComponent } from '../task-export/task-export.component';
 
 export const DEMO_DATA: any[] = [
   {
@@ -88,6 +90,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     private shareService: ShareService,
     private sectionData: SectionData,
     private element: ElementRef,
+    private modalService: NzModalService,
   ) {
     // const formGroup = this.fb.array([
     //   this.fb.group({
@@ -118,6 +121,20 @@ export class TaskTableComponent implements OnInit, OnDestroy {
     // this.closeFromDetailTask();
     this.collapseListenEventFromRow();
     console.log(this.sections);
+  }
+
+  // test export data
+  test(): void {
+    this.modalService.create({
+      nzTitle: 'Test Export',
+      nzClassName: 'modal-custom',
+      nzContent: TaskExportComponent,
+      nzCentered: true,
+      nzDirection: 'ltr',
+      nzMaskClosable: false,
+      nzClosable: true,
+      nzWidth: '900px'
+    })
   }
 
   // event

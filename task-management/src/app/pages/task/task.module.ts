@@ -19,6 +19,7 @@ import { TaskTagComponent } from './task-detail/task-tag/task-tag.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxColorsModule } from 'ngx-colors';
 import { TaskSubTableComponent } from './task-detail/common/task-sub-table/task-sub-table.component';
+import { TaskExportComponent } from './task-export/task-export.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TaskSubTableComponent } from './task-detail/common/task-sub-table/task-
     TaskRowTableComponent,
     TaskUploadFileComponent,
     TaskTagComponent,
-    TaskSubTableComponent
+    TaskSubTableComponent,
+    TaskExportComponent,
   ],
   imports: [
     CommonModule,
