@@ -1,0 +1,20 @@
+<ng-container *ngIf="item">
+  <nz-table nzTemplateMode>
+    <tbody>
+      <tr cdkDrag cdkDropList [id]="item.uId" [cdkDropListData]="item.children"
+      [cdkDropListConnectedTo]="connectedTo" (cdkDropListDropped)="onDragDrop($event)">
+        <td [nzExpand]="expandSet.has(item.uId)" (nzExpandChange)="onExpandChange(item.uId, $event, idx, item)"></td>
+        <td class="text-center">{{item.uId}}</td>
+        <td class="text-center">{{item.name}}</td>
+      </tr>
+      <tr [nzExpand]="expandSet.has(item.uId)">
+        <ng-container *ngFor="let nextItem of item.children">
+          <div class="sub-item">
+            <app-sub-item [item]="nextItem" [connectedTo]="connectedTo" (itemDrop)="onDragDrop($event)">
+            </app-sub-item>
+          </div>
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+</ng-container>
