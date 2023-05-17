@@ -133,7 +133,7 @@ export class TaskTableComponent implements OnInit, OnDestroy {
       nzDirection: 'ltr',
       nzMaskClosable: false,
       nzClosable: true,
-      nzWidth: '900px'
+      nzWidth: '1400px'
     })
   }
 
