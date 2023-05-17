@@ -222,42 +222,48 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
   }
 
   // sửa ở form detail sẽ emit ra đây để update lên component này
+  // updateDataForm() {
+  //   let index = 0;
+  //   let id = 0;
+  //   let item = new Task();
+  //   const taskDetail$ = this.shareService.taskDetailShare
+  //   const source$ = taskDetail$.pipe(take(1), concatMap(res => {
+  //     console.log(res);
+  //     if (res.isUpdate) {
+  //       index = res.index;
+  //       id = res.item.id;
+  //       item = res.item;
+  //       return this.taskData.update(id, item);
+  //     }
+  //     return of(null);
+  //   })
+  //     , catchError((err) => throwError(() => new Error(err))));
+
+
+  //   source$.subscribe({
+  //     next: (res: any) => {
+  //       console.log(res);
+  //       if (res.message === ResponseStatusEnum.error) {
+  //         this.notifyService.error(res.error);
+  //       }
+  //       if (res.message === ResponseStatusEnum.success) {
+  //         console.log("update task");
+  //         this.updateControl(res.data, index);
+  //       }
+
+  //     },
+  //     error: (err) => {
+  //       console.log(err);
+  //     }
+  //   });
+  // }
+
   updateDataForm() {
-    let index = 0;
-    let id = 0;
-    let item = new Task();
     const taskDetail$ = this.shareService.taskDetailShare
-    const source$ = taskDetail$.pipe(concatMap(res => {
-      if (res.isUpdate) {
-        index = res.index;
-        id = res.item.id;
-        item = res.item;
-        return this.taskData.update(id, item);
-      }
-      return of(null);
-    })
-      , catchError((err) => throwError(() => new Error(err))));
-
-
-    source$.subscribe({
-      next: (res: any) => {
-        console.log(res);
-        if (res.message === ResponseStatusEnum.error) {
-          this.notifyService.error(res.error);
-        }
-        if (res.message === ResponseStatusEnum.success) {
-          console.log("update task");
-          this.updateControl(res.data, index);
-        }
-
-      },
-      error: (err) => {
-        console.log(err);
-      }
+    taskDetail$.pipe(take(1)).subscribe(res => {
+      console.log(res);
+      this.updateControl(res.item, res.index);
     });
-
-
-
   }
 
   closeDetailTask() {
@@ -371,7 +377,7 @@ export class TaskRowTableComponent implements OnInit, OnChanges {
       });
   }
 
-  
+
   // end 
 
 

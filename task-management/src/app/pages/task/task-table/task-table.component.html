@@ -66,14 +66,14 @@
       <div class="table-responsive-custom-header">
         <table class="table">
           <thead>
-            <th class="text-center col-8">Tên</th>
+            <th class="text-center col-11">Tên</th>
             <ng-template [ngIf]="!isCollapsed" [ngIfElse]="collapsedTemplate">
-              <th class="text-center col-5">Ngày kết thúc</th>
+              <th class="text-center col-3-1">Ngày kết thúc</th>
             </ng-template>
             <ng-template #collapsedTemplate>
-              <th class="text-center col-5">Ngày bắt đầu</th>
-              <th class="text-center col-5">Ngày kết thúc</th>
-              <th class="text-center col-5">Trạng thái</th>
+              <th class="text-center col-3-1">Ngày bắt đầu</th>
+              <th class="text-center col-3-1">Ngày kết thúc</th>
+              <th class="text-center col-4">Trạng thái</th>
             </ng-template>
           </thead>
         </table>

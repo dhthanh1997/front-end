@@ -46,6 +46,7 @@ import { TaskTagComponent } from './task-tag/task-tag.component';
 import { TagData } from 'src/app/_core/api/tag/tag-data';
 import { ProjectData } from 'src/app/_core/api/project/project-data';
 import { UploadFileData } from 'src/app/_core/api/upload-file/upload-file-data';
+import { MemberData } from 'src/app/_core/api/member/member-data';
 
 @Component({
   selector: 'app-task-detail',
@@ -68,6 +69,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     name: '',
   };
   public listProject: any[] = [];
+  public listMember: any[] = [];
 
   public idTask: number = 0;
   public indexTask: number = 0;
@@ -85,6 +87,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private taskData: TaskData,
+    private memberData: MemberData,
     private tagData: TagData,
     private shareService: ShareService,
     private notifyService: NotifyService,
@@ -97,7 +100,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     // this.formValidation.addControl('listProject', this.fb.array([]));
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   ngOnInit() {
     console.log(this.isCollapsed);
@@ -105,17 +108,17 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.getData();
     this.getSubData();
     // không cần watch change, angular tự check change và update theo hàm watchForChange ở parent component
-    this.watchForChange();
-    // this.hexToRGB('');
-    // this.collapseListenEvent();
-    // console.log(this.formValidation);
+    this.getMemberData();
     this.getProjectData();
+    // setTimeout(() => {
+    //   this.watchForChange();
+    // }, 1000);
   }
 
   getFileNameInTask(id: number) {
     this.uploadService.getFileInTask(id).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         if (res.message === ResponseStatusEnum.success) {
           this.files = res.data;
         }
@@ -132,6 +135,23 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
           this.listProject = res.pagingData.content;
           console.log('project');
           console.log(this.listProject);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getMemberData() {
+    // debugger;
+    this.memberData.search(1, 999).subscribe({
+      next: (res) => {
+        // debugger;
+        console.log(res);
+        if (res?.message === ResponseStatusEnum.success) {
+          this.listMember = res.pagingData.content;
+          // console.log(this.listMember);
         }
       },
       error: (err) => {
@@ -251,10 +271,10 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         .pipe(
           startWith(undefined),
           pairwise(),
-          debounceTime(1500),
+          debounceTime(2000),
           map(([prev, current]: [any, any]) => {
-            console.log(prev);
-            console.log(current);
+            // console.log(prev);
+            // console.log(current);
             let prevValue = _.omit(prev, [
               'isUpdate',
               'isShow',
@@ -326,7 +346,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.isShow = false;
   }
 
-  onOpenChange(event: any) {}
+  onOpenChange(event: any) { }
 
   // end event
 
@@ -510,6 +530,16 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   saveTask(item: any) {
     this.taskData.save(item).subscribe({
       next: (res) => {
+        if(res.message === ResponseStatusEnum.success) {
+          this.notifyService.success("Cập nhật thành công");
+          let result = {
+            item: _.omit(res.data, ['subTask']),
+            isUpdate: true,
+            index: this.indexTask,
+          }
+          this.shareService.taskDetailShare.next(result);
+          this.formValidation.updateValueAndValidity(res.data);
+        }
         if (res.message === ResponseStatusEnum.error) {
           this.notifyService.error(res.error);
         }
@@ -518,6 +548,12 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
         console.log(err);
       },
     });
+  }
+
+  saveForm() {
+    let item = this.formValidation.value;
+    this.saveTask(item);
+    
   }
 
   getTaskById(id: number) {

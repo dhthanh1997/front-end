@@ -53,6 +53,17 @@
             </button>
           </nz-badge>
           <button
+          nz-button
+          class="mr-2"
+          nzTooltipTitle="Lưu"
+          nzTooltipPlacement="bottom"
+          nz-tooltip
+          nzType="default"
+          (click)="saveForm()"
+        >
+          <span nz-icon nzType="save" nzTheme="outline"></span>
+        </button>
+          <button
             nz-button
             class="mr-2"
             nzTooltipTitle="Mở rộng"
@@ -134,7 +145,20 @@
           <nz-form-item nz-row [nzGutter]="1">
             <nz-form-label [nzSpan]="4"> Phụ trách </nz-form-label>
             <nz-form-control [nzSpan]="20">
-              <input nz-input class="input_disabled" name="assignee" disabled />
+              <!-- <input nz-input class="input_disabled" name="assignee" disabled /> -->
+              <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzMode="multiple"
+              formControlName="assignee"
+              nzPlaceHolder="Nhập tên"
+            >
+              <nz-option
+                [nzLabel]="value.name"
+                [nzValue]="value.id"
+                *ngFor="let value of listMember"
+              ></nz-option>
+            </nz-select>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -169,9 +193,6 @@
                 formControlName="projectId"
                 nzPlaceHolder="Lựa chọn dự án"
               >
-                <!-- <nz-option nzLabel="Dự án A" nzValue="1"></nz-option>
-                <nz-option nzLabel="Dự án B" nzValue="2"></nz-option>
-                <nz-option nzLabel="Dự án C" nzValue="4"></nz-option> -->
                 <nz-option
                   [nzLabel]="value.name"
                   [nzValue]="value.id"

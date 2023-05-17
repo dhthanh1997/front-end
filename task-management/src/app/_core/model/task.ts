@@ -49,6 +49,7 @@ export class Task extends BaseEntity {
   numberOfSubTask: number;
   sectionId: number;
   tagId: number;
+  assignee: any;
 
   constructor() {
     super();
@@ -81,6 +82,7 @@ export class Task extends BaseEntity {
     this.numberOfSubTask = 0;
     this.sectionId = 0;
     this.tagId = 0;
+    this.assignee = [];
   }
 
   setName(name: string) {

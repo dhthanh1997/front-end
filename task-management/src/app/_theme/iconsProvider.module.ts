@@ -54,6 +54,7 @@ import {
   DownloadOutline,
   FieldTimeOutline,
   ArrowLeftOutline,
+  SaveOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -106,6 +107,7 @@ const icons = [
   DownloadOutline,
   FieldTimeOutline,
   ArrowLeftOutline,
+  SaveOutline
 ];
 
 @NgModule({
