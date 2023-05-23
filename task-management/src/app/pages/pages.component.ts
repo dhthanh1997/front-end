@@ -53,6 +53,7 @@ export class PagesComponent implements OnInit {
         this.permissions = res.data.permissions;
     }
     this.storeDataService.menuInfoData.next(this.menuInfo);
+    this.storeDataService.permissions.next(this.permissions);
 
     console.log(this.userInfo);
     console.log(this.menuInfo);

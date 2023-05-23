@@ -26,6 +26,7 @@ import { StoreDataService } from '../_base/store-data.service';
   exports: [
     AutoFocusDirective,
     ClickOutsideAndUpdateDirective,
+    HasPermissionDirective,
     TestDirective,
     StateTaskPipe,
     ValueArrayPipe

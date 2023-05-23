@@ -6,6 +6,7 @@ export class ShareService {
 
   public taskDataShare: Subject<any> = new Subject<any>();
   public taskDetailShare: Subject<any> = new Subject<any>();
+  public permissionsShare: Subject<any> = new Subject<any>();
 
   // events
   public isAddRow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);

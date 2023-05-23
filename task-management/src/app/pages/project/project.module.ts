@@ -13,6 +13,7 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { SubProjectComponent } from './sub-project/sub-project.component';
 import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
+import { ShareModule } from 'src/app/_share/share.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ProjectTimelineComponent } from './project-timeline/project-timeline.co
     FormsModule,
     CurrencyMaskModule,
     HighchartsChartModule,
+    ShareModule
   ],
   exports: [ProjectFormComponent, DeleteComponent],
 })
