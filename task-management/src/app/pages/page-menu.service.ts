@@ -8,12 +8,13 @@ export class PageMenuService {
 
   getMenu(items: any[], menu: any[]): any[] {
     menu = menu.filter(item => items.includes(item.code.toUpperCase()));
-    menu.forEach((v,k) => {
-        if(v.children && v.children.length > 0) {
-           this.getMenu(items, v.children);  
-        }
+    menu.forEach((v, k) => {
+      if (v.children && v.children.length > 0) {
+        v.isOpen = false;
+        this.getMenu(items, v.children);
+      }
     });
-    
+
     return menu;
   }
 

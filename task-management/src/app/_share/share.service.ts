@@ -24,5 +24,10 @@ export class ShareService {
 
   // end events
 
+  //store data
+  public menuInfoData: Subject<any> = new Subject();
+  public permissions: Subject<any> = new Subject();
+  //
+
   constructor() { }
 }

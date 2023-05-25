@@ -13,13 +13,10 @@ import {
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { BinarySearchService } from 'src/app/_base/util';
+import { ModeModal } from 'src/app/_core/enum/modeModal';
 import { ProjectFormComponent } from 'src/app/pages/project/project-form/project-form.component';
 
-enum ModeModal {
-  CREATE = 'create',
-  UPDATE = 'update',
-  VIEW = 'view',
-}
 
 @Component({
   selector: 'internal-app-sidebar',
@@ -41,11 +38,11 @@ export class SidebarComponent implements OnInit, OnChanges {
   @ViewChild('popupContent') popupContent!: ElementRef;
 
   constructor(
-    private renderer: Renderer2,
     private elementRef: ElementRef,
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
     private router: Router,
+    private binarySearch: BinarySearchService
   ) {
     // do something
     this.menuInfo = [];
@@ -64,35 +61,32 @@ export class SidebarComponent implements OnInit, OnChanges {
 
   ngOnInit(): void { }
 
-  // @HostListener('window:click', ['$event'])
-  // clickOutsideButton(e: Event) {
-  //   if (e.target !== this.toggleButton!.nativeElement) {
-  //     this.isHidden = false;
-  //   }
-  // }
 
-  // popUp() {
-  //   this.isHidden = !this.isHidden;
-  //   console.log(this.isHidden);
-  // }
 
-  subMenu() {
+  subMenu(item?: any) {
     // debugger;
+    this.binarySearch.binarySearchTreeArray(this.menuInfo, 'children', item.id);
+    const result = this.binarySearch.result;
     let subMenu = this.elementRef.nativeElement.querySelector('.sub-menu');
+    console.log(subMenu);
     if (subMenu.classList.contains('d-none')) {
       subMenu.classList.remove('hide');
       subMenu.classList.remove('d-none');
       subMenu.classList.add('show');
       subMenu.classList.add('d-block');
-      this.isOpen = !this.isOpen;
+      result.isOpen = !result.isOpen;
+      console.log(result);
+      // this.isOpen = !this.isOpen;
     } else if (subMenu.classList.contains('d-block')) {
       subMenu.classList.remove('show');
       subMenu.classList.remove('d-block');
       subMenu.classList.add('hide');
-      this.isOpen = !this.isOpen;
+      result.isOpen = !result.isOpen;
+      console.log(result);
+      // this.isOpen = !this.isOpen;
       setTimeout(() => {
         return subMenu.classList.add('d-none');
-      }, 700);
+      }, 300);
     }
   }
 

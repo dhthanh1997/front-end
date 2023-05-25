@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { ProjectData } from '../../_core/api/project/project-data';
 import { TaskData } from 'src/app/_core/api/task/task-data';
 import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
+import { HasPermissionService } from 'src/app/_base/guard/has-permission.service';
 
 enum ModeModal {
   CREATE = 'create',
@@ -32,7 +33,8 @@ export class ProjectComponent implements OnInit {
     private modalService: NzModalService,
     private notifyService: NzNotificationService,
     private element: ElementRef,
-    private router: Router
+    private router: Router,
+    public hasPermission: HasPermissionService
   ) { }
 
   mapOfExpandData: { [key: string]: boolean } = {};

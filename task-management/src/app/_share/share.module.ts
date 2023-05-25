@@ -7,7 +7,8 @@ import { StateTaskPipe } from './pipe/state-task.pipe';
 import { TestDirective } from './directive/test.directive';
 import { ValueArrayPipe } from './pipe/value-array.pipe';
 import { HasPermissionDirective } from './directive/has-permission.directive';
-import { StoreDataService } from '../_base/store-data.service';
+import { BaseModule } from '../_base/base.module';
+import { StoreDataModule } from '../_base/store-data.module';
 
 
 
@@ -21,7 +22,8 @@ import { StoreDataService } from '../_base/store-data.service';
     HasPermissionDirective,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    StoreDataModule
   ],
   exports: [
     AutoFocusDirective,

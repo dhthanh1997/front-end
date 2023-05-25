@@ -14,6 +14,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { SubProjectComponent } from './sub-project/sub-project.component';
 import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
 import { ShareModule } from 'src/app/_share/share.module';
+import { StoreDataModule } from 'src/app/_base/store-data.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ShareModule } from 'src/app/_share/share.module';
     FormsModule,
     CurrencyMaskModule,
     HighchartsChartModule,
-    ShareModule
+    ShareModule,
+    
   ],
   exports: [ProjectFormComponent, DeleteComponent],
 })

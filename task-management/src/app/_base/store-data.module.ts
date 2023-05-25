@@ -13,39 +13,25 @@ import { BinarySearchService } from './util';
 import { StoreDataService } from './store-data.service';
 import { PermissionGuardService } from './guard/permission-guard.service';
 import { HasPermissionService } from './guard/has-permission.service';
-import { StoreDataModule } from './store-data.module';
 
 const PROVIDERS = [
-  HttpService,
-  AuthGuardService,
-  AuthService,
-  AuthenticationService,
-  PermissionGuardService,
-  HasPermissionService
+  StoreDataService,
 ]
 
-const SERVICES = [
-  NotifyService,
-  MessageService,
-  BinarySearchService
-]
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StoreDataModule,
-    NzNotificationModule,
-    NzMessageModule
   ]
 })
-export class BaseModule {
-  static forRoot(): ModuleWithProviders<BaseModule> {
+export class StoreDataModule {
+  static forRoot(): ModuleWithProviders<StoreDataModule> {
     return {
-      ngModule: BaseModule,
+      ngModule: StoreDataModule,
       providers: [
         ...PROVIDERS,
-        ...SERVICES
+
       ]
     }
   }
