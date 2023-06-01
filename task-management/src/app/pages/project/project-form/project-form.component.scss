@@ -25,3 +25,47 @@
   border: 1px solid red;
 }
 
+.test {
+  width: 100%;
+  display: block;
+
+  nz-date-picker {
+    width: 40px;
+    position: absolute !important;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+
+  }
+
+  &.view {
+    nz-input-group {
+      border: none;
+      background: none;
+
+      .ant-input-disabled,
+      .ant-input[disabled] {
+        background-color: rgb(255 255 255 / 0%) !important;
+      }
+    }
+  }
+
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+  color: #fff;
+  background: #C76932;
+  border-radius: 20px;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before {
+  border: 1px solid #C76932 !important;
+  border-radius: 20px !important;
+}
+
+.ant-picker-header {
+  background-color: #FFF7F3;
+}

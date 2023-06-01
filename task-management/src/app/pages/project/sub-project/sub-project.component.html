@@ -64,17 +64,73 @@
 
       <!-- row 3 -->
       <div nz-row class="d-flex flex-row" [nzGutter]="8">
-        <div nz-col [nzSpan]="24">
+        <div nz-col [nzSpan]="12">
           <nz-form-item nz-row [nzGutter]="2">
-            <nz-form-label [nzSpan]="3" style="word-wrap: break-word;"> Ngày </nz-form-label>
-            <nz-form-control [nzSpan]="21">
-              <nz-range-picker
-                [nzDisabledDate]="disabledDate"
+            <nz-form-label [nzSpan]="6" style="word-wrap: break-word">
+              Ngày bắt đầu
+            </nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-input-group class="test">
+                <input
+                  type="text"
+                  nz-input
+                  formControlName="startDate"
+                  [inputMask]="dateInputMask"
+                  (change)="startDateInputChange()"
+                />
+
+                <nz-date-picker
+                  [nzDisabledDate]="disabledStartDate"
+                  nzInputReadOnly="true"
+                  #dateTimePicker
+                  [nzAllowClear]="false"
+                  formControlName="startDatePicker"
+                  (ngModelChange)="startDateCalendarChange()"
+                >
+                </nz-date-picker>
+              </nz-input-group>
+
+              <!-- <nz-date-picker
+                #startDate
+                nzFormat="yyyy-MM-dd"
+                [inputMask]="dateInputMask"
+                nzPlaceHolder=""
+                [nzDisabledDate]="disabledStartDate"
                 style="width: 100%"
-                name="rangeDate"
-                formControlName="rangeDate"
+                name="startDate"
+                formControlName="startDate"
                 [nzDisabled]="mode === 'view'"
-              ></nz-range-picker>
+                (focusout)="test()"
+              ></nz-date-picker> -->
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item nz-row [nzGutter]="2">
+            <nz-form-label [nzSpan]="6" style="word-wrap: break-word">
+              Ngày kết thúc
+            </nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-input-group class="test">
+                <input
+                  type="text"
+                  nz-input
+                  formControlName="endDate"
+                  [inputMask]="dateInputMask"
+                  (change)="endDateInputChange()"
+                />
+
+                <nz-date-picker
+                  [nzDisabledDate]="disabledEndDate"
+                  nzInputReadOnly="true"
+                  #dateTimePicker
+                  [nzAllowClear]="false"
+                  formControlName="endDatePicker"
+                  (ngModelChange)="endDateCalendarChange()"
+                >
+                </nz-date-picker>
+              </nz-input-group>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -82,6 +138,7 @@
 
     </form>
   </div>
+  <pre>{{ formValidation.value | json }}</pre>
 </div>
 
 <div class="d-flex justify-content-center" *nzModalFooter>

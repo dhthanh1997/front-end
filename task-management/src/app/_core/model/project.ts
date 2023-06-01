@@ -55,6 +55,7 @@ export interface projectContent {
   revenue?: number;
   startDate: string;
   status: string;
+  state: number;
   totalCost: number;
   totalHour: number;
   isChecked?: Boolean;

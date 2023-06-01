@@ -13,6 +13,7 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { SubProjectComponent } from './sub-project/sub-project.component';
 import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
+import { InputMaskModule } from '@ngneat/input-mask';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ProjectTimelineComponent } from './project-timeline/project-timeline.co
     FormsModule,
     CurrencyMaskModule,
     HighchartsChartModule,
+    InputMaskModule.forRoot({ inputSelector: 'input', isAsync: true }),
   ],
   exports: [ProjectFormComponent, DeleteComponent],
 })
