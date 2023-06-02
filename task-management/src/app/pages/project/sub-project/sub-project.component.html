@@ -69,14 +69,14 @@
             <nz-form-label [nzSpan]="6" style="word-wrap: break-word">
               Ngày bắt đầu
             </nz-form-label>
-            <nz-form-control [nzSpan]="18">
+            <nz-form-control [nzSpan]="18" [nzErrorTip]="startDate">
               <nz-input-group class="test">
                 <input
                   type="text"
                   nz-input
                   formControlName="startDate"
                   [inputMask]="dateInputMask"
-                  (change)="startDateInputChange()"
+                  (input)="startDateInputChange()"
                   [readonly]="mode === 'view'"
                   [ngClass]="mode === 'view' ? 'ban' : ''"
                 />
@@ -93,18 +93,15 @@
                 </nz-date-picker>
               </nz-input-group>
 
-              <!-- <nz-date-picker
-                #startDate
-                nzFormat="yyyy-MM-dd"
-                [inputMask]="dateInputMask"
-                nzPlaceHolder=""
-                [nzDisabledDate]="disabledStartDate"
-                style="width: 100%"
-                name="startDate"
-                formControlName="startDate"
-                [nzDisabled]="mode === 'view'"
-                (focusout)="test()"
-              ></nz-date-picker> -->
+              <ng-template #startDate let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Mục này không được để trống
+                </ng-container>
+                <ng-container *ngIf="control.hasError('start')">
+                  Ngày bắt đầu bé hơn ngày kết thúc
+                </ng-container>
+              </ng-template>
+
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -114,14 +111,14 @@
             <nz-form-label [nzSpan]="6" style="word-wrap: break-word">
               Ngày kết thúc
             </nz-form-label>
-            <nz-form-control [nzSpan]="18">
+            <nz-form-control [nzSpan]="18" [nzErrorTip]="endDate">
               <nz-input-group class="test">
                 <input
                   type="text"
                   nz-input
                   formControlName="endDate"
                   [inputMask]="dateInputMask"
-                  (change)="endDateInputChange()"
+                  (input)="endDateInputChange()"
                   [readonly]="mode === 'view'"
                   [ngClass]="mode === 'view' ? 'ban' : ''"
                 />
@@ -137,6 +134,16 @@
                 >
                 </nz-date-picker>
               </nz-input-group>
+
+              <ng-template #endDate let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Mục này không được để trống
+                </ng-container>
+                <ng-container *ngIf="control.hasError('end')">
+                  Ngày kết thúc lớn hơn ngày bắt đầu
+                </ng-container>
+              </ng-template>
+
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -144,7 +151,7 @@
 
     </form>
   </div>
-  <pre>{{ formValidation.value | json }}</pre>
+  <!-- <pre>{{ formValidation.value | json }}</pre> -->
 </div>
 
 <div class="d-flex justify-content-center" *nzModalFooter>

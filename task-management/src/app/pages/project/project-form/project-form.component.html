@@ -101,7 +101,7 @@
                   nz-input
                   formControlName="startDate"
                   [inputMask]="dateInputMask"
-                  (change)="startDateInputChange()"
+                  (input)="startDateInputChange()"
                   [readonly]="mode === 'view'"
                   [ngClass]="mode === 'view' ? 'ban' : ''"
                 />
@@ -155,7 +155,7 @@
                   nz-input
                   formControlName="endDate"
                   [inputMask]="dateInputMask"
-                  (change)="endDateInputChange()"
+                  (input)="endDateInputChange()"
                   [readonly]="mode === 'view'"
                   [ngClass]="mode === 'view' ? 'ban' : ''"
                 />

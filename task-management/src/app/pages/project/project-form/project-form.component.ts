@@ -33,14 +33,14 @@ import { ModeModal } from 'src/app/_core/enum/modeModal';
 export const start: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
-  if(control.parent) {
+  if (control.parent) {
     const start = new Date(control.value).getTime();
     const end = new Date(control.parent.value['endDate']).getTime();
     console.log('validators called');
     console.log(start, end);
 
     if (start === null || end === null || start > end) {
-      return {start: true}
+      return { start: true };
     }
   }
 
@@ -50,14 +50,13 @@ export const start: ValidatorFn = (
 export const end: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
-  if(control.parent) {
+  if (control.parent) {
     const start = new Date(control.value).getTime();
     const end = new Date(control.parent.value['startDate']).getTime();
     console.log('validators called');
     console.log(start, end);
-
-    if (start === null || end === null || start <= end) {
-      return {end: true}
+    if (start === null || end === null || start < end) {
+      return { end: true };
     }
   }
 
@@ -166,9 +165,11 @@ export class ProjectFormComponent implements OnInit {
   }
 
   startDateInputChange() {
-    this.startDatePicker?.setValue(
-      this.datePipe.transform(new Date(this.startDate?.value), this.format)
-    );
+    if (this.startDate?.value != 'Invalid Date') {
+      this.startDatePicker?.setValue(
+        this.datePipe.transform(new Date(this.startDate?.value), this.format)
+      );
+    }
   }
 
   startDateCalendarChange() {
@@ -181,9 +182,11 @@ export class ProjectFormComponent implements OnInit {
   }
 
   endDateInputChange() {
-    this.endDatePicker?.setValue(
-      this.datePipe.transform(new Date(this.endDate?.value), this.format)
-    );
+    if (this.endDate?.value != 'Invalid Date') {
+      this.endDatePicker?.setValue(
+        this.datePipe.transform(new Date(this.endDate?.value), this.format)
+      );
+    }
   }
 
   endDateCalendarChange() {
@@ -193,23 +196,24 @@ export class ProjectFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formValidation = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
-      parentId: ['', []],
-      revenue: [0, []],
-      startDate: ['', [Validators.required, start]],
-      startDatePicker: ['', [Validators.required]],
-      endDate: ['', [Validators.required, end]],
-      endDatePicker: ['', [Validators.required]],
-      // rangeDate: ['', []],
-      // realStartDate: ['', []],
-      // realEndDate: ['', []],
-      totalCost: [0, []],
-      totalHour: [0, []],
-      state: [0, []],
-      // isChecked: [this.checked, []],
-    },
-    // {validators:dateValidator}
+    this.formValidation = this.fb.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(5)]],
+        parentId: ['', []],
+        revenue: [0, []],
+        startDate: ['', [Validators.required, start]],
+        startDatePicker: ['', [Validators.required]],
+        endDate: ['', [Validators.required, end]],
+        endDatePicker: ['', [Validators.required]],
+        // rangeDate: ['', []],
+        // realStartDate: ['', []],
+        // realEndDate: ['', []],
+        totalCost: [0, []],
+        totalHour: [0, []],
+        state: [0, []],
+        // isChecked: [this.checked, []],
+      }
+      // {validators:dateValidator}
     );
 
     this.getSubProject();
@@ -401,7 +405,7 @@ export class ProjectFormComponent implements OnInit {
   }
 
   handleOk(): void {
-    // debugger;
+    debugger;
     this.isConfirmLoading = true;
     const item: projectContent = this.formValidation.value;
     item.startDate = new Date(this.startDate?.value).toISOString();

@@ -1,11 +1,44 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { createMask } from '@ngneat/input-mask';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ProjectData } from 'src/app/_core/api/project/project-data';
 import { ModeModal } from 'src/app/_core/enum/modeModal';
 import { projectContent } from 'src/app/_core/model/project';
+
+export const start: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if (control.parent) {
+    const start = new Date(control.value).getTime();
+    const end = new Date(control.parent.value['endDate']).getTime();
+    console.log('validators called');
+    console.log(start, end);
+
+    if (start === null || end === null || start > end) {
+      return { start: true };
+    }
+  }
+
+  return null;
+};
+
+export const end: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if (control.parent) {
+    const start = new Date(control.value).getTime();
+    const end = new Date(control.parent.value['startDate']).getTime();
+    console.log('validators called');
+    console.log(start, end);
+    if (start === null || end === null || start < end) {
+      return { end: true };
+    }
+  }
+
+  return null;
+};
 
 @Component({
   selector: 'app-sub-project',
@@ -82,7 +115,11 @@ export class SubProjectComponent implements OnInit {
   }
 
   startDateInputChange() {
-    this.startDatePicker?.setValue(this.datePipe.transform(new Date(this.startDate?.value), this.format));
+    if (this.startDate?.value != 'Invalid Date') {
+      this.startDatePicker?.setValue(
+        this.datePipe.transform(new Date(this.startDate?.value), this.format)
+      );
+    }
   }
 
   startDateCalendarChange() {
@@ -90,7 +127,11 @@ export class SubProjectComponent implements OnInit {
   }
 
   endDateInputChange() {
-    this.endDatePicker?.setValue(this.datePipe.transform(new Date(this.endDate?.value), this.format));
+    if (this.endDate?.value != 'Invalid Date') {
+      this.endDatePicker?.setValue(
+        this.datePipe.transform(new Date(this.endDate?.value), this.format)
+      );
+    }
   }
 
   endDateCalendarChange() {
@@ -104,9 +145,9 @@ export class SubProjectComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(5)]],
       parentId: ['', []],
       revenue: [0, []],
-      startDate: ['', [Validators.required]],
+      startDate: ['', [Validators.required, start]],
       startDatePicker: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required, end]],
       endDatePicker: ['', [Validators.required]],
     });
 
