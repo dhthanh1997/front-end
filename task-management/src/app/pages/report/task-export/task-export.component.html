@@ -1,0 +1,78 @@
+<div class="task-export-wrapper">
+  <ng-template #tmplNode let-node="node" let-idx="idx">
+    <nz-table
+      nzTemplateMode
+      cdkDropList
+      [id]="node.uId"
+      [cdkDropListData]="node.children"
+      (cdkDropListDropped)="onDragDrop($event)"
+      [cdkDropListConnectedTo]="connectedTo"
+    >
+      <thead>
+        <tr>
+          <th class="text-center"></th>
+          <th class="text-center">Index</th>
+          <th class="text-center">Id</th>
+          <th class="text-center">Tên</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            [nzExpand]="expandSet.has(node.uId)"
+            (nzExpandChange)="onExpandChange(node.uId, $event, idx, node)"
+          ></td>
+          <td class="text-center">{{ idx }}</td>
+          <td class="text-center">{{ node.uId }}</td>
+          <td class="text-center">{{ node.name }}</td>
+        </tr>
+        <tr [nzExpand]="expandSet.has(node.uId)">
+          <ng-container *ngIf="node.children && node.children.length > 0">
+            <ng-container *ngFor="let sub of node.children; let idxSub = index">
+              <div class="sub-item" cdkDrag>
+                <ng-container
+                  *ngTemplateOutlet="
+                    tmplNode;
+                    context: { node: sub, idx: idxSub }
+                  "
+                ></ng-container>
+              </div>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+
+  <div
+    cdkDropList
+    [cdkDropListData]="root.children"
+    (cdkDropListDropped)="onDragDrop($event)"
+    [id]="root.uId"
+    [cdkDropListConnectedTo]="connectedTo"
+  >
+    <div *ngFor="let node of root.children">
+      <nz-collapse nzGhost>
+        <nz-collapse-panel
+          nzHeader="[{{ node.uId }}] - {{ node.name }}"
+          cdkDrag
+          cdkDropList
+          [id]="node.uId"
+          [cdkDropListData]="node.children"
+          [cdkDropListConnectedTo]="connectedTo"
+          (cdkDropListDropped)="onDragDrop($event)"
+        >
+          <div
+            class="sub-item"
+            *ngFor="let next of node.children; let idx = index"
+            cdkDrag
+          >
+            <ng-container
+              *ngTemplateOutlet="tmplNode; context: { node: next, idx: idx }"
+            ></ng-container>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+  </div>
+</div>

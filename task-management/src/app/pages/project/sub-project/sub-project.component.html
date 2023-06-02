@@ -77,9 +77,12 @@
                   formControlName="startDate"
                   [inputMask]="dateInputMask"
                   (change)="startDateInputChange()"
+                  [readonly]="mode === 'view'"
+                  [ngClass]="mode === 'view' ? 'ban' : ''"
                 />
 
                 <nz-date-picker
+                  [nzDisabled]="mode === 'view'"
                   [nzDisabledDate]="disabledStartDate"
                   nzInputReadOnly="true"
                   #dateTimePicker
@@ -119,9 +122,12 @@
                   formControlName="endDate"
                   [inputMask]="dateInputMask"
                   (change)="endDateInputChange()"
+                  [readonly]="mode === 'view'"
+                  [ngClass]="mode === 'view' ? 'ban' : ''"
                 />
 
                 <nz-date-picker
+                  [nzDisabled]="mode === 'view'"
                   [nzDisabledDate]="disabledEndDate"
                   nzInputReadOnly="true"
                   #dateTimePicker

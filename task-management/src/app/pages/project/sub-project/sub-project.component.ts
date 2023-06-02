@@ -168,9 +168,10 @@ export class SubProjectComponent implements OnInit {
     this.isConfirmLoading = true;
     const item: projectContent = this.formValidation.value;
     item.parentId = this.projectId;
-    item.startDate = this.startDatePicker!.value;
-    item.endDate = this.endDatePicker!.value;
+    item.startDate = new Date(this.startDate?.value).toISOString();
+    item.endDate = new Date(this.endDate?.value).toISOString();
     item.id = this.id;
+    debugger;
     console.log(item);
     if (this.mode == ModeModal.CREATE) {
       this.service.addProject(item).subscribe({

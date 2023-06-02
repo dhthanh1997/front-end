@@ -6,6 +6,8 @@ import { getISOWeek } from 'date-fns';
 import { TeamData } from 'src/app/_core/api/team/team-data';
 import { MemberData } from 'src/app/_core/api/member/member-data';
 import { ReportData } from 'src/app/_core/api/report/report-data';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { TaskExportComponent } from './task-export/task-export.component';
 
 @Component({
   selector: 'app-report',
@@ -55,6 +57,7 @@ export class ReportComponent implements OnInit {
     private teamData: TeamData,
     private memberData: MemberData,
     private reportData: ReportData,
+    private modalService: NzModalService,
   ) { }
 
   ngOnInit(): void {
@@ -64,6 +67,19 @@ export class ReportComponent implements OnInit {
     this.getTeam();
     this.getProject();
     this.getMember();
+  }
+
+  test(): void {
+    this.modalService.create({
+      nzTitle: 'Test Export',
+      nzClassName: 'modal-custom',
+      nzContent: TaskExportComponent,
+      nzCentered: true,
+      nzDirection: 'ltr',
+      nzMaskClosable: false,
+      nzClosable: true,
+      nzWidth: '1400px'
+    })
   }
 
   getWeek(result: Date[]): void {
@@ -178,7 +194,7 @@ export class ReportComponent implements OnInit {
   }
 
   exportExcel() {
-    debugger;
+    // debugger;
     let projectId = Number(this.projectValue);
     this.reportData.exportExcel(projectId).subscribe({
       next: (res: any) => {

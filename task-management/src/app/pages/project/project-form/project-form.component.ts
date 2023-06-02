@@ -4,7 +4,15 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormArray,
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Project, projectContent } from '../../../_core/model/project';
 import { ProjectData } from '../../../_core/api/project/project-data';
@@ -20,18 +28,47 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { DeleteComponent } from '../delete/delete.component';
 import { createMask } from '@ngneat/input-mask';
 import { DatePipe } from '@angular/common';
+import { ModeModal } from 'src/app/_core/enum/modeModal';
 
-enum ModeModal {
-  CREATE = 'create',
-  UPDATE = 'update',
-  VIEW = 'view',
-}
+export const start: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if(control.parent) {
+    const start = new Date(control.value).getTime();
+    const end = new Date(control.parent.value['endDate']).getTime();
+    console.log('validators called');
+    console.log(start, end);
+
+    if (start === null || end === null || start > end) {
+      return {start: true}
+    }
+  }
+
+  return null;
+};
+
+export const end: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if(control.parent) {
+    const start = new Date(control.value).getTime();
+    const end = new Date(control.parent.value['startDate']).getTime();
+    console.log('validators called');
+    console.log(start, end);
+
+    if (start === null || end === null || start <= end) {
+      return {end: true}
+    }
+  }
+
+  return null;
+};
 
 @Component({
   selector: 'internal-app-project-form',
   templateUrl: './project-form.component.html',
   styleUrls: ['./project-form.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class ProjectFormComponent implements OnInit {
   formValidation!: FormGroup;
@@ -129,38 +166,51 @@ export class ProjectFormComponent implements OnInit {
   }
 
   startDateInputChange() {
-    this.startDatePicker?.setValue(this.datePipe.transform(new Date(this.startDate?.value), this.format));
+    this.startDatePicker?.setValue(
+      this.datePipe.transform(new Date(this.startDate?.value), this.format)
+    );
   }
 
   startDateCalendarChange() {
-    this.startDate?.setValue(this.datePipe.transform(new Date(this.startDatePicker?.value), this.format));
+    this.startDate?.setValue(
+      this.datePipe.transform(
+        new Date(this.startDatePicker?.value),
+        this.format
+      )
+    );
   }
 
   endDateInputChange() {
-    this.endDatePicker?.setValue(this.datePipe.transform(new Date(this.endDate?.value), this.format));
+    this.endDatePicker?.setValue(
+      this.datePipe.transform(new Date(this.endDate?.value), this.format)
+    );
   }
 
   endDateCalendarChange() {
-    this.endDate?.setValue(this.datePipe.transform(new Date(this.endDatePicker?.value), this.format));
+    this.endDate?.setValue(
+      this.datePipe.transform(new Date(this.endDatePicker?.value), this.format)
+    );
   }
 
   ngOnInit(): void {
     this.formValidation = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       parentId: ['', []],
-      revenue: [0 , []],
-      startDate: ['', [Validators.required]],
+      revenue: [0, []],
+      startDate: ['', [Validators.required, start]],
       startDatePicker: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required, end]],
       endDatePicker: ['', [Validators.required]],
       // rangeDate: ['', []],
       // realStartDate: ['', []],
       // realEndDate: ['', []],
-      totalCost: [0 , []],
+      totalCost: [0, []],
       totalHour: [0, []],
-      state: [0, []]
+      state: [0, []],
       // isChecked: [this.checked, []],
-    });
+    },
+    // {validators:dateValidator}
+    );
 
     this.getSubProject();
 
@@ -199,7 +249,7 @@ export class ProjectFormComponent implements OnInit {
         error: (err) => {
           console.log(err);
         },
-      })
+      });
   }
 
   changeChecked() {
@@ -228,7 +278,6 @@ export class ProjectFormComponent implements OnInit {
         });
       },
     });
-
   }
 
   getSubProject() {
@@ -242,8 +291,8 @@ export class ProjectFormComponent implements OnInit {
         },
         error: (err) => {
           console.log(err);
-        }
-      })
+        },
+      });
     }
   }
 
@@ -267,14 +316,14 @@ export class ProjectFormComponent implements OnInit {
   getSubById(id: number) {
     this.projectData.getProjectById(id).subscribe({
       next: (res) => {
-        if(res) {
+        if (res) {
           console.log(res);
         }
       },
       error: (err) => {
         console.log(err);
-      }
-    })
+      },
+    });
   }
 
   onUpdate(item: projectContent) {
@@ -341,7 +390,7 @@ export class ProjectFormComponent implements OnInit {
               error: (err) => {
                 console.log(err);
               },
-              complete: () => { },
+              complete: () => {},
             });
           }
         },
@@ -352,11 +401,11 @@ export class ProjectFormComponent implements OnInit {
   }
 
   handleOk(): void {
-    debugger;
+    // debugger;
     this.isConfirmLoading = true;
     const item: projectContent = this.formValidation.value;
-    item.startDate = this.startDatePicker?.value;
-    item.endDate = this.endDatePicker?.value;
+    item.startDate = new Date(this.startDate?.value).toISOString();
+    item.endDate = new Date(this.endDate?.value).toISOString();
     console.log(item.startDate);
     if (this.mode == ModeModal.CREATE) {
       item.id = 0;

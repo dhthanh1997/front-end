@@ -5,9 +5,12 @@
 
   .report-header {
 
+    display: flex;
+    justify-content: space-around;
+
     nz-select {
       margin: 0 8px 10px 0;
-      width: 25%;
+      width: 24%;
     }
 
     .filter {
