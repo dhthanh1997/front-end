@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl:'http://10.2.6.142:8092/taskManagement/api',
-  loginUrl: 'http://localhost:4200'
+  apiUrl:'http://localhost:8098/taskManagement/api',
+  // loginUrl: 'http://localhost:4200',
+  gatewayUrl:'http://localhost:8055',
 };
