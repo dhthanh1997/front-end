@@ -3,9 +3,9 @@ FROM node:14.17.3-alpine as build
 WORKDIR /app
 COPY package*.json ./
 RUN npm cache clean --force
-RUN npm install -g @angular/cli@14.2.10
+# RUN npm install -g @angular/cli@14.2.10
 RUN npm install
-COPY ./ ./
+COPY . .
 # RUN ls -la /app/*
 RUN npm run build --configuration=production
 
