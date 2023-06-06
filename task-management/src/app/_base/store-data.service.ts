@@ -5,6 +5,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class StoreDataService {
 
   public menuInfoData: Subject<any> = new Subject();
-  
+  public permissions: Subject<any> = new Subject();
+  public permissionsData: any = {};
+  public menuInfo: any = {};
+
   constructor() { }
 }

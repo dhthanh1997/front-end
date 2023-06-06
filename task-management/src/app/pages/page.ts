@@ -1,4 +1,5 @@
 export interface MenuItem {
+    id:number;
     title: string;
     icon: string;
     code: string;
@@ -11,6 +12,7 @@ export interface MenuItem {
 
 export const menuItem: MenuItem[] = [
     {
+        id: 1,
         title: 'Trang chủ',
         code: 'home',
         icon: '',
@@ -21,6 +23,7 @@ export const menuItem: MenuItem[] = [
         children: [],
     },
     {
+        id: 2,
         title: 'Dự án',
         code: 'project',
         icon: '',
@@ -31,16 +34,18 @@ export const menuItem: MenuItem[] = [
         children: [],
     },
     {
+        id: 3,
         title: 'Công việc của tôi',
         code: 'task',
         icon: '',
-        type: 'task',
+        type: 'check-circle',
         theme: 'outline',
         path: 'task',
         class: '',
         children: [],
     },
     {
+        id: 4,
         title: 'Báo cáo',
         code: 'report',
         icon: '',
@@ -51,8 +56,9 @@ export const menuItem: MenuItem[] = [
         children: [],
     },
     {
+        id: 5,
         title: 'Thiết lập',
-        code: 'home',
+        code: 'setting',
         icon: '',
         type: 'setting',
         theme: 'outline',
@@ -60,16 +66,18 @@ export const menuItem: MenuItem[] = [
         class: '',
         children: [
             {
+                id: 51,
                 title: 'Nhân viên',
                 code: 'member_setting',
                 icon: '',
-                type: 'setting',
+                type: 'usergroup-add',
                 theme: 'outline',
                 path: 'member',
                 class: '',
                 children: [],
             },
             {
+                id: 52,
                 title: 'Nhóm',
                 code: 'team_setting',
                 icon: '',
@@ -80,16 +88,18 @@ export const menuItem: MenuItem[] = [
                 children: [],
             },
             {
+                id: 53,
                 title: 'Nhóm quyền',
-                code: 'role',
+                code: 'role_setting',
                 icon: '',
                 type: 'key',
                 theme: 'outline',
-                path: 'role',
+                path: 'roles-app',
                 class: '',
                 children: [],
             },
             {
+                id: 54,
                 title: 'Quyền',
                 code: 'permission_setting',
                 icon: '',

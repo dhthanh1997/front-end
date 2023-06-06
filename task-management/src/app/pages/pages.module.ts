@@ -14,6 +14,8 @@ import { CoreModule } from '../_core/core.module';
 import { BaseModule } from '../_base/base.module';
 import { JwtInterceptorService } from '../_base/interceptor/jwt-interceptor.service';
 import { ShareModule } from '../_share/share.module';
+import { StoreDataService } from '../_base/store-data.service';
+import { StoreDataModule } from '../_base/store-data.module';
 
 
 @NgModule({
@@ -28,7 +30,10 @@ import { ShareModule } from '../_share/share.module';
     ShareModule,
     IconsProviderModule.forRoot(),
     NgZorroModule.forRoot(),
-
+    StoreDataModule
+  ],
+  providers: [
+    // StoreDataService
   ]
 
 })

@@ -6,6 +6,7 @@ import { ResponseStatusEnum } from '../_core/enum/response-status-enum';
 import { PageMenuService } from './page-menu.service';
 import { menuItem } from './page';
 import { StoreDataService } from '../_base/store-data.service';
+import { ShareService } from '../_share/share.service';
 
 @Component({
   selector: 'app-pages',
@@ -37,7 +38,8 @@ export class PagesComponent implements OnInit {
     return this.permissions;
   }
 
-  constructor(private userService: UserData, private storeDataService: StoreDataService,
+  constructor(private userService: UserData, 
+    private storeDataService: StoreDataService,
     private pageService: PageMenuService) {
     let helper = new JwtHelperService();
     let token: any = localStorage.getItem('access_token');
@@ -52,10 +54,12 @@ export class PagesComponent implements OnInit {
         this.username = res.data.username;
         this.permissions = res.data.permissions;
     }
-    this.storeDataService.menuInfoData.next(this.menuInfo);
-
+    // this.storeDataService.menuInfoData.next(this.menuInfo);
+    // this.storeDataService.permissions.next(this.permissions);
+    this.storeDataService.permissionsData = this.permissions;
+    this.storeDataService.menuInfo = this.menuInfo;
     console.log(this.userInfo);
-    console.log(this.menuInfo);
+    console.log(this.storeDataService.menuInfo);
 
   }
 

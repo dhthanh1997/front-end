@@ -2,12 +2,15 @@
   <div class="container">
     <div class="row">
       <div class="tool" style="width: 100%; margin-top: 1.5em">
-        <button nz-button (click)="onCreate()">Thêm mới dự án</button>
+        <button nz-button (click)="onCreate()"
+        *ngIf="hasPermission.hasPermission({menu: 'project', action: 'create'})"
+        >Thêm mới dự án</button>
         <button
           nz-button
           nzDanger
           style="margin-left: 10px"
           (click)="onDeleteAll(listId)"
+          *ngIf="hasPermission.hasPermission({menu: 'project', action: 'delete'})"
         >
           Xóa tất cả
         </button>
@@ -38,6 +41,7 @@
           nzTrigger="click"
           [nzDropdownMenu]="filter"
           class="d-flex align-items-center mr-2"
+        
         >
           <i nz-icon nzType="filter" nzTheme="outline"></i>
           {{ FilterDisplay }}
@@ -148,6 +152,7 @@
                   nzTooltipTitle="Xem dự án"
                   class="d-flex align-items-center justify-content-center mr-1"
                   (click)="onView(item)"
+                  *ngIf="hasPermission.hasPermission({menu: 'project', action: 'view'})"
                 >
                   <i nz-icon nzType="eye" nzTheme="outline"></i>
                 </button>
@@ -156,6 +161,7 @@
                   nzShape="circle"
                   nz-tooltip
                   nzTooltipTitle="Chỉnh sửa dự án"
+                  *ngIf="hasPermission.hasPermission({menu: 'project', action: 'update'})"
                   class="d-flex align-items-center justify-content-center mr-1"
                   (click)="onUpdate(item)"
                 >
@@ -166,6 +172,7 @@
                   nzShape="circle"
                   nz-tooltip
                   nzTooltipTitle="Xem dự án con"
+                  *ngIf="hasPermission.hasPermission({menu: 'project', action: 'view'})"
                   class="d-flex align-items-center justify-content-center mr-1"
                   (click)="showSubProject(idx)"
                 >
@@ -177,6 +184,7 @@
                   nz-tooltip
                   nzTooltipTitle="Xem timeline"
                   class="d-flex align-items-center justify-content-center mr-1"
+                  *ngIf="hasPermission.hasPermission({menu: 'project', action: 'view'})"
                   [routerLink]="['/pages/project/timeline', {id: item.id, name: item.name}]"
                 >
                   <i nz-icon nzType="field-time" nzTheme="outline"></i>
@@ -188,6 +196,7 @@
                   nzTooltipTitle="Xóa dự án"
                   class="d-flex align-items-center justify-content-center mr-1"
                   (click)="onDelete(item.id)"
+                  *ngIf="hasPermission.hasPermission({menu: 'project', action: 'delete'})"
                 >
                   <i nz-icon nzType="delete" nzTheme="outline"></i>
                 </button>

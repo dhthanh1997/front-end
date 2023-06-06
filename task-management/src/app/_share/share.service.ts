@@ -6,6 +6,7 @@ export class ShareService {
 
   public taskDataShare: Subject<any> = new Subject<any>();
   public taskDetailShare: Subject<any> = new Subject<any>();
+  public permissionsShare: Subject<any> = new Subject<any>();
 
   // events
   public isAddRow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -22,6 +23,11 @@ export class ShareService {
   public isLoadingModal: Subject<boolean> = new Subject<boolean>(); // dung cho spinner tại modal
 
   // end events
+
+  //store data
+  public menuInfoData: Subject<any> = new Subject();
+  public permissions: Subject<any> = new Subject();
+  //
 
   constructor() { }
 }

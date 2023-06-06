@@ -3,120 +3,50 @@
   <div class="sidebar-header"></div>
   <!-- navigation -->
   <div class="sidebar-content">
-  
-    <button class="projectBtn" (click)="onCreate()">Tạo dự án</button>
-  
-    <ul class="nav flex-column" id="navList">
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          routerLink="home"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          ><i nz-icon nzType="home" nzTheme="outline"></i
-          ><span class="ml-2">Trang chủ</span></a
-        >
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          routerLink="project"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          ><i nz-icon nzType="project" nzTheme="outline"></i
-          ><span class="ml-2">Dự án</span></a
-        >
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          routerLink="task"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          ><i nz-icon nzType="check-circle" nzTheme="outline"></i
-          ><span class="ml-2">Công việc của tôi</span></a
-        >
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          routerLink="report"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          ><i nz-icon nzType="reconciliation" nzTheme="outline"></i
-          ><span class="ml-2">Báo cáo</span></a
-        >
-      </li>
-     
-      <li>
-        <a class="nav-link" (click)="subMenu()">
-          <i nz-icon nzType="setting" nzTheme="outline"></i>
-          <span class="ml-2">Thiết lập</span>
-          <i
-            nz-icon
-            nzType="down"
-            nzTheme="outline"
-            class="ml-auto mr-1"
-            [hidden]="isOpen"
-          ></i>
-          <i
-            nz-icon
-            nzType="up"
-            nzTheme="outline"
-            class="ml-auto mr-1"
-            [hidden]="!isOpen"
-          ></i>
-        </a>
-        <ul
-          class="sub-menu d-none"
 
-        >
-          <li class="sub-nav-item">
-            <a
-              class="nav-link"
-              routerLink="member"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              <i nz-icon nzType="usergroup-add" nzTheme="outline"></i>
-              <span class="ml-4">Nhân viên</span>
-              </a>
-          </li>
-          <li class="sub-nav-item">
-            <a
-              class="nav-link"
-              routerLink="team"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              <i nz-icon nzType="usergroup-add" nzTheme="outline"></i>
-              <span class="ml-4">Nhóm</span></a
-            >
-          </li>
-          <li class="sub-nav-item">
-            <a
-              class="nav-link"
-              routerLink="roles-app"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              <i nz-icon nzType="key" nzTheme="outline"></i>
-              <span class="ml-4">Nhóm quyền</span></a
-            >
-          </li>
-          <li class="sub-nav-item">
-            <a
-              class="nav-link"
-              routerLink="permission"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              <i nz-icon nzType="key" nzTheme="outline"></i>
-              <span class="ml-4">Quyền</span></a
-            >
-          </li>
-        </ul>
+    <button class="projectBtn" (click)="onCreate()">Tạo dự án</button>
+
+    <ul class="nav flex-column" id="navList">
+      <!-- default -->
+      <li class="nav-item">
+        <a class="nav-link" routerLink="home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
+            nz-icon nzType="home" nzTheme="outline"></i><span class="ml-2">Trang chủ</span></a>
       </li>
+      <!-- end default -->
+      <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ data: menuInfo }">
+
+      </ng-container>
+
     </ul>
+    <ng-template #treeNode let-data="data">
+      <!-- <ul class="nav flex-column" id="navList" *ngFor="let item of data; let idx as index" > -->
+      <li class="nav-item" *ngFor="let item of data">
+
+        <ng-container *ngIf="item.children && item.children.length == 0 else tmpSubMenu">
+          <a class="nav-link" [routerLink]="item.path" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">
+            <i nz-icon [nzType]="item.type" nzTheme="outline"></i><span class="ml-2">{{item.title}}</span>
+          </a>
+        </ng-container>
+        <ng-template #tmpSubMenu>
+          <a class="nav-link" (click)="subMenu(item)">
+            <i nz-icon [nzType]="item.type" nzTheme="outline"></i>
+            <span class="ml-2">{{item.title}}</span>
+            <i nz-icon nzType="down" nzTheme="outline" class="ml-auto mr-1" [hidden]="item.isOpen"></i>
+            <i nz-icon nzType="up" nzTheme="outline" class="ml-auto mr-1" [hidden]="!item.isOpen"></i>
+          </a>
+          <ng-container *ngIf="item.children && item.children.length > 0">
+            <ul class="sub-menu d-none">
+              <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ data: item.children }">
+              </ng-container>
+            </ul>
+          </ng-container>
+        </ng-template>
+       
+      </li>
+
+
+    </ng-template>
+   
   </div>
 </div>

@@ -15,6 +15,7 @@ import { vi } from 'date-fns/locale';
 import { BaseModule } from './_base/base.module';
 import { JwtInterceptorService } from './_base/interceptor/jwt-interceptor.service';
 import { PageMenuService } from './pages/page-menu.service';
+import { StoreDataModule } from './_base/store-data.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { PageMenuService } from './pages/page-menu.service';
     IconsProviderModule.forRoot(),
     ThemeModule.forRoot(),
     CoreModule.forRoot(),
+    StoreDataModule.forRoot()
   ],
   providers: [
     {

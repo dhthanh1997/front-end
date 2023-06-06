@@ -132,9 +132,10 @@ export enum EnumType {
 })
 export class BinarySearchService {
 
- public result: any;
+  public result: any;
+  public resultPermission: any;
 
- public binarySearchTree(form: FormGroup, id: any, property: string, key: string): any {
+  public binarySearchTree(form: FormGroup, id: any, property: string, key: string): any {
     let temp;
     if (form.get(key) && form.get(key)!.value === id) {
       return this.result = form;
@@ -149,17 +150,53 @@ export class BinarySearchService {
     // return (form.get(key) && form.get(key)!.value === id) ? form : ((form.get(property) && form.get(property)!.value.length > 0) ? form.get(property) : []).some((value: any) => temp = binarySearchTree(value, id, property, key)) && temp;
   }
 
-  public binaryCheckItemInTree(arrays: any[], property: string, key: string ): any {
-    arrays.forEach(value => {
-      if(value[property].length === 0) {
-        return value.path.includes(key);
+  public binaryCheckItemInTree(arrays: any[], property: string, key: string): any {
+    // debugger;
+    arrays.forEach((value: any) => {
+      // if(value[property].length === 0) {
+      if (key.includes(value.path)) {
+        return this.result = value;
+        // } 
       } else {
-         value[property].forEach((v: any) => {
-          this.binaryCheckItemInTree(v, property, key);
-         });
+        if (value[property] && value[property].length > 0) {
+          this.binaryCheckItemInTree(value[property], property, key);
+        }
       }
     });
-   
+
   }
+
+  public binarySearchTreeArray(tree: any[], property: string, id: any): any {
+    // debugger;
+    this.result = null;
+    tree.forEach((value: any) => {
+      if (value.id === id) {
+        return this.result = value;
+      } else {
+        if (value[property] && value[property].length > 0) {
+          // value[property].forEach((v: any) => {
+          this.binarySearchTreeArray(value[property], property, id);
+          // });
+        }
+      }
+    });
+  }
+
+  public binarySearchTreePermission(tree: any[], property: string, code: any): any {
+    // debugger;
+    // let temp: any = {};
+    this.resultPermission = null;
+    tree.forEach((value: any) => {
+      if (value.code === code) {
+        return this.resultPermission = value;
+      } else {
+        if (value[property] && value[property].length > 0) {
+          this.binarySearchTreePermission(value[property], property, code);
+        }
+      }
+    });
+    // return temp;
+  }
+
 }
 
