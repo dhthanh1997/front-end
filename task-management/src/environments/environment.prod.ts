@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl:'http://localhost:8098/taskManagement/api',
+  apiUrl:'http://host.docker.internal:8098/taskManagement/api',
   // loginUrl: 'http://localhost:4200',
-  gatewayUrl:'http://localhost:8055',
+  gatewayUrl:'http://host.docker.internal:8055',
 };
