@@ -13,7 +13,7 @@
 ## START
 FROM nginx:1.17.1-alpine as nginx
 WORKDIR /app
-COPY ./task-management/dist/task-management/* /app/
+COPY ./task-management/dist/task-management/* /usr/share/nginx/html
 RUN ls -la /app
 # COPY  --from=build app/dist/task-management /usr/share/nginx/html
 # COPY  --from=build app/nginx.conf /etc/nginx/conf.d
