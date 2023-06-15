@@ -13,9 +13,10 @@
 ## START
 FROM nginx:1.17.1-alpine as nginx
 WORKDIR /app
+RUN ls -la /app
 # COPY  --from=build app/dist/task-management /usr/share/nginx/html
 # COPY  --from=build app/nginx.conf /etc/nginx/conf.d
-COPY ./dist/task-management/* /usr/share/nginx/html
+COPY dist/task-management/* /usr/share/nginx/html
 RUN ls -la /usr/share/nginx/html/*
 COPY ./task-management/nginx.conf /etc/nginx/conf.d
 RUN chmod -R 777 /usr/share/nginx/html
