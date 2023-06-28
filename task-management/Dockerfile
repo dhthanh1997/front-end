@@ -1,10 +1,11 @@
 ## BUILD
 FROM node:14.17.3-alpine as build
 WORKDIR /app
-COPY package*.json ./
+COPY ./task-management/package*.json ./
+RUN npm cache clean --force
 RUN npm install -g @angular/cli@14.2.10
 RUN npm install
-COPY ./ ./
+COPY ./task-management ./
 # RUN ls -la /app/*
 RUN ng build --configuration=production
 
