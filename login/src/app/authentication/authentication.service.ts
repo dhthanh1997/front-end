@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AccessToken } from '../../../../task-management/src/app/_base/access-token';
-
 
 @Injectable()
 export class AuthenticationService {
@@ -27,7 +25,7 @@ export class AuthenticationService {
   }
 
 
-  
+
 
 
 }
